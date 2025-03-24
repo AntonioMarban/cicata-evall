@@ -1,6 +1,6 @@
 # CICATA Evall
 
-Repositorio de frontend y backend de sistema de Automatización de Evaluación de Proyectos "Evall".
+Repositorio de frontend de sistema de Automatización de Evaluación de Proyectos "Evall".
 
 ## Desarrollo e implantación de sistemas de software
 ## Tecnológico de Monterrey, Campus Cuernavaca
