@@ -1,0 +1,26 @@
+/* Global CSS styles */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Jost', sans-serif; /* Ensure the font name is correctly capitalized */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Jost', sans-serif; /* Also set the body font-family */
+}
+
+
+.jost {
+  font-family: "Jost", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+}
+.app-background{
+    display: flex;
+}
