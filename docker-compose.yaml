@@ -24,7 +24,7 @@ services:
     depends_on:
       - db
   frontend:
-    build: ./frontend/vite-project
+    build: ./frontend
     ports:
       - "5001:5001"
     environment:
