@@ -1,3 +1,5 @@
+-- Aqui se crean procedimientos almacenados y mas
+
 DELIMITER //
 
 CREATE PROCEDURE GetAllTasks()
