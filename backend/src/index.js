@@ -5,10 +5,13 @@ const pool = require('./helpers/mysql_config');
 const port = process.env.BACKEND_PORT | 3000;
 require('dotenv').config(); 
 
+const committeeMember = require('./routes/committeeMember');
 
 app.use(cors())
 
 app.use(express.json());
+
+app.use('/', committeeMember);
 
 // Obtener todas las tareas
 app.get('/api/tasks', (req, res) => {
