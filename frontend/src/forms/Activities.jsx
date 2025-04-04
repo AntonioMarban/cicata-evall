@@ -5,19 +5,19 @@ import { prevOption } from "../hooks/optionUtils";
 import useLoadFormData from "../hooks/useLoadFormData";
 
 const  Activities = ({option,setOption}) => {
-    const [actividades, setActividades] = useState({ idF: 8, activities: [] });
+    const [activities, setActivities] = useState({ idF: 8, activities: [] });
 
     const handleOnSubmit = async (event) => {
             event.preventDefault();
             
             try{
-                await updateForm(actividades);
+                await updateForm(activities);
             } catch(error){
                 console.log("Error al guardar contracto",error);;
             }
             setOption(prevOption => prevOption + 1);
     };
-    useLoadFormData(actividades.idF,setActividades);
+    useLoadFormData(activities.idF,setActivities);
     return (
         <div>
             <div className="flex flex-col justify-between">
@@ -25,7 +25,7 @@ const  Activities = ({option,setOption}) => {
                     <p className="text-[22px]">Actividades</p>
                 </div>
                 <div className="rounded-lg p-0 w-full border-2 border-gray-300">
-                    {actividades.activities.map((activity, index) => (
+                    {activities.activities.map((activity, index) => (
                     <div className="!p-2 m-5 flex justify-between w-full items-center" key={index}>
                         <p>{activity.actMeta}</p>
                         <p>{activity.insR}</p>
@@ -38,7 +38,7 @@ const  Activities = ({option,setOption}) => {
                 </div>
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
-                        <AddActividades setActividades={setActividades}/>
+                        <AddActividades setActivities={setActivities}/>
                     </div>
                 </div>
             </div>

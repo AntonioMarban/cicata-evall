@@ -2,7 +2,7 @@ import "../styles/addprojects.css"
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
-const  AddActivities = ({setActividades}) => {
+const  AddActivities = ({setActivities}) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const handleSubmit = (event) => {
@@ -10,9 +10,9 @@ const  AddActivities = ({setActividades}) => {
         const formData = new FormData(event.target);
         const newActivity  = Object.fromEntries(formData.entries()); // Convierte a objeto
         
-        setActividades((prevActividades) => ({
-            ...prevActividades,
-            activities: [...prevActividades.activities, newActivity], // Agregar nuevo proyecto al array
+        setActivities((prevActivities) => ({
+            ...prevActivities,
+            activities: [...prevActivities.activities, newActivity], // Agregar nuevo proyecto al array
         }));
         setIsOpen(false);
     };

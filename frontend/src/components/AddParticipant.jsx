@@ -1,10 +1,9 @@
 import "../styles/addparticipant.css"
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
 const  AddParticipant = ({setParticipants}) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [netInv,setNetInv] = useState(1);
     const [participant, setParticipant] = useState(
         {   nombre: "",
             paterno:"",
@@ -14,7 +13,7 @@ const  AddParticipant = ({setParticipants}) => {
             gAcademico:"",
             nivel:"",
             email:"",
-            netInv,
+            netInv: 1,
             tipoInv:""
         });
     const handleChangeButton = (key, value) => {
@@ -36,9 +35,11 @@ const  AddParticipant = ({setParticipants}) => {
         
         setParticipants((prevParticipants) => ({
             ...prevParticipants,
-            participants: [...prevParticipants.participants, newParticipant],
+            participants: [...prevParticipants.participants, 
+                { ...newParticipant, netInv: participant.netInv }
+            ],
         }));
-
+        event.target.reset();
         setIsOpen(false);
     };
     return (

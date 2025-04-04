@@ -2,7 +2,7 @@ import "../styles/addprojects.css"
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
-const  AddBudget = ({setPresupuesto}) => {
+const  AddBudget = ({setBudget}) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const handleSubmit = (event) => {
@@ -11,7 +11,7 @@ const  AddBudget = ({setPresupuesto}) => {
         const formData = new FormData(event.target);
         const newBudget  = Object.fromEntries(formData.entries()); // Convierte a objeto
         
-        setPresupuesto((prevBudget) => ({
+        setBudget((prevBudget) => ({
             ...prevBudget,
             budget: [...prevBudget.budget, newBudget], // Agregar nuevo proyecto al array
         }));

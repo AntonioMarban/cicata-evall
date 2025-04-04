@@ -1,24 +1,24 @@
 import { useState } from "react";
-import AddColaboration from "../components/AddCollaboration";
+import AddCollaboration from "../components/AddCollaboration";
 import { updateForm  } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 
 
 const  Collaboration = ({option,setOption}) => {
-    const [colaborations, setColaborations] = useState({ idF: 4, colaborations: [] });
+    const [collaborations, setCollaborations] = useState({ idF: 4, collaborations: [] });
     
     const handleOnSubmit = async (event) => {
         event.preventDefault();
         
         try{
-            await updateForm(colaborations);
+            await updateForm(collaborations);
         } catch(error){
             console.log("Error al guardar contracto",error);;
         }
         setOption(prevOption => prevOption + 1);
     };
-    useLoadFormData(colaborations.idF,setColaborations);
+    useLoadFormData(collaborations.idF,setCollaborations);
     return (
         <div>
             <div className="flex flex-col justify-between">
@@ -26,18 +26,18 @@ const  Collaboration = ({option,setOption}) => {
                     <p className="text-[22px]">Colaboración con otras instituciones</p>
                 </div>
                 <div className="rounded-lg p-0 w-full border-2 border-gray-300">
-                    {colaborations.colaborations.map((colaboration, index) => (
+                    {collaborations.collaborations.map((collaboration, index) => (
                     <div className="!p-2 m-5 flex justify-between w-full items-center" key={index}>
-                        <p>{colaboration.convenioNE}</p>
-                        <p>{colaboration.convenioType}</p>
-                        <p>{colaboration.institutionName}</p>
-                        <p>{colaboration.isIPN}</p>
+                        <p>{collaboration.convenioNE}</p>
+                        <p>{collaboration.convenioType}</p>
+                        <p>{collaboration.institutionName}</p>
+                        <p>{collaboration.isIPN}</p>
                     </div>
                     ))}
                 </div>
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
-                        <AddColaboration  setColaborations={setColaborations}/>
+                        <AddCollaboration  setCollaborations={setCollaborations}/>
                     </div>
                 </div>
             </div>

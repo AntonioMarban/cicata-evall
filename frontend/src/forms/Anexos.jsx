@@ -7,7 +7,7 @@ const  Anexos = ({option,setOption}) => {
     const [anexos, setAnexos] = useState(
         {   idF: 13,
             anexos:"" });
-    const [formulario,setFormulario] = useState([]);
+    const [forms,setForms] = useState([]);
     const handleOnSubmit = async (event) => {
         event.preventDefault();
         try{
@@ -19,7 +19,7 @@ const  Anexos = ({option,setOption}) => {
         try{
             const formData = await getAllData();
             if (formData) {
-                setFormulario(formData);
+                setForms(formData);
                 console.log(formulario)
             }
         }catch(error){

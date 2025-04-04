@@ -23,7 +23,7 @@ const  Contributions = ({option,setOption}) => {
     };
     useLoadFormData(contributions.idF,setContributions);
     return (
-        <div onSubmit={handleOnSubmit}>
+        <div>
             <div className="flex flex-col justify-between">
                 <div>
                     <p className="text-[22px]">Aportaciones del proyecto al IPN y al CICATA Unidad Morelos</p>
@@ -33,7 +33,7 @@ const  Contributions = ({option,setOption}) => {
                         <div className="flex-1">
                             <textarea  
                             className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
-                            name="aportations" 
+                            name="contributions" 
                             value={contributions.contributions}
                             onChange={handleChange}
                             placeholder="Escribe las aportaciones del proyecto..."></textarea>

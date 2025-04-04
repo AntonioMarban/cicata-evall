@@ -33,6 +33,7 @@ const  Participants = ({option,setOption}) => {
                         <p>{participant.gAcademico}</p>
                         <p>{participant.nivel}</p>
                         <p>{participant.puesto}</p>
+                        <p>{participant.netInv}</p>
                         <button type="button">Editar</button>
                     </div>
                     ))}

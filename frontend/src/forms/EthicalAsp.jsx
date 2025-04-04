@@ -6,25 +6,25 @@ import { prevOption } from "../hooks/optionUtils";
 const  EthicalAsp = ({option,setOption}) => {
     const [conseHum, setConseHum] = useState(1);
     const [conseAnimals, setConseAnimals] = useState(1);
-    const [aspectosEticos, setAspectosEticos] = useState(
+    const [ethicalAsp, setEthicalAsp] = useState(
         {   idF: 6,
             textAspects:"",
             conseHum,
             conseAnimals});
     const handleChangeButton = (key, value) => {
-        setAspectosEticos((prevState) => ({
+        setEthicalAsp((prevState) => ({
             ...prevState,
             [key]: value, 
         }));
     };
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setAspectosEticos({ ...aspectosEticos, [name]: value });
+        setEthicalAsp({ ...ethicalAsp, [name]: value });
     };
     const handleOnSubmit = async (event) => {
         event.preventDefault();
         try{
-            await updateForm(aspectosEticos);
+            await updateForm(ethicalAsp);
 
         } catch(error){
             console.log("Error al guardar contracto",error);
@@ -32,7 +32,7 @@ const  EthicalAsp = ({option,setOption}) => {
         setOption(prevOption => prevOption + 1);
         
     }
-    useLoadFormData(aspectosEticos.idF,setAspectosEticos);
+    useLoadFormData(ethicalAsp.idF,setEthicalAsp);
     return (
         <div>
             <div className="flex flex-col justify-between">
@@ -46,7 +46,7 @@ const  EthicalAsp = ({option,setOption}) => {
                             <textarea 
                             className="w-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-end text-[#6D7580] !mt-3 min-w-[250px]"
                             name="textAspects"
-                            value={aspectosEticos.textAspects}
+                            value={ethicalAsp.textAspects}
                             onChange={handleChange}
                             placeholder="Escribe los aspectos éticos..."></textarea>
                         </div>
@@ -56,14 +56,14 @@ const  EthicalAsp = ({option,setOption}) => {
                     <p className="text-lg">¿Necesitas consentimiento de trabajar con humanos o muestras humanas?</p>
                     <div className="flex flex-wrap justify-between w-3/5">
                         <button
-                        className={aspectosEticos.conseHum === 1  ? 
+                        className={ethicalAsp.conseHum === 1  ? 
                         'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
                         : 
                         'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
                         onClick={() => handleChangeButton('conseHum', 1)}
                         type="button">Si</button>
                         <button
-                        className={aspectosEticos.conseHum === 0  ? 
+                        className={ethicalAsp.conseHum === 0  ? 
                         'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
                         :
                         'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
@@ -73,14 +73,14 @@ const  EthicalAsp = ({option,setOption}) => {
                     <p className="mb-5">¿Necesitas consentimiento de trabajar con humanos o muestras humanas?</p>
                     <div className="flex flex-wrap justify-between w-3/5">
                     <button
-                        className={aspectosEticos.conseAnimals === 1  ? 
+                        className={ethicalAsp.conseAnimals === 1  ? 
                         'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
                         : 
                         'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
                         onClick={() => handleChangeButton('conseAnimals', 1)}
                         type="button">Si</button>
                         <button
-                        className={aspectosEticos.conseAnimals === 0  ? 
+                        className={ethicalAsp.conseAnimals === 0  ? 
                         'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
                         : 
                         'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
