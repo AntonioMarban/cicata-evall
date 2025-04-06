@@ -13,29 +13,11 @@ BEGIN
 END //
 DELIMITER ;
 
-
-/*
-    Procedimiento almacenado para obtener los proyectos pendientes de evaluación
-    por parte de un comité específico y un usuario específico
-    @param p_committeeId: Id del comité
-    @param p_userId: Id del usuario
-    @return: Proyectos pendientes de evaluación
-*/
 DELIMITER //
-CREATE PROCEDURE getPendingProject(IN p_committeeId INT, IN p_userId INT)
+CREATE PROCEDURE login(
+    IN user_email VARCHAR(100),
+    IN user_password VARCHAR(100))
 BEGIN
-    SELECT 
-        p.title,
-        p.startDate,
-        p.endDate,
-        p.status 
-    FROM 
-        projects p 
-    INNER JOIN evaluations e ON p.projectId = e.project_id
-    WHERE 
-        e.commiteeId = p_committeeId 
-            AND e.userId = p_userId
-            AND e.result = NULL;
-                
+    SELECT email FROM users WHERE email = user_email AND password = SHA2(user_password,256);
 END //
 DELIMITER ;

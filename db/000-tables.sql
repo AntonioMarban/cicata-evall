@@ -1,3 +1,4 @@
+-- mysql -u root -p
 DROP DATABASE IF EXISTS mydb;
 CREATE DATABASE mydb;
 USE mydb;

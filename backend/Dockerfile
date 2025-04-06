@@ -1,13 +1,12 @@
-FROM node:alpine
+FROM node:lts
 
-WORKDIR /app
+WORKDIR /myapp
 
 COPY package.json package-lock.json ./
-
 RUN npm install
 
 COPY . .
 
 EXPOSE 3000
 
-CMD ["node", "src/index.js"]
+CMD [ "npm", "run", "dev" ]
