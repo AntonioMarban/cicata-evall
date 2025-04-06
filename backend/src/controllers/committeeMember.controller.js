@@ -1,17 +1,18 @@
 const pool = require('../helpers/mysql_config');
 
 /*
- Función para o btener proyectos pendientes a evaluar para un integrante en particular
+ Función para obtener proyectos pendientes de evaluación de un miembro del comité
+ Se hace uso de un procedimiento almacena getPendingProjects 
+ @param committeeId: Id del comité
+    @param userId: Id del miembro del comité
+    @returns: Lista de proyectos pendientes de evaluación
+
+
 */
 const getPendingProjects = (req, res) => {
     const { committeId, userId } = req.params;
 
-    const sql = `SELECT p.title, p.startDate, p.endDate, p.status FROM projects p 
-                WHERE p.projectId IN 
-                (SELECT pe.projectId FROM evaluations pe 
-                WHERE pe.committeeId = ? AND pe.userId = ?) 
-                AND p.status = 'En revisión'`;
-
+    const sql = `CALL getPendingProjects(?, ?)`;
     const values = [committeId, userId];
 
     pool.query(sql, values, (err, results) => {

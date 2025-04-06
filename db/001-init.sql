@@ -12,3 +12,30 @@ BEGIN
     JOIN users u ON up.user_id = u.userId;
 END //
 DELIMITER ;
+
+
+/*
+    Procedimiento almacenado para obtener los proyectos pendientes de evaluación
+    por parte de un comité específico y un usuario específico
+    @param p_committeeId: Id del comité
+    @param p_userId: Id del usuario
+    @return: Proyectos pendientes de evaluación
+*/
+DELIMITER //
+CREATE PROCEDURE getPendingProject(IN p_committeeId INT, IN p_userId INT)
+BEGIN
+    SELECT 
+        p.title,
+        p.startDate,
+        p.endDate,
+        p.status 
+    FROM 
+        projects p 
+    INNER JOIN evaluations e ON p.projectId = e.project_id
+    WHERE 
+        e.commiteeId = p_committeeId 
+            AND e.userId = p_userId
+            AND e.result = NULL;
+                
+END //
+DELIMITER ;
