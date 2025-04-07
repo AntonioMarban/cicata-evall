@@ -22,28 +22,66 @@ BEGIN
 END //
 DELIMITER ;
 
-/*
-    Procedimiento almacenado para obtener los proyectos pendientes de evaluación
-    por parte de un comité específico y un usuario específico
-    @param p_committeeId: Id del comité
-    @param p_userId: Id del usuario
-    @return: Proyectos pendientes de evaluación
-*/
+
+-- Procedimiento almacenado para obtener los proyectos pendientes de evaluación
+-- por parte de un comité específico y un usuario específico
+-- @param p_committeeId: Id del comité
+-- @param p_userId: Id del usuario
+-- @return: Proyectos pendientes de evaluación
+
 DELIMITER //
-CREATE PROCEDURE getPendingProject(IN p_committeeId INT, IN p_userId INT)
+CREATE PROCEDURE getPendingProject(
+    IN p_committeeId INT, 
+    IN p_userId INT
+)
 BEGIN
-    SELECT 
-        p.title,
-        p.startDate,
-        p.endDate,
-        p.status 
-    FROM 
-        projects p 
-    INNER JOIN evaluations e ON p.projectId = e.project_id
-    WHERE 
-        e.commiteeId = p_committeeId 
-            AND e.userId = p_userId
-            AND e.result = NULL;
-                
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers 
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'El usuario no pertenece al comité';
+    ELSE    
+        SELECT 
+            p.title,
+            p.startDate,
+            p.endDate,
+            p.status 
+        FROM 
+            projects p 
+        INNER JOIN evaluations e ON p.projectId = e.project_id
+        WHERE 
+            e.user_id = p_userId
+            AND e.result IS NULL;
+    END IF;
+END //
+
+DELIMITER ;
+
+
+-- Función para obtener la firma del acuerdo de un proyecto de un miembro del comité
+-- @param committeeId: Id del comité
+-- @param userId: Id del miembro del comité
+-- @param projectId: Id del proyecto
+-- @returns: Dato booleano que indica si el miembro del comité ha firmado el acuerdo
+
+DELIMITER //
+CREATE PROCEDURE getAgreementSignature(IN p_committeeId INT, IN p_userId INT, IN p_projectId INT)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers 
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'El usuario no pertenece al comité';
+    ELSE    
+        SELECT 
+            a.agreed
+        FROM 
+            agreements a
+        WHERE 
+            a.userId = p_userId
+            AND a.projectId = p_projectId;
+    END IF;
 END //
 DELIMITER ;
