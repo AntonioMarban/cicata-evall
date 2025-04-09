@@ -13,12 +13,13 @@ import ConflictInt from '../forms/ConflictInt';
 
 import React, { useState } from 'react';
 import Anexos from '../forms/Anexos';
-const ButtonsMenu = () => {
+import Deliverables from '../forms/Deliverables';
+const FormsNavigation = () => {
   const [option, setOption] = useState(0);
 
   return (
     <>
-      <Botones option={option} setOption={setOption} />
+      <Botones option={option} setOption={setOption}/>
       <div>
         {option === 0  &&  <GeneralData  option={option} setOption={setOption}/>}
         {option === 1  &&  <Projects  option={option} setOption={setOption}/>}
@@ -28,6 +29,7 @@ const ButtonsMenu = () => {
         {option === 5  &&  <EthicalAsp  option={option} setOption={setOption}/>}
         {option === 6  &&  <Considerations  option={option} setOption={setOption}/>}
         {option === 7  &&  <Activities  option={option} setOption={setOption}/>}
+        {option === 8  &&  <Deliverables  option={option} setOption={setOption}/>}
         {option === 9  &&  <Contributions  option={option} setOption={setOption}/>}
         {option === 10  &&  <Budget  option={option} setOption={setOption}/>}
         {option === 11  &&  <ConflictInt  option={option} setOption={setOption}/>}
@@ -37,4 +39,4 @@ const ButtonsMenu = () => {
   );
 };
 
-export default ButtonsMenu;
+export default FormsNavigation;

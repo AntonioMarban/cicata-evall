@@ -28,14 +28,14 @@ const  GeneralData = ({option,setOption}) => {
         if (generalData.startDate > generalData.endDate){
             alert("No puede ser la fecha de inicio después de la fecha de fin")
         }
-        try{
-            await updateForm(generalData);
-
-        } catch(error){
-            console.log("Error al guardar contracto",error);
+        else{
+            try{
+                await updateForm(generalData);
+                setOption(prevOption => prevOption + 1);
+            } catch(error){
+                console.log("Error al guardar contracto",error);
+            }
         }
-        setOption(prevOption => prevOption + 1);
-        
     }
     const handleChange = (e) => {
         const { name, value } = e.target;
