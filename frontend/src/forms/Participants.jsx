@@ -3,6 +3,7 @@ import AddParticipant from "../components/AddParticipant";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import { useFormHandler } from "../hooks/useFormHandler";
+import CardAdd from "../components/CardAdd";
 
 const  Participants = ({option,setOption}) => {
     const [participants, setParticipants] = useState({ idF: 3, participants: [] });
@@ -19,20 +20,7 @@ const  Participants = ({option,setOption}) => {
                 <div>
                     <p className="text-[22px]">Participantes</p>
                 </div>
-                <div className="rounded-lg p-0 w-full border-2 border-gray-300">
-                    {participants.participants.map((participant, index) => (
-                    <div className="!p-2 m-5 flex justify-between w-full items-center" key={index}>
-                        <p>{participant.nombre}</p>
-                        <p>{participant.paterno}</p>
-                        <p>{participant.materno}</p>
-                        <p>{participant.gAcademico}</p>
-                        <p>{participant.nivel}</p>
-                        <p>{participant.puesto}</p>
-                        <p>{participant.netInv}</p>
-                        <button type="button">Editar</button>
-                    </div>
-                    ))}
-                </div>
+                <CardAdd cards={participants.participants} slice={5}/>
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
                         <AddParticipant setParticipants={setParticipants}/>

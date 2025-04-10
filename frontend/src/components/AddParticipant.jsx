@@ -6,18 +6,20 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 
 const  AddParticipant = ({setParticipants}) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [participant, setParticipant] = useState(
-        {   nombre: "",
-            paterno:"",
-            materno:"",
-            insti:"",
-            puesto:"",
-            gAcademico:"",
-            nivel:"",
-            email:"",
-            netInv: 1,
-            tipoInv:""
-        });
+    const initialParticipant = {
+        nombre: "",
+        paterno: "",
+        materno: "",
+        insti: "",
+        puesto: "",
+        gAcademico: "",
+        nivel: "",
+        email: "",
+        netInv: 1,
+        tipoInv: ""
+      };
+
+    const [participant, setParticipant] = useState(initialParticipant);
     const handleChangeButton = (key, value) => {
         setParticipant((prevState) => ({
             ...prevState,
@@ -33,7 +35,10 @@ const  AddParticipant = ({setParticipants}) => {
         setState: setParticipants,
         key: 'participants',
         extraData: { netInv: participant.netInv },
-        onSuccess: () => setIsOpen(false),
+        onSuccess: () => {
+            setIsOpen(false)
+            setParticipant(initialParticipant)
+        }
     });
 
     return (

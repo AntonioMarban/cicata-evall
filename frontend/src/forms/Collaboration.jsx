@@ -1,8 +1,10 @@
-import { useState } from "react";
 import AddCollaboration from "../components/AddCollaboration";
 import { useFormHandler } from "../hooks/useFormHandler";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
+import CardAdd from "../components/CardAdd";
+
+import { useState } from "react";
 
 
 const  Collaboration = ({option,setOption}) => {
@@ -20,16 +22,7 @@ const  Collaboration = ({option,setOption}) => {
                 <div>
                     <p className="text-[22px]">Colaboración con otras instituciones</p>
                 </div>
-                <div className="rounded-lg p-0 w-full border-2 border-gray-300">
-                    {collaborations.collaborations.map((collaboration, index) => (
-                    <div className="!p-2 m-5 flex justify-between w-full items-center" key={index}>
-                        <p>{collaboration.convenioNE}</p>
-                        <p>{collaboration.convenioType}</p>
-                        <p>{collaboration.institutionName}</p>
-                        <p>{collaboration.isIPN}</p>
-                    </div>
-                    ))}
-                </div>
+                <CardAdd cards={collaborations.collaborations} slice={4} />
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
                         <AddCollaboration  setCollaborations={setCollaborations}/>

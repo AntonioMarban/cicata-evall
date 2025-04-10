@@ -6,29 +6,36 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 
 const  AddCollaboration = ({setCollaborations}) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [collaboration, setCollaboration] = useState(
-        {   institutionName: "",
-            convenioType:"",
-            convenioNE:"",
-            noConvenio:"",
-            isIPN: 1
-        });
+    const initialCollaboration = {
+        institutionName: "",
+        convenioType: "",
+        convenioNE: "",
+        noConvenio: "",
+        isIPN: 1
+      };
+    const [collaboration, setCollaboration] = useState(initialCollaboration);
+
     const handleChangeButton = (key, value) => {
         setCollaboration((prevState) => ({
             ...prevState,
             [key]: value, 
         }));
     };
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCollaboration({ ...collaboration, [name]: value });
     };
+    
     const handleCollaborationSubmit = useFormAddHandler({
         setState: setCollaborations,
         key: 'collaborations',
         extraData: { isIPN: collaboration.isIPN },
-        onSuccess: () => setIsOpen(false),
+        onSuccess: () => {setIsOpen(false)
+            setCollaboration(initialCollaboration);
+        }
       });
+      
     return (
         <>
             <button className='modalAddColaboration' onClick={() => setIsOpen(true)}>Agregar colaboración</button>
@@ -88,7 +95,7 @@ const  AddCollaboration = ({setCollaborations}) => {
                             </div>
                             <div className="dialog-actions">
                                 <button className="button-confirm">Guardar colaboración</button>
-                                <button onClick={() => setIsOpen(false)} className="button-cancel">Cancelar</button>
+                                <button onClick={() => {setIsOpen(false); setCollaboration(initialCollaboration)}} className="button-cancel">Cancelar</button>
                             </div>
                         </form>
                     </DialogPanel>

@@ -7,9 +7,6 @@ const  ConflictoInt = ({option,setOption}) => {
     const [conflict, setConflict] = useState(
         {   idF: 12,
             conflict:"" });
-    const next = () => {
-        setOption(prevOption => prevOption + 1);
-      };
     const handleOnSubmitForm = useFormHandler({
         form: conflict,
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
