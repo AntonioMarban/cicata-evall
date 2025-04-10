@@ -8,8 +8,8 @@ function CardContent({ children }) {
 
 function Dashboard({ projectCards }) {
   return (
-    <main className="flex-1 flex flex-col justify-center items-center p-6 overflow-hidden h-full">
-      <h1 className="text-2xl font-bold mb-8">¡Bienvenida, Dra. Olmedo!</h1>
+    <main className="flex-1 flex flex-col justify-center p-6 overflow-hidden h-full">
+      <h1 className="text-2xl font-bold mb-8 self-start">¡Bienvenida, Dra. Olmedo!</h1>
 
       {projectCards.length === 0 ? (
         <p className="text-gray-500">No hay proyectos activos disponibles.</p>
@@ -28,4 +28,5 @@ function Dashboard({ projectCards }) {
     </main>
   );
 }
+
 export default Dashboard;
