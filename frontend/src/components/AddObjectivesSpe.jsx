@@ -1,23 +1,17 @@
 import "../styles/addprojects.css"
+import { useFormAddHandler } from "../hooks/useFormAddHandler";
+
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
 const  AddObjectivesSpe = ({setDesglose}) => {
     const [isOpen, setIsOpen] = useState(false)
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        const formData = new FormData(event.target);
-        const newObjective  = Object.fromEntries(formData.entries()); 
-        
-        setDesglose((prevSObjectives) => ({
-            ...prevSObjectives,
-            sObjectives: [...prevSObjectives.sObjectives, newObjective],
-        }));
-        
-        setIsOpen(false);
-    };
+    const handleObjectiveSubmit = useFormAddHandler({
+        setState: setDesglose,
+        key: 'sObjectives',
+        onSuccess: () => setIsOpen(false),
+      });
     return (
         <>
             <button className='modalAddColaboration' onClick={() => setIsOpen(true)}>Agregar Objetivo</button>
@@ -26,7 +20,7 @@ const  AddObjectivesSpe = ({setDesglose}) => {
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <p>Agregar Objetivo</p>
-                        <form onSubmit={handleSubmit} className="form-pieza">
+                        <form onSubmit={handleObjectiveSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Nombre del Objetivo específico</p>
                                 <input name="objectiveName" className="form-pieza-input" placeholder="Escribe el nombre del objetivo..."></input>

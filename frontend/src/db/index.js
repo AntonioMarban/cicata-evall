@@ -34,7 +34,7 @@ export async function updateForm(form) {
     return new Promise((resolve, reject) => {
         const request = store.put(form); // put reemplaza o agrega si no existe
         request.onsuccess = () => resolve("Form actualizado");
-        request.onerror = (event) => reject("Error al actualizar el form: " + event.target.error);
+        request.onerror = (event) =>  reject(new Error("Error al actualizar el formulario: " + event.target.error));
     });
 }
 

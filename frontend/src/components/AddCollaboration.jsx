@@ -1,41 +1,41 @@
 import "../styles/addcollaboration.css"
+import { useFormAddHandler } from "../hooks/useFormAddHandler";
+
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
 const  AddCollaboration = ({setCollaborations}) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [collaboration, setCollaboration] = useState(
-        {   institutionName: "",
-            convenioType:"",
-            convenioNE:"",
-            noConvenio:"",
-            isIPN: 1
-        });
+    const initialCollaboration = {
+        institutionName: "",
+        convenioType: "",
+        convenioNE: "",
+        noConvenio: "",
+        isIPN: 1
+      };
+    const [collaboration, setCollaboration] = useState(initialCollaboration);
+
     const handleChangeButton = (key, value) => {
         setCollaboration((prevState) => ({
             ...prevState,
             [key]: value, 
         }));
     };
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCollaboration({ ...collaboration, [name]: value });
     };
-    const handleSubmit = (event) => {
-        event.preventDefault(); 
-
-        const formData = new FormData(event.target);
-        const newCollaboration  = Object.fromEntries(formData.entries()); 
-        console.log(newCollaboration)
-        setCollaborations((prevCollaboration) => ({
-            ...prevCollaboration,
-            collaborations: [...prevCollaboration.collaborations, 
-                { ...newCollaboration, isIPN: collaboration.isIPN }
-            ],
-        }));
-        event.target.reset();
-        setIsOpen(false); 
-    };
+    
+    const handleCollaborationSubmit = useFormAddHandler({
+        setState: setCollaborations,
+        key: 'collaborations',
+        extraData: { isIPN: collaboration.isIPN },
+        onSuccess: () => {setIsOpen(false)
+            setCollaboration(initialCollaboration);
+        }
+      });
+      
     return (
         <>
             <button className='modalAddColaboration' onClick={() => setIsOpen(true)}>Agregar colaboración</button>
@@ -44,7 +44,7 @@ const  AddCollaboration = ({setCollaborations}) => {
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <p>Agregar Colaboración</p>
-                        <form onSubmit={handleSubmit} className="form-colab">
+                        <form onSubmit={handleCollaborationSubmit} className="form-colab">
                             <div className="form-rows">
                                 <div>
                                     <p>Nombre de la institución</p>
@@ -95,7 +95,7 @@ const  AddCollaboration = ({setCollaborations}) => {
                             </div>
                             <div className="dialog-actions">
                                 <button className="button-confirm">Guardar colaboración</button>
-                                <button onClick={() => setIsOpen(false)} className="button-cancel">Cancelar</button>
+                                <button onClick={() => {setIsOpen(false); setCollaboration(initialCollaboration)}} className="button-cancel">Cancelar</button>
                             </div>
                         </form>
                     </DialogPanel>

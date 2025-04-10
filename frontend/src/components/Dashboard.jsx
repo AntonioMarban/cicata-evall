@@ -9,8 +9,8 @@ function CardContent({ children }) {
 function Dashboard({ cards }) {
   return (
     <main className="flex-1 flex flex-col justify-center items-center p-6 overflow-hidden h-full">
-      <h1 className="text-2xl font-bold mb-6">¡Bienvenida, Dra. Olmedo!</h1>
-      <div className="grid gap-4 w-2/3">
+      <h1 className="text-2xl font-bold mb-8">¡Bienvenida, Dra. Olmedo!</h1>
+      <div className="grid gap-4 w-2/3 m-8">
         {cards.map((card, index) => (
           <Card key={index}>
             <CardContent>

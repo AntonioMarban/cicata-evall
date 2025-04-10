@@ -1,11 +1,13 @@
-import { useState } from "react";
-import { updateForm  } from "../db/index";
+import { useFormHandler } from "../hooks/useFormHandler";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
+
+import { useState } from "react";
 
 const  EthicalAsp = ({option,setOption}) => {
     const [conseHum, setConseHum] = useState(1);
     const [conseAnimals, setConseAnimals] = useState(1);
+    
     const [ethicalAsp, setEthicalAsp] = useState(
         {   idF: 6,
             textAspects:"",
@@ -21,17 +23,12 @@ const  EthicalAsp = ({option,setOption}) => {
         const { name, value } = e.target;
         setEthicalAsp({ ...ethicalAsp, [name]: value });
     };
-    const handleOnSubmit = async (event) => {
-        event.preventDefault();
-        try{
-            await updateForm(ethicalAsp);
 
-        } catch(error){
-            console.log("Error al guardar contracto",error);
-        }
-        setOption(prevOption => prevOption + 1);
-        
-    }
+    const handleOnSubmitForm = useFormHandler({
+        form: ethicalAsp,
+        onSuccess: ()=> setOption(prevOption => prevOption + 1),
+    });
+
     useLoadFormData(ethicalAsp.idF,setEthicalAsp);
     return (
         <div>
@@ -93,7 +90,7 @@ const  EthicalAsp = ({option,setOption}) => {
                 <button className="!mr-5 ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  
                     onClick={() => prevOption(setOption)}>Regresar</button>
                 <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
-                    onClick={handleOnSubmit}>Siguiente</button>
+                    onClick={handleOnSubmitForm}>Siguiente</button>
             </div>
         </div>
     )
