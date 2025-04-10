@@ -12,7 +12,7 @@ function Button({ children, className, ...props }) {
 function Sidebar() {
   return (
     <aside className="w-64 bg-white shadow-md p-4 flex flex-col items-center border-r border-gray-300 h-full justify-between">
-      <div>
+      <div> 
         <img src={CICATA} alt="Logo" className="w-auto h-auto max-h-32" />
       </div>
       <nav className="flex flex-col gap-4 w-full items-center">
