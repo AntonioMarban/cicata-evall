@@ -60,6 +60,7 @@ CREATE TABLE `projects` (
   `contributionsToIPNandCICATA` TEXT,
   `conflictOfInterest` TEXT,
   `aditionalComments` TEXT,
+  `folio` varchar(50),
   `status` varchar(50)
 );
 
@@ -72,7 +73,7 @@ CREATE TABLE `deliverableTypes` (
   `deliverableTypeId` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(30)
 );
-
+  
 CREATE TABLE `deliverablesProjects` (
   `deliverableProjectId` integer PRIMARY KEY AUTO_INCREMENT,
   `quantity` integer,

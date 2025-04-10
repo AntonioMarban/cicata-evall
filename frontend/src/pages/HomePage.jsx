@@ -13,8 +13,7 @@ const cards = [
 
 export default function HomePage() {
   return (
-    <div className="flex h-screen w-screen bg-gray-100">
-      <Sidebar />
+    <div className="flex h-screen bg-gray-100">
       <Dashboard cards={cards} />
     </div>
   );

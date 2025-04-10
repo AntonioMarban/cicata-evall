@@ -1,21 +1,17 @@
 import "../styles/addprojects.css"
+import { useFormAddHandler } from "../hooks/useFormAddHandler";
+
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
 const  AddActivities = ({setActivities}) => {
     const [isOpen, setIsOpen] = useState(false)
 
-    const handleSubmit = (event) => {
-        event.preventDefault(); 
-        const formData = new FormData(event.target);
-        const newActivity  = Object.fromEntries(formData.entries()); // Convierte a objeto
-        
-        setActivities((prevActivities) => ({
-            ...prevActivities,
-            activities: [...prevActivities.activities, newActivity], // Agregar nuevo proyecto al array
-        }));
-        setIsOpen(false);
-    };
+    const handleActivitySubmit  = useFormAddHandler({
+        setState: setActivities,
+        key: 'activities',
+        onSuccess: ()=> setIsOpen(false),
+    });
 
     return (
         <>
@@ -25,7 +21,7 @@ const  AddActivities = ({setActivities}) => {
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <p>Agregar Actividad</p>
-                        <form onSubmit={handleSubmit} className="form-pieza">
+                        <form onSubmit={handleActivitySubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Meta</p>
                                 <input name="actMeta" className="form-pieza-input" placeholder="Escribe la meta de la actividad..."></input>
