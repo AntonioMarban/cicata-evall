@@ -1,22 +1,17 @@
 import { useState } from "react";
 import AddParticipant from "../components/AddParticipant";
-import { updateForm  } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
+import { useFormHandler } from "../hooks/useFormHandler";
 
 const  Participants = ({option,setOption}) => {
     const [participants, setParticipants] = useState({ idF: 3, participants: [] });
 
-    const handleOnSubmit = async (event) => {
-        event.preventDefault();
-        
-        try{
-            await updateForm(participants);
-        } catch(error){
-            console.log("Error al guardar contracto",error);;
-        }
-        setOption(prevOption => prevOption + 1);
-    };
+    const handleOnSubmitForm = useFormHandler({
+        form: participants,
+        onSuccess: ()=> setOption(prevOption => prevOption + 1),
+    });
+
     useLoadFormData(participants.idF,setParticipants);
     return (
         <div>
@@ -46,7 +41,7 @@ const  Participants = ({option,setOption}) => {
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
                 <button className="!mr-5 ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmit}>Siguiente</button>
+                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmitForm}>Siguiente</button>
             </div>
         </div>
     )

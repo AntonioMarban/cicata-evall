@@ -1,4 +1,6 @@
 import "../styles/addcollaboration.css"
+import { useFormAddHandler } from "../hooks/useFormAddHandler";
+
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
@@ -21,21 +23,12 @@ const  AddCollaboration = ({setCollaborations}) => {
         const { name, value } = e.target;
         setCollaboration({ ...collaboration, [name]: value });
     };
-    const handleSubmit = (event) => {
-        event.preventDefault(); 
-
-        const formData = new FormData(event.target);
-        const newCollaboration  = Object.fromEntries(formData.entries()); 
-        console.log(newCollaboration)
-        setCollaborations((prevCollaboration) => ({
-            ...prevCollaboration,
-            collaborations: [...prevCollaboration.collaborations, 
-                { ...newCollaboration, isIPN: collaboration.isIPN }
-            ],
-        }));
-        event.target.reset();
-        setIsOpen(false); 
-    };
+    const handleCollaborationSubmit = useFormAddHandler({
+        setState: setCollaborations,
+        key: 'collaborations',
+        extraData: { isIPN: collaboration.isIPN },
+        onSuccess: () => setIsOpen(false),
+      });
     return (
         <>
             <button className='modalAddColaboration' onClick={() => setIsOpen(true)}>Agregar colaboración</button>
@@ -44,7 +37,7 @@ const  AddCollaboration = ({setCollaborations}) => {
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <p>Agregar Colaboración</p>
-                        <form onSubmit={handleSubmit} className="form-colab">
+                        <form onSubmit={handleCollaborationSubmit} className="form-colab">
                             <div className="form-rows">
                                 <div>
                                     <p>Nombre de la institución</p>

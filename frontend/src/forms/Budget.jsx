@@ -2,20 +2,15 @@ import { useState } from "react";
 import AddBudget from "../components/AddBudget";
 import { prevOption } from "../hooks/optionUtils";
 import useLoadFormData from "../hooks/useLoadFormData";
-import { updateForm  } from "../db/index";
+import { useFormHandler } from "../hooks/useFormHandler";
+
 
 const  Budget = ({option,setOption}) => {
     const [budget, setBudget] = useState({idF:11,budget:[]});
-    const handleOnSubmit = async (event) => {
-            event.preventDefault();
-            
-            try{
-                await updateForm(budget);
-            } catch(error){
-                console.log("Error al guardar contracto",error);;
-            }
-            setOption(prevOption => prevOption + 1);
-    };
+    const handleOnSubmitForm = useFormHandler({
+        form: budget,
+        onSuccess: ()=> setOption(prevOption => prevOption + 1),
+    });
     useLoadFormData(budget.idF,setBudget);
 
     return (
@@ -42,7 +37,7 @@ const  Budget = ({option,setOption}) => {
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
                 <button className="!mr-5 ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmit}>Siguiente</button>
+                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmitForm}>Siguiente</button>
             </div>
         </div>
     )

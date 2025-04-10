@@ -1,4 +1,6 @@
 import "../styles/addparticipant.css"
+import { useFormAddHandler } from "../hooks/useFormAddHandler";
+
 import { useState } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
@@ -27,21 +29,13 @@ const  AddParticipant = ({setParticipants}) => {
         setParticipant({ ...participant, [name]: value });
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault(); 
+    const handleParticipantSubmit = useFormAddHandler({
+        setState: setParticipants,
+        key: 'participants',
+        extraData: { netInv: participant.netInv },
+        onSuccess: () => setIsOpen(false),
+    });
 
-        const formData = new FormData(event.target);
-        const newParticipant  = Object.fromEntries(formData.entries()); 
-        
-        setParticipants((prevParticipants) => ({
-            ...prevParticipants,
-            participants: [...prevParticipants.participants, 
-                { ...newParticipant, netInv: participant.netInv }
-            ],
-        }));
-        event.target.reset();
-        setIsOpen(false);
-    };
     return (
         <>
             <button className="participant-modalAgregarPieza" onClick={() => setIsOpen(true)}>Agregar participante</button>
@@ -50,7 +44,7 @@ const  AddParticipant = ({setParticipants}) => {
                 <div className="participant-dialog-container">
                     <DialogPanel className="participant-dialog-panel">
                         <p>Agregar Participante</p>
-                        <form onSubmit={handleSubmit} className="participant-form-pieza">
+                        <form onSubmit={handleParticipantSubmit} className="participant-form-pieza">
                             <div className="participant-form-rows">
                                 <div>
                                     <p>Nombre</p>

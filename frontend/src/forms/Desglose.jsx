@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { updateForm  } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import AddObjectivesSpe from "../components/AddObjectivesSpe";
-
+import { useFormHandler } from "../hooks/useFormHandler";
 
 const  Desglose = ({option,setOption}) => {
     const [desglose, setDesglose] = useState(
@@ -21,18 +20,12 @@ const  Desglose = ({option,setOption}) => {
         const { name, value } = e.target;
         setDesglose({ ...desglose, [name]: value });
     };
-    const handleOnSubmit = async (event) => {
-        event.preventDefault();
-        //console.log(datosGenerales);
-        try{
-            await updateForm(desglose);
 
-        } catch(error){
-            console.log("Error al guardar contracto",error);
-        }
-        setOption(prevOption => prevOption + 1);
-        
-    }
+    const handleOnSubmitForm = useFormHandler({
+        form: desglose,
+        onSuccess: ()=> setOption(prevOption => prevOption + 1),
+    });
+
     useLoadFormData(desglose.idF,setDesglose);
     return (
         <div>
@@ -116,7 +109,7 @@ const  Desglose = ({option,setOption}) => {
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
                 <button className="!mr-5 ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmit}>Siguiente</button>
+                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmitForm}>Siguiente</button>
             </div>
         </div>
     )
