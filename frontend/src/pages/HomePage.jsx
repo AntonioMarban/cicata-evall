@@ -13,8 +13,10 @@ const cards = [
 
 export default function HomePage() {
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Dashboard cards={cards} />
+    <div className="flex h-screen overflow-hidden bg-gray-100">
+      <main className="flex-1 overflow-y-auto p-6">
+        <Dashboard cards={cards} />
+      </main>
     </div>
   );
 }

@@ -18,13 +18,19 @@ function NDAForm() {
     doc.save("acuerdo_de_confidencialidad.pdf");
   };
 
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async () => {
+    if (!email || !password) {
+      setError("Por favor, completa todos los campos.");
+      return;
+    }
+
+    setLoading(true);
     try {
       const res = await fetch(`${apiUrl}/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
@@ -32,13 +38,16 @@ function NDAForm() {
       navigate("/Inicio");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
+
 
   return (
     <main className="flex-1 flex flex-col justify-center items-center overflow-y-auto h-screen max-h-screen">
       <div className="flex w-full max-w-4xl justify-between items-start mb-6">
-        <h1 className="text-2xl m-">Acuerdo de confidencialidad</h1>
+      <h1 className="text-2xl font-semibold mb-4">Acuerdo de confidencialidad</h1>
         <button
           onClick={handleDownload}
           className="bg-[#5CB7E6] text-white px-6 py-3 text-lg rounded hover:bg-[#4aa3d0]"
@@ -53,14 +62,14 @@ function NDAForm() {
 
         <div className="flex gap-4">
           <input
-            type="email"
+            type="email" required
             placeholder="Correo electrónico"
             className="border border-[#E1E1E1] px-4 py-2 text-lg rounded w-full"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            type="password"
+            type="password" required
             placeholder="Contraseña"
             className="border border-[#E1E1E1] px-4 py-2 text-lg rounded w-full"
             value={password}
@@ -72,9 +81,12 @@ function NDAForm() {
 
         <button
           onClick={handleSubmit}
-          className="bg-[#5CB7E6] text-white px-6 py-3 text-lg rounded hover:bg-[#4aa3d0] w-auto"
+          disabled={loading}
+          className={`bg-[#5CB7E6] text-white px-6 py-3 text-lg rounded w-auto ${
+            loading ? "opacity-50 cursor-not-allowed" : "hover:bg-[#4aa3d0]"
+          }`}
         >
-          Firmar acuerdo
+          {loading ? "Firmando..." : "Firmar acuerdo"}
         </button>
       </div>
     </main>
