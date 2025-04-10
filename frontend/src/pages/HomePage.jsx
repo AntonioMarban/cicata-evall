@@ -1,21 +1,46 @@
-import Sidebar from "../components/SideBar";
+import { useEffect, useState } from "react";
 import Dashboard from "../components/Dashboard";
 
-const cards = [
-  { title: "Estudio de Eutrofización Posterior al Desazolve del Parque Champayán, Tamaulipas", description: "Dr. Ismael Arturo Garduño Wilches" },
-  { title: "Síntesis de Materiales Semiconductores por el Método SILAR con Fines de Aplicación Fotovoltaica", description: "Dr. Uriel Nogal Luis" },
-  { title: "Materiales Basados en Grafeno para la Recuperación de Tierras Raras en Residuos Electrónicos", description: "Dr. Oscar Fernando Odio Chacón" },
-  { title: "Maceta Generadora de Electricidad con Plantas", description: "Dr. Próspero Acevedo Peña" },
-  { title: "Diseño de un Sistema de Energía Renovable con Predicción de Variables Climatológicas", description: "Dr. Paul Mondragón Terán" }
-];
-
-
-
 export default function HomePage() {
+  const [projectCards, setProjectCards] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const userId = localStorage.getItem("userId");
+      const apiUrl = import.meta.env.VITE_API_URL;
+
+      if (!userId || !apiUrl) {
+        console.error("Missing userId or apiUrl");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${apiUrl}/researchers/${userId}/projects/active`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch projects");
+        }
+
+        const data = await response.json();
+
+        // Transform data to the format expected by Dashboard component
+        const formattedCards = data.map((project) => ({
+          title: project.Proyecto,
+          description: project.Investigador,
+        }));
+
+        setProjectCards(formattedCards);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
   return (
     <div className="flex h-screen overflow-hidden bg-gray-100">
       <main className="flex-1 overflow-y-auto p-6">
-        <Dashboard cards={cards} />
+        <Dashboard projectCards={projectCards} />
       </main>
     </div>
   );

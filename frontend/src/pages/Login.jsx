@@ -23,6 +23,7 @@ const  Login = () => {
         if(data.token){
             navigate('/Inicio')
             localStorage.setItem('token',data.token)
+            localStorage.setItem('userId', data.userId)
         }else{
             alert('Usuario o contraseña incorrectos')
         }
