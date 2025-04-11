@@ -69,7 +69,7 @@ const  Desglose = ({option,setOption}) => {
                             name="justification"
                             value={desglose.justification}
                             onChange={handleChange} 
-                            placeholder="Escribe la justifición del proyecto..."></textarea>
+                            placeholder="Escribe la justificación del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
                             <p className="!mt-2 text-xl">Hipótesis</p>

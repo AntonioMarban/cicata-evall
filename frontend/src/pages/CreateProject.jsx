@@ -5,7 +5,7 @@ const  CreateProject = () => {
         <div className="w-full h-[90%] mt-8 flex flex-col justify-between">
             <div className="h-[15%] w-full flex flex-col">
                 <div>
-                    <p className="text-[25px]">Creacion de proyectos</p>
+                    <p className="text-[25px]">Creación de proyectos</p>
                 </div>
             </div>
             <div className="w-full">

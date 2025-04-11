@@ -57,7 +57,7 @@ const  GeneralData = ({option,setOption}) => {
             <div className="flex flex-col">
                 <div className="!mt-5 flex-1">
                     <p className="text-2xl">Datos generales del proyecto</p>
-                    <p className="text-lg mt-3">Titulo del proyecto</p>
+                    <p className="text-lg mt-3">Título del proyecto</p>
                     <input 
                         type="text"
                         name="titleProject"
