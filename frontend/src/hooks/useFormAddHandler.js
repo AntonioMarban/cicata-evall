@@ -1,30 +1,25 @@
-import { useCallback } from "react";
-
-export const useFormAddHandler = ({
-    setState,
-    key,
-    extraData = {},
-    onSuccess = () => {},
-    resetForm = true,
-  }) => {
-    const handleSubmit = useCallback(
-      (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const newItem = Object.fromEntries(formData.entries());
-  
-        const itemWithExtras = { ...newItem, ...extraData };
-  
-        setState((prevState) => ({
-          ...prevState,
-          [key]: [...prevState[key], itemWithExtras],
-        }));
-  
-        if (resetForm) event.target.reset();
-        onSuccess();
-      },
-      [setState, key, extraData, onSuccess, resetForm]
-    );
-  
-    return handleSubmit;
-  };
+export const useFormAddHandler = ({ setState, key, onSuccess, initialData, isEditMode }) => {
+    return (e, formData, editIndex) => {
+        e.preventDefault();
+        
+        setState(prevState => {
+            const newState = { ...prevState };
+            
+            if (isEditMode && editIndex !== undefined) {
+                // Modo edición - actualizar elemento existente
+                const newArray = [...newState[key]];
+                newArray[editIndex] = formData;
+                newState[key] = newArray;
+            } else {
+                // Modo agregar - añadir nuevo elemento
+                newState[key] = [...newState[key], formData];
+            }
+            
+            return newState;
+        });
+        
+        if (onSuccess) {
+            onSuccess();
+        }
+    };
+};

@@ -25,11 +25,6 @@ const DragDrop = ({ setFilesSend, filesSend }) => {
       setFilesSend((prev) => [...prev, ...files]);
     }
   };
-
-  const handleUpload = async () => {
-    console.log("Archivos para subir:", uploadedFileName);
-  };
-
   const handleDeleteFile = (index) => {
     const newFileNames = [...uploadedFileName];
     const newFiles = Array.from(filesSend);

@@ -10,7 +10,8 @@ import { useState } from "react";
 
 const  Projects = ({option,setOption}) => {
     const [projects, setProjects] = useState({ idF: 2, projects: [] });
-    
+    const [projectToEdit, setProjectToEdit] = useState(null);
+
     const handleOnSubmitForm = useFormHandler({
         form: projects,
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
@@ -22,6 +23,16 @@ const  Projects = ({option,setOption}) => {
             projects: removeItemByIndex(projects.projects, index)
         });
     };
+
+    const handleEditModal = (index, project) => {
+        setProjectToEdit({ ...project, index });
+    };
+    
+    const handleEditComplete = () => {
+        setProjectToEdit(null);
+    };
+
+
     useLoadFormData(projects.idF,setProjects);
     
     return (
@@ -30,10 +41,17 @@ const  Projects = ({option,setOption}) => {
                 <div>
                     <p className="text-[22px]">Proyectos Asociados</p>
                 </div>
-                <CardAdd cards={projects.projects} handleDeleteFile={handleDeleteArray} slice={5}/>
+                <CardAdd cards={projects.projects} 
+                    handleDeleteFile={handleDeleteArray}
+                    handleEditModal={handleEditModal}
+                    slice={5}/>
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
-                        <AddProjects setProjects={setProjects}/>
+                        <AddProjects 
+                            setProjects={setProjects} 
+                            projectToEdit={projectToEdit}
+                            onEditComplete={handleEditComplete}
+                        />
                     </div>
                 </div>
             </div>

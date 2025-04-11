@@ -1,5 +1,5 @@
 import React from 'react';
-const CardAdd = ({cards, slice,handleDeleteFile,type,set}) => {  
+const CardAdd = ({cards, slice,handleDeleteFile,handleEditModal}) => {  
 
     return (
     <div className="rounded-lg p-0 w-full">
@@ -9,6 +9,12 @@ const CardAdd = ({cards, slice,handleDeleteFile,type,set}) => {
                 {Object.entries(card).slice(0, slice).map(([key, value]) => (
                 <p className="flex-1 flex" key={key}>{`${value}`}</p>
                 ))}
+                <button 
+                    className='cursor-pointer !mr-2' 
+                    type="button" 
+                    onClick={() => handleEditModal(index, card)}
+                    >Editar
+                </button>
                 <button className='cursor-pointer' type="button" onClick={()=>{handleDeleteFile(index)}}>Borrar</button>
             </div>
         ))}
