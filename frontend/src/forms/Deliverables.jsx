@@ -79,7 +79,7 @@ const  Deliverables = ({option,setOption}) => {
                         <td data-label="Entregable">{deliverable}</td>
                         {categories2.map((category) => (
                         <td key={category} data-label={category}>
-                            <input type="number" value={deliverablesF["educativos"]?.[deliverable]?.[category] || ""}
+                            <input type="number" min={0} value={deliverablesF["educativos"]?.[deliverable]?.[category] || ""}
                             onChange={(e) =>handleChange("educativos", deliverable, category, e.target.value)}/>
                         </td>
                         ))}
