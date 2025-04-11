@@ -1,7 +1,7 @@
 import "../styles/addprojects.css"
 import { useFormAddHandler } from "../hooks/useFormAddHandler";
 
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
 const  AddBudget = ({setBudget}) => {
