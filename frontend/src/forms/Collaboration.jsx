@@ -3,6 +3,7 @@ import { useFormHandler } from "../hooks/useFormHandler";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import CardAdd from "../components/CardAdd";
+import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
 import { useState } from "react";
 
@@ -15,6 +16,13 @@ const  Collaboration = ({option,setOption}) => {
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
     });
 
+    const handleDeleteArray = (index) => {
+        setCollaborations({
+            ...collaborations,
+            collaborations: removeItemByIndex(collaborations.collaborations, index)
+        });
+    };
+
     useLoadFormData(collaborations.idF,setCollaborations);
     return (
         <div>
@@ -22,7 +30,7 @@ const  Collaboration = ({option,setOption}) => {
                 <div>
                     <p className="text-[22px]">Colaboración con otras instituciones</p>
                 </div>
-                <CardAdd cards={collaborations.collaborations} slice={4} />
+                <CardAdd cards={collaborations.collaborations} handleDeleteFile={handleDeleteArray} slice={4} />
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
                         <AddCollaboration  setCollaborations={setCollaborations}/>

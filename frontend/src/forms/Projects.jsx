@@ -3,6 +3,7 @@ import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import { useFormHandler } from "../hooks/useFormHandler";
 import CardAdd from "../components/CardAdd";
+import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
 import { useState } from "react";
 
@@ -14,7 +15,13 @@ const  Projects = ({option,setOption}) => {
         form: projects,
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
     });
-    
+
+    const handleDeleteArray = (index) => {
+        setProjects({
+            ...projects,
+            projects: removeItemByIndex(projects.projects, index)
+        });
+    };
     useLoadFormData(projects.idF,setProjects);
     
     return (
@@ -23,7 +30,7 @@ const  Projects = ({option,setOption}) => {
                 <div>
                     <p className="text-[22px]">Proyectos Asociados</p>
                 </div>
-                <CardAdd cards={projects.projects} slice={5}/>
+                <CardAdd cards={projects.projects} handleDeleteFile={handleDeleteArray} slice={5}/>
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
                         <AddProjects setProjects={setProjects}/>

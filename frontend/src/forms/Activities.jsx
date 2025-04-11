@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
 import { useFormHandler } from "../hooks/useFormHandler";
 import AddActividades from "../components/AddActivities";
 import { prevOption } from "../hooks/optionUtils";
 import useLoadFormData from "../hooks/useLoadFormData";
 import CardAdd from "../components/CardAdd";
+import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
+import { useState } from "react";
 const  Activities = ({option,setOption}) => {
     const [activities, setActivities] = useState({ idF: 8, activities: [] });
 
@@ -13,6 +14,13 @@ const  Activities = ({option,setOption}) => {
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
     });
 
+    const handleDeleteArray = (index) => {
+        setActivities({
+            ...activities,
+            activities: removeItemByIndex(activities.activities, index)
+        });
+    };
+
     useLoadFormData(activities.idF,setActivities);
     return (
         <div>
@@ -20,7 +28,7 @@ const  Activities = ({option,setOption}) => {
                 <div>
                     <p className="text-[22px]">Actividades</p>
                 </div>
-                <CardAdd cards={activities.activities} slice={5}/>
+                <CardAdd cards={activities.activities} handleDeleteFile={handleDeleteArray} slice={5}/>
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
                         <AddActividades setActivities={setActivities}/>

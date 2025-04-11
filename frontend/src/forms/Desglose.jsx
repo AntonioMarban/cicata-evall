@@ -1,9 +1,11 @@
-import { useState } from "react";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import AddObjectivesSpe from "../components/AddObjectivesSpe";
 import { useFormHandler } from "../hooks/useFormHandler";
+import CardAdd from "../components/CardAdd";
+import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
+import { useState } from "react";
 const  Desglose = ({option,setOption}) => {
     const [desglose, setDesglose] = useState(
         {   idF: 5,
@@ -25,6 +27,13 @@ const  Desglose = ({option,setOption}) => {
         form: desglose,
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
     });
+
+    const handleDeleteArray = (index) => {
+        setDesglose({
+            ...desglose,
+            sObjectives: removeItemByIndex(desglose.sObjectives, index)
+        });
+    };
 
     useLoadFormData(desglose.idF,setDesglose);
     return (
@@ -91,15 +100,7 @@ const  Desglose = ({option,setOption}) => {
                         </div>
                         <div className="flex-1">
                             <p className="!mt-2 text-xl">Objetivos específicos</p>
-                            <div className="rounded-lg p-0 w-full border-2 border-gray-300">
-                            {Array.isArray(desglose.sObjectives) && desglose.sObjectives.map((item, index) => (
-                                <div className="!p-2 m-5 flex justify-between w-full items-center" key={index}>
-                                    <p>{item.objectiveName}</p>
-                                    <p>{item.objectiveDescription}</p>
-                                    <button type="button">Editar</button>
-                                </div>
-                                ))}
-                            </div>
+                            <CardAdd cards={desglose.sObjectives} slice={2} handleDeleteFile={handleDeleteArray}/>
                         </div>
                         <div className="!flex items-center justify-center">
                                 <AddObjectivesSpe setDesglose={setDesglose}/>

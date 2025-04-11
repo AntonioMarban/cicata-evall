@@ -1,9 +1,11 @@
-import { useState } from "react";
 import AddBudget from "../components/AddBudget";
 import { prevOption } from "../hooks/optionUtils";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { useFormHandler } from "../hooks/useFormHandler";
+import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
+import { useState } from "react";
+import CardAdd from "../components/CardAdd";
 
 const  Budget = ({option,setOption}) => {
     const [budget, setBudget] = useState({idF:11,budget:[]});
@@ -11,6 +13,14 @@ const  Budget = ({option,setOption}) => {
         form: budget,
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
     });
+
+    const handleDeleteArray = (index) => {
+        setBudget({
+            ...budget,
+            budget: removeItemByIndex(budget.budget, index)
+        });
+    };
+
     useLoadFormData(budget.idF,setBudget);
 
     return (
@@ -19,16 +29,7 @@ const  Budget = ({option,setOption}) => {
                 <div>
                     <p className="text-[22px]">Presupuesto</p>
                 </div>
-                <div className="rounded-lg p-0 w-full border-2 border-gray-300">
-                {Array.isArray(budget.budget) && budget.budget.map((item, index) => (
-                    <div className="!p-2 m-5 flex justify-between w-full items-center" key={index}>
-                        <p>{item.budgetType}</p>
-                        <p>{item.budgetName}</p>
-                        <p>{item.budgetAm}</p>
-                        <button type="button">Editar</button>
-                    </div>
-                    ))}
-                </div>
+                <CardAdd cards={budget.budget} handleDeleteFile={handleDeleteArray} slice={5}/>
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
                         <AddBudget setBudget={setBudget}/>
