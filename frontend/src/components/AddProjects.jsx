@@ -5,13 +5,15 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 
 const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null }) => {
     const [isOpen, setIsOpen] = useState(false)
+    
     const initialFormValues = {
         projectName: "",
         projectDate: "",
         projectType: "",
         noRE: "",
         noRESIP: ""
-      };
+    };
+    
     const [formValues, setFormValues] = useState({
         projectName: "",
         projectDate: "",

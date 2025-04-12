@@ -9,6 +9,7 @@ import { useState } from "react";
 
 const  Participants = ({option,setOption}) => {
     const [participants, setParticipants] = useState({ idF: 3, participants: [] });
+    const [participantToEdit, setParticipantToEdit] = useState(null);
 
     const handleOnSubmitForm = useFormHandler({
         form: participants,
@@ -21,6 +22,15 @@ const  Participants = ({option,setOption}) => {
             participants: removeItemByIndex(participants.participants, index)
         });
     };
+
+    const handleEditModal = (index, project) => {
+        setParticipantToEdit({ ...project, index });
+    };
+
+    const handleEditComplete = () => {
+        setParticipantToEdit(null);
+    }
+
     useLoadFormData(participants.idF,setParticipants);
     return (
         <div>
@@ -28,10 +38,18 @@ const  Participants = ({option,setOption}) => {
                 <div>
                     <p className="text-[22px]">Participantes</p>
                 </div>
-                <CardAdd cards={participants.participants} handleDeleteFile={handleDeleteArray} slice={5}/>
+                <CardAdd 
+                    cards={participants.participants} 
+                    handleDeleteFile={handleDeleteArray}
+                    handleEditModal={handleEditModal}
+                    slice={5}/>
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
-                        <AddParticipant setParticipants={setParticipants}/>
+                        <AddParticipant 
+                        setParticipants={setParticipants}
+                        participantToEdit={participantToEdit}
+                        onEditComplete={handleEditComplete}
+                        />
                     </div>
                 </div>
             </div>

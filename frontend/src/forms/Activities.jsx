@@ -8,6 +8,7 @@ import { removeItemByIndex } from "../hooks/removeItemByIndex";
 import { useState } from "react";
 const  Activities = ({option,setOption}) => {
     const [activities, setActivities] = useState({ idF: 8, activities: [] });
+    const [activitiesToEdit, setActivitiesToEdit] = useState(null);
 
     const handleOnSubmitForm = useFormHandler({
         form: activities,
@@ -21,17 +22,34 @@ const  Activities = ({option,setOption}) => {
         });
     };
 
+    const handleEditModal = (index, project) => {
+        setActivitiesToEdit({ ...project, index });
+    };
+    
+    const handleEditComplete = () => {
+        setActivitiesToEdit(null);
+    };
+
+
     useLoadFormData(activities.idF,setActivities);
+
     return (
         <div>
             <div className="flex flex-col justify-between">
                 <div>
                     <p className="text-[22px]">Actividades</p>
                 </div>
-                <CardAdd cards={activities.activities} handleDeleteFile={handleDeleteArray} slice={5}/>
+                <CardAdd cards={activities.activities} 
+                    handleDeleteFile={handleDeleteArray} 
+                    handleEditModal={handleEditModal}
+                    slice={5}/>
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
-                        <AddActividades setActivities={setActivities}/>
+                        <AddActividades 
+                            setActivities={setActivities}
+                            activitesToEdit={activitiesToEdit}
+                            onEditComplete={handleEditComplete}
+                            />
                     </div>
                 </div>
             </div>

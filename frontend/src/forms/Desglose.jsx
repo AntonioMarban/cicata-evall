@@ -17,6 +17,8 @@ const  Desglose = ({option,setOption}) => {
             hipotesis: "",
             gObjective: "", 
             sObjectives: [] });
+    
+    const [desgloseToEdit, setDesgloseToEdit] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,6 +35,14 @@ const  Desglose = ({option,setOption}) => {
             ...desglose,
             sObjectives: removeItemByIndex(desglose.sObjectives, index)
         });
+    };
+
+    const handleEditModal = (index, project) => {
+        setDesgloseToEdit({...project, index});
+    };
+
+    const handleEditComplete = () => {
+        setDesgloseToEdit(null);
     };
 
     useLoadFormData(desglose.idF,setDesglose);
@@ -100,10 +110,17 @@ const  Desglose = ({option,setOption}) => {
                         </div>
                         <div className="flex-1">
                             <p className="!mt-2 text-xl">Objetivos específicos</p>
-                            <CardAdd cards={desglose.sObjectives} slice={2} handleDeleteFile={handleDeleteArray}/>
+                            <CardAdd cards={desglose.sObjectives} 
+                                handleDeleteFile={handleDeleteArray}
+                                handleEditModal={handleEditModal}
+                                slice={2}/>
                         </div>
                         <div className="!flex items-center justify-center">
-                                <AddObjectivesSpe setDesglose={setDesglose}/>
+                                <AddObjectivesSpe 
+                                    setDesglose={setDesglose}
+                                    desgloseToEdit={desgloseToEdit}
+                                    onEditComplete={handleEditComplete}
+                                />
                         </div>
                     </div>
                 </div>

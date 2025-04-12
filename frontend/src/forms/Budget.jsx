@@ -9,6 +9,9 @@ import CardAdd from "../components/CardAdd";
 
 const  Budget = ({option,setOption}) => {
     const [budget, setBudget] = useState({idF:11,budget:[]});
+    const [budgetToEdit, setBudgetToEdit] = useState(null);
+
+    
     const handleOnSubmitForm = useFormHandler({
         form: budget,
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
@@ -21,6 +24,14 @@ const  Budget = ({option,setOption}) => {
         });
     };
 
+    const handleEditModal = (index, project) => {
+        setBudgetToEdit({ ...project, index });
+    };
+    
+    const handleEditComplete = () => {
+        setBudgetToEdit(null);
+    };
+
     useLoadFormData(budget.idF,setBudget);
 
     return (
@@ -29,10 +40,18 @@ const  Budget = ({option,setOption}) => {
                 <div>
                     <p className="text-[22px]">Presupuesto</p>
                 </div>
-                <CardAdd cards={budget.budget} handleDeleteFile={handleDeleteArray} slice={5}/>
+                <CardAdd cards={budget.budget} 
+                    handleDeleteFile={handleDeleteArray} 
+                    handleEditModal={handleEditModal}
+                    slice={5}
+                />
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
-                        <AddBudget setBudget={setBudget}/>
+                        <AddBudget 
+                            setBudget={setBudget}
+                            budgetToEdit={budgetToEdit}
+                            onEditComplete={handleEditComplete}
+                        />
                     </div>
                 </div>
             </div>

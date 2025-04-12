@@ -1,10 +1,10 @@
 import "../styles/addcollaboration.css"
 import { useFormAddHandler } from "../hooks/useFormAddHandler";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
-const  AddCollaboration = ({setCollaborations}) => {
+const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEditComplete = null}) => {
     const [isOpen, setIsOpen] = useState(false)
     const initialCollaboration = {
         institutionName: "",
@@ -15,6 +15,19 @@ const  AddCollaboration = ({setCollaborations}) => {
       };
     const [collaboration, setCollaboration] = useState(initialCollaboration);
 
+    useEffect(() => {
+        if (collaborationToEdit) {
+            setCollaboration({
+                institutionName: collaborationToEdit.institutionName || "",
+                convenioType: collaborationToEdit.convenioType || "",
+                convenioNE: collaborationToEdit.convenioNE || "",
+                noConvenio: collaborationToEdit.noConvenio || "",
+                isIPN: collaborationToEdit.isIPN || 1 
+            });
+            setIsOpen(true);
+        }
+    }, [collaborationToEdit]);
+
     const handleChangeButton = (key, value) => {
         setCollaboration((prevState) => ({
             ...prevState,
@@ -22,20 +35,35 @@ const  AddCollaboration = ({setCollaborations}) => {
         }));
     };
     
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setCollaboration({ ...collaboration, [name]: value });
-    };
-    
     const handleCollaborationSubmit = useFormAddHandler({
         setState: setCollaborations,
         key: 'collaborations',
         extraData: { isIPN: collaboration.isIPN },
-        onSuccess: () => {setIsOpen(false)
+        onSuccess: () => {
+            setIsOpen(false)
+            if(onEditComplete && collaborationToEdit){
+                onEditComplete();
+            }
+            //reset
             setCollaboration(initialCollaboration);
-        }
-      });
-      
+        },
+        initialData: collaborationToEdit,
+        isEditMode: !!collaborationToEdit
+    });
+    
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setCollaboration(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleCollaborationSubmit(e, collaboration, collaborationToEdit ? collaborationToEdit.index : undefined);
+    };
+
     return (
         <>
             <button className='modalAddColaboration' onClick={() => setIsOpen(true)}>Agregar colaboración</button>
@@ -44,13 +72,13 @@ const  AddCollaboration = ({setCollaborations}) => {
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <p>Agregar Colaboración</p>
-                        <form onSubmit={handleCollaborationSubmit} className="form-colab">
+                        <form onSubmit={handleSubmit} className="form-colab">
                             <div className="form-rows">
                                 <div>
                                     <p>Nombre de la institución</p>
                                     <input name="institutionName" 
                                     value={collaboration.institutionName}
-                                    onChange={handleChange}
+                                    onChange={handleInputChange}
                                     className="form-pieza-input" placeholder="Escribe el nombre de la institución..."></input>
                                 </div>
                                 <div>
@@ -72,7 +100,7 @@ const  AddCollaboration = ({setCollaborations}) => {
                                 <p className="form-subtext">(General/Específico)</p>
                                 <input 
                                 value={collaboration.convenioType}
-                                onChange={handleChange}
+                                onChange={handleInputChange}
                                 name="convenioType" className="form-colab-input" placeholder="Escribe el convenio de colaboración..."></input>
                             </div>
                             <div className="form-rows">
@@ -81,7 +109,7 @@ const  AddCollaboration = ({setCollaborations}) => {
                                     <p className="form-subtext">(Si aplica)</p>
                                     <input 
                                     value={collaboration.convenioNE}
-                                    onChange={handleChange}
+                                    onChange={handleInputChange}
                                     name="convenioNE" className="form-colab-input" placeholder="Escribe el tipo de convenio..."></input>
                                 </div>
                                 <div>
@@ -89,13 +117,23 @@ const  AddCollaboration = ({setCollaborations}) => {
                                     <p className="form-subtext">(Si aplica)</p>
                                     <input 
                                         value={collaboration.noConvenio}
-                                        onChange={handleChange}
+                                        onChange={handleInputChange}
                                     name="noConvenio" className="form-colab-input" placeholder="Escribe el número de convenio..."></input>
                                 </div>
                             </div>
                             <div className="dialog-actions">
-                                <button className="button-confirm">Guardar colaboración</button>
-                                <button onClick={() => {setIsOpen(false); setCollaboration(initialCollaboration)}} className="button-cancel">Cancelar</button>
+                                <button className="button-confirm">
+                                    {collaborationToEdit ? "Guardar Cambios" : "Guardar Colaboración"}
+                                </button>
+                                {!collaborationToEdit && (
+                                    <button 
+                                    type="button" 
+                                    onClick={(e) => setIsOpen(false)} 
+                                    className="button-cancel"
+                                    >
+                                    Cancelar
+                                    </button>
+                                )}
                             </div>
                         </form>
                     </DialogPanel>
