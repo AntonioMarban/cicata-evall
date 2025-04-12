@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateForm,getAllData } from "../db/index";
+import { useFormHandler } from "../hooks/useFormHandler";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import "../styles/deliverables.css"
@@ -10,17 +10,10 @@ const  Deliverables = ({option,setOption}) => {
     }
     );
 
-    const handleOnSubmit = async (event) => {
-        event.preventDefault();
-        try{
-            await updateForm(deliverablesF);
-
-        } catch(error){
-            console.log("Error al guardar contracto",error);
-        }
-        setOption(prevOption => prevOption + 1);
-        
-    }
+    const handleOnSubmitForm = useFormHandler({
+        form: deliverablesF,
+        onSuccess: ()=> setOption(prevOption => prevOption + 1),
+    });
     const handleChange = (section, deliverable, category, value) => {
         setDeliverablesF((prev) => ({
           ...prev,
@@ -86,7 +79,7 @@ const  Deliverables = ({option,setOption}) => {
                         <td data-label="Entregable">{deliverable}</td>
                         {categories2.map((category) => (
                         <td key={category} data-label={category}>
-                            <input type="number" value={deliverablesF["educativos"]?.[deliverable]?.[category] || ""}
+                            <input type="number" min={0} value={deliverablesF["educativos"]?.[deliverable]?.[category] || ""}
                             onChange={(e) =>handleChange("educativos", deliverable, category, e.target.value)}/>
                         </td>
                         ))}
@@ -147,7 +140,7 @@ const  Deliverables = ({option,setOption}) => {
                 <button className="!mr-5 ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  
                     onClick={() => prevOption(setOption)}>Regresar</button>
                 <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
-                    onClick={handleOnSubmit}>Siguiente</button>
+                    onClick={handleOnSubmitForm}>Siguiente</button>
             </div>
         </div>
     )

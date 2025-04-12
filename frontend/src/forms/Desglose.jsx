@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { updateForm  } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import AddObjectivesSpe from "../components/AddObjectivesSpe";
+import { useFormHandler } from "../hooks/useFormHandler";
+import CardAdd from "../components/CardAdd";
+import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
-
+import { useState } from "react";
 const  Desglose = ({option,setOption}) => {
     const [desglose, setDesglose] = useState(
         {   idF: 5,
@@ -16,23 +17,34 @@ const  Desglose = ({option,setOption}) => {
             hipotesis: "",
             gObjective: "", 
             sObjectives: [] });
+    
+    const [desgloseToEdit, setDesgloseToEdit] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setDesglose({ ...desglose, [name]: value });
     };
-    const handleOnSubmit = async (event) => {
-        event.preventDefault();
-        //console.log(datosGenerales);
-        try{
-            await updateForm(desglose);
 
-        } catch(error){
-            console.log("Error al guardar contracto",error);
-        }
-        setOption(prevOption => prevOption + 1);
-        
-    }
+    const handleOnSubmitForm = useFormHandler({
+        form: desglose,
+        onSuccess: ()=> setOption(prevOption => prevOption + 1),
+    });
+
+    const handleDeleteArray = (index) => {
+        setDesglose({
+            ...desglose,
+            sObjectives: removeItemByIndex(desglose.sObjectives, index)
+        });
+    };
+
+    const handleEditModal = (index, project) => {
+        setDesgloseToEdit({...project, index});
+    };
+
+    const handleEditComplete = () => {
+        setDesgloseToEdit(null);
+    };
+
     useLoadFormData(desglose.idF,setDesglose);
     return (
         <div>
@@ -76,7 +88,7 @@ const  Desglose = ({option,setOption}) => {
                             name="justification"
                             value={desglose.justification}
                             onChange={handleChange} 
-                            placeholder="Escribe la justifición del proyecto..."></textarea>
+                            placeholder="Escribe la justificación del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
                             <p className="!mt-2 text-xl">Hipótesis</p>
@@ -98,25 +110,24 @@ const  Desglose = ({option,setOption}) => {
                         </div>
                         <div className="flex-1">
                             <p className="!mt-2 text-xl">Objetivos específicos</p>
-                            <div className="rounded-lg p-0 w-full border-2 border-gray-300">
-                            {Array.isArray(desglose.sObjectives) && desglose.sObjectives.map((item, index) => (
-                                <div className="!p-2 m-5 flex justify-between w-full items-center" key={index}>
-                                    <p>{item.objectiveName}</p>
-                                    <p>{item.objectiveDescription}</p>
-                                    <button type="button">Editar</button>
-                                </div>
-                                ))}
-                            </div>
+                            <CardAdd cards={desglose.sObjectives} 
+                                handleDeleteFile={handleDeleteArray}
+                                handleEditModal={handleEditModal}
+                                slice={2}/>
                         </div>
                         <div className="!flex items-center justify-center">
-                                <AddObjectivesSpe setDesglose={setDesglose}/>
+                                <AddObjectivesSpe 
+                                    setDesglose={setDesglose}
+                                    desgloseToEdit={desgloseToEdit}
+                                    onEditComplete={handleEditComplete}
+                                />
                         </div>
                     </div>
                 </div>
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
                 <button className="!mr-5 ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmit}>Siguiente</button>
+                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmitForm}>Siguiente</button>
             </div>
         </div>
     )

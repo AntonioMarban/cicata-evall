@@ -1,55 +1,92 @@
 import "../styles/addparticipant.css"
-import { useState } from "react";
+import { useFormAddHandler } from "../hooks/useFormAddHandler";
+
+import { useState, useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
-const  AddParticipant = ({setParticipants}) => {
+const  AddParticipant = ({setParticipants, participantToEdit = null, onEditComplete = null}) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [participant, setParticipant] = useState(
-        {   nombre: "",
-            paterno:"",
-            materno:"",
-            insti:"",
-            puesto:"",
-            gAcademico:"",
-            nivel:"",
-            email:"",
-            netInv: 1,
-            tipoInv:""
-        });
+    const initialParticipant = {
+        nombre: "",
+        paterno: "",
+        materno: "",
+        insti: "",
+        puesto: "",
+        gAcademico: "",
+        nivel: "",
+        email: "",
+        netInv: 1,
+        tipoInv: ""
+      };
+
+    const [participant, setParticipant] = useState({
+        nombre: "",
+        paterno: "",
+        materno: "",
+        insti: "",
+        puesto: "",
+        gAcademico: "",
+        nivel: "",
+        email: "",
+        netInv: 1,
+        tipoInv: ""
+    });
     const handleChangeButton = (key, value) => {
         setParticipant((prevState) => ({
             ...prevState,
             [key]: value, 
         }));
     };
-    const handleChange = (e) => {
+
+        useEffect(() => {
+            if (participantToEdit) {
+                setParticipant({
+                    ...participantToEdit
+                });
+                setIsOpen(true);
+            }
+        }, [participantToEdit]);
+
+    const handleParticipantSubmit = useFormAddHandler({
+        setState: setParticipants,
+        key: 'participants',
+        extraData: { netInv: participant.netInv },
+        onSuccess: () => {
+            setIsOpen(false)
+            if(onEditComplete && participantToEdit){
+                onEditComplete();
+            }
+            //reset
+            setParticipant(initialParticipant)
+        },
+        initialData: participantToEdit,
+        isEditMode: !!participantToEdit
+    });
+
+
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setParticipant({ ...participant, [name]: value });
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault(); 
-
-        const formData = new FormData(event.target);
-        const newParticipant  = Object.fromEntries(formData.entries()); 
-        
-        setParticipants((prevParticipants) => ({
-            ...prevParticipants,
-            participants: [...prevParticipants.participants, 
-                { ...newParticipant, netInv: participant.netInv }
-            ],
+        setParticipant(prev => ({
+            ...prev,
+            [name]: value
         }));
-        event.target.reset();
-        setIsOpen(false);
     };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleParticipantSubmit(e, participant, participantToEdit ? participantToEdit.index : undefined);
+    };
+
     return (
         <>
-            <button className="participant-modalAgregarPieza" onClick={() => setIsOpen(true)}>Agregar participante</button>
+            {!participantToEdit && (
+                <button className="participant-modalAgregarPieza" onClick={() => setIsOpen(true)}>Agregar participante</button>
+            )}
 
-            <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="participant-dialog-overlay">
+            <Dialog open={isOpen} onClose={() => {if (!participantToEdit) setIsOpen(false);}} className="participant-dialog-overlay">
                 <div className="participant-dialog-container">
                     <DialogPanel className="participant-dialog-panel">
-                        <p>Agregar Participante</p>
+                        <p>{participantToEdit ? "Editar Participante" : "Agregar Participante"}</p>
                         <form onSubmit={handleSubmit} className="participant-form-pieza">
                             <div className="participant-form-rows">
                                 <div>
@@ -57,7 +94,7 @@ const  AddParticipant = ({setParticipants}) => {
                                     <input 
                                         name="nombre"
                                         value={participant.nombre}
-                                        onChange={handleChange}
+                                        onChange={handleInputChange}
                                         className="participant-form-pieza-input" placeholder="Escribe el nombre del proyecto..."></input>
                                 </div>
                                 <div>
@@ -65,7 +102,7 @@ const  AddParticipant = ({setParticipants}) => {
                                     <input 
                                         name="paterno"
                                         value={participant.paterno}
-                                        onChange={handleChange}
+                                        onChange={handleInputChange}
                                         placeholder="Escribe el apellido paterno..."
                                         className="participant-form-pieza-input"></input>
                                 </div>
@@ -74,7 +111,7 @@ const  AddParticipant = ({setParticipants}) => {
                                     <input 
                                         name="materno"
                                         value={participant.materno}
-                                        onChange={handleChange}
+                                        onChange={handleInputChange}
                                         placeholder="Escribe el apellido materno..."
                                         className="participant-form-pieza-input"></input>
                                 </div>
@@ -85,7 +122,7 @@ const  AddParticipant = ({setParticipants}) => {
                                     <input 
                                         name="insti"
                                         value={participant.insti}
-                                        onChange={handleChange}
+                                        onChange={handleInputChange}
                                         className="participant-form-pieza-input" placeholder="Escribe a la institución que pertenece..."></input>
                                 </div>
                                 <div>
@@ -93,7 +130,7 @@ const  AddParticipant = ({setParticipants}) => {
                                     <input
                                         name="puesto"
                                         value={participant.puesto}
-                                        onChange={handleChange} 
+                                        onChange={handleInputChange} 
                                         placeholder="Escribe el puesto que desempeña..."
                                         className="participant-form-pieza-input"></input>
                                 </div>
@@ -113,7 +150,7 @@ const  AddParticipant = ({setParticipants}) => {
                                     <input  
                                         name="tipoInv"
                                         value={participant.tipoInv}
-                                        onChange={handleChange} 
+                                        onChange={handleInputChange} 
                                         placeholder="Escribe el tipo de investigación..."></input>
                                 </div>
                             }
@@ -122,7 +159,7 @@ const  AddParticipant = ({setParticipants}) => {
                                 <input
                                     name="gAcademico"
                                     value={participant.gAcademico}
-                                    onChange={handleChange} 
+                                    onChange={handleInputChange} 
                                     placeholder="Escribe el grado académico..."
                                     ></input>
                             </div>
@@ -131,7 +168,7 @@ const  AddParticipant = ({setParticipants}) => {
                                 <div className="participant-button-level">
                                 <select name="nivel" 
                                     value={participant.nivel}
-                                    onChange={handleChange}>
+                                    onChange={handleInputChange}>
                                     <option value="SNII">SNII</option>
                                     <option value="COFFA">COFFA</option>
                                     <option value="EDI">EDI</option>
@@ -145,14 +182,23 @@ const  AddParticipant = ({setParticipants}) => {
                                     <input 
                                     name="email"
                                     value={participant.email}
-                                    onChange={handleChange} 
+                                    onChange={handleInputChange} 
                                     placeholder="Escribe el email..."
                                     className="participant-form-pieza-input2"></input>
                                 </div>
                             </div>
                             <div className="participant-dialog-actions">
-                                <button type="submit" className="participant-button-confirm">Guardar participante</button>
-                                <button type="button" onClick={() => setIsOpen(false)} className="participant-button-cancel">Cancelar</button>
+                                <button  className="participant-button-confirm">
+                                    {participantToEdit ? "Guardar cambios" : "Guardar proyecto"}
+                                </button>
+                                {!participantToEdit &&(
+                                    <button
+                                    type="button"
+                                    onClick={(e)=>setIsOpen(false)}
+                                    className="button-cancel">
+                                    Cancelar
+                                    </button>
+                                )}
                             </div>
                         </form>
                     </DialogPanel>

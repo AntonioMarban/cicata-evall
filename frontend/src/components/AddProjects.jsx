@@ -1,63 +1,151 @@
 import "../styles/addprojects.css"
+import { useFormAddHandler } from "../hooks/useFormAddHandler";
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
-const  AddProyectos = ({setProjects}) => {
+const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null }) => {
     const [isOpen, setIsOpen] = useState(false)
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        const formData = new FormData(event.target);
-        const newProject  = Object.fromEntries(formData.entries()); // Convierte a objeto
-        
-        setProjects((prevProjects) => ({
-            ...prevProjects,
-            projects: [...prevProjects.projects, newProject], // Agregar nuevo proyecto al array
-        }));
-        
-        setIsOpen(false);
+    
+    const initialFormValues = {
+        projectName: "",
+        projectDate: "",
+        projectType: "",
+        noRE: "",
+        noRESIP: ""
     };
     
+    const [formValues, setFormValues] = useState({
+        projectName: "",
+        projectDate: "",
+        projectType: "",
+        noRE: "",
+        noRESIP: ""
+    });
+
+    useEffect(() => {
+        if (projectToEdit) {
+            setFormValues({
+                projectName: projectToEdit.projectName || "",
+                projectDate: projectToEdit.projectDate || "",
+                projectType: projectToEdit.projectType || "",
+                noRE: projectToEdit.noRE || "",
+                noRESIP: projectToEdit.noRESIP || ""
+            });
+            setIsOpen(true);
+        }
+    }, [projectToEdit]);
+
+    const handleActivitySubmit  = useFormAddHandler({
+        setState: setProjects,
+        key: 'projects',
+         onSuccess: () => {
+            setIsOpen(false);
+            if (onEditComplete && projectToEdit) {
+                onEditComplete();
+            }
+            //reset
+            setFormValues(initialFormValues)
+        },
+        initialData: projectToEdit,
+        isEditMode: !!projectToEdit
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleActivitySubmit(e, formValues, projectToEdit ? projectToEdit.index : undefined);
+    };
+
     return (
         <>
-            <button type="button" className='modalAddProject' onClick={() => setIsOpen(true)}>Agregar proyecto</button>
+            {!projectToEdit && (
+                <button type="button" className='modalAddProject' onClick={() => setIsOpen(true)}>
+                    Agregar proyecto
+                </button>
+            )}
 
-            <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
+            <Dialog open={isOpen} onClose={() => {if (!projectToEdit) {setIsOpen(false);}}}  className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p>Agregar Proyecto</p>
+                        <p>{projectToEdit ? "Editar Proyecto" : "Agregar Proyecto"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-rows">
                                 <div>
                                     <p>Nombre proyecto</p>
-                                    <input name="projectName" className="form-pieza-input" placeholder="Escribe el nombre del proyecto..."></input>
+                                    <input 
+                                        name="projectName" 
+                                        className="form-pieza-input" 
+                                        placeholder="Escribe el nombre del proyecto..."
+                                        value={formValues.projectName}
+                                        onChange={handleInputChange}
+                                    />
                                 </div>
                                 <div>
                                     <p>Fecha de asociación</p>
-                                    <input name="projectDate" className="form-pieza-input" type="date"></input>
+                                    <input 
+                                        name="projectDate" 
+                                        className="form-pieza-input" 
+                                        type="date"
+                                        value={formValues.projectDate}
+                                        onChange={handleInputChange}
+                                    />
                                 </div>
                             </div>
                             <div className="form-complete-row">
                                 <p>Tipo de proyecto</p>
                                 <p className="form-subtext">(p.e. Tesis maestría, convocatoria interna innovación, convocatoria externa fronteras, etc.)</p>
-                                <input name="projectType" className="form-pieza-input" placeholder="Escribe el tipo de proyecto..."></input>
+                                <input 
+                                    name="projectType" 
+                                    className="form-pieza-input" 
+                                    placeholder="Escribe el tipo de proyecto..."
+                                    value={formValues.projectType}
+                                    onChange={handleInputChange}
+                                />
                             </div>
                             <div className="form-rows">
                                 <div>
                                     <p>Número de registro externo</p>
                                     <p className="form-subtext">(Si aplica)</p>
-                                    <input name="noRE" className="form-pieza-input" placeholder="Escribe el numero de registro externo..."></input>
+                                    <input 
+                                        name="noRE" 
+                                        className="form-pieza-input" 
+                                        placeholder="Escribe el numero de registro externo..."
+                                        value={formValues.noRE}
+                                        onChange={handleInputChange}
+                                    />
                                 </div>
                                 <div>
                                     <p>Número de registro SIP</p>
                                     <p className="form-subtext">(Si aplica)</p>
-                                    <input name="noRESIP" className="form-pieza-input" placeholder="Escribe el numero de registro SIP..."></input>
+                                    <input 
+                                        name="noRESIP" 
+                                        className="form-pieza-input" 
+                                        placeholder="Escribe el numero de registro SIP..."
+                                        value={formValues.noRESIP}
+                                        onChange={handleInputChange}
+                                    />
                                 </div>
                             </div>
                             <div className="dialog-actions">
-                                <button className="button-confirm">Guardar proyecto</button>
-                                <button type="button" onClick={() => setIsOpen(false)} className="button-cancel">Cancelar</button>
+                                <button className="button-confirm">
+                                    {projectToEdit ? "Guardar cambios" : "Guardar proyecto"}
+                                </button>
+                                {!projectToEdit && (
+                                    <button 
+                                    type="button" 
+                                    onClick={(e) => setIsOpen(false)} 
+                                    className="button-cancel"
+                                    >
+                                    Cancelar
+                                    </button>
+                                )}
                             </div>
                         </form>
                     </DialogPanel>
@@ -67,4 +155,4 @@ const  AddProyectos = ({setProjects}) => {
     )
 }
 
-export default AddProyectos;
+export default AddProjects;

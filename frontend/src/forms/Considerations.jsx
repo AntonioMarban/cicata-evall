@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateForm  } from "../db/index";
+import { useFormHandler } from "../hooks/useFormHandler";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 
@@ -7,24 +7,19 @@ const  Considerations = ({option,setOption}) => {
     const [considerationsBio, setConsiderationsBio] = useState(
         {   idF: 7,
             considerations:"" });
-    const handleOnSubmit = async (event) => {
-        event.preventDefault();
-        try{
-            await updateForm(considerationsBio);
+    
+    const handleOnSubmitForm = useFormHandler({
+        form: considerationsBio,
+        onSuccess: ()=> setOption(prevOption => prevOption + 1),
+    });
 
-        } catch(error){
-            console.log("Error al guardar contracto",error);
-        }
-        setOption(prevOption => prevOption + 1);
-        
-    }
     const handleChange = (e) => {
         const { name, value } = e.target;
         setConsiderationsBio({ ...considerationsBio, [name]: value });
     };
     useLoadFormData(considerationsBio.idF,setConsiderationsBio);
     return (
-        <div onSubmit={handleOnSubmit}>
+        <div onSubmit={handleOnSubmitForm}>
             <div className="flex flex-col justify-between h-[59vh]">
                 <div>
                     <p className="text-[22px]">Consideraciones de bioseguridad de la investigación</p>
@@ -45,7 +40,7 @@ const  Considerations = ({option,setOption}) => {
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
                 <button className="!mr-5 ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmit}>Siguiente</button>
+                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmitForm}>Siguiente</button>
             </div>
         </div>
     )

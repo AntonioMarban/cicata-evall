@@ -1,4 +1,4 @@
-import Botones from './Buttons';
+import Buttons from './Buttons';
 import GeneralData from '../forms/GeneralData';
 import Projects from '../forms/Projects';
 import Participants from '../forms/Participants';
@@ -19,7 +19,7 @@ const FormsNavigation = () => {
 
   return (
     <>
-      <Botones option={option} setOption={setOption}/>
+      <Buttons option={option} setOption={setOption}/>
       <div>
         {option === 0  &&  <GeneralData  option={option} setOption={setOption}/>}
         {option === 1  &&  <Projects  option={option} setOption={setOption}/>}

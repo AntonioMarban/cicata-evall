@@ -2,8 +2,10 @@ import { useState } from "react";
 import { updateForm,getAllData } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
+import DragDrop from "../components/DragDrop";
 
 const  Anexos = ({option,setOption}) => {
+    const [filesSend,setFilesSend] = useState([]);
     const [anexos, setAnexos] = useState(
         {   idF: 13,
             anexos:"" });
@@ -42,11 +44,14 @@ const  Anexos = ({option,setOption}) => {
                     <div className="flex flex-wrap">
                         <div className="flex-1">
                             <textarea  
-                            className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
+                            className="w-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
                             name="anexos" 
                             value={anexos.anexos}
                             onChange={handleChange}
                             placeholder="Escribe los comentarios adicionales..."></textarea>
+                            <div className="!mt-5 w-1/2">
+                                <DragDrop setFilesSend={setFilesSend} filesSend={filesSend} />
+                            </div>
                         </div>
                     </div>
                 </div>

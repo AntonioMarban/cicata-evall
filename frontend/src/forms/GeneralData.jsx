@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { updateForm  } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
+import { useFormHandler } from "../hooks/useFormHandler";
 
 const  GeneralData = ({option,setOption}) => {
     const [objectiveA, setObjectiveA] = useState(1);
@@ -17,39 +17,47 @@ const  GeneralData = ({option,setOption}) => {
             objectiveA,
             considerations: "",
             summary:"" });
+
     const handleChangeButton = (key, value) => {
         setGeneralData((prevState) => ({
             ...prevState,
             [key]: value, 
         }));
     };
-    const handleOnSubmit = async (event) => {
-        event.preventDefault();
-        if (generalData.startDate > generalData.endDate){
-            alert("No puede ser la fecha de inicio después de la fecha de fin")
-        }
-        else{
-            try{
-                await updateForm(generalData);
-                setOption(prevOption => prevOption + 1);
-            } catch(error){
-                console.log("Error al guardar contracto",error);
-            }
-        }
-    }
     const handleChange = (e) => {
         const { name, value } = e.target;
         setGeneralData({ ...generalData, [name]: value });
     };
     
+    const handleOnSubmitForm = useFormHandler({
+        form: generalData,
+        onSuccess: ()=> setOption(prevOption => prevOption + 1),
+    });
+
+    const validateDates = () => {
+        if (generalData.startDate > generalData.endDate) {
+          alert("No puede ser la fecha de inicio después de la fecha de fin");
+          return false; 
+        }
+        return true; 
+      };
+    const handleSubmitWithValidation = (event) => {
+        event.preventDefault();
+
+        if (!validateDates()) {
+            return; 
+        }
+        handleOnSubmitForm(event); 
+    };
+
     useLoadFormData(generalData.idF,setGeneralData);
     
     return (
-        <form onSubmit={handleOnSubmit}>
+        <form onSubmit={handleSubmitWithValidation}>
             <div className="flex flex-col">
                 <div className="!mt-5 flex-1">
                     <p className="text-2xl">Datos generales del proyecto</p>
-                    <p className="text-lg mt-3">Titulo del proyecto</p>
+                    <p className="text-lg mt-3">Título del proyecto</p>
                     <input 
                         type="text"
                         name="titleProject"
