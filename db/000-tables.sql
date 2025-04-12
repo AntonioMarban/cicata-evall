@@ -110,7 +110,7 @@ CREATE TABLE `specificObjectives` (
 CREATE TABLE `scheduleActivities` (
   `scheduleActivityId` integer PRIMARY KEY AUTO_INCREMENT,
   `goal` text,
-  `insitution` varchar(50),
+  `institution` varchar(50),
   `responsibleMember` varchar(100),
   `startDate` date,
   `endDate` date,

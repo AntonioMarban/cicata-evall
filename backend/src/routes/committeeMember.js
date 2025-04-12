@@ -7,7 +7,7 @@ const {
     getAgreementSignature
 } = committeeMemberController;
 
-router.get('/committees/:commiteeId/members/:userId/projects', getPendingProjects);
+router.get('/committees/:committeeId/members/:userId/projects', getPendingProjects);
 router.get('/committees/:committeeId/members/:userId/projects/:projectId/agreement', getAgreementSignature);
 
 module.exports = router;

@@ -23,7 +23,7 @@ BEGIN
     FROM projects p
     JOIN usersProjects up ON p.projectId = up.project_id
     JOIN users u ON up.user_id = u.userId
-    WHERE p.status = 'active' AND up.user_id = userId;
+    WHERE (p.status = 'En revisión' OR p.status = 'Pendiente de correcciones') AND up.user_id = userId;
 END //
 DELIMITER ;
 
@@ -41,7 +41,7 @@ BEGIN
     FROM projects p
     JOIN usersProjects up ON p.projectId = up.project_id
     JOIN users u ON up.user_id = u.userId
-    WHERE p.status = 'inactive' AND up.user_id = userId;
+    WHERE (p.status = 'Aprobado' OR p.status = 'No aprobado') AND up.user_id = userId;
 END //
 DELIMITER ;
 
@@ -196,7 +196,7 @@ DELIMITER ;
 -- @return: Proyectos pendientes de evaluación
 
 DELIMITER //
-CREATE PROCEDURE getPendingProject(
+CREATE PROCEDURE getPendingProjects(
     IN p_committeeId INT, 
     IN p_userId INT
 )
@@ -246,8 +246,8 @@ BEGIN
         FROM 
             agreements a
         WHERE 
-            a.userId = p_userId
-            AND a.projectId = p_projectId;
+            a.user_id = p_userId
+            AND a.project_id = p_projectId;
     END IF;
 END //
 DELIMITER ;
