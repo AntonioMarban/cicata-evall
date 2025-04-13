@@ -10,7 +10,8 @@ BEGIN
     SELECT 
         userId, 
         email,
-        CONCAT(fName, ' ', lastName1, ' ', lastName2) AS Investigador
+        CONCAT(fName, ' ', lastName1, ' ', lastName2) AS fullName,
+        userType_id
      FROM users WHERE email = user_email AND password = SHA2(user_password,256);
 END //
 DELIMITER ;
