@@ -290,3 +290,31 @@ BEGIN
 END //
 DELIMITER ;
 
+
+-- Función para editar la rúbrica de evaluación de un comite en específico
+-- Se hace uso de un procedimiento almacena getCommitteeRubric
+-- @param committeeId: Id del comité
+-- @param userId: Id del miembro del comité
+-- @param rubric: Buffer con la rúbrica de evaluación del comité
+-- @returns: Buffer con la rúbrica de evaluación del comité
+DELIMITER //
+CREATE PROCEDURE updateCommitteeRubric(IN p_committeeId INT, IN p_userId INT, IN p_rubric LONGBLOB)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers 
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    ELSE    
+        UPDATE 
+            rubrics
+        SET 
+            rubric = p_rubric
+        WHERE 
+            committee_id = p_committeeId;
+    END IF;
+END //
+DELIMITER ;
+
+
