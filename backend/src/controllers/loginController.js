@@ -17,7 +17,7 @@ const doLogin = (req, res) => {
         }
         result = results[0][0];
         token = jwt.sign({ id: result.userId }, process.env.JWT_SECRET, { expiresIn: 7200 });
-        res.status(200).json({ userId:result.userId, investigador: result.Investigador, email:result.email, token });
+        res.status(200).json({ userId:result.userId, fullName: result.fullName, userType: result.userType_id, email:result.email, token });
     });
 }
 

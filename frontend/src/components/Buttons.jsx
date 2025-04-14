@@ -1,5 +1,5 @@
 import React from 'react';
-const  Buttons =({option,setOption}) => { 
+const Buttons =({option,setOption}) => { 
   
   const options = [
     "Datos Generales", "Proyectos", "Participantes", "Colaboracion", 
