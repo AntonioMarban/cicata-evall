@@ -77,54 +77,19 @@ CREATE PROCEDURE createProject(
     IN p_folio VARCHAR(50),
     IN p_status VARCHAR(50),
 
-    -- Datos para associatedProjects
-    IN p_associatedProjectName VARCHAR(50),
-    IN p_associationDate DATE,
-    IN p_externalRegister VARCHAR(30),
-    IN p_SIPRegister VARCHAR(30),
-
-    -- Datos para members
-    IN p_memberFName VARCHAR(50),
-    IN p_memberLastName1 VARCHAR(50),
-    IN p_memberLastName2 VARCHAR(50),
-    IN p_memberEmail VARCHAR(255),
-    IN p_memberInstitution VARCHAR(50),
-    IN p_memberPositionWork VARCHAR(50),
-    IN p_memberResearchNetwork BOOL,
-    IN p_memberResearchNetworkName VARCHAR(50),
-    IN p_memberAcademicDegree VARCHAR(50),
-    IN p_memberLevelName VARCHAR(50),
-    IN p_memberLevelNum INTEGER,
-    IN p_memberTutorName VARCHAR(100),
-
-    -- Datos para collaborativeInstitutions
-    IN p_collabInstitutionName VARCHAR(50),
-    IN p_partOfIPN BOOL,
-    IN p_collaborationAgreement VARCHAR(30),
-    IN p_agreementType VARCHAR(30),
-    IN p_agreementNumber VARCHAR(30),
-
-    -- Datos para scheduleActivities
-    IN p_goal TEXT,
-    IN p_institution VARCHAR(50),
-    IN p_responsibleMember VARCHAR(100),
-    IN p_scheduleStartDate DATE,
-    IN p_scheduleEndDate DATE,
-
-    -- Datos para deliverablesProjects
+    -- Arreglos
+    IN p_associatedProjectsJSON JSON,
+    IN p_membersJSON JSON,
+    IN p_collaborativeInstitutionsJSON JSON,
+    IN p_scheduleActivitiesJSON JSON,
     IN p_deliverablesJSON JSON,
-
-    -- Datos para budgets
-    IN p_investmentExpenditure INTEGER,
-    IN p_budgetName VARCHAR(50),
-    IN p_expenditure INTEGER,
+    IN p_budgetsJSON JSON,
 
     -- Usuario
     IN p_userId INT
-
 )
 BEGIN
-    DECLARE v_projectId INTEGER;
+    DECLARE v_projectId INT;
     DECLARE i INT DEFAULT 0;
     DECLARE total INT;
 
@@ -143,51 +108,110 @@ BEGIN
 
     SET v_projectId = LAST_INSERT_ID();
 
-    -- Insertar en associatedProjects
-    INSERT INTO associatedProjects (name, associationDate, externalRegister, SIPRegister, project_id)
-    VALUES (p_associatedProjectName, p_associationDate, p_externalRegister, p_SIPRegister, v_projectId);
+    -- associatedProjects
+    SET i = 0;
+    SET total = JSON_LENGTH(p_associatedProjectsJSON);
+    WHILE i < total DO
+        INSERT INTO associatedProjects (name, associationDate, externalRegister, SIPRegister, project_id)
+        VALUES (
+            JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].name'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].associationDate'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].externalRegister'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].SIPRegister'))),
+            v_projectId
+        );
+        SET i = i + 1;
+    END WHILE;
 
-    -- Insertar en members
-    INSERT INTO members (
-        fName, lastName1, lastName2, email, institution, positionWork, researchNetwork, researchNetworkName,
-        academicDegree, levelName, levelNum, tutorName, project_id
-    )
-    VALUES (
-        p_memberFName, p_memberLastName1, p_memberLastName2, p_memberEmail, p_memberInstitution, p_memberPositionWork,
-        p_memberResearchNetwork, p_memberResearchNetworkName, p_memberAcademicDegree, p_memberLevelName,
-        p_memberLevelNum, p_memberTutorName, v_projectId
-    );
+    -- members
+    SET i = 0;
+    SET total = JSON_LENGTH(p_membersJSON);
+    WHILE i < total DO
+        INSERT INTO members (
+            fName, lastName1, lastName2, email, institution, positionWork, researchNetwork, researchNetworkName,
+            academicDegree, levelName, levelNum, tutorName, project_id
+        )
+        VALUES (
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].fName'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].lastName1'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].lastName2'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].email'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].institution'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].positionWork'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetwork'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetworkName'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].academicDegree'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelName'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNum'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].tutorName'))),
+            v_projectId
+        );
+        SET i = i + 1;
+    END WHILE;
 
-    -- Insertar en collaborativeInstitutions
-    INSERT INTO collaborativeInstitutions (name, partOfIPN, collaborationAgreement, agreementType, agreementNumber, project_id)
-    VALUES (p_collabInstitutionName, p_partOfIPN, p_collaborationAgreement, p_agreementType, p_agreementNumber, v_projectId);
+    -- collaborativeInstitutions
+    SET i = 0;
+    SET total = JSON_LENGTH(p_collaborativeInstitutionsJSON);
+    WHILE i < total DO
+        INSERT INTO collaborativeInstitutions (name, partOfIPN, collaborationAgreement, agreementType, agreementNumber, project_id)
+        VALUES (
+            JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].name'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].partOfIPN'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].collaborationAgreement'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].agreementType'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].agreementNumber'))),
+            v_projectId
+        );
+        SET i = i + 1;
+    END WHILE;
 
-    -- Insertar en scheduleActivities
-    INSERT INTO scheduleActivities (goal, insitution, responsibleMember, startDate, endDate, project_id)
-    VALUES (p_goal, p_institution, p_responsibleMember, p_scheduleStartDate, p_scheduleEndDate, v_projectId);
+    -- scheduleActivities
+    SET i = 0;
+    SET total = JSON_LENGTH(p_scheduleActivitiesJSON);
+    WHILE i < total DO
+        INSERT INTO scheduleActivities (goal, institution, responsibleMember, startDate, endDate, project_id)
+        VALUES (
+            JSON_UNQUOTE(JSON_EXTRACT(p_scheduleActivitiesJSON, CONCAT('$[', i, '].goal'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_scheduleActivitiesJSON, CONCAT('$[', i, '].institution'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_scheduleActivitiesJSON, CONCAT('$[', i, '].responsibleMember'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_scheduleActivitiesJSON, CONCAT('$[', i, '].startDate'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_scheduleActivitiesJSON, CONCAT('$[', i, '].endDate'))),
+            v_projectId
+        );
+        SET i = i + 1;
+    END WHILE;
 
-    -- Insertar en deliverablesProjects
+    -- deliverablesProjects
+    SET i = 0;
     SET total = JSON_LENGTH(p_deliverablesJSON);
+    WHILE i < total DO
+        INSERT INTO deliverablesProjects (quantity, projectId, deliverableId, deliverableTypeId)
+        VALUES (
+            JSON_UNQUOTE(JSON_EXTRACT(p_deliverablesJSON, CONCAT('$[', i, '].quantity'))),
+            v_projectId,
+            JSON_UNQUOTE(JSON_EXTRACT(p_deliverablesJSON, CONCAT('$[', i, '].deliverableId'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_deliverablesJSON, CONCAT('$[', i, '].deliverableTypeId')))
+        );
+        SET i = i + 1;
+    END WHILE;
 
-    WHILE i < total
-        DO
-            INSERT INTO deliverablesProjects (quantity, projectId, deliverableId, deliverableTypeId)
-            VALUES (JSON_UNQUOTE(JSON_EXTRACT(p_deliverablesJSON, CONCAT('$[', i, '].quantity'))),
-                    v_projectId,
-                    JSON_UNQUOTE(JSON_EXTRACT(p_deliverablesJSON, CONCAT('$[', i, '].deliverableId'))),
-                    JSON_UNQUOTE(JSON_EXTRACT(p_deliverablesJSON, CONCAT('$[', i, '].deliverableTypeId'))));
-            SET i = i + 1;
-        END WHILE;
+    -- budgets (JSON ARRAY)
+    SET i = 0;
+    SET total = JSON_LENGTH(p_budgetsJSON);
+    WHILE i < total DO
+        INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id)
+        VALUES (
+            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].investmentExpenditure'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetName'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].expenditure'))),
+            v_projectId
+        );
+        SET i = i + 1;
+    END WHILE;
 
-
-    -- Insertar en budgets
-    INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id)
-    VALUES (p_investmentExpenditure, p_budgetName, p_expenditure, v_projectId);
-
-    -- Insertar en usersProjects
+    -- Relación con usuario
     INSERT INTO usersProjects (user_id, project_id)
     VALUES (p_userId, v_projectId);
-
 
 END //
 DELIMITER ;
