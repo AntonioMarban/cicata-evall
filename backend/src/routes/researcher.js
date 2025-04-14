@@ -5,6 +5,6 @@ const middleware = require('../middleware/jwt.middleware')
 
 router.get('/:userId/projects/active', getActiveProjects)
 router.get('/:userId/projects/inactive', getInactiveProjects)
-router.post('/projects/create', createProject)
+router.post('/projects', createProject)
 
 module.exports = router

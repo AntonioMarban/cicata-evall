@@ -3,6 +3,6 @@ const router = express.Router()
 const { createUser } = require('../controllers/subdirectorateController')
 const middleware = require('../middleware/jwt.middleware')
 
-router.post('/users/create', createUser)
+router.post('/users', createUser)
 
 module.exports = router
