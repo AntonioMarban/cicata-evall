@@ -187,7 +187,7 @@ CREATE TABLE `agreements` (
 
 CREATE TABLE `rubrics` (
   `rubric_id` integer PRIMARY KEY AUTO_INCREMENT,
-  `rubric` blob,
+  `rubric` longblob,
   `committee_id` integer
 );
 

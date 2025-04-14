@@ -210,7 +210,7 @@ BEGIN
         WHERE userId = p_userId AND committeeId = p_committeeId
     ) THEN
         SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'El usuario no pertenece al comité';
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
     ELSE    
         SELECT 
             p.title,
@@ -233,7 +233,9 @@ DELIMITER ;
 -- @param committeeId: Id del comité
 -- @param userId: Id del miembro del comité
 -- @param projectId: Id del proyecto
--- @returns: Dato booleano que indica si el miembro del comité ha firmado el acuerdo
+-- @returns: Dato booleano que indica si el miembro del comité ha firmado el acuerdo,
+-- además del nombre del proyecto y el investigador a cargo
+
 
 DELIMITER //
 CREATE PROCEDURE getAgreementSignature(IN p_committeeId INT, IN p_userId INT, IN p_projectId INT)
@@ -243,15 +245,47 @@ BEGIN
         WHERE userId = p_userId AND committeeId = p_committeeId
     ) THEN
         SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'El usuario no pertenece al comité';
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
     ELSE    
         SELECT 
-            a.agreed
+            a.agreed,
+            p.title,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher
         FROM 
             agreements a
+        JOIN users u ON a.user_id = u.userId
+        JOIN projects p ON a.project_id = p.projectId
         WHERE 
             a.user_id = p_userId
             AND a.project_id = p_projectId;
     END IF;
 END //
 DELIMITER ;
+
+
+
+-- Función para obtener la rúbrica de evaluación de un comite en específico
+-- Se hace uso de un procedimiento almacena getCommitteeRubric
+-- @param committeeId: Id del comité
+-- @param userId: Id del miembro del comité
+-- @returns: Buffer con la rúbrica de evaluación del comité
+DELIMITER //
+CREATE PROCEDURE getCommitteeRubric(IN p_committeeId INT, IN p_userId INT)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers 
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    ELSE    
+        SELECT 
+            rubric
+        FROM 
+            rubrics 
+        WHERE 
+            committee_id = p_committeeId;
+    END IF;
+END //
+DELIMITER ;
+
