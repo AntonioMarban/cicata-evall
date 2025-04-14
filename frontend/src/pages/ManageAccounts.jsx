@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import ManageAccountsData from '../components/manageAccounts/ManageAccountsData.jsx';
+const userType = localStorage.getItem("userType");
 
 const AccountTypeButton = ({ name, selectedName, onClick }) => {
   const isActive = selectedName === name;
@@ -9,7 +11,7 @@ const AccountTypeButton = ({ name, selectedName, onClick }) => {
 
   return (
     <button
-      className={`bg-[#5CB7E6] text-white font-semibold rounded ${isActive ? 'bg-[#1591D1]' : ''}`}
+      className={`bg-[#5CB7E6] text-white font-semibold rounded hover:bg-[#1591D1] cursor-pointer ${isActive ? 'bg-[#1591D1]' : ''}`}
       style={{ padding: '10px 20px', width: '100%', maxWidth: '300px', textAlign: 'center' }}
       onClick={handleClick}
     >
@@ -18,26 +20,9 @@ const AccountTypeButton = ({ name, selectedName, onClick }) => {
   );
 }
 
-const AdministradoresPanel = () => <div className="p-4 border rounded shadow">👨‍💼 Gestión de Administradores</div>;
-const InvestigadoresPanel = () => <div className="p-4 border rounded shadow">🔬 Gestión de Investigadores</div>;
-const PresidentesPanel = () => <div className="p-4 border rounded shadow">📋 Gestión de Presidentes y Secretarios</div>;
-
 const ManageAccounts = () => {
 
   const [selectedPanel, setSelectedPanel] = useState(null);
-
-  const rederedPanel = () => {
-    switch (selectedPanel) {
-      case 'Administradores':
-        return <AdministradoresPanel />;
-      case 'Investigadores':
-        return <InvestigadoresPanel />;
-      case 'Presidentes y secretarios':
-        return <PresidentesPanel />;
-      default:
-        return null;
-    }
-  }
 
   const handlePanelClick = (name) => {
     setSelectedPanel(prev => (prev === name ? null : name));
@@ -47,20 +32,31 @@ const ManageAccounts = () => {
     <>
       <div className='flex flex-col overflow-y-auto h-screen max-h-screen' style={{ padding: '5%' }}>
         <div id="manageAccountsHead" className="flex w-full max-w-4xl justify-between items-start flex-col mb-6">
-          <h1 className="text-3xl font-semibold">Administrar cuentas</h1>
-          <p className="text-gray-600">Tu panel de administración de cuentas del sistema:</p>
+          <h1 className="text-4xl font-semibold" style={{ padding: "0 0 10px 0" }}>Administrar cuentas</h1>
+          <p className="text-gray-600 text-2xl">Tu panel de administración de cuentas del sistema:</p>
         </div>
-        <div id="manageAccountsButtons" style={{ padding: '3% 0%'}}>
+        <div id="manageAccountsButtons" style={{ padding: '3% 0%' }}>
           <div className="flex flex-row items-center gap-10 mb-6 flex-wrap">
-            <AccountTypeButton
-              name="Administradores"
-              selectedName={selectedPanel}
-              onClick={handlePanelClick} />
-              <AccountTypeButton name="Investigadores" selectedName={selectedPanel} onClick={handlePanelClick} />
-              <AccountTypeButton name="Presidentes y secretarios" selectedName={selectedPanel} onClick={handlePanelClick} />
+            {userType === "2" ? (
+              <>
+                <AccountTypeButton name="Administradores" selectedName={selectedPanel} onClick={handlePanelClick} />
+                <AccountTypeButton name="Investigadores" selectedName={selectedPanel} onClick={handlePanelClick} />
+                <AccountTypeButton name="Presidentes y secretarios" selectedName={selectedPanel} onClick={handlePanelClick} />
+              </>
+            ) : null}
+            {userType === "3" || userType === "4" ? (
+              <>
+                <AccountTypeButton name="Comité Interno de Proyectos (CIP)" selectedName={selectedPanel} onClick={handlePanelClick} />
+                <AccountTypeButton name="Comité de Ética en Investigación (CEI)" selectedName={selectedPanel} onClick={handlePanelClick} />
+                <AccountTypeButton name="Comité de Bioseguridad (CB)" selectedName={selectedPanel} onClick={handlePanelClick} />
+                <AccountTypeButton name="Comité de Investigación (CI)" selectedName={selectedPanel} onClick={handlePanelClick} />
+                <AccountTypeButton name="Comité Interno para el Cuidado y Uso de los Animales de Laboratorio (CICUAL)" selectedName={selectedPanel} onClick={handlePanelClick} />
+              </>
+            ) : null}
+
           </div>
         </div>
-        {rederedPanel()}
+        <ManageAccountsData accountTypeToManage={selectedPanel} />
       </div>
     </>
   )
