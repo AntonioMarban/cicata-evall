@@ -236,8 +236,6 @@ DELIMITER ;
 -- @param projectId: Id del proyecto
 -- @returns: Dato booleano que indica si el miembro del comité ha firmado el acuerdo,
 -- además del nombre del proyecto y el investigador a cargo
-
-
 DELIMITER //
 CREATE PROCEDURE getAgreementSignature(IN p_committeeId INT, IN p_userId INT, IN p_projectId INT)
 BEGIN
@@ -263,6 +261,43 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Función para firmar el acuerdo de un proyecto de un miembro del comité de un proyecto en específico
+-- @param committeeId: Id del comité
+-- @param userId: Id del miembro del comité
+-- @param projectId: Id del proyecto
+-- @returns: Mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE updateAgreementSignature(
+    IN p_committeeId INT, 
+    IN p_userId INT, 
+    IN p_projectId INT, 
+    IN p_email VARCHAR(100),
+    IN p_password VARCHAR(100)
+)
+BEGIN
+    IF NOT EXISTS(
+        SELECT 1 FROM users 
+        WHERE email = p_email AND password = SHA2(p_password,256)
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Invalid credentials';
+    ELSEIF NOT EXISTS (
+        SELECT 1 FROM committeeUsers 
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    ELSE    
+        UPDATE 
+            agreements
+        SET
+            agreed = TRUE
+        WHERE 
+            user_id = p_userId
+            AND project_id = p_projectId;
+    END IF;
+END //
+DELIMITER ;
 
 
 -- Función para obtener la rúbrica de evaluación de un comite en específico

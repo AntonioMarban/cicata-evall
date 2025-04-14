@@ -24,7 +24,7 @@ const getPendingProjects = (req, res) => {
       return res
         .status(404)
         .json({
-          message: "Resource does not exist",
+          error: "Resource does not exist",
         });
     }
     return res.status(200).json({ projects: results[0] });
@@ -57,12 +57,47 @@ const getAgreementSignature = (req, res) => {
       return res
         .status(404)
         .json({
-          message: "Resource does not exist",
+          error: "Resource does not exist",
         });
     }
     return res.status(200).json(results[0]);
   });
 };
+
+/*
+    Función firma el acuerdo de un proyecto de un miembro del comité de un proyecto en específico
+    Se hace uso de un procedimiento almacena updateAgreementSignature
+    @param committeeId: Id del comité
+    @param userId: Id del miembro del comité
+    @param projectId: Id del proyecto
+    @returns: Mensaje de éxito o error
+*/
+const updateAgreementSignature = (req, res) => {
+  const { email, password } = req.body;
+  const { committeeId, userId, projectId } = req.params;
+
+  const sql = `CALL updateAgreementSignature(?, ?, ?, ?, ?)`;
+  const values = [committeeId, userId, projectId, email, password];
+  pool.query(sql, values, (err, results) => {
+    if (err) {
+      console.error("Error updating agreement signature:", err);
+      return res
+        .status(400)
+        .json({ error: "Invalid credentials" });
+    }
+    if (results.length === 0) {
+      return res
+        .status(404)
+        .json({
+          error: "Resource does not exist",
+        });
+    }
+    return res
+      .status(200)
+      .json({ message: "Agreement signed" });
+  });
+};
+
 
 
 /*
@@ -89,7 +124,7 @@ const getCommitteeRubric = (req, res) => {
       return res
         .status(404)
         .json({
-          message: "Resource does not exist",
+          error: "Resource does not exist",
         });
     }
     // Convertir la rúbrica a base64 si existe
@@ -106,5 +141,6 @@ const getCommitteeRubric = (req, res) => {
 module.exports = { 
     getPendingProjects,
     getAgreementSignature,
+    updateAgreementSignature,
     getCommitteeRubric
 };
