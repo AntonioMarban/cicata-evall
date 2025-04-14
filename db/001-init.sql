@@ -377,3 +377,56 @@ END //
 DELIMITER ;
 
 
+
+
+-- --------------------------- Subdireccion ----------------------------
+
+-- crear usuario
+DELIMITER //
+CREATE PROCEDURE createUser (
+  IN p_fName VARCHAR(50),
+  IN p_lastName1 VARCHAR(50),
+  IN p_lastName2 VARCHAR(50),
+  IN p_email VARCHAR(255),
+  IN p_password VARCHAR(255),
+  IN p_institution VARCHAR(50),
+  IN p_positionWork VARCHAR(50),
+  IN p_researchNetwork BOOLEAN,
+  IN p_researchNetworkName VARCHAR(50),
+  IN p_academicDegree VARCHAR(50),
+  IN p_levelName VARCHAR(50),
+  IN p_levelNum INT,
+  IN p_userType_id INT
+)
+BEGIN
+  INSERT INTO users (
+    fName,
+    lastName1,
+    lastName2,
+    email,
+    password,
+    institution,
+    positionWork,
+    researchNetwork,
+    researchNetworkName,
+    academicDegree,
+    levelName,
+    levelNum,
+    userType_id
+  ) VALUES (
+    p_fName,
+    p_lastName1,
+    p_lastName2,
+    p_email,
+    SHA2(p_password, 256),
+    p_institution,
+    p_positionWork,
+    p_researchNetwork,
+    p_researchNetworkName,
+    p_academicDegree,
+    p_levelName,
+    p_levelNum,
+    p_userType_id
+  );
+END //
+DELIMITER ;

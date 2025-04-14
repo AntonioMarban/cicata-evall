@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const login = require('./src/routes/login')
 const researchers = require('./src/routes/researcher')
+const subdirectorate = require('./src/routes/subdirectorade')
 const committeeSecretary = require('./src/routes/committeeSecretary')
 const committeeMember = require('./src/routes/committeeMember');
 
@@ -20,6 +21,7 @@ app.use(express.json());
 
 
 app.use('/',login)
+app.use('/subdirectorade', subdirectorate)
 app.use('/researchers', researchers)
 app.use('/', committeeSecretary)
 app.use('/', committeeMember);
