@@ -234,3 +234,8 @@ ALTER TABLE `agreements` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`userId
 ALTER TABLE `agreements` ADD FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`);
 
 ALTER TABLE `rubrics` ADD FOREIGN KEY (`committee_id`) REFERENCES `committees` (`committeeId`);
+
+-- Modificaciones a tablas
+
+-- Para la parte de notificaciones
+ALTER TABLE `projects` ADD COLUMN `notification` BOOLEAN DEFAULT FALSE;

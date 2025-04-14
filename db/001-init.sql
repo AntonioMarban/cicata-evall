@@ -24,7 +24,8 @@ BEGIN
         p.title AS Proyecto,
         CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS Investigador,
         p.startDate AS FechaInicio,
-        p.folio AS Folio
+        p.folio AS Folio,
+        p.notification AS Notificacion
     FROM projects p
     JOIN usersProjects up ON p.projectId = up.project_id
     JOIN users u ON up.user_id = u.userId
