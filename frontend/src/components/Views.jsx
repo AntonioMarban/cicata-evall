@@ -3,7 +3,7 @@ import Login from "../pages/Login";
 import HomePage from "../pages/HomePage";
 import CreateProject from "../pages/CreateProject";
 import NDA from "../pages/NDA";
-import ManageAccounts from "./manageAccounts/ManageAccounts";
+import ManageAccounts from "../pages/ManageAccounts";
 const Views = () => {
   return (
   <Routes>
