@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/Login";
 import HomePage from "../pages/HomePage";
 import CreateProject from "../pages/CreateProject";
@@ -15,9 +15,11 @@ const Views = () => {
     <Route path = "/Acuerdo" element={<NDA/>}></Route>
     <Route path = "/Cuentas" element={<ManageAccounts/>}></Route>
     <Route path = "/FormularioDeUsuario" element={<ManageIndividualUserForm/>}></Route>
-    <Route path = "/Rubrica" element={<EditRubric/>}></Route>
-    <Route path = "*" element={<Login/>}></Route>
-  </Routes>
+    <Route path = "/EditarRubrica" element={<EditRubric/>}></Route>
+    <Route
+        path = "*"
+        element={<Navigate to="/Inicio" replace/>} ></Route>
+    </Routes>
   )
 }
 
