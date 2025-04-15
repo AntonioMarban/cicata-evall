@@ -115,7 +115,7 @@ const ManageIndividualUserForm = (formType, role) => {
                         <div id="userAcademicDegree" className="flex flex-row items-center mb-6 flex-wrap justify-start">
                             {userTextInput("Grado académico", "academicDegree", "text", "Grado académico del usuario", "Ej. Doctorado, Maestría, Licenciatura, etc.")}
                             {userTextInput("Nivel académico", "levelName", "text", "Nivel académico del usuario", "Ej. SNII, COFFA, EDI, etc.")}
-                            {userTextInput("Número de cédula", "levelNum", "text", "Número de cédula del usuario", "Ej. 1, 2, 3, etc.")}
+                            {userTextInput("Número de cédula", "levelNum", "number", "Número de cédula del usuario", "Ej. 1, 2, 3, etc.")}
                         </div>
 
                     </div>

@@ -5,6 +5,7 @@ import CreateProject from "../pages/CreateProject";
 import NDA from "../pages/NDA";
 import ManageAccounts from "../pages/ManageAccounts";
 import ManageIndividualUserForm from "../pages/ManageIndividualUserForm";
+import EditRubric from "../pages/EditRubric";
 const Views = () => {
   return (
   <Routes>
@@ -14,6 +15,7 @@ const Views = () => {
     <Route path = "/Acuerdo" element={<NDA/>}></Route>
     <Route path = "/Cuentas" element={<ManageAccounts/>}></Route>
     <Route path = "/FormularioDeUsuario" element={<ManageIndividualUserForm/>}></Route>
+    <Route path = "/Rubrica" element={<EditRubric/>}></Route>
     <Route path = "*" element={<Login/>}></Route>
   </Routes>
   )
