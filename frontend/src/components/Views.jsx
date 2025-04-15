@@ -4,6 +4,7 @@ import HomePage from "../pages/HomePage";
 import CreateProject from "../pages/CreateProject";
 import NDA from "../pages/NDA";
 import ManageAccounts from "../pages/ManageAccounts";
+import ManageIndividualUserForm from "../pages/ManageIndividualUserForm";
 const Views = () => {
   return (
   <Routes>
@@ -12,6 +13,8 @@ const Views = () => {
     <Route path = "/CrearProyecto" element={<CreateProject/>}></Route>
     <Route path = "/Acuerdo" element={<NDA/>}></Route>
     <Route path = "/Cuentas" element={<ManageAccounts/>}></Route>
+    <Route path = "/FormularioDeUsuario" element={<ManageIndividualUserForm/>}></Route>
+    <Route path = "*" element={<Login/>}></Route>
   </Routes>
   )
 }
