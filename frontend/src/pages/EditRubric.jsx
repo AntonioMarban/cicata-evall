@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import Rubric from "../components/Rubric";
+import { useState } from "react"
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
+import { Upload } from 'lucide-react'
+import Rubric from "../components/Rubric"
 
 const EditRubric = () => {
     const committeeId = localStorage.getItem("committeeId")
@@ -11,7 +12,15 @@ const EditRubric = () => {
     const [loading, setLoading] = useState(false)
 
     const handleImageChange = (event) => {
-        setImage(event.target.files[0])
+        const file = event.target.files[0]
+
+        const validTypes = ["image/jpeg", "image/png", "image/webp"]
+        if (file && validTypes.includes(file.type)) {
+            setImage(file)
+        } else {
+            alert("Por favor, selecciona un archivo de imagen válido (JPG, PNG, WEBP)")
+            setImage(null)
+        }
     }
 
     const handleUpload = async () => {
@@ -24,7 +33,7 @@ const EditRubric = () => {
             const base64String = reader.result.split(",")[1]
             setLoading(true)
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/committees/${committeeId}/members/${memberId}/rubric`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/committees/${committeeId}/secretaries/${memberId}/rubric`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -32,13 +41,16 @@ const EditRubric = () => {
                     body: JSON.stringify({ rubric: base64String }),
                 })
 
-                data = await response.json()
+                console.log("response", response.ok)
+
+                const data = await response.json()
 
 
                 if (response.ok) {
                     alert("Rúbrica actualizada correctamente");
                     setOpen(false);
-                    setSelectedFile(null);
+                    setImage(null);
+                    window.location.reload()
                 } else {
                     console.error(data);
                     alert("Error al actualizar la rúbrica");
@@ -73,19 +85,45 @@ const EditRubric = () => {
                     </button>
                 </div>
 
-                <Dialog open={open} onClose={() => setOpen(false)} className="relative z-50">
+                <Dialog open={open} onClose={() => setOpen(false) & setImage(null)} className="relative z-50">
                     <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
                     <div className="fixed inset-0 flex items-center justify-center">
-                        <DialogPanel className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl" style={{ padding: '50px' }}>
+                        <DialogPanel className="max-w-md w-full rounded-xl bg-white p-6 shadow-xl" style={{ padding: '50px' }}>
                             <DialogTitle className="text-xl font-bold mb-4">Subir nueva rúbrica</DialogTitle>
 
-                            <button className="flex flex-col items-center justify-center rounded-lg" style={{ padding: '20px', margin: '20px 0', border: '2px dashed #5CB7E6', backgroundColor: '#F9F9F9' }}>
-                                <input type="file" accept=".pdf,.jpg,.jpeg,.webp,.png" onChange={handleImageChange} className="mb-4" />
-                            </button>
+                            <div className="mb-4">
+                                <input
+                                    type="file"
+                                    accept=".jpg,.jpeg,.webp,.png"
+                                    id="file-upload"
+                                    onChange={handleImageChange}
+                                    className="hidden"
+                                />
+                                <label
+                                    htmlFor="file-upload"
+                                    className="cursor-pointer flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-[#5CB7E6] bg-[#F9F9F9] text-gray-600 hover:bg-[#e0f3fb] transition-all"
+                                    style={{
+                                        padding: '20px',
+                                        margin: '20px 0',
+                                        width: '100%',
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    {image ? (
+                                        <span className="font-medium">{image.name}</span>
+                                    ) : (
+                                        <>
+                                            <Upload />
+                                            <span>Haz clic aquí para seleccionar un archivo</span>
+                                            <span className="text-sm text-gray-400 mt-1">(JPG, PNG, WEBP...)</span>
+                                        </>
+                                    )}
+                                </label>
+                            </div>
 
                             <div className="flex justify-end gap-3">
                                 <button
-                                    onClick={() => setOpen(false)}
+                                    onClick={() => setOpen(false) & setImage(null)}
                                     className="bg-[#FF4D4D] text-white font-semibold rounded hover:bg-[#FF0000] cursor-pointer"
                                     style={{ padding: '10px 20px', width: '100%', maxWidth: '110px', textAlign: 'center' }}
                                 >
