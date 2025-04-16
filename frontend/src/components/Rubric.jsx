@@ -38,7 +38,7 @@ const Rubric = ({ committeeId, memberId }) => {
                 <img
                     src={`data:image/png;base64,${imageData}`}
                     alt="Rúbrica"
-                    style={{ maxWidth: "70%", height: "auto", margin: "2% 0" }}
+                    style={{ maxWidth: "50%", height: "auto", margin: "2% 0" }}
                     className="mx-auto mt-10 rounded-lg shadow-lg justify-center items-center"
                 />
             ) : (

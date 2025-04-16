@@ -6,6 +6,9 @@ import NDA from "../pages/NDA";
 import ManageAccounts from "../pages/ManageAccounts";
 import ManageIndividualUserForm from "../pages/ManageIndividualUserForm";
 import EditRubric from "../pages/EditRubric";
+import EvaluateProject from "../pages/EvaluateProject";
+import CommitteeDictumForm from "./CommitteeDictumForm";
+
 const Views = () => {
   return (
   <Routes>
@@ -16,6 +19,9 @@ const Views = () => {
     <Route path = "/Cuentas" element={<ManageAccounts/>}></Route>
     <Route path = "/FormularioDeUsuario" element={<ManageIndividualUserForm/>}></Route>
     <Route path = "/EditarRubrica" element={<EditRubric/>}></Route>
+    <Route path = "/EvaluarProyecto" element={<EvaluateProject/>}></Route>
+
+    <Route path = "/Forms" element={<CommitteeDictumForm/>}></Route>
     <Route
         path = "*"
         element={<Navigate to="/Inicio" replace/>} ></Route>
