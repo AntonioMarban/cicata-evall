@@ -21,6 +21,7 @@ DELIMITER //
 CREATE PROCEDURE getActiveProjects(IN userId INT)
 BEGIN
     SELECT
+        p.projectId,
         p.title AS Proyecto,
         CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS Investigador,
         p.startDate AS FechaInicio,
@@ -38,6 +39,7 @@ DELIMITER //
 CREATE PROCEDURE getInactiveProjects(IN userId INT)
 BEGIN
     SELECT
+        p.projectId,
         p.title AS Proyecto,
         CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS Investigador,
         p.startDate AS FechaInicio,
@@ -429,5 +431,47 @@ BEGIN
     p_levelNum,
     p_userType_id
   );
+END //
+DELIMITER ;
+
+-- Función para obtener todos los proyectos inactivos existentes, es decir,
+-- en status 'Aprobado' o 'No aprobado'
+-- Se hace uso de un procedimiento almacena getCommitteeRubric
+-- @param status: Estado inactivo del proyecto
+-- @returns: Lista de proyectos inactivos
+DELIMITER //
+CREATE PROCEDURE getActiveProjectsSub()
+BEGIN
+    SELECT
+        p.projectId,
+        p.title AS Proyecto,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS Investigador,
+        p.startDate AS FechaInicio,
+        p.endDate AS FechaFin,
+        p.folio AS Folio,
+        p.status AS Estado
+    FROM projects p
+    JOIN usersProjects up ON p.projectId = up.project_id
+    JOIN users u ON up.user_id = u.userId
+    WHERE (p.status = 'En revisión' OR p.status = 'Pendiente de correcciones');
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE getInactiveProjectsSub()
+BEGIN
+    SELECT
+        p.projectId,
+        p.title AS Proyecto,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS Investigador,
+        p.startDate AS FechaInicio,
+        p.endDate AS FechaFin,
+        p.folio AS Folio,
+        p.status AS Estado
+    FROM projects p
+    JOIN usersProjects up ON p.projectId = up.project_id
+    JOIN users u ON up.user_id = u.userId
+    WHERE (p.status = 'Aprobado' OR p.status = 'No aprobado');
 END //
 DELIMITER ;

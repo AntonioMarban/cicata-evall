@@ -44,4 +44,36 @@ const createUser = async (req, res) => {
     });
 };
 
-module.exports = { createUser }
+const getActiveProjectsSub = async (req, res) => {
+  const query = 'CALL getActiveProjectsSub()';
+  pool.query(query, (error, results) => {
+      if (error) {
+          console.error(error);
+          return res.status(500).json({ error: 'Error fetching inactive projects' });
+      }
+
+      const inactiveProjects = results[0]; // Assuming the first result set contains the data
+      res.status(200).json(inactiveProjects);
+  });
+}
+
+
+const getInactiveProjectsSub = async (req, res) => {
+    const query = 'CALL getInactiveProjectsSub()';
+    pool.query(query, (error, results) => {
+        if (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Error fetching inactive projects' });
+        }
+
+        const inactiveProjects = results[0]; // Assuming the first result set contains the data
+        res.status(200).json(inactiveProjects);
+    });
+}
+
+
+module.exports = { 
+  createUser,
+  getInactiveProjectsSub,
+  getActiveProjectsSub
+}
