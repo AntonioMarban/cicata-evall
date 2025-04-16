@@ -7,12 +7,35 @@ CREATE PROCEDURE login(
     IN user_email VARCHAR(100),
     IN user_password VARCHAR(100))
 BEGIN
-    SELECT 
-        userId, 
-        email,
-        CONCAT(fName, ' ', lastName1, ' ', lastName2) AS fullName,
-        userType_id
-     FROM users WHERE email = user_email AND password = SHA2(user_password,256);
+    DECLARE _userId INT;
+    DECLARE _committeeId INT DEFAULT NULL;
+    
+    SET _userId = (SELECT userId FROM users WHERE email = user_email AND password = SHA2(user_password,256));
+    
+    SET _committeeId = (SELECT committeeId 
+                        FROM committeeUsers 
+                        WHERE userId = _userId
+                        LIMIT 1);
+                        
+    IF _committeeId IS NULL THEN
+        SELECT 
+            userId, 
+            email,
+            CONCAT(fName, ' ', lastName1, ' ', lastName2) AS fullName,
+            userType_id
+        FROM users 
+        WHERE userId = _userId;
+    ELSE
+        SELECT 
+            u.userId, 
+            u.email,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            u.userType_id,
+            cu.committeeId
+        FROM users u
+        JOIN committeeUsers cu ON u.userId = cu.userId
+        WHERE u.userId = _userId;
+    END IF;
 END //
 DELIMITER ;
 
