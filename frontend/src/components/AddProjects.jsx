@@ -74,7 +74,7 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
             <Dialog open={isOpen} onClose={() => {if (!projectToEdit) {setIsOpen(false);}}}  className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p>{projectToEdit ? "Editar Proyecto" : "Agregar Proyecto"}</p>
+                        <h1 className="dialog-title">{projectToEdit ? "Editar Proyecto" : "Agregar Proyecto"}</h1>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-rows">
                                 <div>

@@ -65,7 +65,7 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
             <Dialog open={isOpen} onClose={() => {if(!desgloseToEdit) setIsOpen(false);}} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p>{desgloseToEdit ? "Editar Objetivo Específico" : "Agregar Objetivo Específico"}</p>
+                        <p className="dialog-title">{desgloseToEdit ? "Editar Objetivo Específico" : "Agregar Objetivo Específico"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Nombre del Objetivo específico</p>

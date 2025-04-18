@@ -39,6 +39,16 @@ const  Activities = ({option,setOption}) => {
                 <div>
                     <p className="text-[22px]">Actividades</p>
                 </div>
+                <div className="rounded-lg p-0 w-full">
+                    <div className="flex justify-between !p-2">
+                    <p className="flex-1">Meta</p>
+                    <p className="flex-1">Institución</p>
+                    <p className="flex-1 text-center">Participante</p>
+                    <p className="flex-1 text-center">Fecha inicio</p>
+                    <p className="flex-1 text-center">Fecha fin</p>
+                    <p className="flex-1"></p>
+                    </div>
+                </div>
                 <CardAdd cards={activities.activities} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}

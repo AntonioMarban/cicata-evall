@@ -40,6 +40,14 @@ const  Budget = ({option,setOption}) => {
                 <div>
                     <p className="text-[22px]">Presupuesto</p>
                 </div>
+                <div className="rounded-lg p-0 w-full">
+                    <div className="flex justify-between !p-2">
+                    <p className="flex-1">Tipo presupuesto</p>
+                    <p className="flex-1 ">Nombre</p>
+                    <p className="flex-1 text-center">Gasto $0.00</p>
+                    <p className="flex-1"></p>
+                    </div>
+                </div>
                 <CardAdd cards={budget.budget} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}

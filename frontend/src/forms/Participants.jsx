@@ -38,6 +38,16 @@ const  Participants = ({option,setOption}) => {
                 <div>
                     <p className="text-[22px]">Participantes</p>
                 </div>
+                <div className="rounded-lg p-0 w-full">
+                    <div className="flex justify-between !p-2">
+                    <p className="flex-1">Nombre</p>
+                    <p className="flex-1">Apellido Paterno</p>
+                    <p className="flex-1">Apellido Materno</p>
+                    <p className="flex-1">Institución</p>
+                    <p className="flex-1 text-center">Puesto</p>
+                    <p className="flex-1"></p>
+                    </div>
+                </div>
                 <CardAdd 
                     cards={participants.participants} 
                     handleDeleteFile={handleDeleteArray}

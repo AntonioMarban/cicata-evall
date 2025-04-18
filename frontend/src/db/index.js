@@ -45,7 +45,6 @@ export async function getFormData(idf) {
 
     return new Promise((resolve, reject) => {
         const requestData = store.get(idf);
-
         requestData.onsuccess = () => resolve(requestData.result);
         requestData.onerror = (event) => reject("Error al obtener los datos: " + event.target.error);
     });

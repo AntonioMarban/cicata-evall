@@ -71,7 +71,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
             <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p>Agregar Colaboración</p>
+                        <p className="dialog-title">{collaborationToEdit ? "Editar colaboración" : "Agregar colaboración"}</p>
                         <form onSubmit={handleSubmit} className="form-colab">
                             <div className="form-rows">
                                 <div>
@@ -113,7 +113,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                                     name="convenioNE" className="form-colab-input" placeholder="Escribe el tipo de convenio..."></input>
                                 </div>
                                 <div>
-                                    <p>¿Número de covenio</p>
+                                    <p>¿Número de covenio?</p>
                                     <p className="form-subtext">(Si aplica)</p>
                                     <input 
                                         value={collaboration.noConvenio}

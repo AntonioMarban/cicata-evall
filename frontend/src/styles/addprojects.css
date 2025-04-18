@@ -70,6 +70,8 @@ font-size: 17px !important;
     flex-direction: column;
 }
 .form-rows{
+  margin-top: 12px;
+  margin-bottom: 12px;
   display: flex;
   width: 100%;
   flex-wrap: wrap;
@@ -119,6 +121,10 @@ font-size: 17px !important;
     color: black;
     box-sizing: border-box;
     padding: 2%;
+}
+.dialog-title{
+  margin-bottom: 20px;
+  font-weight: 450;
 }
 .modalAddProject{
   border-radius: 10px;

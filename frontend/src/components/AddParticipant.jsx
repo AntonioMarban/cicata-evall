@@ -13,7 +13,8 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         insti: "",
         puesto: "",
         gAcademico: "",
-        nivel: "",
+        typeInvD: "EDI",
+        levelInvD: "",
         email: "",
         netInv: 1,
         tipoInv: ""
@@ -26,7 +27,8 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         insti: "",
         puesto: "",
         gAcademico: "",
-        nivel: "",
+        typeInvD: "EDI",
+        levelInvD: "",
         email: "",
         netInv: 1,
         tipoInv: ""
@@ -62,8 +64,8 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         initialData: participantToEdit,
         isEditMode: !!participantToEdit
     });
-
-
+    const levels = ["EDI","COFAA","SNI"]
+    const [levelsToShow,setLevelToShow]= useState([])
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setParticipant(prev => ({
@@ -77,6 +79,18 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         handleParticipantSubmit(e, participant, participantToEdit ? participantToEdit.index : undefined);
     };
 
+    useEffect(()=>{
+        if(participant.typeInvD === "EDI"){
+            setLevelToShow(["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"])
+        }
+        else if(participant.typeInvD === "COFAA"){
+            setLevelToShow(["I","II","IV","V"])
+        }
+        else if(participant.typeInvD === "SNI"){
+            setLevelToShow(["Candidato","I","II","III","Emerito"])
+        }
+    },[participant.typeInvD])
+
     return (
         <>
             {!participantToEdit && (
@@ -86,8 +100,8 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             <Dialog open={isOpen} onClose={() => {if (!participantToEdit) setIsOpen(false);}} className="participant-dialog-overlay">
                 <div className="participant-dialog-container">
                     <DialogPanel className="participant-dialog-panel">
-                        <p>{participantToEdit ? "Editar Participante" : "Agregar Participante"}</p>
-                        <form onSubmit={handleSubmit} className="participant-form-pieza">
+                        <p className="dialog-title">{participantToEdit ? "Editar Participante" : "Agregar Participante"}</p>
+                        <form onSubmit={handleSubmit} className="participant-form-participant">
                             <div className="participant-form-rows">
                                 <div>
                                     <p>Nombre</p>
@@ -118,7 +132,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             </div>
                             <div className="participant-form-rows">
                                 <div>
-                                    <p>Institución a la que pertence</p>
+                                    <p>Institución perteneciente</p>
                                     <input 
                                         name="insti"
                                         value={participant.insti}
@@ -154,6 +168,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                         placeholder="Escribe el tipo de investigación..."></input>
                                 </div>
                             }
+                            
                             <div className="participant-complete-row-2">
                                 <p>Grado Académico</p>
                                 <input
@@ -163,16 +178,26 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                     placeholder="Escribe el grado académico..."
                                     ></input>
                             </div>
-                            <div>
-                                <p>Nivel</p>
-                                <div className="participant-button-level">
-                                <select name="nivel" 
-                                    value={participant.nivel}
-                                    onChange={handleInputChange}>
-                                    <option value="SNII">SNII</option>
-                                    <option value="COFFA">COFFA</option>
-                                    <option value="EDI">EDI</option>
-                                </select>
+                            <div className="participant-form-rows">
+                                <div className="participant-button-degree">
+                                    <p>Tipo investigador</p>
+                                    <select name="typeInvD" 
+                                        value={participant.typeInvD}
+                                        onChange={handleInputChange}>
+                                        {Array.isArray(levels) && levels.map((name, index) => (
+                                            <option key={index} value={name}>{name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="participant-button-degree">
+                                    <p>Nivel</p>
+                                    <select name="levelInvD" 
+                                        value={participant.levelInvD}
+                                        onChange={handleInputChange}>
+                                        {Array.isArray(levelsToShow) && levelsToShow.map((name, index) => (
+                                            <option key={index} value={name}>{name}</option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
                             <div>
