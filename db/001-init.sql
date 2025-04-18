@@ -498,3 +498,21 @@ BEGIN
     WHERE (p.status = 'Aprobado' OR p.status = 'No aprobado');
 END //
 DELIMITER ;
+
+-- Procedimiento para guardar resultados de evaluación y comentarios
+DELIMITER //
+CREATE PROCEDURE saveEvaluationResults(
+    IN p_projectId INT,
+    IN p_userId INT,
+    IN p_evaluationTypeId INT,
+    IN p_score INT,
+    IN p_result VARCHAR(50),
+    IN p_comments TEXT
+)
+BEGIN
+    DECLARE v_committeeId INT;
+    
+    -- Insertar los resultados de la evaluación
+    INSERT INTO evaluations (project_id, user_id, evaluation_type_id, score, result, comments)
+    VALUES (p_projectId, p_userId, p_evaluationTypeId, p_score, p_result, p_comments);
+END //

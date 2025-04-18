@@ -23,6 +23,7 @@ const doLogin = (req, res) => {
             userType: result.userType_id,
             email: result.email,
             token: token
+            
         };
         if(result.committeeId !== null && result.committeeId !== undefined) {
             response.committeeId = result.committeeId;
