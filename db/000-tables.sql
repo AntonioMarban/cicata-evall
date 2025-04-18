@@ -180,6 +180,7 @@ CREATE TABLE `dictums` (
 
 CREATE TABLE `agreements` (
   `agreement_id` integer PRIMARY KEY AUTO_INCREMENT,
+  `date` date,
   `agreed` bool,
   `user_id` integer,
   `project_id` integer

@@ -280,23 +280,23 @@ END //
 DELIMITER ;
 
 
--- Función para obtener la firma del acuerdo de un proyecto de un miembro del comité
--- @param committeeId: Id del comité
--- @param userId: Id del miembro del comité
+-- Función para obtener la firma del acuerdo de un proyecto de cualquier usuario
+-- @param userId: Id del usuario que es evaluador
 -- @param projectId: Id del proyecto
--- @returns: Dato booleano que indica si el miembro del comité ha firmado el acuerdo,
+-- @returns: Dato booleano que indica si el evaluador ha firmado el acuerdo,
 -- además del nombre del proyecto y el investigador a cargo
 DELIMITER //
-CREATE PROCEDURE getAgreementSignature(IN p_committeeId INT, IN p_userId INT, IN p_projectId INT)
+CREATE PROCEDURE getAgreementSignature( IN p_userId INT, IN p_projectId INT)
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM committeeUsers 
-        WHERE userId = p_userId AND committeeId = p_committeeId
+        SELECT 1 FROM evaluations 
+        WHERE user_id = p_userId AND project_id = p_projectId
     ) THEN
         SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+        SET MESSAGE_TEXT = 'The user is not an evaluator for this project';
     ELSE    
-        SELECT 
+        SELECT
+            DATE_FORMAT(a.date, '%Y-%m-%d') AS date,
             a.agreed,
             p.title,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher
@@ -312,13 +312,11 @@ END //
 DELIMITER ;
 
 -- Función para firmar el acuerdo de un proyecto de un miembro del comité de un proyecto en específico
--- @param committeeId: Id del comité
 -- @param userId: Id del miembro del comité
 -- @param projectId: Id del proyecto
 -- @returns: Mensaje de éxito o error
 DELIMITER //
 CREATE PROCEDURE updateAgreementSignature(
-    IN p_committeeId INT, 
     IN p_userId INT, 
     IN p_projectId INT, 
     IN p_email VARCHAR(100),
@@ -327,21 +325,22 @@ CREATE PROCEDURE updateAgreementSignature(
 BEGIN
     IF NOT EXISTS(
         SELECT 1 FROM users 
-        WHERE email = p_email AND password = SHA2(p_password,256)
+        WHERE userId = p_userId AND email = p_email AND password = SHA2(p_password,256)
     ) THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Invalid credentials';
     ELSEIF NOT EXISTS (
-        SELECT 1 FROM committeeUsers 
-        WHERE userId = p_userId AND committeeId = p_committeeId
+        SELECT 1 FROM evaluations 
+        WHERE user_id = p_userId AND project_id = p_projectId
     ) THEN
         SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+        SET MESSAGE_TEXT = 'The user is not an evaluator for this project';
     ELSE    
         UPDATE 
             agreements
         SET
-            agreed = TRUE
+            agreed = TRUE,
+            date = NOW()
         WHERE 
             user_id = p_userId
             AND project_id = p_projectId;
