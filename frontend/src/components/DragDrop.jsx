@@ -2,8 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import Drop from "../assets/BsUpload.svg";
 
 const DragDrop = ({ setFilesSend, filesSend }) => {
-  const [uploadedFileName, setUploadedFileName] = useState([]);
-
   const handleDragOver = (event) => {
     event.preventDefault();
   };
@@ -12,8 +10,6 @@ const DragDrop = ({ setFilesSend, filesSend }) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer.files);
 
-    // Agregar archivos nuevos sin perder los anteriores
-    setUploadedFileName((prev) => [...prev, ...files.map((file) => file.name)]);
     setFilesSend((prev) => [...prev, ...files]);
 
   };
@@ -21,26 +17,10 @@ const DragDrop = ({ setFilesSend, filesSend }) => {
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     if (files.length > 0) {
-      setUploadedFileName((prev) => [...prev, ...files.map((file) => file.name)]);
       setFilesSend((prev) => [...prev, ...files]);
     }
   };
-  const handleDeleteFile = (index) => {
-    const newFileNames = [...uploadedFileName];
-    const newFiles = Array.from(filesSend);
-  
-    newFileNames.splice(index, 1);
-    newFiles.splice(index, 1);
-  
-    setUploadedFileName(newFileNames);
-    setFilesSend(newFiles);
-  };
 
-  useEffect(() => {
-    if (filesSend.length === 0) {
-      setUploadedFileName([]);
-    }
-  }, [filesSend]);
 
   return (
     <div className="w-[90%]">
@@ -68,18 +48,6 @@ const DragDrop = ({ setFilesSend, filesSend }) => {
             </div>
           </label>
         </div>
-      {uploadedFileName.length > 0 && (
-        <div className="!p-0 w-full  h-1/3 overflow-y-auto flex flex-col justify-center items-center rounded-[30px]">
-          <ul className="!p-2 text-sm text-gray-800  w-[80%]">
-              {uploadedFileName.map((name, index) => (
-                <li key={index} className="flex justify-between">
-                  <p>{name}</p>
-                  <button className="cursor-pointer" type="button" onClick={()=>{handleDeleteFile(index)}}>Eliminar</button>
-                </li>
-              ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 };

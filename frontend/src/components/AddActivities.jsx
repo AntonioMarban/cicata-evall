@@ -1,5 +1,6 @@
 import "../styles/addprojects.css"
 import { useFormAddHandler } from "../hooks/useFormAddHandler";
+import useLoadFormData from "../hooks/useLoadFormData";
 
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
@@ -14,7 +15,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
         startDate: "",
         endDate: ""
     };
-
+    const [responsable,setResponsable] = useState([]);
     const [activity, setActivity] = useState({
         actMeta: "",
         insR: "",
@@ -22,6 +23,9 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
         startDate: "",
         endDate: ""
     })
+
+    console.log(responsable.participants)
+    useLoadFormData(3,setResponsable);
 
     useEffect(() => {
             if (activitesToEdit) {
@@ -34,7 +38,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                 });
                 setIsOpen(true);
             }
-        }, [activitesToEdit]);
+    }, [activitesToEdit]);
 
     const handleActivitySubmit  = useFormAddHandler({
         setState: setActivities,
@@ -70,7 +74,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
             <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p>Agregar Actividad</p>
+                        <p className="dialog-title">{activitesToEdit ? "Editar Actividades" : "Agregar Actividades"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Meta</p>
@@ -84,7 +88,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                             </div>
                             <div className="form-rows">
                                 <div>
-                                    <p>Institución donde se realiza</p>
+                                    <p>¿Dónde se realizará?</p>
                                     <input 
                                         name="insR" 
                                         className="form-pieza-input" 
@@ -95,13 +99,18 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                                 </div>
                                 <div>
                                     <p>Participante Responsable</p>
-                                    <input 
+                                    <select 
                                         name="participant" 
                                         className="form-pieza-input" 
                                         placeholder="Select type"
                                         value={activity.participant}
                                         onChange={handleInputChange}
-                                    ></input>
+                                    >   
+                                    <option>Selecciona un participante</option>
+                                        {Array.isArray(responsable.participants) && responsable.participants.map((person, index) => (
+                                                <option key={index} value={`${person.nombre} ${person.paterno} ${person.materno}`}>{`${person.nombre} ${person.paterno} ${person.materno}`}</option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
                             <p>Periodo</p>

@@ -17,6 +17,19 @@ const  GeneralData = ({option,setOption}) => {
             objectiveA,
             considerations: "",
             summary:"" });
+    
+    const [newErrors,setNewErrors] = useState({
+            titleProject: "",
+            startDate:"",
+            endDate:"",
+            typeInv, 
+            typeInvText: "", 
+            spTopic: "",
+            subTopic: "", 
+            objectiveA,
+            considerations: "",
+            summary:""
+    });
 
     const handleChangeButton = (key, value) => {
         setGeneralData((prevState) => ({
@@ -47,7 +60,22 @@ const  GeneralData = ({option,setOption}) => {
         if (!validateDates()) {
             return; 
         }
-        handleOnSubmitForm(event); 
+        const newErrorsF = {}
+        Object.entries(generalData).forEach(([key, value]) => {
+          if (!value || (typeof value === 'string' && value.trim() === '')) {
+            newErrorsF[key] = `El campo  es requerido`;
+          }
+          if(generalData.typeInv < 4){
+            delete newErrorsF['typeInvText'];
+        }
+        });
+        setNewErrors(newErrorsF)
+        if(Object.keys(newErrorsF).length>0){
+            alert("faltan campos por llenar")
+        }
+        else{
+            handleOnSubmitForm(event); 
+        }
     };
 
     useLoadFormData(generalData.idF,setGeneralData);
@@ -57,7 +85,7 @@ const  GeneralData = ({option,setOption}) => {
             <div className="flex flex-col">
                 <div className="!mt-5 flex-1">
                     <p className="text-2xl">Datos generales del proyecto</p>
-                    <p className="text-lg mt-3">Título del proyecto</p>
+                    <p className="text-lg mt-3">Título del proyecto {newErrors.titleProject && <span className="text-red-600">*{newErrors.titleProject}</span>}</p>
                     <input 
                         type="text"
                         name="titleProject"
@@ -70,7 +98,7 @@ const  GeneralData = ({option,setOption}) => {
                     <p className="text-lg">Periodo del proyecto</p>
                     <div className="flex flex-wrap">
                         <div className="flex-1">
-                            <p>Fecha de Inicio</p>
+                            <p>Fecha de Inicio {newErrors.startDate && <span className="text-red-600">*{newErrors.startDate}</span>}</p>
                             <input 
                                     className="!p-2 w-4/5 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end"
                                     name="startDate" 
@@ -80,7 +108,7 @@ const  GeneralData = ({option,setOption}) => {
                                 ></input>
                         </div>
                         <div className="flex-1">
-                            <p>Fecha de Fin</p>
+                            <p>Fecha de Fin {newErrors.endDate && <span className="text-red-600">*{newErrors.endDate}</span>}</p>
                             <input  
                                     className="!p-2 w-4/5 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end"
                                     name="endDate" 
@@ -131,7 +159,7 @@ const  GeneralData = ({option,setOption}) => {
                     </div>
                     {generalData.typeInv === 4 &&
                         <div className="!mt-5 w-100% flex-1">
-                            <p>¿Cuál?</p>
+                            <p>¿Cuál? {newErrors.typeInvText && <span className="text-red-600">*{newErrors.typeInvText}</span>}</p>
                             <input  
                                     className="!p-2 w-4/10 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3" 
                                     name="typeInvText" 
@@ -145,7 +173,7 @@ const  GeneralData = ({option,setOption}) => {
                 <div className="flex-1 !mt-5">
                     <div className="flex flex-wrap">
                         <div className="flex-1">
-                            <p className="!mb-5">Tema especialidad</p>
+                            <p className="!mb-5">Tema especialidad {newErrors.spTopic && <span className="text-red-600">*{newErrors.spTopic}</span>}</p>
                             <input  
                                     className="!p-2 w-4/5 min-w-[250px] rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end"
                                     name="spTopic" 
@@ -154,7 +182,7 @@ const  GeneralData = ({option,setOption}) => {
                                     placeholder="Escribe el tema de especialidad..."></input>
                         </div>
                         <div className="flex-1">
-                            <p className="!mb-5">Tema especialidad</p>
+                            <p className="!mb-5">Subtema especialidad {newErrors.subTopic && <span className="text-red-600">*{newErrors.subTopic}</span>}</p>
                             <input  
                                     className="!p-2 w-4/5 min-w-[250px] rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end"
                                     name="subTopic" 
@@ -184,7 +212,7 @@ const  GeneralData = ({option,setOption}) => {
                 </div>
                 
                 <div className="!mt-5 flex-1">
-                    <p className="text-lg mt-3">En caso afirmativo ¿Con cuál? / No se considera ¿Por qué?</p>
+                    <p className="text-lg mt-3">En caso afirmativo ¿Con cuál? / No se considera ¿Por qué? {newErrors.considerations && <span className="text-red-600">*{newErrors.considerations}</span>}</p>
                     <input  
                             className="!p-2 w-2/5 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3" 
                             name="considerations"  
@@ -193,7 +221,7 @@ const  GeneralData = ({option,setOption}) => {
                             placeholder="Escribe las consideraciones..."></input>
                 </div>
                 <div className="!mt-5 flex-1 w-[90%]">
-                    <p className="text-lg mt-3">Resumen del proyecto</p>
+                    <p className="text-lg mt-3">Resumen del proyecto {newErrors.summary && <span className="text-red-600">*{newErrors.summary}</span>}</p>
                     <p className="text-lg mt-3">(Máximo de 1500 caracteres con espacios)</p>
                     <textarea 
                         name="summary" 

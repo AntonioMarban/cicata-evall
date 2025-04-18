@@ -4,24 +4,48 @@ import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 
 const  Contributions = ({option,setOption}) => {
-    const [contributions, setContributions] = useState(
-        {   idF: 10,
-            contributions:"" })
+    const [contributions, setContributions] = useState({  
+        idF: 10,
+        contributions:"" 
+    })
+    const [newErrorsD,setNewErrorsD] = useState({
+        contributions:""
+    });
+    
     const handleOnSubmitForm = useFormHandler({
         form: contributions,
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
     });
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setContributions({ ...contributions, [name]: value });
     };
+
     useLoadFormData(contributions.idF,setContributions);
+    
+    const handleSubmitWithValidation = (event) => {
+        event.preventDefault();
+        const newErrorsDF = {}
+        if (!contributions.contributions || (typeof contributions.contributions === 'string' 
+            && contributions.contributions.trim() === '')) {
+                newErrorsDF.contributions = "El campo es requerido";
+        }
+        setNewErrorsD(newErrorsDF)
+        if(Object.keys(newErrorsDF).length>0){
+            return alert("Faltan cambios por llenar")
+        }
+        else{
+            handleOnSubmitForm(event)
+        }
+    }
+
     return (
         <div>
             <div className="flex flex-col justify-between">
                 <div>
-                    <p className="text-[22px]">Aportaciones del proyecto al IPN y al CICATA Unidad Morelos</p>
+                    <p className="text-[22px]">Aportaciones del proyecto al IPN y al CICATA Unidad Morelos
+                        <br/> {newErrorsD.contributions && <span className="text-red-600">*{newErrorsD.contributions}</span>}
+                    </p>
                 </div>
                 <div className="flex-1 !mt-5">
                     <div className="flex flex-wrap">
@@ -38,7 +62,7 @@ const  Contributions = ({option,setOption}) => {
             </div>
             <div className="flex justify-end items-center !mt-5 !mb-5">
                 <button className="!mr-5 !ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmitForm}>Siguiente</button>
+                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>
     )

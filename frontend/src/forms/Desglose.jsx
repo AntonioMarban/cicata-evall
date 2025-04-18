@@ -13,11 +13,19 @@ const  Desglose = ({option,setOption}) => {
             background:"",
             problemSta:"",
             justification:"", 
-            typeInvText: "", 
             hipotesis: "",
             gObjective: "", 
             sObjectives: [] });
     
+    const [newErrorsD,setNewErrorsD] = useState(
+        {
+            introduction: "",
+            background:"",
+            problemSta:"",
+            justification:"", 
+            hipotesis: "",
+            gObjective: ""
+        });
     const [desgloseToEdit, setDesgloseToEdit] = useState(null);
 
     const handleChange = (e) => {
@@ -29,6 +37,23 @@ const  Desglose = ({option,setOption}) => {
         form: desglose,
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
     });
+
+    const handleSubmitWithValidation = (event) => {
+        event.preventDefault();
+        const newErrorsDF = {}
+        Object.entries(desglose).forEach(([key, value]) => {
+          if (!value || (typeof value === 'string' && value.trim() === '')) {
+            newErrorsDF[key] = `El campo  es requerido`;
+          }
+        });
+        setNewErrorsD(newErrorsDF)
+        if(Object.keys(newErrorsDF).length>0){
+            alert("Faltan cambios por llenar")
+        }
+        else{
+            handleOnSubmitForm(event); 
+        }
+    }
 
     const handleDeleteArray = (index) => {
         setDesglose({
@@ -55,7 +80,7 @@ const  Desglose = ({option,setOption}) => {
                 <div className="flex-1 mt-5">
                     <div className="flex flex-wrap flex-col">
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Introducción</p>
+                            <p className="!mt-2 text-xl">Introducción {newErrorsD.introduction && <span className="text-red-600">*{newErrorsD.introduction}</span>}</p>
                             <textarea 
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
                             name="introduction" 
@@ -64,7 +89,7 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe la introducción del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Antecedentes</p>
+                            <p className="!mt-2 text-xl">Antecedentes {newErrorsD.background && <span className="text-red-600">*{newErrorsD.background}</span>}</p>
                             <textarea
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"  
                             name="background"
@@ -73,7 +98,7 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe los antecedentes del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Planteamiento del Problema</p>
+                            <p className="!mt-2 text-xl">Planteamiento del Problema {newErrorsD.problemSta && <span className="text-red-600">*{newErrorsD.problemSta}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
                             name="problemSta"
@@ -82,7 +107,7 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe el planteamiento del problema..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Justificación</p>
+                            <p className="!mt-2 text-xl">Justificación {newErrorsD.justification && <span className="text-red-600">*{newErrorsD.justification}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
                             name="justification"
@@ -91,7 +116,7 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe la justificación del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Hipótesis</p>
+                            <p className="!mt-2 text-xl">Hipótesis {newErrorsD.hipotesis && <span className="text-red-600">*{newErrorsD.hipotesis}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
                             name="hipotesis"
@@ -100,7 +125,7 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe la hipótesis del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Objetivo general</p>
+                            <p className="!mt-2 text-xl">Objetivo general {newErrorsD.gObjective && <span className="text-red-600">*{newErrorsD.gObjective}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
                             name="gObjective"
@@ -109,7 +134,14 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe el objetivo general del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Objetivos específicos</p>
+                            <p className="!mt-2 text-xl">Objetivos específicos </p>
+                            <div className="rounded-lg p-0 w-full">
+                                <div className="flex justify-between !p-2">
+                                    <p className="flex-1">Nombre del Objetivo específico</p>
+                                    <p className="flex-1 text-center">Descripción</p>
+                                    <p className="flex-1"></p>
+                                </div>
+                            </div>
                             <CardAdd cards={desglose.sObjectives} 
                                 handleDeleteFile={handleDeleteArray}
                                 handleEditModal={handleEditModal}
@@ -127,7 +159,7 @@ const  Desglose = ({option,setOption}) => {
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
                 <button className="!mr-5 ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmitForm}>Siguiente</button>
+                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>
     )

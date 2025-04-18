@@ -9,7 +9,7 @@ export const useFormHandler = ({
         try{
             await updateForm(form);
         } catch(error){
-            alert("Error al guardar formulario2",error.message);
+            alert("Error al guardar formulario",error.message);
             return;
         }
         onSuccess();

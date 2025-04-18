@@ -71,6 +71,15 @@ const  Collaboration = ({option,setOption}) => {
                 </div>
                 {collaborations.collaborate ? (
                 <>
+                    <div className="rounded-lg p-0 w-full">
+                        <div className="flex justify-between !p-2">
+                            <p className="flex-1">Institución</p>
+                            <p className="flex-1">Convenio colaboración</p>
+                            <p className="flex-1">Extranjero / Nacional</p>
+                            <p className="flex-1 text-center">Institución</p>
+                            <p className="flex-1"></p>
+                        </div>
+                    </div>
                     <CardAdd cards={collaborations.collaborations} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}

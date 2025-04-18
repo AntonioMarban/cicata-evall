@@ -3,7 +3,7 @@ import { getFormData  } from "../db/index";
 const useLoadFormData = (idF, setData) => {
     useEffect(() => {
         const loadFormData = async () => {
-            if (!idF) return; // Evita llamadas innecesarias si idF no está definido
+            if (!idF) return; 
 
             try {
                 const formData = await getFormData(idF);
@@ -16,7 +16,7 @@ const useLoadFormData = (idF, setData) => {
         };
 
         loadFormData();
-    }, [idF]); // Se ejecuta solo cuando cambia idF
+    }, [idF]); 
 };
 
 export default useLoadFormData;
