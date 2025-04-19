@@ -50,10 +50,7 @@ const  EthicalAsp = ({option,setOption}) => {
             return alert("Es necesario subir archivos")
           }
         setNewErrors(newErrorsF)
-        if(Object.keys(newErrorsF).length>0){
-            alert("faltan campos por llenar")
-        }
-        else{
+        if(!Object.keys(newErrorsF).length>0){
             handleOnSubmitForm(event); 
         }
     };
@@ -170,9 +167,9 @@ const  EthicalAsp = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center !mt-5 mb-5">
-                <button className="!mr-5 ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  
+                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  
                     onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
+                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
                     onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>

@@ -32,10 +32,7 @@ const  ConflictoInt = ({option,setOption}) => {
                 newErrorsDF.conflict = "El campo es requerido";
         }
         setNewErrorsD(newErrorsDF)
-        if(Object.keys(newErrorsDF).length>0){
-            return alert("Faltan cambios por llenar")
-        }
-        else{
+        if(!Object.keys(newErrorsDF).length>0){
             handleOnSubmitForm(event)
         }
     }
@@ -63,8 +60,8 @@ const  ConflictoInt = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center !mt-20 !mb-5">
-                <button className="!mr-5 !ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleSubmitWithValidation}>Siguiente</button>
+                <button className="!p-2 !mr-5 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
+                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>
     )

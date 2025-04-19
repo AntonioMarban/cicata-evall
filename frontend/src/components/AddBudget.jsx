@@ -10,14 +10,11 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
     const initialFormValues = {
         budgetType: "",
         budgetName: "",
-        budgetAm: 0
+        budgetAm: ""
     };
 
-    const [budgetForm, setBudgetForm] = useState({
-        budgetType: "",
-        budgetName: "",
-        budgetAm: 0
-    })
+    const [budgetForm, setBudgetForm] = useState(initialFormValues)
+    const [newErrors,setNewErrors] = useState(initialFormValues);
 
     const handleBudgetSubmit = useFormAddHandler({
         setState: setBudget,
@@ -45,7 +42,17 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        handleBudgetSubmit(e, budgetForm, budgetToEdit ? budgetToEdit.index : undefined);
+        const newErrorsF = {}
+        Object.entries(budgetForm).forEach(([key, value]) => {
+            if (!value || (typeof value === 'string' && value.trim() === '')) {
+              newErrorsF[key] = `El campo  es requerido`;
+            }
+        });
+        console.log(newErrorsF)
+        setNewErrors(newErrorsF)
+        if(!Object.keys(newErrorsF).length>0){
+            handleBudgetSubmit(e, budgetForm, budgetToEdit ? budgetToEdit.index : undefined);
+        }
     };
 
 
@@ -76,7 +83,9 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                         <p className="dialog-title">{budgetToEdit ? "Editar Presupuesto" : "Agregar Presupuesto"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
-                                <p>Gasto</p>
+                                <p>Gasto
+                                    <br/>{newErrors.budgetType && <span className="text-red-600">*{newErrors.budgetType}</span>}
+                                </p>
                                 <input 
                                     name="budgetType" 
                                     className="form-pieza-input" 
@@ -86,7 +95,9 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                 ></input>
                             </div>
                             <div className="form-complete-row">
-                                <p>Nombre</p>
+                                <p>Nombre
+                                    <br/>{newErrors.budgetName && <span className="text-red-600">*{newErrors.budgetName}</span>}
+                                </p>
                                 <input 
                                     name="budgetName" 
                                     className="form-pieza-input" 
@@ -96,7 +107,9 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                 ></input>
                             </div>
                             <div className="form-complete-row">
-                                <p>Gasto $0.00</p>
+                                <p>Gasto $0.00
+                                    <br/>{newErrors.budgetAm && <span className="text-red-600">*{newErrors.budgetAm}</span>}
+                                </p>
                                 <input 
                                     name="budgetAm" 
                                     type="number" min={0}

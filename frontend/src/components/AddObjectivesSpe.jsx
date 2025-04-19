@@ -10,11 +10,8 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
         objectiveName: "",
         objectiveDescription:""
     }
-    const [objectiveSpe, setObjectiveSpe] = useState({
-        objectiveName: "",
-        objectiveDescription:""
-    })
-
+    const [objectiveSpe, setObjectiveSpe] = useState(initialValues)
+    const [newErrors,setNewErrors] =  useState(initialValues);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setObjectiveSpe(prev => ({
@@ -50,7 +47,16 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        handleObjectiveSubmit(e, objectiveSpe, desgloseToEdit ? desgloseToEdit.index : undefined);
+        const newErrorsF = {}
+        Object.entries(objectiveSpe).forEach(([key, value]) => {
+          if (!value || (typeof value === 'string' && value.trim() === '')) {
+            newErrorsF[key] = `El campo  es requerido`;
+          }
+        });
+        setNewErrors(newErrorsF)
+        if(!Object.keys(newErrorsF).length>0){
+            handleObjectiveSubmit(e, objectiveSpe, desgloseToEdit ? desgloseToEdit.index : undefined);
+        }
     };
 
     return (
@@ -62,13 +68,15 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
             )
             }
 
-            <Dialog open={isOpen} onClose={() => {if(!desgloseToEdit) setIsOpen(false);}} className="dialog-overlay">
+            <Dialog open={isOpen} onClose={() => {}} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <p className="dialog-title">{desgloseToEdit ? "Editar Objetivo Específico" : "Agregar Objetivo Específico"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
-                                <p>Nombre del Objetivo específico</p>
+                                <p>Nombre del Objetivo específico
+                                <br/>{newErrors.objectiveName && <span className="text-red-600">*{newErrors.objectiveName}</span>}
+                                </p>
                                 <input name="objectiveName" 
                                        className="form-pieza-input" 
                                        placeholder="Escribe el nombre del objetivo..."
@@ -76,7 +84,9 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                                        onChange={handleInputChange}></input>
                             </div>
                             <div className="form-complete-row">
-                                <p>Descripción</p>
+                                <p>Descripción
+                                <br/>{newErrors.objectiveDescription && <span className="text-red-600">*{newErrors.objectiveDescription}</span>}
+                                </p>
                                 <input name="objectiveDescription" 
                                        className="form-pieza-input" 
                                        placeholder="Escribe la descripción del objetivo..."
@@ -90,7 +100,11 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                                 {!desgloseToEdit && (
                                     <button 
                                     type="button" 
-                                    onClick={(e) => setIsOpen(false)} 
+                                    onClick={(e) => {
+                                        setIsOpen(false)
+                                        setObjectiveSpe(initialValues)
+                                        setNewErrors(initialValues)
+                                    }} 
                                     className="button-cancel"
                                     >
                                     Cancelar

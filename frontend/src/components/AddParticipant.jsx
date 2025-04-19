@@ -13,26 +13,15 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         insti: "",
         puesto: "",
         gAcademico: "",
-        typeInvD: "EDI",
+        typeInvD: "",
         levelInvD: "",
         email: "",
-        netInv: 1,
-        tipoInv: ""
+        tipoInv: "",
+        netInv: 1
       };
-
-    const [participant, setParticipant] = useState({
-        nombre: "",
-        paterno: "",
-        materno: "",
-        insti: "",
-        puesto: "",
-        gAcademico: "",
-        typeInvD: "EDI",
-        levelInvD: "",
-        email: "",
-        netInv: 1,
-        tipoInv: ""
-    });
+    const [newErrors,setNewErrors] =  useState(initialParticipant);
+    const [participant, setParticipant] = useState(initialParticipant);
+    
     const handleChangeButton = (key, value) => {
         setParticipant((prevState) => ({
             ...prevState,
@@ -76,7 +65,24 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        handleParticipantSubmit(e, participant, participantToEdit ? participantToEdit.index : undefined);
+        const newErrorsF = {}
+        Object.entries(participant).forEach(([key, value]) => {
+          if (!value || (typeof value === 'string' && value.trim() === '')) {
+            newErrorsF[key] = `El campo  es requerido`;
+            if (value === 0){
+                delete newErrorsF[key]
+            }
+            if (key=== "netInv" && value === 0 ){
+                delete newErrorsF[key]
+                delete newErrorsF["tipoInv"]
+            }
+          }
+        });
+        delete newErrorsF["index"];
+        setNewErrors(newErrorsF)
+        if(!Object.keys(newErrorsF).length>0){
+            handleParticipantSubmit(e, participant, participantToEdit ? participantToEdit.index : undefined);
+        }
     };
 
     useEffect(()=>{
@@ -97,14 +103,15 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                 <button className="participant-modalAgregarPieza" onClick={() => setIsOpen(true)}>Agregar participante</button>
             )}
 
-            <Dialog open={isOpen} onClose={() => {if (!participantToEdit) setIsOpen(false);}} className="participant-dialog-overlay">
+            <Dialog open={isOpen} onClose={() => {}} className="participant-dialog-overlay">
                 <div className="participant-dialog-container">
                     <DialogPanel className="participant-dialog-panel">
                         <p className="dialog-title">{participantToEdit ? "Editar Participante" : "Agregar Participante"}</p>
                         <form onSubmit={handleSubmit} className="participant-form-participant">
                             <div className="participant-form-rows">
                                 <div>
-                                    <p>Nombre</p>
+                                    <p>Nombre  
+                                        <br/>{newErrors.nombre && <span className="text-red-600">*{newErrors.nombre}</span>}</p>
                                     <input 
                                         name="nombre"
                                         value={participant.nombre}
@@ -112,7 +119,8 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                         className="participant-form-pieza-input" placeholder="Escribe el nombre del proyecto..."></input>
                                 </div>
                                 <div>
-                                    <p>Apellido Paterno</p>
+                                    <p>Apellido Paterno 
+                                        <br/>{newErrors.paterno && <span className="text-red-600">*{newErrors.paterno}</span>}</p>
                                     <input 
                                         name="paterno"
                                         value={participant.paterno}
@@ -121,7 +129,8 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                         className="participant-form-pieza-input"></input>
                                 </div>
                                 <div>
-                                    <p>Apellido Materno</p>
+                                    <p>Apellido Materno 
+                                        <br/>{newErrors.materno && <span className="text-red-600">*{newErrors.materno}</span>}</p>
                                     <input 
                                         name="materno"
                                         value={participant.materno}
@@ -132,7 +141,9 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             </div>
                             <div className="participant-form-rows">
                                 <div>
-                                    <p>Institución perteneciente</p>
+                                    <p>Institución perteneciente 
+                                        <br/>{newErrors.insti && <span className="text-red-600"> *{newErrors.insti}</span>}
+                                    </p>
                                     <input 
                                         name="insti"
                                         value={participant.insti}
@@ -140,7 +151,9 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                         className="participant-form-pieza-input" placeholder="Escribe a la institución que pertenece..."></input>
                                 </div>
                                 <div>
-                                    <p>Puesto que desempeña</p>
+                                    <p>Puesto que desempeña
+                                        <br/>{newErrors.puesto && <span className="text-red-600"> *{newErrors.puesto}</span>}
+                                    </p>
                                     <input
                                         name="puesto"
                                         value={participant.puesto}
@@ -160,7 +173,9 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             </div>
                             {participant.netInv === 1 &&
                                 <div className="participant-complete-row-2">
-                                    <p>¿Cuál?</p>
+                                    <p>¿Cuál?
+                                        <br/>{newErrors.tipoInv && <span className="text-red-600"> *{newErrors.tipoInv}</span>}
+                                    </p>
                                     <input  
                                         name="tipoInv"
                                         value={participant.tipoInv}
@@ -170,7 +185,9 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             }
                             
                             <div className="participant-complete-row-2">
-                                <p>Grado Académico</p>
+                                <p>Grado Académico
+                                    <br/>{newErrors.gAcademico && <span className="text-red-600"> *{newErrors.gAcademico}</span>}
+                                </p>
                                 <input
                                     name="gAcademico"
                                     value={participant.gAcademico}
@@ -180,20 +197,26 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             </div>
                             <div className="participant-form-rows">
                                 <div className="participant-button-degree">
-                                    <p>Tipo investigador</p>
+                                    <p>Tipo investigador
+                                        <br/>{newErrors.typeInvD && <span className="text-red-600"> *{newErrors.typeInvD}</span>}
+                                    </p>
                                     <select name="typeInvD" 
                                         value={participant.typeInvD}
                                         onChange={handleInputChange}>
+                                        <option value="">Selecciona una opción</option>
                                         {Array.isArray(levels) && levels.map((name, index) => (
                                             <option key={index} value={name}>{name}</option>
                                         ))}
                                     </select>
                                 </div>
                                 <div className="participant-button-degree">
-                                    <p>Nivel</p>
+                                    <p>Nivel
+                                        <br/>{newErrors.levelInvD && <span className="text-red-600"> *{newErrors.levelInvD}</span>}
+                                    </p>
                                     <select name="levelInvD" 
                                         value={participant.levelInvD}
                                         onChange={handleInputChange}>
+                                        <option value="">Selecciona una opción</option>
                                         {Array.isArray(levelsToShow) && levelsToShow.map((name, index) => (
                                             <option key={index} value={name}>{name}</option>
                                         ))}
@@ -203,7 +226,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             <div>
                                 <p>Datos de contacto</p>
                                 <div>
-                                    <p>Email</p>
+                                    <p>Email <br/>{newErrors.email && <span className="text-red-600"> *{newErrors.email}</span>}</p>
                                     <input 
                                     name="email"
                                     value={participant.email}
@@ -219,7 +242,11 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                 {!participantToEdit &&(
                                     <button
                                     type="button"
-                                    onClick={(e)=>setIsOpen(false)}
+                                    onClick={(e)=>{
+                                        setIsOpen(false); 
+                                        setParticipant(initialParticipant); 
+                                        setNewErrors(initialParticipant);
+                                       }}
                                     className="button-cancel">
                                     Cancelar
                                     </button>

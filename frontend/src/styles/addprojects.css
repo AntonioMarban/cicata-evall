@@ -129,8 +129,6 @@ font-size: 17px !important;
 .modalAddProject{
   border-radius: 10px;
   border: None;
-  height: 50%;
-  width: 20%;
   font-weight: 500;
   font-size: 17px;
   cursor: pointer;

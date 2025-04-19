@@ -13,15 +13,10 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
         noRE: "",
         noRESIP: ""
     };
-    
-    const [formValues, setFormValues] = useState({
-        projectName: "",
-        projectDate: "",
-        projectType: "",
-        noRE: "",
-        noRESIP: ""
-    });
+    const [newErrors,setNewErrors] = useState(initialFormValues);
+    const [formValues, setFormValues] = useState(initialFormValues);
 
+    
     useEffect(() => {
         if (projectToEdit) {
             setFormValues({
@@ -60,7 +55,18 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        handleActivitySubmit(e, formValues, projectToEdit ? projectToEdit.index : undefined);
+        const newErrorsF = {}
+        Object.entries(formValues).forEach(([key, value]) => {
+            if (!value || (typeof value === 'string' && value.trim() === '')) {
+              newErrorsF[key] = `El campo  es requerido`;
+            }
+        });
+        delete newErrorsF["noRE"];
+        delete newErrorsF["noRESIP"];
+        setNewErrors(newErrorsF)
+        if(!Object.keys(newErrorsF).length>0){
+            handleActivitySubmit(e, formValues, projectToEdit ? projectToEdit.index : undefined);
+        }
     };
 
     return (
@@ -71,14 +77,16 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                 </button>
             )}
 
-            <Dialog open={isOpen} onClose={() => {if (!projectToEdit) {setIsOpen(false);}}}  className="dialog-overlay">
+            <Dialog open={isOpen} onClose={() => {}}  className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <h1 className="dialog-title">{projectToEdit ? "Editar Proyecto" : "Agregar Proyecto"}</h1>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-rows">
                                 <div>
-                                    <p>Nombre proyecto</p>
+                                    <p>Nombre proyecto
+                                        <br/>{newErrors.projectName && <span className="text-red-600">*{newErrors.projectName}</span>}
+                                    </p>
                                     <input 
                                         name="projectName" 
                                         className="form-pieza-input" 
@@ -88,7 +96,9 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                                     />
                                 </div>
                                 <div>
-                                    <p>Fecha de asociación</p>
+                                    <p>Fecha de asociación
+                                        <br/>{newErrors.projectDate && <span className="text-red-600">*{newErrors.projectDate}</span>}
+                                    </p>
                                     <input 
                                         name="projectDate" 
                                         className="form-pieza-input" 
@@ -100,7 +110,9 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                             </div>
                             <div className="form-complete-row">
                                 <p>Tipo de proyecto</p>
-                                <p className="form-subtext">(p.e. Tesis maestría, convocatoria interna innovación, convocatoria externa fronteras, etc.)</p>
+                                <p className="form-subtext">(p.e. Tesis maestría, convocatoria interna innovación, convocatoria externa fronteras, etc.)
+                                    <br/>{newErrors.projectType && <span className="text-red-600">*{newErrors.projectType}</span>}
+                                </p>
                                 <input 
                                     name="projectType" 
                                     className="form-pieza-input" 
@@ -111,8 +123,9 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                             </div>
                             <div className="form-rows">
                                 <div>
-                                    <p>Número de registro externo</p>
-                                    <p className="form-subtext">(Si aplica)</p>
+                                    <p>Número de registro externo
+                                        <br/><span className="form-subtext">(Si aplica)</span>
+                                    </p>
                                     <input 
                                         name="noRE" 
                                         className="form-pieza-input" 
@@ -140,7 +153,11 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                                 {!projectToEdit && (
                                     <button 
                                     type="button" 
-                                    onClick={(e) => setIsOpen(false)} 
+                                    onClick={(e) => {
+                                        setIsOpen(false)
+                                        setFormValues(initialFormValues);
+                                        setNewErrors(initialFormValues)
+                                    }} 
                                     className="button-cancel"
                                     >
                                     Cancelar
