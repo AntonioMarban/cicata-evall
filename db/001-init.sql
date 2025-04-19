@@ -515,3 +515,75 @@ BEGIN
     INSERT INTO evaluations (project_id, user_id, evaluation_type_id, score, result, comments)
     VALUES (p_projectId, p_userId, p_evaluationTypeId, p_score, p_result, p_comments);
 END //
+
+
+
+-- Función para obtener usuarios del rol de la petición
+-- Se hace uso de un procedimiento almacena getUsersByRole
+-- @query userType_id: id del rol de usuario
+-- @return users: lista de usuarios con el rol solicitado
+DELIMITER //
+CREATE PROCEDURE getUsersByRole(IN p_userType_id INT)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM userTypes 
+        WHERE userTypeId = p_userType_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'The user type does not exist';
+    END IF;
+    SELECT 
+        u.userId,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        u.email
+    FROM 
+        users u
+    WHERE 
+        u.userType_id = p_userType_id;
+END //
+DELIMITER ;
+
+
+
+-- Función para obtener todos los comités existentes
+-- Se hace uso de un procedimiento almacena getAllCommittees
+-- @return users: lista de comités existentes
+DELIMITER //
+CREATE PROCEDURE getAllCommittees()
+BEGIN
+    SELECT 
+        c.committeeId,
+        c.name
+    FROM 
+        committees c;
+END //
+DELIMITER ;
+
+
+
+-- Función para obtener el secretario de un comité
+-- Se hace uso de un procedimiento almacena getCommitteeSecretary
+-- @param committee_id: id del comité
+-- @return secretary: secretario del comité
+DELIMITER //
+CREATE PROCEDURE getCommitteeSecretary(IN p_committee_id INT)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM committees 
+        WHERE committeeId = p_committee_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'The committee does not exist';
+    ELSE
+        SELECT 
+            u.userId,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS secretary,
+            u.email
+        FROM 
+            committeeUsers cu
+        JOIN users u ON cu.userId = u.userId
+        WHERE 
+            cu.committeeId = p_committee_id AND u.userType_id = 4;
+    END IF;
+END //
+DELIMITER ;
