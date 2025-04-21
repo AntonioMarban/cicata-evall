@@ -24,6 +24,8 @@ const  Login = () => {
             navigate('/Inicio')
             localStorage.setItem('token',data.token)
             localStorage.setItem('userId', data.userId)
+            localStorage.setItem('userFullName', data.fullName)
+            localStorage.setItem('userType', data.userType)
         }else{
             alert('Usuario o contraseña incorrectos')
         }

@@ -32,68 +32,51 @@ const createProject = async (req, res) => {
         ethicalAspects, workWithHumans, workWithAnimals, biosecurityConsiderations,
         contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
 
-        //proyecto asociado
-        associatedProjectName, associationDate, externalRegister, SIPRegister,
-
-        //miembros
-        memberFName, memberLastName1, memberLastName2, memberEmail, memberInstitution, memberPositionWork,
-        memberResearchNetwork, memberResearchNetworkName, memberAcademicDegree, memberLevelName,
-        memberLevelNum, memberTutorName,
-
-        //instituciones colaboradoras
-        collabInstitutionName, partOfIPN, collaborationAgreement, agreementType, agreementNumber,
-
-        //actividades
-        goal, institution, responsibleMember, scheduleStartDate, scheduleEndDate,
-
-        //entregables (arreglo)
+        // Arreglos
+        associatedProjects,
+        members,
+        collaborativeInstitutions,
+        scheduleActivities,
         deliverables,
+        budgets, 
 
-        //presupuesto
-        investmentExpenditure, budgetName, expenditure,
-
-        //usuario
+        // Usuario
         userId 
     } = req.body;
 
+    // Convertir arreglos a JSON string
+    const associatedProjectsJSON = JSON.stringify(associatedProjects);
+    const membersJSON = JSON.stringify(members);
+    const collaborativeInstitutionsJSON = JSON.stringify(collaborativeInstitutions);
+    const scheduleActivitiesJSON = JSON.stringify(scheduleActivities);
     const deliverablesJSON = JSON.stringify(deliverables);
+    const budgetsJSON = JSON.stringify(budgets); 
 
-    const query = `CALL createProject(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
-                                        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+    // Nueva query con 31 parámetros
+    const query = `CALL createProject(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
     const values = [
-        //proyecto
-        title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary, introduction, background,
-        statementOfProblem, justification, hypothesis, generalObjective, ethicalAspects, workWithHumans, workWithAnimals,
-        biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
+        // Proyecto
+        title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary,
+        introduction, background, statementOfProblem, justification, hypothesis, generalObjective,
+        ethicalAspects, workWithHumans, workWithAnimals, biosecurityConsiderations,
+        contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
 
-        //proyecto asociado
-        associatedProjectName, associationDate, externalRegister, SIPRegister,
-
-        //miembros
-        memberFName, memberLastName1, memberLastName2, memberEmail, memberInstitution, memberPositionWork,
-        memberResearchNetwork, memberResearchNetworkName, memberAcademicDegree, memberLevelName,
-        memberLevelNum, memberTutorName,
-
-        //instituciones colaboradoras
-        collabInstitutionName, partOfIPN, collaborationAgreement, agreementType, agreementNumber,
-
-        //actividades
-        goal, institution, responsibleMember, scheduleStartDate, scheduleEndDate,
-
-        //entregables
+        // JSONs
+        associatedProjectsJSON,
+        membersJSON,
+        collaborativeInstitutionsJSON,
+        scheduleActivitiesJSON,
         deliverablesJSON,
+        budgetsJSON,
 
-        //presupuesto
-        investmentExpenditure, budgetName, expenditure,
-
-        //usuario
-        userId 
+        // Usuario
+        userId
     ];
 
     pool.query(query, values, (error, results) => {
         if (error) {
-            //console.log('lo que envio:', values);
+            console.error(error);
             return res.status(500).json({ error: 'Error creating project' });
         }
 
@@ -101,4 +84,32 @@ const createProject = async (req, res) => {
     });
 };
 
-module.exports = { getActiveProjects, getInactiveProjects, createProject }
+
+const uploadDocuments = (req, res) => {
+    const projectId = req.body.projectId;
+    const documents = req.files; //se obtienen del multer.array()
+
+    if (!documents || documents.length === 0) {
+        return res.status(400).json({ error: 'No documents were uploaded' });
+    }
+
+    const query = 'CALL uploadDocument(?, ?)';
+
+    documents.forEach((doc) => {
+        pool.query(query, [doc.buffer, projectId], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Error uploading documents' });
+            }
+        });
+    });
+
+    res.status(200).json({ message: 'Documents uploaded successfully' });
+};
+
+
+
+
+
+
+module.exports = { getActiveProjects, getInactiveProjects, createProject, uploadDocuments }

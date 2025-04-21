@@ -1,18 +1,23 @@
 import { useFormHandler } from "../hooks/useFormHandler";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
-
-import { useState } from "react";
+import DragDrop from "../components/DragDrop";
+import { useEffect, useState } from "react";
 
 const  EthicalAsp = ({option,setOption}) => {
     const [conseHum, setConseHum] = useState(1);
     const [conseAnimals, setConseAnimals] = useState(1);
-    
-    const [ethicalAsp, setEthicalAsp] = useState(
-        {   idF: 6,
-            textAspects:"",
-            conseHum,
-            conseAnimals});
+    const [filesSend,setFilesSend] = useState([]);
+    const [ethicalAsp, setEthicalAsp] = useState({   
+        idF: 6,
+        textAspects:"",
+        conseHum,
+        conseAnimals,
+        efilesSend: filesSend
+    });
+    const [newErrors,setNewErrors] = useState({
+        textAspects:""
+    });
     const handleChangeButton = (key, value) => {
         setEthicalAsp((prevState) => ({
             ...prevState,
@@ -28,69 +33,144 @@ const  EthicalAsp = ({option,setOption}) => {
         form: ethicalAsp,
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
     });
+    
+    const handleSubmitWithValidation = (event) => {
+        event.preventDefault();
+
+        const newErrorsF = {}
+        Object.entries(ethicalAsp).forEach(([key, value]) => {
+          if (!value || (typeof value === 'string' && value.trim() === '')) {
+            newErrorsF[key] = `El campo  es requerido`;
+            if (value === 0){
+                delete newErrorsF[key]
+            }
+          }
+        });
+        if ((ethicalAsp.conseHum || ethicalAsp.conseAnimals) && filesSend.length<1){
+            return alert("Es necesario subir archivos")
+          }
+        setNewErrors(newErrorsF)
+        if(!Object.keys(newErrorsF).length>0){
+            handleOnSubmitForm(event); 
+        }
+    };
 
     useLoadFormData(ethicalAsp.idF,setEthicalAsp);
+
+    useEffect(()=>{
+        if (ethicalAsp.efilesSend && 
+            Array.isArray(ethicalAsp.efilesSend) && 
+            ethicalAsp.efilesSend.length > 0 && 
+            (!filesSend || filesSend.length === 0)) {
+            
+            setFilesSend(ethicalAsp.efilesSend);
+        }
+    },[ethicalAsp.efilesSend])
+    
+    useEffect(()=>{
+        setEthicalAsp(prevState=>({
+            ...prevState,
+            efilesSend: filesSend
+        })
+        )
+    },[filesSend])
+
+    const handleDeleteFile = (index) => {
+        const newFileNames = [...ethicalAsp.efilesSend];
+        const newFiles = Array.from(ethicalAsp.efilesSend);
+      
+        newFileNames.splice(index, 1);
+        newFiles.splice(index, 1);
+      
+        setFilesSend(newFiles);
+      };
+
     return (
         <div>
-            <div className="flex flex-col justify-between">
-                <div className="flex-1 w-1/2">
-                    <p className="text-2xl">Aspectos éticos de la investigación</p>
-                    <p className="text-lg !mt-3 text-[#6D7580]">Describir cómo el proyecto se apega a los principios bioéticos especificados en la Declaración de Helsinki y otros aspectos bioéticos que sea importante mencionar</p>
-                </div>
-                <div className="flex-1 mt-5">
-                    <div className="flex flex-wrap w-1/2">
-                        <div className="flex-1">
-                            <textarea 
-                            className="w-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-end text-[#6D7580] !mt-3 min-w-[250px]"
-                            name="textAspects"
-                            value={ethicalAsp.textAspects}
-                            onChange={handleChange}
-                            placeholder="Escribe los aspectos éticos..."></textarea>
+            <div className="flex flex-wrap">
+                <div className="flex flex-col justify-between flex-1">
+                    <div className="flex-1 w-[90%]">
+                        <p className="text-2xl">Aspectos éticos de la investigación</p>
+                        <p className="text-lg !mt-3 text-[#6D7580]">Describir cómo el proyecto se apega a los principios bioéticos especificados en la Declaración de Helsinki y otros aspectos bioéticos que sea importante mencionar<br/>{newErrors.textAspects && <span className="text-red-600">*{newErrors.textAspects}</span>}</p>
+                    </div>
+                    <div className="flex-1 mt-5 w-[90%]">
+                        <div className="flex flex-wrap">
+                            <div className="flex-1">
+                                <textarea 
+                                className="w-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-end text-[#6D7580] !mt-3 min-w-[250px]"
+                                name="textAspects"
+                                value={ethicalAsp.textAspects}
+                                onChange={handleChange}
+                                placeholder="Escribe los aspectos éticos..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex-2 flex flex-col !mt-5 mb-5 w-[90%]">
+                        <p className="">¿Necesitas consentimiento de trabajar con humanos o muestras humanas?</p>
+                        <div className="flex flex-wrap justify-between w-3/5">
+                            <button
+                            className={ethicalAsp.conseHum === 1  ? 
+                            'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
+                            : 
+                            'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
+                            onClick={() => handleChangeButton('conseHum', 1)}
+                            type="button">Si</button>
+                            <button
+                            className={ethicalAsp.conseHum === 0  ? 
+                            'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
+                            :
+                            'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
+                            onClick={() => handleChangeButton('conseHum', 0)}
+                            type="button">No</button>
+                        </div>
+                        <p className="!mt-5">¿Necesitas consentimiento de trabajar con animales o muestras de animales?</p>
+                        <div className="flex flex-wrap justify-between w-3/5">
+                            <button
+                            className={ethicalAsp.conseAnimals === 1  ? 
+                            'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
+                            : 
+                            'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
+                            onClick={() => handleChangeButton('conseAnimals', 1)}
+                            type="button">Si</button>
+                            <button
+                            className={ethicalAsp.conseAnimals === 0  ? 
+                            'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
+                            : 
+                            'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
+                            onClick={() => handleChangeButton('conseAnimals', 0)}
+                            type="button">No</button>
                         </div>
                     </div>
                 </div>
-                <div className="flex-2 flex flex-col !mt-5 w-1/2">
-                    <p className="text-lg">¿Necesitas consentimiento de trabajar con humanos o muestras humanas?</p>
-                    <div className="flex flex-wrap justify-between w-3/5">
-                        <button
-                        className={ethicalAsp.conseHum === 1  ? 
-                        'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
-                        : 
-                        'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
-                        onClick={() => handleChangeButton('conseHum', 1)}
-                        type="button">Si</button>
-                        <button
-                        className={ethicalAsp.conseHum === 0  ? 
-                        'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
-                        :
-                        'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
-                        onClick={() => handleChangeButton('conseHum', 0)}
-                        type="button">No</button>
-                    </div>
-                    <p className="mb-5">¿Necesitas consentimiento de trabajar con humanos o muestras humanas?</p>
-                    <div className="flex flex-wrap justify-between w-3/5">
-                    <button
-                        className={ethicalAsp.conseAnimals === 1  ? 
-                        'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
-                        : 
-                        'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
-                        onClick={() => handleChangeButton('conseAnimals', 1)}
-                        type="button">Si</button>
-                        <button
-                        className={ethicalAsp.conseAnimals === 0  ? 
-                        'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
-                        : 
-                        'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
-                        onClick={() => handleChangeButton('conseAnimals', 0)}
-                        type="button">No</button>
-                    </div>
+                <div className="!mt-15 flex flex-col w-[100%] h-full flex-1">
+                    {(ethicalAsp.conseAnimals || ethicalAsp.conseHum) ?
+                    <>
+                        <p className="text-2xl">Subir archivos</p>
+                        <p className="!mb-4">En caso de trabajar con humanos y/o animales o muestras de humanos y/o animales, (adjuntar el consentimiento informado y el aviso de privacidad)</p>
+                        <DragDrop setFilesSend={setFilesSend} filesSend={filesSend} />
+                        {ethicalAsp.efilesSend.length > 0 && (
+                            <div className="!p-0 w-full  h-1/3 overflow-y-auto flex flex-col justify-center items-center rounded-[30px]">
+                            <ul className="!p-2 text-sm text-gray-800  w-[80%]">
+                                {ethicalAsp.efilesSend.map((file, index) => (
+                                    <li key={index} className="flex justify-between">
+                                    <p>{file.name}</p>
+                                    <button className="cursor-pointer" type="button" onClick={()=>{handleDeleteFile(index)}}>Eliminar</button>
+                                    </li>
+                                ))}
+                            </ul>
+                            </div>
+                        )}
+                    </>
+                    :
+                    <p></p>
+                    }
                 </div>
             </div>
             <div className="flex justify-end items-center !mt-5 mb-5">
-                <button className="!mr-5 ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  
+                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  
                     onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
-                    onClick={handleOnSubmitForm}>Siguiente</button>
+                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
+                    onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>
     )

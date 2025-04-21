@@ -4,10 +4,13 @@ const committeeMemberController = require('../controllers/committeeMember.contro
 
 const { 
     getPendingProjects,
-    getAgreementSignature
+    getCommitteeRubric,
+    saveEvaluationResults
 } = committeeMemberController;
 
-router.get('/committees/:commiteeId/members/:userId/projects', getPendingProjects);
-router.get('/committees/:committeeId/members/:userId/projects/:projectId/agreement', getAgreementSignature);
+router.get('/committees/:committeeId/members/:userId/projects', getPendingProjects);
+router.get('/committees/:committeeId/members/:userId/rubric', getCommitteeRubric);
+router.post('/committees/members/projects/evaluation', saveEvaluationResults);
+
 
 module.exports = router;

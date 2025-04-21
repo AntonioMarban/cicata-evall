@@ -8,62 +8,88 @@ const pool = require("../helpers/mysql_config");
     @returns: Lista de proyectos pendientes de evaluación
 */
 const getPendingProjects = (req, res) => {
-  const { committeId, userId } = req.params;
+  const { committeeId, userId } = req.params;
 
   const sql = `CALL getPendingProjects(?, ?)`;
-  const values = [committeId, userId];
+  const values = [committeeId, userId];
 
   pool.query(sql, values, (err, results) => {
     if (err) {
-      console.error("Error al obtener proyectos pendientes:", err);
+      console.error("Error getting pending projects:", err);
       return res
         .status(400)
-        .json({ error: "Parámetros de consulta inválidos" });
+        .json({ error: "Invalid query parameters" });
     }
     if (results.length === 0) {
       return res
         .status(404)
         .json({
-          message: "No se encontraron proyectos pendientes para este usuario",
+          error: "Resource does not exist",
         });
     }
-    return res.status(200).json({ projects: results });
+    return res.status(200).json({ projects: results[0] });
   });
 };
+
 
 
 /*
-    Función para obtener la firma del acuerdo de un proyecto de un miembro del comité
-    Se hace uso de un procedimiento almacena getAgreementSignature
+    Función para obtener la rúbrica de evaluación de un comite en específico
+    Se hace uso de un procedimiento almacena getCommitteeRubric
     @param committeeId: Id del comité
     @param userId: Id del miembro del comité
-    @param projectId: Id del proyecto
-    @returns: Dato booleano que indica si el miembro del comité ha firmado el acuerdo
+    @returns: Base64 de la rúbrica de evaluación del comité
 */
-const getAgreementSignature = (req, res) => {
-  const { committeeId, userId, projectId } = req.params;
 
-  const sql = `CALL getAgreementSignature(?, ?, ?)`;
-  const values = [committeeId, userId, projectId];
+const getCommitteeRubric = (req, res) => {
+  const { committeeId, userId } = req.params;
+
+  const sql = `CALL getCommitteeRubric(?, ?)`;
+  const values = [committeeId, userId];
   pool.query(sql, values, (err, results) => {
     if (err) {
-      console.error("Error al obtener la firma del acuerdo:", err);
+      console.error("Error obtaining committee rubric:", err);
       return res
         .status(400)
-        .json({ error: "Parámetros de consulta inválidos" });
+        .json({ error: "Invalid query parameters" });
     }
     if (results.length === 0) {
       return res
         .status(404)
         .json({
-          message: "No se encontró la firma del acuerdo para este usuario",
+          error: "Resource does not exist",
         });
     }
-    return res.status(200).json(results);
+    // Convertir la rúbrica a base64 si existe
+    // La rúbrica se encuentra en la primera fila y primera columna del resultado
+    if (results[0][0].rubric){
+      results[0][0].rubric = Buffer.from(results[0][0].rubric).toString('base64');
+    }
+
+    return res.status(200).json(results[0]);
   });
 };
 
+
+const saveEvaluationResults = (req, res) => {
+  const {projectId, userId, evalutionTypeId, score, results, comments } = req.body;
+  
+  const query = `CALL saveEvaluationResults(?, ?, ?, ?, ?, ?)`;
+  const values = [projectId, userId, evalutionTypeId, score, results, comments];
+  pool.query(query, values, (err, results) => {
+    if (err) {
+      console.error("Error saving evaluation results:", err);
+      return res.status(400).json({ error: "Invalid query parameters" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({error: "Resource does not exist",});
+    }
+    return res.status(200).json({message: "Evaluation results saved"});
+  });
+}
+
 module.exports = { 
     getPendingProjects,
-    getAgreementSignature
+    getCommitteeRubric,
+    saveEvaluationResults
 };

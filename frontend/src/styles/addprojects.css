@@ -70,6 +70,8 @@ font-size: 17px !important;
     flex-direction: column;
 }
 .form-rows{
+  margin-top: 12px;
+  margin-bottom: 12px;
   display: flex;
   width: 100%;
   flex-wrap: wrap;
@@ -120,11 +122,13 @@ font-size: 17px !important;
     box-sizing: border-box;
     padding: 2%;
 }
+.dialog-title{
+  margin-bottom: 20px;
+  font-weight: 450;
+}
 .modalAddProject{
   border-radius: 10px;
   border: None;
-  height: 50%;
-  width: 20%;
   font-weight: 500;
   font-size: 17px;
   cursor: pointer;

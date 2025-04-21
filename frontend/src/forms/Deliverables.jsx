@@ -79,7 +79,7 @@ const  Deliverables = ({option,setOption}) => {
                         <td data-label="Entregable">{deliverable}</td>
                         {categories2.map((category) => (
                         <td key={category} data-label={category}>
-                            <input type="number" value={deliverablesF["educativos"]?.[deliverable]?.[category] || ""}
+                            <input type="number" min={0} value={deliverablesF["educativos"]?.[deliverable]?.[category] || ""}
                             onChange={(e) =>handleChange("educativos", deliverable, category, e.target.value)}/>
                         </td>
                         ))}
@@ -137,9 +137,9 @@ const  Deliverables = ({option,setOption}) => {
                 </tbody>
             </table>
             <div className="flex justify-end items-center !mt-5 mb-5">
-                <button className="!mr-5 ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  
+                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  
                     onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!ml-8 w-1/8 h-12 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
+                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
                     onClick={handleOnSubmitForm}>Siguiente</button>
             </div>
         </div>

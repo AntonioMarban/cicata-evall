@@ -38,7 +38,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.participant-1);
 }
-.participant-form-pieza{
+.participant-form-participant{
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -55,7 +55,8 @@
 .participant-form-rows{
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 2rem;
 }
 .participant-form-rows div{
   width: 30%;
@@ -144,13 +145,19 @@
   margin-top: 12px;
   padding: 10px;
 }
-.participant-button-level{
-  width: 100%;
+.participant-degree{
   display: flex;
+  background-color: red;
+  justify-content: space-between;
+  align-items: center;
+  width: 66%;
+}
+.participant-button-degree{
+  width: 100%;
   align-items: center;
 }
-.participant-button-level select{
-  width: 30%;
+.participant-button-degree select{
+  width: 100%;
   border-radius: 10px;
   border: 2px solid #E1E1E1;
   font-size: 13px;

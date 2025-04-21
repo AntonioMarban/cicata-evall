@@ -1,16 +1,31 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/Login";
 import HomePage from "../pages/HomePage";
 import CreateProject from "../pages/CreateProject";
 import NDA from "../pages/NDA";
+import ManageAccounts from "../pages/ManageAccounts";
+import ManageIndividualUserForm from "../pages/ManageIndividualUserForm";
+import EditRubric from "../pages/EditRubric";
+import EvaluateProject from "../pages/EvaluateProject";
+import CommitteeDictumForm from "./CommitteeDictumForm";
+
 const Views = () => {
   return (
   <Routes>
     <Route path = "/" element={<Login/>}></Route>
     <Route path = "/Inicio" element={<HomePage/>}></Route>
-    <Route path = "/DatosGenerales" element={<CreateProject/>}></Route>
+    <Route path = "/CrearProyecto" element={<CreateProject/>}></Route>
     <Route path = "/Acuerdo" element={<NDA/>}></Route>
-  </Routes>
+    <Route path = "/Cuentas" element={<ManageAccounts/>}></Route>
+    <Route path = "/FormularioDeUsuario" element={<ManageIndividualUserForm/>}></Route>
+    <Route path = "/EditarRubrica" element={<EditRubric/>}></Route>
+    <Route path = "/EvaluarProyecto" element={<EvaluateProject/>}></Route>
+
+    <Route path = "/Forms" element={<CommitteeDictumForm/>}></Route>
+    <Route
+        path = "*"
+        element={<Navigate to="/Inicio" replace/>} ></Route>
+    </Routes>
   )
 }
 

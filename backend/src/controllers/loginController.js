@@ -17,7 +17,18 @@ const doLogin = (req, res) => {
         }
         result = results[0][0];
         token = jwt.sign({ id: result.userId }, process.env.JWT_SECRET, { expiresIn: 7200 });
-        res.status(200).json({ userId:result.userId, email:result.email, token });
+        response = {
+            userId: result.userId,
+            fullName: result.fullName,
+            userType: result.userType_id,
+            email: result.email,
+            token: token
+            
+        };
+        if(result.committeeId !== null && result.committeeId !== undefined) {
+            response.committeeId = result.committeeId;
+        }
+        res.status(200).json(response);
     });
 }
 

@@ -110,7 +110,7 @@ CREATE TABLE `specificObjectives` (
 CREATE TABLE `scheduleActivities` (
   `scheduleActivityId` integer PRIMARY KEY AUTO_INCREMENT,
   `goal` text,
-  `insitution` varchar(50),
+  `institution` varchar(50),
   `responsibleMember` varchar(100),
   `startDate` date,
   `endDate` date,
@@ -180,6 +180,7 @@ CREATE TABLE `dictums` (
 
 CREATE TABLE `agreements` (
   `agreement_id` integer PRIMARY KEY AUTO_INCREMENT,
+  `date` date,
   `agreed` bool,
   `user_id` integer,
   `project_id` integer
@@ -187,7 +188,7 @@ CREATE TABLE `agreements` (
 
 CREATE TABLE `rubrics` (
   `rubric_id` integer PRIMARY KEY AUTO_INCREMENT,
-  `rubric` blob,
+  `rubric` longblob,
   `committee_id` integer
 );
 
@@ -234,3 +235,8 @@ ALTER TABLE `agreements` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`userId
 ALTER TABLE `agreements` ADD FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`);
 
 ALTER TABLE `rubrics` ADD FOREIGN KEY (`committee_id`) REFERENCES `committees` (`committeeId`);
+
+-- Modificaciones a tablas
+
+-- Para la parte de notificaciones
+ALTER TABLE `projects` ADD COLUMN `notification` BOOLEAN DEFAULT FALSE;
