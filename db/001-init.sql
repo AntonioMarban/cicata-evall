@@ -242,6 +242,17 @@ BEGIN
 END //
 DELIMITER ;
 
+-- procedimiento almacenado para subir documentos relacionados con el proyecto 
+DELIMITER //
+CREATE PROCEDURE uploadDocument(
+  IN p_document LONGBLOB,
+  IN p_projectId INT
+)
+BEGIN
+  INSERT INTO annexes (document, projectId)
+  VALUES (p_document, p_projectId);
+END //
+DELIMITER ;
 
 
 -- Procedimiento almacenado para obtener los proyectos pendientes de evaluación

@@ -84,4 +84,32 @@ const createProject = async (req, res) => {
     });
 };
 
-module.exports = { getActiveProjects, getInactiveProjects, createProject }
+
+const uploadDocuments = (req, res) => {
+    const projectId = req.body.projectId;
+    const documents = req.files; //se obtienen del multer.array()
+
+    if (!documents || documents.length === 0) {
+        return res.status(400).json({ error: 'No documents were uploaded' });
+    }
+
+    const query = 'CALL uploadDocument(?, ?)';
+
+    documents.forEach((doc) => {
+        pool.query(query, [doc.buffer, projectId], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Error uploading documents' });
+            }
+        });
+    });
+
+    res.status(200).json({ message: 'Documents uploaded successfully' });
+};
+
+
+
+
+
+
+module.exports = { getActiveProjects, getInactiveProjects, createProject, uploadDocuments }
