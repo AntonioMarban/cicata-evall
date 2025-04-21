@@ -1,25 +1,39 @@
+import '../styles/dashboard.css';
+
 function Card({ children }) {
-  return <div className="p-4 flex flex-col shadow-md bg-white rounded-lg">{children}</div>;
+  return <div className="card">{children}</div>;
 }
 
 function CardContent({ children }) {
-  return <div className="p-2">{children}</div>;
+  return <div className="card-content">{children}</div>;
+}
+
+function formatFecha(fechaISO) {
+  const fecha = new Date(fechaISO);
+  return new Intl.DateTimeFormat('es-MX', {
+    dateStyle: 'long',
+    timeStyle: 'short',
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    hour12: false
+  }).format(fecha);
 }
 
 function Dashboard({ projectCards }) {
   return (
-    <main className="flex-1 flex flex-col justify-center p-6 overflow-hidden h-full">
-      <h1 className="text-2xl font-bold mb-8 self-start">¡Bienvenida, Dra. Olmedo!</h1>
+    <main className="dashboard-main">
+      <h1 className="dashboard-title">¡Bienvenida, Dra. Olmedo!</h1>
 
       {projectCards.length === 0 ? (
-        <p className="text-gray-500">No hay proyectos activos disponibles.</p>
+        <p className="empty-message">No hay proyectos activos disponibles.</p>
       ) : (
-        <div className="grid gap-4 w-2/3 m-8">
+        <div className="card-grid">
           {projectCards.map((card, index) => (
             <Card key={index}>
               <CardContent>
-                <h2 className="text-xl font-semibold">{card.title}</h2>
-                <p className="text-gray-600">{card.description}</p>
+                <h2 className="card-title">{card.title}</h2>
+                <p className="card-text">{card.description}</p>
+                <p className="card-text">{formatFecha(card.fecha)}</p>
+                <p className="card-text">{card.folio}</p>
               </CardContent>
             </Card>
           ))}

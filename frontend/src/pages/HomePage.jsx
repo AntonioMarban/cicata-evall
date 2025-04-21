@@ -26,6 +26,8 @@ export default function HomePage() {
         const formattedCards = data.map((project) => ({
           title: project.Proyecto,
           description: project.Investigador,
+          folio: project.Folio,
+          fecha: project.FechaInicio
         }));
 
         setProjectCards(formattedCards);
