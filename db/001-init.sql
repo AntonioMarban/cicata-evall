@@ -608,3 +608,107 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
+
+
+
+-- Función para obtener a los integrantes de un comité que no son evaluadores de un proyecto en específico
+-- Se hace uso de un procedimiento almacena getProjectNonEvaluators
+-- @param committeeId: Id del comité
+-- @param userId: Id del miembro del comité, en este caso el secretario
+-- @param projectId: Id del proyecto
+-- @returns: Lista de integrantes del comité que no son evaluadores del proyecto
+DELIMITER //
+CREATE PROCEDURE getProjectNonEvaluators(
+    IN p_committeeId INT, 
+    IN p_userId INT, 
+    IN p_projectId INT
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers 
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    ELSE    
+        SELECT 
+            u.userId,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName
+        FROM 
+            committeeUsers cu
+        JOIN users u ON cu.userId = u.userId
+        WHERE 
+            cu.committeeId = p_committeeId AND u.userType_id = 4 AND u.userId NOT IN (
+                SELECT user_id FROM evaluations WHERE project_id = p_projectId
+            );
+    END IF;
+END //
+
+-- Función para agregar integrantes como evaluador de un proyecto en específico
+-- Se hace uso de un procedimiento almacena createProjectEvaluator
+-- @param committeeId: Id del comité
+-- @param userId: Id del miembro del comité, en este caso el secretario
+-- @param projectId: Id del proyecto
+-- body: { 
+--   evaluatorId: Id del evaluador que se va a agregar al proyecto
+-- }
+-- @returns: Mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE addEvaluatorToProject(
+    IN p_committeeId INT, 
+    IN p_userId INT, 
+    IN p_projectId INT,
+    IN p_evaluatorId INT
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers 
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    ELSE    
+        INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
+        VALUES (p_evaluatorId, p_projectId, 1);
+    END IF;
+END //
+DELIMITER ;
+
+
+-- Función para obtener las evaluaciones de un proyecto en específico
+-- Se hace uso de un procedimiento almacena getProjectEvaluations
+-- @param committeeId: Id del comité
+-- @param userId: Id del miembro del comité, en este caso el secretario
+-- @param projectId: Id del proyecto
+-- @returns: Lista de evaluaciones del proyecto
+DELIMITER //
+CREATE PROCEDURE getProjectEvaluations(
+    IN p_committeeId INT, 
+    IN p_userId INT, 
+    IN p_projectId INT
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers 
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    ELSE    
+        SELECT 
+            u.userId,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            e.score,
+            e.result,
+            e.comments
+        FROM 
+            evaluations e
+        JOIN users u ON e.user_id = u.userId
+        JOIN committeeUsers cu ON u.userId = cu.userId
+        WHERE 
+            e.project_id = p_projectId
+            AND e.evaluation_type_id = 1
+            AND cu.committeeId = p_committeeId;
+    END IF;
+END //
+DELIMITER ;

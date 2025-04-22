@@ -104,35 +104,35 @@ INSERT INTO evaluations (comments, score, result, evaluation_type_id, user_id, p
 VALUES 
 -- ====== Evaluaciones tipo comité ligados al secretario del comité 1 y 2 ======
 -- Evaluación del proyecto 1 que está en status "En revisión"
-('Proyecto aprobado', NULL, 'Aprobado', 1, 5, 1), -- Secretario del comité 1 (evaluado)
+('Proyecto aprobado', NULL, 'Aprobado', 2, 5, 1), -- Secretario del comité 1 (evaluado)
 (NULL, NULL, NULL, 2, 8, 1), -- Secretario del comité 2 (sin evaluar)
 
 -- Evaluación del proyecto 2 que está en status "Pendiente de correcciones"
-('Corregir', NULL, 'Pendiente de correcciones', 1, 5, 2), -- Secretario del comité 1 (evaluado)
+('Corregir', NULL, 'Pendiente de correcciones', 2, 5, 2), -- Secretario del comité 1 (evaluado)
 ('Corregir', NULL, 'Pendiente de correcciones', 2, 8, 2), -- Secretario del comité 2 (evaluado)
 
 -- Evaluación del proyecto 3 que está en status "Aprobado"
-('Proyecto aprobado', NULL, 'Aprobado', 1, 5, 3), -- Secretario del comité 1 (evaluado)
-('Proyecto aprobado', NULL, 'Aprobado', 1, 8, 3), -- Secretario del comité 1 (evaluado)
+('Proyecto aprobado', NULL, 'Aprobado', 2, 5, 3), -- Secretario del comité 1 (evaluado)
+('Proyecto aprobado', NULL, 'Aprobado', 2, 8, 3), -- Secretario del comité 1 (evaluado)
 
 -- Evaluación del proyecto 4 que está en status "No aprobado"
-('Proyecto no aprobado', NULL, 'No aprobado', 1, 5, 4), -- Secretario del comité 1 (evaluado)
+('Proyecto no aprobado', NULL, 'No aprobado', 2, 5, 4), -- Secretario del comité 1 (evaluado)
 ('Proyecto no aprobado', NULL, 'No aprobado', 2, 8, 4), -- Secretario del comité 2 (evaluado)
 
 -- Evaluación del proyecto 5 que está en status "En revisión"
-('Proyecto aprobado', NULL, 'Aprobado', 1, 5, 5), -- Secretario del comité 1 (evaluado)
+('Proyecto aprobado', NULL, 'Aprobado', 2, 5, 5), -- Secretario del comité 1 (evaluado)
 (NULL, NULL, NULL, 2, 8, 5), -- Secretario del comité 2 (sin evaluar)
 
 -- Evaluación del proyecto 6 que está en status "Pendiente de correcciones"
-('Corregir', NULL, 'Pendiente de correcciones', 1, 5, 6), -- Secretario del comité 1 (evaluado)
+('Corregir', NULL, 'Pendiente de correcciones', 2, 5, 6), -- Secretario del comité 1 (evaluado)
 ('Corregir', NULL, 'Pendiente de correcciones', 2, 8, 6), -- Secretario del comité 2 (evaluado)
 
 -- Evaluación del proyecto 7 que está en status "Aprobado"
-('Proyecto aprobado', NULL, 'Aprobado', 1, 5, 7), -- Secretario del comité 1 (evaluado)
-('Proyecto aprobado', NULL, 'Aprobado', 1, 8, 7), -- Secretario del comité 1 (evaluado)
+('Proyecto aprobado', NULL, 'Aprobado', 2, 5, 7), -- Secretario del comité 1 (evaluado)
+('Proyecto aprobado', NULL, 'Aprobado', 2, 8, 7), -- Secretario del comité 1 (evaluado)
 
 -- Evaluación del proyecto 8 que está en status "No aprobado"
-('Proyecto no aprobado', NULL, 'No aprobado', 1, 5, 8), -- Secretario del comité 1 (evaluado)
+('Proyecto no aprobado', NULL, 'No aprobado', 2, 5, 8), -- Secretario del comité 1 (evaluado)
 ('Proyecto no aprobado', NULL, 'No aprobado', 2, 8, 8), -- Secretario del comité 2 (evaluado)
 
 
