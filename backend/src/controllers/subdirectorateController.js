@@ -118,14 +118,14 @@ const getAllCommittees = async (req, res) => {
 }
 
 /*
-    Función para obtener el secretario de un comité
-    Se hace uso de un procedimiento almacena getCommitteeSecretary
+    Función para obtener el presidente y secretario de un comité
+    Se hace uso de un procedimiento almacena getCommitteeSecretaryPresident
     @param committee_id: id del comité
-    @return secretary: secretario del comité
+    @return secretary: secretario del comité y presidente del mismo
 */
-const getCommitteeSecretary = async (req, res) => {
+const getCommitteeSecretaryPresident = async (req, res) => {
     const { committeeId } = req.params;
-    const query = 'CALL getCommitteeSecretary(?)';
+    const query = 'CALL getCommitteeSecretaryPresident(?)';
     const values = [committeeId];
     pool.query(query, values, (error, results) => {
         if (error) {
@@ -135,8 +135,9 @@ const getCommitteeSecretary = async (req, res) => {
         if (results.length === 0) {
             return res.status(404).json({ error: 'Resource does not exist' });
         }
-        const secretary = results[0]; 
-        res.status(200).json(secretary);
+        const secretary = results[0][0];
+        const president = results[1][0];
+        res.status(200).json({ president, secretary });
     });
 }
 
@@ -146,5 +147,5 @@ module.exports = {
   getInactiveProjectsSub,
   getActiveProjectsSub,
   getAllCommittees,
-  getCommitteeSecretary
+  getCommitteeSecretaryPresident
 }

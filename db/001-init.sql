@@ -577,7 +577,7 @@ DELIMITER ;
 -- @param committee_id: id del comité
 -- @return secretary: secretario del comité
 DELIMITER //
-CREATE PROCEDURE getCommitteeSecretary(IN p_committee_id INT)
+CREATE PROCEDURE getCommitteeSecretaryPresident(IN p_committee_id INT)
 BEGIN
     IF NOT EXISTS (
         SELECT 1 FROM committees 
@@ -595,6 +595,16 @@ BEGIN
         JOIN users u ON cu.userId = u.userId
         WHERE 
             cu.committeeId = p_committee_id AND u.userType_id = 4;
+
+        SELECT 
+            u.userId,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS president,
+            u.email
+        FROM 
+            committeeUsers cu
+        JOIN users u ON cu.userId = u.userId
+        WHERE 
+            cu.committeeId = p_committee_id AND u.userType_id = 3;
     END IF;
 END //
 DELIMITER ;
