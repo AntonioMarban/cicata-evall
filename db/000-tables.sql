@@ -150,7 +150,7 @@ CREATE TABLE `usersProjects` (
 
 CREATE TABLE `annexes` (
   `annexeId` integer PRIMARY KEY AUTO_INCREMENT,
-  `document` blob,
+  `document` LONGBLOB,
   `projectId` integer
 );
 
