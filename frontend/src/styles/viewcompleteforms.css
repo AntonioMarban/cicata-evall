@@ -1,0 +1,161 @@
+.fullTable-background{
+    padding: 20px;
+}
+.BackgroundTable{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.div-button{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+.div-button button{
+    background-color: #5CB7E6;
+    padding: 14px;
+    font-weight: 450;
+    border-radius: 20px;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0px 6px 12px 0px rgba(63, 140, 255, 0.26);
+}
+.table-form-header{
+    background-color: #89CEEF;
+}
+.table-form-caption{
+    background-color: #89CEEF;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    font-weight: bold;
+}
+.table-form-header tr th{
+    border: 1px solid black;
+}
+.table-form-body tr td{
+    border: 1px solid black;
+    text-align: center;
+}
+
+.second-table-form-header{
+    background-color: #89CEEF;
+}
+.second-table-form-header th{
+    border: 1px solid black;
+}
+.second-table-form-body td{
+    border: 1px solid black;    
+    text-align: center;
+}
+
+
+.backgroundParticipants{
+    width: 100%;
+    display: block;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.participant_title{
+    background-color: #89CEEF;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid black;
+}
+.participant-data{
+    display: flex;
+    flex-wrap: wrap;
+}
+.participant-data div{
+    flex: 1;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.participant-data div p{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+.participant-institution{
+    display: flex;
+    flex-wrap: wrap;
+}
+.participant-institution-inner{
+    display: flex;
+    flex: 1;
+}
+.participant-institution-inner div{    
+    flex: 1;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.participant-institution-inner div p{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+.participant-data-subname{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.participant-data2{
+    display: flex;
+    flex-wrap: wrap;
+}
+.participant-data2 div{
+    flex: 1;
+}
+.participant-label{
+    border-top: 1px solid black;
+    font-weight: 600;
+}
+.participant-tag{
+    font-weight: 600;
+}
+
+
+
+
+.table-form-show {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    table-layout: fixed;
+    margin-bottom: 20px;
+}
+
+.table-form-show caption div {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.table-form-show caption div p{
+    flex: 1;
+    display: flex;
+}
+
+.table-form-show tbody tr input{
+    border: 1px solid black;
+    border-radius: 10px;
+    padding-left: 5px;
+}
+.table-form-show th, .table td {
+    font-size: 16px;
+    padding: 8px;
+    text-align: center;
+}
+.table-form-show-head{
+    background-color: #89CEEF;
+    font-weight: 600;
+}
+.table-form-show-head tr td{
+    border: 1px solid black;
+}
+.table-form-show-body tr td{
+    border: 1px solid black;
+}

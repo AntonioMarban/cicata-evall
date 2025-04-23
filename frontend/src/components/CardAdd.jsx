@@ -1,4 +1,6 @@
 import React from 'react';
+import Trash from '../assets/trash.svg'
+
 const CardAdd = ({cards, slice,handleDeleteFile,handleEditModal}) => {  
 
     return (
@@ -15,7 +17,7 @@ const CardAdd = ({cards, slice,handleDeleteFile,handleEditModal}) => {
                     onClick={() => handleEditModal(index, card)}
                     >Editar
                 </button>
-                <button className='cursor-pointer' type="button" onClick={()=>{handleDeleteFile(index)}}>Borrar</button>
+                <button className='cursor-pointer' type="button" onClick={()=>{handleDeleteFile(index)}}><img src={Trash}></img></button>
             </div>
         ))}
         </div>
