@@ -712,3 +712,40 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
+
+
+
+-- Función para crear las evaluaciones de la primera etapa, en este caso del 
+-- CIP, relacionadas a un proyecto
+-- Se hace uso de un procedimiento almacena createFirstStageEvaluations
+-- @param projectId: Id del proyecto
+-- @returns: Mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE createFirstStageEvaluations(
+    IN p_projectId INT
+)
+BEGIN
+    DECLARE v_committeeId INT;
+    DECLARE v_userId INT;
+
+    -- Obtener el ID del primer comite y el ID del usuario (secretario)
+    SELECT cu.committeeId, u.userId INTO v_committeeId, v_userId
+    FROM committeeUsers cu
+    JOIN users u ON cu.userId = u.userId
+    WHERE cu.committeeId = 1 AND u.userType_id = 4
+    LIMIT 1;
+
+    -- Verificar si el proyecto ya tiene evaluaciones de la primera etapa
+    IF EXISTS (
+        SELECT 1 FROM evaluations 
+        WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userId
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'The project already has evaluations of the first stage';
+    END IF;
+    -- Insertar la evaluación de la primera etapa, de tipo comité para el comité 1 (CIP), 
+    -- relacionada al secretario del comité
+    INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
+    VALUES (v_userId, p_projectId, 2);
+END //
+DELIMITER ;

@@ -6,7 +6,8 @@ const {
     getActiveProjectsSub,
     getInactiveProjectsSub,
     getAllCommittees,
-    getCommitteeSecretaryPresident
+    getCommitteeSecretaryPresident,
+    createFirstStageEvaluations
 } = require('../controllers/subdirectorateController')
 
 router.get('/users', getUsersByRole)
@@ -15,5 +16,6 @@ router.get('/projects/inactive', getInactiveProjectsSub)
 router.get('/projects/active', getActiveProjectsSub)
 router.get('/committees', getAllCommittees)
 router.get('/committees/:committeeId/secretary-and-president', getCommitteeSecretaryPresident)
+router.post('/projects/:projectId/evaluations/stage1', createFirstStageEvaluations)
 
 module.exports = router

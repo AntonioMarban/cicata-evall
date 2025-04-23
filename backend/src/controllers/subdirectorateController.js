@@ -141,11 +141,36 @@ const getCommitteeSecretaryPresident = async (req, res) => {
     });
 }
 
+
+/*
+    Función para crear las evaluaciones de la primera etapa, en este caso del 
+    CIP, relacionadas a un proyecto
+    Se hace uso de un procedimiento almacena createFirstStageEvaluations
+    @param projectId: Id del proyecto
+    @returns: Mensaje de éxito o error
+*/
+const createFirstStageEvaluations = async (req, res) => {
+    const { projectId } = req.params;
+    const query = 'CALL createFirstStageEvaluations(?)';
+    const values = [projectId];
+    pool.query(query, values, (error, results) => {
+        if (error) {
+            console.error(error);
+            return res.status(400).json({ error: 'Invalid query parameters' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Resource does not exist' });
+        }
+        res.status(200).json({ message: 'First stage evaluations created successfully' });
+    });
+}
+
 module.exports = { 
   getUsersByRole,
   createUser,
   getInactiveProjectsSub,
   getActiveProjectsSub,
   getAllCommittees,
-  getCommitteeSecretaryPresident
+  getCommitteeSecretaryPresident,
+createFirstStageEvaluations
 }
