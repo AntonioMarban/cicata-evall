@@ -22,10 +22,12 @@ const  Login = () => {
         const data = await reponse.json()
         if(data.token){
             navigate('/Inicio')
+            localStorage.clear()
             localStorage.setItem('token',data.token)
             localStorage.setItem('userId', data.userId)
             localStorage.setItem('userFullName', data.fullName)
             localStorage.setItem('userType', data.userType)
+            localStorage.setItem('committeeId', data.committeeId)
         }else{
             alert('Usuario o contraseña incorrectos')
         }
