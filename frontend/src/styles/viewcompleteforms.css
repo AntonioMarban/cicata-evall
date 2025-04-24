@@ -159,3 +159,9 @@
 .table-form-show-body tr td{
     border: 1px solid black;
 }
+
+@media print {
+    .div-button {
+      display: none !important;
+    }
+}

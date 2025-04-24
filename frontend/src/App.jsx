@@ -12,7 +12,7 @@ function App() {
     <div className='flex'>
       {!isLoginPage ? (
       <>
-        <div>
+        <div className='SideBar-noPrint'>
           <Sidebar/>
         </div>
         <div className='w-screen'>

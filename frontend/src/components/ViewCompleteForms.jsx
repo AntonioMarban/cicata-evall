@@ -10,10 +10,9 @@ const ViewCompleteForms = ({cards, slice,handleDeleteFile,handleEditModal}) => {
             idF: 9
         }
         );
-    const pdfRef = useRef();
-
-
-    
+    const handlePrint = () => {
+        window.print();
+        };
 
     const deliverables3 = [
         "Proceso",
@@ -48,9 +47,9 @@ const ViewCompleteForms = ({cards, slice,handleDeleteFile,handleEditModal}) => {
     return (
     <div className='fullTable-background'>
         <div className='div-button'>
-            <button className='button-download'>Descargar proyecto</button>
+            <button className='button-download' onClick={handlePrint}>Descargar proyecto</button>
         </div>
-        <div ref={pdfRef}>
+        <div>
             <table className='BackgroundTable'>
                 <thead className='table-form-header'>
                     <tr>
@@ -132,14 +131,12 @@ const ViewCompleteForms = ({cards, slice,handleDeleteFile,handleEditModal}) => {
 
 
             <table >
-                <tr>
-                    <td>¿El proyecto se alinea con las Prioridades Nacionales de Investigación y/o con los objetivos de la Agenda de desarrollo sostenible?</td>
-                    <td>
-                        <tr>
-                            <td>SI / NO</td>
-                        </tr>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>¿El proyecto se alinea con las Prioridades Nacionales de Investigación y/o con los objetivos de la Agenda de desarrollo sostenible?</td>
+                        <td>SI / NO</td>
+                    </tr>
+                </tbody>
             </table>
 
             <table className='BackgroundTable'>
@@ -169,21 +166,6 @@ const ViewCompleteForms = ({cards, slice,handleDeleteFile,handleEditModal}) => {
                 </tbody>
             </table>
 
-
-
-            <table className='BackgroundTable'>
-                <thead className='table-form-header'>
-                    <tr>
-                        <th>Resumen del proyecto <br/>(Máximo 1500 caracteres con espacios)</th>
-                    </tr>
-                </thead>
-                <tbody className='table-form-body'>
-                    <tr>
-                        <td>Tipo de</td>
-                    </tr>
-                </tbody>
-            </table>
-
             <table className='BackgroundTable'>
                     <caption className="table-form-caption">Relación de Proyectos Asociados al proyecto principal</caption>
                     <thead className='table-form-header'>
@@ -198,12 +180,12 @@ const ViewCompleteForms = ({cards, slice,handleDeleteFile,handleEditModal}) => {
                     </thead>
                     <tbody className='table-form-body'>
                         <tr>
-                        <td>1</td>
-                        <td>Nombre</td>
-                        <td>Tipo del proyecto</td>
-                        <td>232</td>
-                        <td>4324</td>
-                        <td>4324</td>
+                            <td>1</td>
+                            <td>Nombre</td>
+                            <td>Tipo del proyecto</td>
+                            <td>232</td>
+                            <td>4324</td>
+                            <td>4324</td>
                         </tr>
                     </tbody>
             </table>
@@ -495,12 +477,12 @@ const ViewCompleteForms = ({cards, slice,handleDeleteFile,handleEditModal}) => {
                     </thead>
                     <tbody className='table-form-body'>
                         <tr>
-                        <td>1</td>
-                        <td>Nombre</td>
-                        <td>Tipo del proyecto</td>
-                        <td>232</td>
-                        <td>4324</td>
-                        <td>4324</td>
+                            <td>1</td>
+                            <td>Nombre</td>
+                            <td>Tipo del proyecto</td>
+                            <td>232</td>
+                            <td>4324</td>
+                            <td>4324</td>
                         </tr>
                     </tbody>
             </table>
@@ -838,14 +820,14 @@ const ViewCompleteForms = ({cards, slice,handleDeleteFile,handleEditModal}) => {
             </table>
 
             <table >
-                <tr>
+                <tbody>
                     <tr >
                         <th>Aportaciones del proyecto al IPN y al CICATA Unidad Morelos</th>
                     </tr>
                     <tr>
                         <td>Tipo de</td>
                     </tr>
-                </tr>
+                </tbody>
             </table>
 
             <h1>10. DESCRIPCIÓN DE PRESUPUESTO REQUERIDO Y POSIBLES FUENTES DE OBTENCIÓN</h1>

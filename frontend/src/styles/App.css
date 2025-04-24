@@ -30,3 +30,8 @@ body {
   font-weight: normal;
   font-style: normal;
 }
+@media print {
+  .SideBar-noPrint {
+    display: none !important;
+  }
+}
