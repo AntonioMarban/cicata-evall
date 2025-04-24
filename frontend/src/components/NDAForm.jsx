@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import { useNavigate } from "react-router-dom";
 import "../styles/ndaform.css";
@@ -9,17 +9,35 @@ function NDAForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [agreementData, setAgreementData] = useState(null); 
   const navigate = useNavigate();
 
-  // Texto del acuerdo
-  const agreementText = `
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    const fetchAgreement = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/users/6/projects/1/agreement`);
+        const data = await response.json();
+        if (data.length > 0) {
+          setAgreementData(data[0]);
+        }
+      } catch (error) {
+        console.error("Error al obtener el acuerdo:", error);
+      }
+    };
+
+    fetchAgreement();
+  }, [userId]);
+
+  const agreementText = agreementData ? `
 Dr. Paul Mondragón Terán
 Encargado de la Dirección
 Centro de Investigación en Ciencia Aplicada y Tecnología Avanzada (CICATA) Unidad Morelos
 
 PRESENTE
 
-En mi calidad de Evaluador del proyecto titulado [nombre completo del proyecto], dirigido por [nombre del investigador principal] y que se lleva a cabo total o parcialmente dentro de las instalaciones del [CICATA Unidad Morelos del Instituto Politécnico Nacional/Institución externa en caso de evaluadores invitados], me comprometo a cumplir con los siguientes compromisos:
+En mi calidad de Evaluador del proyecto titulado ${agreementData.title}, dirigido por ${agreementData.researcher} y que se lleva a cabo total o parcialmente dentro de las instalaciones del CICATA Unidad Morelos del Instituto Politécnico Nacional, me comprometo a cumplir con los siguientes compromisos:
 
 1. **Confidencialidad:** Trataré toda la información proporcionada como estrictamente confidencial. Esta obligación incluye, pero no se limita a, datos, documentos, resultados preliminares y cualquier otra información relacionada con el proyecto que no esté destinada a ser divulgada públicamente.
 
@@ -37,17 +55,43 @@ En mi calidad de Evaluador del proyecto titulado [nombre completo del proyecto],
 
 En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consentimiento para que se apliquen las medidas legales y disciplinarias pertinentes conforme a la normativa aplicable.
 
-ATENTAMENTE,
-`;
+ATENTAMENTE, 
+` : "Cargando acuerdo...";
 
 
   // Función para descargar el PDF
   const handleDownload = () => {
-    const doc = new jsPDF();
-    doc.text("Acuerdo de confidencialidad", 10, 10);
-    doc.text(agreementText, 10, 20);
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
+  
+    const pageHeight = doc.internal.pageSize.height;
+    const margin = 10;
+    const lineHeight = 7;
+    let y = margin + 10;
+  
+    doc.setFontSize(14);
+    doc.text("Acuerdo de confidencialidad", margin, y);
+    y += 10;
+  
+    doc.setFontSize(11);
+  
+    // Divide el texto en líneas que quepan en el ancho del documento
+    const lines = doc.splitTextToSize(agreementText, 190); // 190 mm de ancho considerando márgenes
+    lines.forEach((line) => {
+      if (y + lineHeight > pageHeight - margin) {
+        doc.addPage();
+        y = margin;
+      }
+      doc.text(line, margin, y);
+      y += lineHeight;
+    });
+  
     doc.save("acuerdo_de_confidencialidad.pdf");
   };
+  
 
   // Función para enviar el formulario
   const handleSubmit = async () => {
