@@ -728,11 +728,11 @@ BEGIN
     DECLARE v_committeeId INT;
     DECLARE v_userId INT;
 
-    -- Obtener el ID del primer comite y el ID del usuario (secretario)
+    -- Obtener el ID del primer comite y el ID del usuario (presidente)
     SELECT cu.committeeId, u.userId INTO v_committeeId, v_userId
     FROM committeeUsers cu
     JOIN users u ON cu.userId = u.userId
-    WHERE cu.committeeId = 1 AND u.userType_id = 4
+    WHERE cu.committeeId = 1 AND u.userType_id = 3
     LIMIT 1;
 
     -- Verificar si el proyecto ya tiene evaluaciones de la primera etapa
@@ -749,3 +749,100 @@ BEGIN
     VALUES (v_userId, p_projectId, 2);
 END //
 DELIMITER ;
+
+
+-- Función para crear las evaluaciones de la segunda etapa, en este caso de los comités CEI, CB y CI. 
+-- En caso de que el proyecto tenga marcado el uso de animales se crea la evaluación del comité CIQUAL
+-- Se hace uso de un procedimiento almacena createSecondStageEvaluations
+-- @param projectId: Id del proyecto
+-- @returns: Mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE createSecondStageEvaluations(
+    IN p_projectId INT
+)
+BEGIN
+    DECLARE v_committeeCI INT;
+    DECLARE v_committeeCB INT;
+    DECLARE v_committeeCEI INT;
+    DECLARE v_committeeCIQUAL INT;
+
+    DECLARE v_userIdCI INT;
+    DECLARE v_userIdCB INT;
+    DECLARE v_userIdCEI INT;
+    DECLARE v_userIdCIQUAL INT;
+
+    DECLARE v_workWithAnimals BOOLEAN;
+
+    -- Obtener el ID del comité CI y el ID del usuario (presidente)
+    SELECT cu.committeeId, u.userId INTO v_committeeCI, v_userIdCI
+    FROM committeeUsers cu
+    JOIN users u ON cu.userId = u.userId
+    WHERE cu.committeeId = 2 AND u.userType_id = 3
+    LIMIT 1;
+    -- Obtener el ID del comité CB y el ID del usuario (presidente)
+    SELECT cu.committeeId, u.userId INTO v_committeeCB, v_userIdCB
+    FROM committeeUsers cu
+    JOIN users u ON cu.userId = u.userId
+    WHERE cu.committeeId = 3 AND u.userType_id = 3
+    LIMIT 1;
+    -- Obtener el ID del comité CEI y el ID del usuario (presidente)
+    SELECT cu.committeeId, u.userId INTO v_committeeCEI, v_userIdCEI
+    FROM committeeUsers cu
+    JOIN users u ON cu.userId = u.userId
+    WHERE cu.committeeId = 4 AND u.userType_id = 3
+    LIMIT 1;
+
+    -- Verificar si el proyecto ya tiene evaluaciones del comité CI
+    IF NOT EXISTS (
+        SELECT 1 FROM evaluations 
+        WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCI
+    ) THEN
+        -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 2 (CI),
+        INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
+        VALUES (v_userIdCI, p_projectId, 2);
+    END IF;
+
+    -- Verificar si el proyecto ya tiene evaluaciones del comité CB
+    IF NOT EXISTS (
+        SELECT 1 FROM evaluations 
+        WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCB
+    ) THEN
+        -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 3 (CB),
+        INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
+        VALUES (v_userIdCB, p_projectId, 2);
+    END IF;
+    
+    -- Verificar si el proyecto ya tiene evaluaciones del comité CEI
+    IF NOT EXISTS (
+        SELECT 1 FROM evaluations 
+        WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCEI
+    ) THEN
+        -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 4 (CEI),
+        INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
+        VALUES (v_userIdCEI, p_projectId, 2);
+    END IF;
+
+    -- Verificar si el proyecto tiene marcado el uso de animales
+    SELECT workWithAnimals INTO v_workWithAnimals
+    FROM projects
+    WHERE projectId = p_projectId;
+
+    -- Si el proyecto tiene marcado el uso de animales, insertar la evaluación del comité CIQUAL
+    IF v_workWithAnimals THEN
+        SELECT cu.committeeId, u.userId INTO v_committeeCIQUAL, v_userIdCIQUAL
+        FROM committeeUsers cu
+        JOIN users u ON cu.userId = u.userId
+        WHERE cu.committeeId = 5 AND u.userType_id = 3
+        LIMIT 1;
+
+        IF NOT EXISTS (
+            SELECT 1 FROM evaluations 
+            WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCIQUAL
+        ) THEN
+            INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
+            VALUES (v_userIdCIQUAL, p_projectId, 2);
+        END IF;
+    END IF;
+END //
+DELIMITER ;
+

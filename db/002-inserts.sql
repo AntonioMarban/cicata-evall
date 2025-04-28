@@ -52,7 +52,12 @@ VALUES
 -- Proyecto en status "Aprobado" con id 7
 ('Proyecto prueba 7', '2025-01-01', '2025-12-31', 'Científica', 'Biomedicina', 'Farmacología', 'ODS 3, ODS 9', 'Resumen del proyecto Gama...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-003', 'Aprobado'),
 -- Proyecto en status "No aprobado" con id 8
-('Proyecto prueba 8', '2025-01-01', '2025-12-31', 'Tecnológica', 'Robótica', 'Inteligencia Artificial', 'ODS 4, ODS 8', 'Resumen del proyecto Delta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-004', 'No aprobado');
+('Proyecto prueba 8', '2025-01-01', '2025-12-31', 'Tecnológica', 'Robótica', 'Inteligencia Artificial', 'ODS 4, ODS 8', 'Resumen del proyecto Delta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-004', 'No aprobado'),
+
+-- Proyecto en status "En revisión" con id 9
+('Proyecto prueba 9', '2025-01-01', '2025-12-31', 'Científica', 'Biotecnología', 'Genética', 'ODS 3, ODS 9', 'Resumen del proyecto Alfa...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-001', 'En revisión'),
+-- Proyecto en status "En revisión" con id 10
+('Proyecto prueba 10', '2025-01-01', '2025-12-31', 'Tecnológica', 'Nanotecnología', 'Materiales', 'ODS 7, ODS 12', 'Resumen del proyecto Beta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-002', 'En revisión');
 
 
 
@@ -68,7 +73,10 @@ INSERT INTO usersProjects (project_id, user_id) VALUES
 (5, 2),
 (6, 2),
 (7, 2),
-(8, 2);
+(8, 2),
+
+(9, 1),
+(10, 2);
 
 -- =============== INSERTS DE COMMITTEES ===============
 INSERT INTO committees (name) VALUES 
@@ -104,36 +112,36 @@ INSERT INTO evaluations (comments, score, result, evaluation_type_id, user_id, p
 VALUES 
 -- ====== Evaluaciones tipo comité ligados al secretario del comité 1 y 2 ======
 -- Evaluación del proyecto 1 que está en status "En revisión"
-('Proyecto aprobado', NULL, 'Aprobado', 2, 5, 1), -- Secretario del comité 1 (evaluado)
-(NULL, NULL, NULL, 2, 8, 1), -- Secretario del comité 2 (sin evaluar)
+('Proyecto aprobado', NULL, 'Aprobado', 2, 4, 1), -- Secretario del comité 1 (evaluado)
+(NULL, NULL, NULL, 2, 7, 1), -- Secretario del comité 2 (sin evaluar)
 
 -- Evaluación del proyecto 2 que está en status "Pendiente de correcciones"
-('Corregir', NULL, 'Pendiente de correcciones', 2, 5, 2), -- Secretario del comité 1 (evaluado)
-('Corregir', NULL, 'Pendiente de correcciones', 2, 8, 2), -- Secretario del comité 2 (evaluado)
+('Corregir', NULL, 'Pendiente de correcciones', 2, 4, 2), -- Secretario del comité 1 (evaluado)
+('Corregir', NULL, 'Pendiente de correcciones', 2, 7, 2), -- Secretario del comité 2 (evaluado)
 
 -- Evaluación del proyecto 3 que está en status "Aprobado"
-('Proyecto aprobado', NULL, 'Aprobado', 2, 5, 3), -- Secretario del comité 1 (evaluado)
-('Proyecto aprobado', NULL, 'Aprobado', 2, 8, 3), -- Secretario del comité 1 (evaluado)
+('Proyecto aprobado', NULL, 'Aprobado', 2, 4, 3), -- Secretario del comité 1 (evaluado)
+('Proyecto aprobado', NULL, 'Aprobado', 2, 7, 3), -- Secretario del comité 1 (evaluado)
 
 -- Evaluación del proyecto 4 que está en status "No aprobado"
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 5, 4), -- Secretario del comité 1 (evaluado)
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 8, 4), -- Secretario del comité 2 (evaluado)
+('Proyecto no aprobado', NULL, 'No aprobado', 2, 4, 4), -- Secretario del comité 1 (evaluado)
+('Proyecto no aprobado', NULL, 'No aprobado', 2, 7, 4), -- Secretario del comité 2 (evaluado)
 
 -- Evaluación del proyecto 5 que está en status "En revisión"
-('Proyecto aprobado', NULL, 'Aprobado', 2, 5, 5), -- Secretario del comité 1 (evaluado)
-(NULL, NULL, NULL, 2, 8, 5), -- Secretario del comité 2 (sin evaluar)
+('Proyecto aprobado', NULL, 'Aprobado', 2, 4, 5), -- Secretario del comité 1 (evaluado)
+(NULL, NULL, NULL, 2, 7, 5), -- Secretario del comité 2 (sin evaluar)
 
 -- Evaluación del proyecto 6 que está en status "Pendiente de correcciones"
-('Corregir', NULL, 'Pendiente de correcciones', 2, 5, 6), -- Secretario del comité 1 (evaluado)
-('Corregir', NULL, 'Pendiente de correcciones', 2, 8, 6), -- Secretario del comité 2 (evaluado)
+('Corregir', NULL, 'Pendiente de correcciones', 2, 4, 6), -- Secretario del comité 1 (evaluado)
+('Corregir', NULL, 'Pendiente de correcciones', 2, 7, 6), -- Secretario del comité 2 (evaluado)
 
 -- Evaluación del proyecto 7 que está en status "Aprobado"
-('Proyecto aprobado', NULL, 'Aprobado', 2, 5, 7), -- Secretario del comité 1 (evaluado)
-('Proyecto aprobado', NULL, 'Aprobado', 2, 8, 7), -- Secretario del comité 1 (evaluado)
+('Proyecto aprobado', NULL, 'Aprobado', 2, 4, 7), -- Secretario del comité 1 (evaluado)
+('Proyecto aprobado', NULL, 'Aprobado', 2, 7, 7), -- Secretario del comité 1 (evaluado)
 
 -- Evaluación del proyecto 8 que está en status "No aprobado"
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 5, 8), -- Secretario del comité 1 (evaluado)
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 8, 8), -- Secretario del comité 2 (evaluado)
+('Proyecto no aprobado', NULL, 'No aprobado', 2, 4, 8), -- Secretario del comité 1 (evaluado)
+('Proyecto no aprobado', NULL, 'No aprobado', 2, 7, 8), -- Secretario del comité 2 (evaluado)
 
 
 -- ====== Evaluaciones tipo individual ligados a los integrantes del comité 1 y 2 ======
