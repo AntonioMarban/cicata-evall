@@ -27,7 +27,7 @@ const getPendingProjects = (req, res) => {
           error: "Resource does not exist",
         });
     }
-    return res.status(200).json({ projects: results[0] });
+    return res.status(200).json(results[0]);
   });
 };
 
