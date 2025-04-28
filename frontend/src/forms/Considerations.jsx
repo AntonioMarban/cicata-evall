@@ -6,9 +6,9 @@ import { prevOption } from "../hooks/optionUtils";
 const  Considerations = ({option,setOption}) => {
     const [considerationsBio, setConsiderationsBio] = useState(
         {   idF: 7,
-            considerations:"" });
+            biosecurityConsiderations:"" });
     const [newErrorsD,setNewErrorsD] = useState({
-            considerations:""
+            biosecurityConsiderations:""
     });
 
     const handleChange = (e) => {
@@ -26,9 +26,9 @@ const  Considerations = ({option,setOption}) => {
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
         const newErrorsDF = {}
-        if (!considerationsBio.considerations || (typeof considerationsBio.considerations === 'string' 
-            && considerationsBio.considerations.trim() === '')) {
-                newErrorsDF.considerations = "El campo es requerido";
+        if (!considerationsBio.biosecurityConsiderations || (typeof considerationsBio.biosecurityConsiderations === 'string' 
+            && considerationsBio.biosecurityConsiderations.trim() === '')) {
+                newErrorsDF.biosecurityConsiderations = "El campo es requerido";
         }
         setNewErrorsD(newErrorsDF)
         if(!Object.keys(newErrorsDF).length>0){
@@ -49,11 +49,11 @@ const  Considerations = ({option,setOption}) => {
                                 así como mencionar las acciones que se llevarán a cabo para salvaguardar a los pacientes, animales 
                                 de laboratorio, el ambiente, estudiantes, investigadores o cualquier involucrado en el desarrollo 
                                 del proyecto) <br/> 
-                                {newErrorsD.considerations && <span className="text-red-600">*{newErrorsD.considerations}</span>}</p>
+                                {newErrorsD.biosecurityConsiderations && <span className="text-red-600">*{newErrorsD.biosecurityConsiderations}</span>}</p>
                             <textarea  
                                 className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
-                                name="considerations" 
-                                value={considerationsBio.considerations}
+                                name="biosecurityConsiderations" 
+                                value={considerationsBio.biosecurityConsiderations}
                                 onChange={handleChange}
                                 placeholder="Escribe las consideraciones de bioseguridad..."></textarea>
                         </div>

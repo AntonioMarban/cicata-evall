@@ -11,20 +11,20 @@ const  Desglose = ({option,setOption}) => {
         {   idF: 5,
             introduction: "",
             background:"",
-            problemSta:"",
+            statementOfProblem:"",
             justification:"", 
-            hipotesis: "",
-            gObjective: "", 
+            hypothesis: "",
+            generalObjective: "", 
             sObjectives: [] });
     
     const [newErrorsD,setNewErrorsD] = useState(
         {
             introduction: "",
             background:"",
-            problemSta:"",
+            statementOfProblem:"",
             justification:"", 
-            hipotesis: "",
-            gObjective: ""
+            hypothesis: "",
+            generalObjective: ""
         });
     const [desgloseToEdit, setDesgloseToEdit] = useState(null);
 
@@ -95,11 +95,11 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe los antecedentes del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Planteamiento del Problema {newErrorsD.problemSta && <span className="text-red-600">*{newErrorsD.problemSta}</span>}</p>
+                            <p className="!mt-2 text-xl">Planteamiento del Problema {newErrorsD.statementOfProblem && <span className="text-red-600">*{newErrorsD.statementOfProblem}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
-                            name="problemSta"
-                            value={desglose.problemSta}
+                            name="statementOfProblem"
+                            value={desglose.statementOfProblem}
                             onChange={handleChange} 
                             placeholder="Escribe el planteamiento del problema..."></textarea>
                         </div>
@@ -113,20 +113,20 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe la justificación del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Hipótesis {newErrorsD.hipotesis && <span className="text-red-600">*{newErrorsD.hipotesis}</span>}</p>
+                            <p className="!mt-2 text-xl">Hipótesis {newErrorsD.hypothesis && <span className="text-red-600">*{newErrorsD.hypothesis}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
-                            name="hipotesis"
-                            value={desglose.hipotesis}
+                            name="hypothesis"
+                            value={desglose.hypothesis}
                             onChange={handleChange} 
                             placeholder="Escribe la hipótesis del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Objetivo general {newErrorsD.gObjective && <span className="text-red-600">*{newErrorsD.gObjective}</span>}</p>
+                            <p className="!mt-2 text-xl">Objetivo general {newErrorsD.generalObjective && <span className="text-red-600">*{newErrorsD.generalObjective}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
-                            name="gObjective"
-                            value={desglose.gObjective}
+                            name="generalObjective"
+                            value={desglose.generalObjective}
                             onChange={handleChange} 
                             placeholder="Escribe el objetivo general del proyecto..."></textarea>
                         </div>

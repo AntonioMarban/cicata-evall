@@ -7,27 +7,27 @@ const  GeneralData = ({option,setOption}) => {
     const [typeInv, setTypeInv] = useState(1);
     const [generalData, setGeneralData] = useState(
         {   idF: 1,
-            titleProject: "",
+            title: "",
             startDate:"",
             endDate:"",
             typeInv, 
             typeInvText: "", 
-            spTopic: "",
-            subTopic: "", 
+            topic: "",
+            subtopic: "", 
             objectiveA,
-            considerations: "",
+            alignmentPNIorODS: "",
             summary:"" });
     
     const [newErrors,setNewErrors] = useState({
-            titleProject: "",
+            title: "",
             startDate:"",
             endDate:"",
             typeInv, 
             typeInvText: "", 
-            spTopic: "",
-            subTopic: "", 
+            topic: "",
+            subtopic: "", 
             objectiveA,
-            considerations: "",
+            alignmentPNIorODS: "",
             summary:""
     });
 
@@ -82,12 +82,12 @@ const  GeneralData = ({option,setOption}) => {
             <div className="flex flex-col">
                 <div className="!mt-5 flex-1">
                     <p className="text-2xl font-normal">Datos generales del proyecto</p>
-                    <p className="text-lg !mt-3 !mb-2">Título del proyecto {newErrors.titleProject && <span className="text-red-600">*{newErrors.titleProject}</span>}</p>
+                    <p className="text-lg !mt-3 !mb-2">Título del proyecto {newErrors.title && <span className="text-red-600">*{newErrors.title}</span>}</p>
                     <input 
                         type="text"
-                        name="titleProject"
+                        name="title"
                         className="!p-2 w-2/5 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3" 
-                        value={generalData.titleProject}
+                        value={generalData.title}
                         onChange={handleChange}
                         placeholder="Escribe el titulo del proyecto..."></input>
                 </div>
@@ -170,20 +170,20 @@ const  GeneralData = ({option,setOption}) => {
                 <div className="flex-1 !mt-5">
                     <div className="flex flex-wrap">
                         <div className="flex-1">
-                            <p className="!mb-5">Tema especialidad {newErrors.spTopic && <span className="text-red-600">*{newErrors.spTopic}</span>}</p>
+                            <p className="!mb-5">Tema especialidad {newErrors.topic && <span className="text-red-600">*{newErrors.topic}</span>}</p>
                             <input  
                                     className="!p-2 w-4/5 min-w-[250px] rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end"
-                                    name="spTopic" 
-                                    value={generalData.spTopic}
+                                    name="topic" 
+                                    value={generalData.topic}
                                     onChange={handleChange}
                                     placeholder="Escribe el tema de especialidad..."></input>
                         </div>
                         <div className="flex-1">
-                            <p className="!mb-5">Subtema especialidad {newErrors.subTopic && <span className="text-red-600">*{newErrors.subTopic}</span>}</p>
+                            <p className="!mb-5">Subtema especialidad {newErrors.subtopic && <span className="text-red-600">*{newErrors.subtopic}</span>}</p>
                             <input  
                                     className="!p-2 w-4/5 min-w-[250px] rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end"
-                                    name="subTopic" 
-                                    value={generalData.subTopic}
+                                    name="subtopic" 
+                                    value={generalData.subtopic}
                                     onChange={handleChange}
                                     placeholder="Escribe el subtema de especialidad..."></input>
                         </div>
@@ -209,13 +209,13 @@ const  GeneralData = ({option,setOption}) => {
                 </div>
                 
                 <div className="!mt-5 flex-1">
-                    <p className="text-lg mt-3">En caso afirmativo ¿Con cuál? / No se considera ¿Por qué? {newErrors.considerations && <span className="text-red-600">*{newErrors.considerations}</span>}</p>
+                    <p className="text-lg mt-3">En caso afirmativo ¿Con cuál? / No se considera ¿Por qué? {newErrors.alignmentPNIorODS && <span className="text-red-600">*{newErrors.alignmentPNIorODS}</span>}</p>
                     <input  
                             className="!p-2 w-2/5 min-w-[250px] !p-2 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] !mt-3" 
-                            name="considerations"  
-                            value={generalData.considerations}
+                            name="alignmentPNIorODS"  
+                            value={generalData.alignmentPNIorODS}
                             onChange={handleChange}
-                            placeholder="Escribe las consideraciones..."></input>
+                            placeholder="Escribe las como es que se considera o no..."></input>
                 </div>
                 <div className="!mt-5 flex-1 w-[90%]">
                     <p className="text-lg mt-3">Resumen del proyecto {newErrors.summary && <span className="text-red-600">*{newErrors.summary}</span>}</p>

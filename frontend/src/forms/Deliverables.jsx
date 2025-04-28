@@ -4,18 +4,18 @@ import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import "../styles/deliverables.css"
 const  Deliverables = ({option,setOption}) => {
-    const [deliverablesF, setDeliverablesF] = useState(
+    const [p_deliverablesJSON, setP_deliverablesJSON] = useState(
     {
         idF: 9
     }
     );
 
     const handleOnSubmitForm = useFormHandler({
-        form: deliverablesF,
+        form: p_deliverablesJSON,
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
     });
     const handleChange = (section, deliverable, category, value) => {
-        setDeliverablesF((prev) => ({
+        setP_deliverablesJSON((prev) => ({
           ...prev,
           [section]: {
             ...prev[section],
@@ -55,7 +55,7 @@ const  Deliverables = ({option,setOption}) => {
     ];
     const categories = ["Nacional", "Internacional"];
     const categories2 = ["Medio", "Superior","Posgrado"];
-    useLoadFormData(deliverablesF.idF,setDeliverablesF);
+    useLoadFormData(p_deliverablesJSON.idF,setP_deliverablesJSON);
     return (
         <div>
             <table className="table">
@@ -79,7 +79,7 @@ const  Deliverables = ({option,setOption}) => {
                         <td data-label="Entregable">{deliverable}</td>
                         {categories2.map((category) => (
                         <td key={category} data-label={category}>
-                            <input type="number" min={0} value={deliverablesF["educativos"]?.[deliverable]?.[category] || ""}
+                            <input type="number" min={0} value={p_deliverablesJSON["educativos"]?.[deliverable]?.[category] || ""}
                             onChange={(e) =>handleChange("educativos", deliverable, category, e.target.value)}/>
                         </td>
                         ))}
@@ -104,7 +104,7 @@ const  Deliverables = ({option,setOption}) => {
                         {categories.map((category) => (
                         <td key={category} data-label={category}>
                             <input type="number" 
-                                value={deliverablesF["difusion"]?.[deliverable]?.[category] || ""}
+                                value={p_deliverablesJSON["difusion"]?.[deliverable]?.[category] || ""}
                                 onChange={(e) =>handleChange("difusion", deliverable, category, e.target.value)}/>
                         </td>
                         ))}
@@ -128,7 +128,7 @@ const  Deliverables = ({option,setOption}) => {
                         <td data-label="Entregable">{deliverable}</td>
                         {categories.map((category) => (
                         <td key={category} data-label={category}>
-                            <input type="number" value={deliverablesF["tecnologia"]?.[deliverable]?.[category] || ""}
+                            <input type="number" value={p_deliverablesJSON["tecnologia"]?.[deliverable]?.[category] || ""}
                                 onChange={(e) => handleChange("tecnologia", deliverable, category, e.target.value)}/>
                         </td>
                         ))}
