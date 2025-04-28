@@ -39,17 +39,19 @@ BEGIN
 END //
 DELIMITER ;
 
+
 -- obtener proyectos activos
 DELIMITER //
 CREATE PROCEDURE getActiveProjects(IN userId INT)
 BEGIN
     SELECT
         p.projectId,
-        p.title AS Proyecto,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS Investigador,
-        p.startDate AS FechaInicio,
-        p.folio AS Folio,
-        p.notification AS Notificacion
+        p.title,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        p.startDate,
+        p.folio,
+        p.status,
+        p.notification
     FROM projects p
     JOIN usersProjects up ON p.projectId = up.project_id
     JOIN users u ON up.user_id = u.userId
@@ -63,12 +65,12 @@ CREATE PROCEDURE getInactiveProjects(IN userId INT)
 BEGIN
     SELECT
         p.projectId,
-        p.title AS Proyecto,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS Investigador,
-        p.startDate AS FechaInicio,
-        p.endDate AS FechaFin,
-        p.folio AS Folio,
-        p.status AS Estado
+        p.title,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        p.startDate,
+        p.endDate,
+        p.folio,
+        p.status
     FROM projects p
     JOIN usersProjects up ON p.projectId = up.project_id
     JOIN users u ON up.user_id = u.userId
@@ -310,6 +312,7 @@ DELIMITER ;
 
 
 
+-- Miembro de comité -> Pantalla de inicio de proyectos pendientes
 -- Procedimiento almacenado para obtener los proyectos pendientes de evaluación
 -- por parte de un comité específico y un usuario específico
 -- @param p_committeeId: Id del comité
@@ -317,33 +320,39 @@ DELIMITER ;
 -- @return: Proyectos pendientes de evaluación
 
 DELIMITER //
-CREATE PROCEDURE getPendingProjects(
-    IN p_committeeId INT, 
-    IN p_userId INT
-)
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM committeeUsers 
-        WHERE userId = p_userId AND committeeId = p_committeeId
-    ) THEN
-        SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'The user does not belong to this committee';
-    ELSE    
-        SELECT 
-            p.title,
-            p.startDate,
-            p.endDate,
-            p.status 
-        FROM 
-            projects p 
-        INNER JOIN evaluations e ON p.projectId = e.project_id
-        WHERE 
-            e.user_id = p_userId
-            AND e.result IS NULL;
-    END IF;
-END //
+    DELIMITER //
+    CREATE PROCEDURE getPendingProjects(
+        IN p_committeeId INT,
+        IN p_userId INT
+    )
+    BEGIN
+        IF NOT EXISTS (
+            SELECT 1 FROM committeeUsers
+            WHERE userId = p_userId AND committeeId = p_committeeId
+        ) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'The user does not belong to this committee';
+        ELSE
+            SELECT
+                p.projectId,
+                p.title,
+                CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+                p.startDate,
+                p.folio,
+                p.status
+            FROM
+                projects p
+            JOIN evaluations e ON p.projectId = e.project_id
+            JOIN users u ON e.user_id = u.userId
+            WHERE
+                e.user_id = p_userId
+                AND e.evaluation_type_id = 1
+                AND e.result IS NULL;
+        END IF;
+    END //
 
-DELIMITER ;
+    DELIMITER ;
+
 
 
 -- Función para obtener la firma del acuerdo de un proyecto de cualquier usuario
@@ -532,12 +541,11 @@ CREATE PROCEDURE getActiveProjectsSub()
 BEGIN
     SELECT
         p.projectId,
-        p.title AS Proyecto,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS Investigador,
-        p.startDate AS FechaInicio,
-        p.endDate AS FechaFin,
-        p.folio AS Folio,
-        p.status AS Estado
+        p.title,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        p.startDate,
+        p.folio,
+        p.status
     FROM projects p
     JOIN usersProjects up ON p.projectId = up.project_id
     JOIN users u ON up.user_id = u.userId
@@ -545,18 +553,17 @@ BEGIN
 END //
 DELIMITER ;
 
-
 DELIMITER //
 CREATE PROCEDURE getInactiveProjectsSub()
 BEGIN
     SELECT
         p.projectId,
-        p.title AS Proyecto,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS Investigador,
-        p.startDate AS FechaInicio,
-        p.endDate AS FechaFin,
-        p.folio AS Folio,
-        p.status AS Estado
+        p.title,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        p.startDate,
+        p.endDate,
+        p.folio,
+        p.status
     FROM projects p
     JOIN usersProjects up ON p.projectId = up.project_id
     JOIN users u ON up.user_id = u.userId
@@ -808,7 +815,7 @@ DELIMITER ;
 
 -- Función para crear las evaluaciones de la segunda etapa, en este caso de los comités CEI, CB y CI. 
 -- En caso de que el proyecto tenga marcado el uso de animales se crea la evaluación del comité CIQUAL
--- Se hace uso de un procedimiento almacena createSecondStageEvaluations
+-- Se hace uso de un procedimiento almacenado createSecondStageEvaluations
 -- @param projectId: Id del proyecto
 -- @returns: Mensaje de éxito o error
 DELIMITER //
@@ -828,75 +835,94 @@ BEGIN
 
     DECLARE v_workWithAnimals BOOLEAN;
 
-    -- Obtener el ID del comité CI y el ID del usuario (presidente)
-    SELECT cu.committeeId, u.userId INTO v_committeeCI, v_userIdCI
+
+    DECLARE v_userIdCIP INT;
+
+    -- Obtener el ID del comité CIP y el ID del usuario (presidente)
+    SELECT u.userId INTO v_userIdCIP
     FROM committeeUsers cu
     JOIN users u ON cu.userId = u.userId
-    WHERE cu.committeeId = 2 AND u.userType_id = 3
-    LIMIT 1;
-    -- Obtener el ID del comité CB y el ID del usuario (presidente)
-    SELECT cu.committeeId, u.userId INTO v_committeeCB, v_userIdCB
-    FROM committeeUsers cu
-    JOIN users u ON cu.userId = u.userId
-    WHERE cu.committeeId = 3 AND u.userType_id = 3
-    LIMIT 1;
-    -- Obtener el ID del comité CEI y el ID del usuario (presidente)
-    SELECT cu.committeeId, u.userId INTO v_committeeCEI, v_userIdCEI
-    FROM committeeUsers cu
-    JOIN users u ON cu.userId = u.userId
-    WHERE cu.committeeId = 4 AND u.userType_id = 3
+    WHERE cu.committeeId = 1 AND u.userType_id = 3
     LIMIT 1;
 
-    -- Verificar si el proyecto ya tiene evaluaciones del comité CI
-    IF NOT EXISTS (
+    -- Verificar si el proyecto ya tiene evaluaciones de la primera etapa
+    IF EXISTS (
         SELECT 1 FROM evaluations 
-        WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCI
+        WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCIP AND result = 'Aprobado'
     ) THEN
-        -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 2 (CI),
-        INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
-        VALUES (v_userIdCI, p_projectId, 2);
-    END IF;
-
-    -- Verificar si el proyecto ya tiene evaluaciones del comité CB
-    IF NOT EXISTS (
-        SELECT 1 FROM evaluations 
-        WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCB
-    ) THEN
-        -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 3 (CB),
-        INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
-        VALUES (v_userIdCB, p_projectId, 2);
-    END IF;
-    
-    -- Verificar si el proyecto ya tiene evaluaciones del comité CEI
-    IF NOT EXISTS (
-        SELECT 1 FROM evaluations 
-        WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCEI
-    ) THEN
-        -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 4 (CEI),
-        INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
-        VALUES (v_userIdCEI, p_projectId, 2);
-    END IF;
-
-    -- Verificar si el proyecto tiene marcado el uso de animales
-    SELECT workWithAnimals INTO v_workWithAnimals
-    FROM projects
-    WHERE projectId = p_projectId;
-
-    -- Si el proyecto tiene marcado el uso de animales, insertar la evaluación del comité CIQUAL
-    IF v_workWithAnimals THEN
-        SELECT cu.committeeId, u.userId INTO v_committeeCIQUAL, v_userIdCIQUAL
+        -- Obtener el ID del comité CI y el ID del usuario (presidente)
+        SELECT cu.committeeId, u.userId INTO v_committeeCI, v_userIdCI
         FROM committeeUsers cu
         JOIN users u ON cu.userId = u.userId
-        WHERE cu.committeeId = 5 AND u.userType_id = 3
+        WHERE cu.committeeId = 2 AND u.userType_id = 3
+        LIMIT 1;
+        -- Obtener el ID del comité CB y el ID del usuario (presidente)
+        SELECT cu.committeeId, u.userId INTO v_committeeCB, v_userIdCB
+        FROM committeeUsers cu
+        JOIN users u ON cu.userId = u.userId
+        WHERE cu.committeeId = 3 AND u.userType_id = 3
+        LIMIT 1;
+        -- Obtener el ID del comité CEI y el ID del usuario (presidente)
+        SELECT cu.committeeId, u.userId INTO v_committeeCEI, v_userIdCEI
+        FROM committeeUsers cu
+        JOIN users u ON cu.userId = u.userId
+        WHERE cu.committeeId = 4 AND u.userType_id = 3
         LIMIT 1;
 
+        -- Verificar si el proyecto ya tiene evaluaciones del comité CI
         IF NOT EXISTS (
             SELECT 1 FROM evaluations 
-            WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCIQUAL
+            WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCI
         ) THEN
+            -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 2 (CI),
             INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
-            VALUES (v_userIdCIQUAL, p_projectId, 2);
+            VALUES (v_userIdCI, p_projectId, 2);
         END IF;
+
+        -- Verificar si el proyecto ya tiene evaluaciones del comité CB
+        IF NOT EXISTS (
+            SELECT 1 FROM evaluations 
+            WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCB
+        ) THEN
+            -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 3 (CB),
+            INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
+            VALUES (v_userIdCB, p_projectId, 2);
+        END IF;
+        
+        -- Verificar si el proyecto ya tiene evaluaciones del comité CEI
+        IF NOT EXISTS (
+            SELECT 1 FROM evaluations 
+            WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCEI
+        ) THEN
+            -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 4 (CEI),
+            INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
+            VALUES (v_userIdCEI, p_projectId, 2);
+        END IF;
+
+        -- Verificar si el proyecto tiene marcado el uso de animales
+        SELECT workWithAnimals INTO v_workWithAnimals
+        FROM projects
+        WHERE projectId = p_projectId;
+
+        -- Si el proyecto tiene marcado el uso de animales, insertar la evaluación del comité CIQUAL
+        IF v_workWithAnimals THEN
+            SELECT cu.committeeId, u.userId INTO v_committeeCIQUAL, v_userIdCIQUAL
+            FROM committeeUsers cu
+            JOIN users u ON cu.userId = u.userId
+            WHERE cu.committeeId = 5 AND u.userType_id = 3
+            LIMIT 1;
+
+            IF NOT EXISTS (
+                SELECT 1 FROM evaluations 
+                WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCIQUAL
+            ) THEN
+                INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
+                VALUES (v_userIdCIQUAL, p_projectId, 2);
+            END IF;
+        END IF;
+    ELSE
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'The project does not have evaluations approved from first stage by the CIP committee';
     END IF;
 END //
 DELIMITER ;

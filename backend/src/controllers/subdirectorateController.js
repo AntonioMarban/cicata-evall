@@ -78,8 +78,8 @@ const getActiveProjectsSub = async (req, res) => {
         .json({ error: "Error fetching inactive projects" });
     }
 
-    const inactiveProjects = results[0];
-    res.status(200).json(inactiveProjects);
+    const activeProjects = results[0];
+    res.status(200).json(activeProjects);
   });
 };
 
