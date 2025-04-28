@@ -7,11 +7,11 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
     const [isOpen, setIsOpen] = useState(false)
     
     const initialFormValues = {
-        projectName: "",
-        projectDate: "",
+        name: "",
+        associationDate: "",
         projectType: "",
-        noRE: "",
-        noRESIP: ""
+        externalRegister: "",
+        SIPRegister: ""
     };
     const [newErrors,setNewErrors] = useState(initialFormValues);
     const [formValues, setFormValues] = useState(initialFormValues);
@@ -20,11 +20,11 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
     useEffect(() => {
         if (projectToEdit) {
             setFormValues({
-                projectName: projectToEdit.projectName || "",
-                projectDate: projectToEdit.projectDate || "",
+                name: projectToEdit.name || "",
+                associationDate: projectToEdit.associationDate || "",
                 projectType: projectToEdit.projectType || "",
-                noRE: projectToEdit.noRE || "",
-                noRESIP: projectToEdit.noRESIP || ""
+                externalRegister: projectToEdit.externalRegister || "",
+                SIPRegister: projectToEdit.SIPRegister || ""
             });
             setIsOpen(true);
         }
@@ -32,7 +32,7 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
 
     const handleActivitySubmit  = useFormAddHandler({
         setState: setProjects,
-        key: 'projects',
+        key: 'p_associatedProjectsJSON',
          onSuccess: () => {
             setIsOpen(false);
             if (onEditComplete && projectToEdit) {
@@ -61,8 +61,8 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
               newErrorsF[key] = `El campo  es requerido`;
             }
         });
-        delete newErrorsF["noRE"];
-        delete newErrorsF["noRESIP"];
+        delete newErrorsF["externalRegister"];
+        delete newErrorsF["SIPRegister"];
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
             handleActivitySubmit(e, formValues, projectToEdit ? projectToEdit.index : undefined);
@@ -85,25 +85,25 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                             <div className="form-rows">
                                 <div>
                                     <p>Nombre proyecto
-                                        <br/>{newErrors.projectName && <span className="text-red-600">*{newErrors.projectName}</span>}
+                                        <br/>{newErrors.name && <span className="text-red-600">*{newErrors.name}</span>}
                                     </p>
                                     <input 
-                                        name="projectName" 
+                                        name="name" 
                                         className="form-pieza-input" 
                                         placeholder="Escribe el nombre del proyecto..."
-                                        value={formValues.projectName}
+                                        value={formValues.name}
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div>
                                     <p>Fecha de asociación
-                                        <br/>{newErrors.projectDate && <span className="text-red-600">*{newErrors.projectDate}</span>}
+                                        <br/>{newErrors.associationDate && <span className="text-red-600">*{newErrors.associationDate}</span>}
                                     </p>
                                     <input 
-                                        name="projectDate" 
+                                        name="associationDate" 
                                         className="form-pieza-input" 
                                         type="date"
-                                        value={formValues.projectDate}
+                                        value={formValues.associationDate}
                                         onChange={handleInputChange}
                                     />
                                 </div>
@@ -127,10 +127,10 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                                         <br/><span className="form-subtext">(Si aplica)</span>
                                     </p>
                                     <input 
-                                        name="noRE" 
+                                        name="externalRegister" 
                                         className="form-pieza-input" 
                                         placeholder="Escribe el numero de registro externo..."
-                                        value={formValues.noRE}
+                                        value={formValues.externalRegister}
                                         onChange={handleInputChange}
                                     />
                                 </div>
@@ -138,10 +138,10 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                                     <p>Número de registro SIP</p>
                                     <p className="form-subtext">(Si aplica)</p>
                                     <input 
-                                        name="noRESIP" 
+                                        name="SIPRegister" 
                                         className="form-pieza-input" 
                                         placeholder="Escribe el numero de registro SIP..."
-                                        value={formValues.noRESIP}
+                                        value={formValues.SIPRegister}
                                         onChange={handleInputChange}
                                     />
                                 </div>

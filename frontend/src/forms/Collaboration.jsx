@@ -10,7 +10,7 @@ import { useState } from "react";
 
 const  Collaboration = ({option,setOption}) => {
     const [collaborate, setCollaborate] = useState(1);
-    const [collaborations, setCollaborations] = useState({ idF: 4, collaborate,collaborateText:"", collaborations: [] });
+    const [collaborations, setCollaborations] = useState({ idF: 4, collaborate,collaborateText:"", p_collaborativeInstitutionsJSON: [] });
 
     const [collaborationToEdit, setCollaborationToEdit] = useState(null);
     const handleOnSubmitForm = useFormHandler({
@@ -21,7 +21,7 @@ const  Collaboration = ({option,setOption}) => {
     const handleDeleteArray = (index) => {
         setCollaborations({
             ...collaborations,
-            collaborations: removeItemByIndex(collaborations.collaborations, index)
+            p_collaborativeInstitutionsJSON: removeItemByIndex(collaborations.p_collaborativeInstitutionsJSON, index)
         });
     };
     
@@ -80,7 +80,7 @@ const  Collaboration = ({option,setOption}) => {
                             <p className="flex-1"></p>
                         </div>
                     </div>
-                    <CardAdd cards={collaborations.collaborations} 
+                    <CardAdd cards={collaborations.p_collaborativeInstitutionsJSON} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}
                     slice={4} />

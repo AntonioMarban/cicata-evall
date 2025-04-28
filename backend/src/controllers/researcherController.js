@@ -107,9 +107,38 @@ const uploadDocuments = (req, res) => {
     res.status(200).json({ message: 'Documents uploaded successfully' });
 };
 
+const getProjectDetails = (req, res) => {
+    const projectId = req.params.projectId;
+    const query = 'CALL getProjectDetails(?)';
+
+    pool.query(query, [projectId], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error fetching project details' });
+        }
+
+        const [
+            projectInfo,
+            associatedProjects,
+            members,
+            collaborativeInstitutions,
+            scheduleActivities,
+            deliverablesProjects,
+            budgets
+        ] = results;
+        
+        // todo se obtiene como arreglos de objetos(esto de los arreglos le ahorraba tiempo a Gordinho)
+        res.status(200).json({
+            project: projectInfo.length > 0 ? [projectInfo[0]] : [], // meto el objeto dentro de un arreglo
+            associatedProjects: associatedProjects || [],
+            members: members || [],
+            collaborativeInstitutions: collaborativeInstitutions || [],
+            scheduleActivities: scheduleActivities || [],
+            deliverablesProjects: deliverablesProjects || [],
+            budgets: budgets || []
+        });
+    });
+};
 
 
-
-
-
-module.exports = { getActiveProjects, getInactiveProjects, createProject, uploadDocuments }
+module.exports = { getActiveProjects, getInactiveProjects, createProject, uploadDocuments, getProjectDetails }

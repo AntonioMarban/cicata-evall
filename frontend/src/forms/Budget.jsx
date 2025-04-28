@@ -8,7 +8,7 @@ import { useState } from "react";
 import CardAdd from "../components/CardAdd";
 
 const  Budget = ({option,setOption}) => {
-    const [budget, setBudget] = useState({idF:11,budget:[]});
+    const [budget, setBudget] = useState({idF:11,p_budgetsJSON:[]});
     const [budgetToEdit, setBudgetToEdit] = useState(null);
 
     
@@ -20,7 +20,7 @@ const  Budget = ({option,setOption}) => {
     const handleDeleteArray = (index) => {
         setBudget({
             ...budget,
-            budget: removeItemByIndex(budget.budget, index)
+            p_budgetsJSON: removeItemByIndex(budget.p_budgetsJSON, index)
         });
     };
 
@@ -48,7 +48,7 @@ const  Budget = ({option,setOption}) => {
                     <p className="flex-1"></p>
                     </div>
                 </div>
-                <CardAdd cards={budget.budget} 
+                <CardAdd cards={budget.p_budgetsJSON} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}
                     slice={5}

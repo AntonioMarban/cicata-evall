@@ -3,16 +3,18 @@ import { updateForm,getAllData } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import DragDrop from "../components/DragDrop";
+import { useNavigate  } from 'react-router-dom'
 
 const  Anexos = ({option,setOption}) => {
+    const navigate = useNavigate();
     const [filesSend,setFilesSend] = useState([]);
     const [anexos, setAnexos] = useState({   
         idF: 13,
-        anexos:"",
+        aditionalComments:"",
         afilesSend: filesSend 
     });
     const [newErrors,setNewErrors] = useState({
-        anexos:""
+        aditionalComments:""
     });
 
     const [forms,setForms] = useState([]);
@@ -22,18 +24,18 @@ const  Anexos = ({option,setOption}) => {
             await updateForm(anexos);
 
         } catch(error){
-            console.log("Error al guardar contracto",error);
+            alert("Error al guardar el formulario",error);
         }
         try{
-            const formData = await getAllData();
-            if (formData) {
-                setForms(formData);
-                console.log(formulario)
+            const  formData  = await getAllData();
+            if(formData){
+                setForms(formData)
+                console.log(formData)
+                navigate('/VerFormulario')
             }
         }catch(error){
-            console.log("Error al guardar contracto",error);
+           alert("Error al obtener el formulario",error);
         }
-        setOption(prevOption => prevOption + 1);
     }
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -72,9 +74,9 @@ const  Anexos = ({option,setOption}) => {
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
         const newErrorsDF = {}
-        if (!anexos.anexos || (typeof anexos.anexos === 'string' 
-            && anexos.anexos.trim() === '')) {
-                newErrorsDF.anexos = "El campo es requerido";
+        if (!anexos.aditionalComments || (typeof anexos.aditionalComments === 'string' 
+            && anexos.aditionalComments.trim() === '')) {
+                newErrorsDF.aditionalComments = "El campo es requerido";
         }
         setNewErrors(newErrorsDF)
         if(!Object.keys(newErrorsDF).length>0){
@@ -88,7 +90,7 @@ const  Anexos = ({option,setOption}) => {
             <div className="flex flex-col justify-between">
                 <div>
                     <p className="text-[22px]">Agrega comentarios adicionales a tener en cuenta en el proyecto
-                        <br/> {newErrors.anexos && <span className="text-red-600">*{newErrors.anexos}</span>}
+                        <br/> {newErrors.aditionalComments && <span className="text-red-600">*{newErrors.aditionalComments}</span>}
                     </p>
                 </div>
                 <div className="flex-1 !mt-5">
@@ -96,8 +98,8 @@ const  Anexos = ({option,setOption}) => {
                         <div className="flex-1">
                             <textarea  
                             className="w-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
-                            name="anexos" 
-                            value={anexos.anexos}
+                            name="aditionalComments" 
+                            value={anexos.aditionalComments}
                             onChange={handleChange}
                             placeholder="Escribe los comentarios adicionales..."></textarea>
                             <div className="!mt-5 w-1/2">

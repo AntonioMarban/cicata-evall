@@ -159,7 +159,10 @@
 .table-form-show-body tr td{
     border: 1px solid black;
 }
-
+.fullTable-body h1{
+    font-weight: 600;
+    margin-bottom: 20px;
+}
 @media print {
     .div-button {
       display: none !important;

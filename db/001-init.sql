@@ -256,6 +256,61 @@ BEGIN
 END //
 DELIMITER ;
 
+-- procedimiento almacenado para obtener los detalles de un proyecto
+DELIMITER //
+CREATE PROCEDURE getProjectDetails(IN p_projectId INT)
+BEGIN
+    -- datos principales del proyecto
+    SELECT 
+        p.projectId, p.title, p.startDate, p.endDate, p.typeResearch, p.topic, p.subtopic, 
+        p.alignmentPNIorODS, p.summary, p.introduction, p.background, p.statementOfProblem, 
+        p.justification, p.hypothesis, p.generalObjective, p.ethicalAspects, 
+        p.workWithHumans, p.workWithAnimals, p.biosecurityConsiderations, 
+        p.contributionsToIPNandCICATA, p.conflictOfInterest, p.aditionalComments, 
+        p.folio, p.status
+    FROM projects p
+    WHERE p.projectId = p_projectId;
+
+    -- associatedProjects
+    SELECT 
+        associatedProjectId, name, associationDate, externalRegister, SIPRegister
+    FROM associatedProjects
+    WHERE project_id = p_projectId;
+
+    -- members
+    SELECT 
+        memberId, fName, lastName1, lastName2, email, institution, positionWork, researchNetwork, 
+        researchNetworkName, academicDegree, levelName, levelNum, tutorName
+    FROM members
+    WHERE project_id = p_projectId;
+
+    -- collaborativeInstitutions
+    SELECT 
+        collaborativeInstitutionId, name, partOfIPN, collaborationAgreement, agreementType, agreementNumber
+    FROM collaborativeInstitutions
+    WHERE project_id = p_projectId;
+
+    -- scheduleActivities
+    SELECT 
+        scheduleActivityId, goal, institution, responsibleMember, startDate, endDate
+    FROM scheduleActivities
+    WHERE project_id = p_projectId;
+
+    -- deliverablesProjects
+    SELECT 
+        deliverableProjectId, quantity, deliverableId, deliverableTypeId
+    FROM deliverablesProjects
+    WHERE projectId = p_projectId;
+
+    -- budgets
+    SELECT 
+        budgetstId, investmentExpenditure, name, expenditure
+    FROM budgets
+    WHERE project_id = p_projectId;
+END //
+DELIMITER ;
+
+
 
 -- Miembro de comité -> Pantalla de inicio de proyectos pendientes
 -- Procedimiento almacenado para obtener los proyectos pendientes de evaluación

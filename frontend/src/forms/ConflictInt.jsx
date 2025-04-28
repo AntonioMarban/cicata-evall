@@ -6,10 +6,10 @@ import { prevOption } from "../hooks/optionUtils";
 const  ConflictoInt = ({option,setOption}) => {
     const [conflict, setConflict] = useState({   
         idF: 12,
-        conflict:"" 
+        conflictOfInterest:"" 
     });
     const [newErrorsD,setNewErrorsD] = useState({
-        conflict:""
+        conflictOfInterest:""
     });
 
     const handleChange = (e) => {
@@ -27,9 +27,9 @@ const  ConflictoInt = ({option,setOption}) => {
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
         const newErrorsDF = {}
-        if (!conflict.conflict || (typeof conflict.conflict === 'string' 
-            && conflict.conflict.trim() === '')) {
-                newErrorsDF.conflict = "El campo es requerido";
+        if (!conflict.conflictOfInterest || (typeof conflict.conflictOfInterest === 'string' 
+            && conflict.conflictOfInterest.trim() === '')) {
+                newErrorsDF.conflictOfInterest = "El campo es requerido";
         }
         setNewErrorsD(newErrorsDF)
         if(!Object.keys(newErrorsDF).length>0){
@@ -48,11 +48,11 @@ const  ConflictoInt = ({option,setOption}) => {
                         <p className="text-[17px] text-gray-600">(Declarar si existe un interés laboral, personal, profesional, 
                             familiar o el proyecto está ligado a la industria farmacéutica, que pueda afectar el desempeño
                             imparcial de alguno de los participantes)
-                            <br/> {newErrorsD.conflict && <span className="text-red-600">*{newErrorsD.conflict}</span>}</p>
+                            <br/> {newErrorsD.conflictOfInterest && <span className="text-red-600">*{newErrorsD.conflictOfInterest}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
-                            name="conflict" 
-                            value={conflict.conflict}
+                            name="conflictOfInterest" 
+                            value={conflict.conflictOfInterest}
                             onChange={handleChange}
                             placeholder="Escribe los conflictos de interes..."></textarea>
                         </div>

@@ -9,7 +9,7 @@ import { useState } from "react";
 
 
 const  Projects = ({option,setOption}) => {
-    const [projects, setProjects] = useState({ idF: 2, projects: [] });
+    const [projects, setProjects] = useState({ idF: 2, p_associatedProjectsJSON: [] });
     const [projectToEdit, setProjectToEdit] = useState(null);
 
     const handleOnSubmitForm = useFormHandler({
@@ -20,7 +20,7 @@ const  Projects = ({option,setOption}) => {
     const handleDeleteArray = (index) => {
         setProjects({
             ...projects,
-            projects: removeItemByIndex(projects.projects, index)
+            p_associatedProjectsJSON: removeItemByIndex(projects.p_associatedProjectsJSON, index)
         });
     };
 
@@ -51,7 +51,7 @@ const  Projects = ({option,setOption}) => {
                     <p className="flex-1"></p>
                     </div>
                 </div>
-                <CardAdd cards={projects.projects} 
+                <CardAdd cards={projects.p_associatedProjectsJSON} 
                     handleDeleteFile={handleDeleteArray}
                     handleEditModal={handleEditModal}
                     slice={5}/>

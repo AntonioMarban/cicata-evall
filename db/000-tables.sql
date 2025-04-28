@@ -103,7 +103,8 @@ CREATE TABLE `collaborativeInstitutions` (
 
 CREATE TABLE `specificObjectives` (
   `specificObjectiveId` integer PRIMARY KEY AUTO_INCREMENT,
-  `objective` TEXT,
+  `objectiveName` TEXT,
+  `objectiveDescription` TEXT,
   `project_id` integer
 );
 
