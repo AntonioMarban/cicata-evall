@@ -9,9 +9,9 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
     const [isOpen, setIsOpen] = useState(false)
 
     const initialFormValues = {
-        actGoal: "",
-        insR: "",
-        participant: "",
+        goal: "",
+        institution: "",
+        responsibleMember: "",
         startDate: "",
         endDate: ""
     };
@@ -24,9 +24,9 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
     useEffect(() => {
             if (activitesToEdit) {
                 setActivity({
-                    actGoal: activitesToEdit.actGoal || "",
-                    insR: activitesToEdit.insR  || "",
-                    participant: activitesToEdit.participant || "",
+                    goal: activitesToEdit.goal || "",
+                    institution: activitesToEdit.institution  || "",
+                    responsibleMember: activitesToEdit.responsibleMember || "",
                     startDate: activitesToEdit.startDate || "",
                     endDate: activitesToEdit.endDate || ""
                 });
@@ -36,7 +36,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
 
     const handleActivitySubmit  = useFormAddHandler({
         setState: setActivities,
-        key: 'activities',
+        key: 'p_scheduleActivitiesJSON',
         onSuccess: ()=> {
             setIsOpen(false)
             if (onEditComplete && activitesToEdit){
@@ -85,43 +85,43 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Meta
-                                    <br/>{newErrors.actGoal && <span className="text-red-600">*{newErrors.actGoal}</span>}
+                                    <br/>{newErrors.goal && <span className="text-red-600">*{newErrors.goal}</span>}
                                 </p>
                                 <input 
-                                    name="actGoal" 
+                                    name="goal" 
                                     className="form-pieza-input" 
                                     placeholder="Escribe la meta de la actividad..."
-                                    value={activity.actGoal}
+                                    value={activity.goal}
                                     onChange={handleInputChange}
                                 ></input>
                             </div>
                             <div className="form-rows">
                                 <div>
                                     <p>¿Dónde se realizará?
-                                        <br/>{newErrors.insR && <span className="text-red-600">*{newErrors.insR}</span>}
+                                        <br/>{newErrors.institution && <span className="text-red-600">*{newErrors.institution}</span>}
                                     </p>
                                     <input 
-                                        name="insR" 
+                                        name="institution" 
                                         className="form-pieza-input" 
                                         placeholder="Escribe la institución donde se realizará..."
-                                        value={activity.insR}
+                                        value={activity.institution}
                                         onChange={handleInputChange}
                                     ></input>
                                 </div>
                                 <div>
                                     <p>Participante Responsable
-                                        <br/>{newErrors.participant && <span className="text-red-600">*{newErrors.participant}</span>}
+                                        <br/>{newErrors.responsibleMember && <span className="text-red-600">*{newErrors.responsibleMember}</span>}
                                     </p>
                                     <select 
-                                        name="participant" 
+                                        name="responsibleMember" 
                                         className="form-pieza-input" 
                                         placeholder="Select type"
-                                        value={activity.participant}
+                                        value={activity.responsibleMember}
                                         onChange={handleInputChange}
                                     >   
-                                    <option>Selecciona un participante</option>
-                                        {Array.isArray(responsable.participants) && responsable.participants.map((person, index) => (
-                                                <option key={index} value={`${person.nombre} ${person.paterno} ${person.materno}`}>{`${person.nombre} ${person.paterno} ${person.materno}`}</option>
+                                    <option>Selecciona un responsibleMembere</option>
+                                        {Array.isArray(responsable.p_membersJSON) && responsable.p_membersJSON.map((person, index) => (
+                                                <option key={index} value={`${person.fName} ${person.lastName1} ${person.lastName2}`}>{`${person.fName} ${person.lastName1} ${person.lastName2}`}</option>
                                         ))}
                                     </select>
                                 </div>

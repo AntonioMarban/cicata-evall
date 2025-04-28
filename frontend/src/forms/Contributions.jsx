@@ -6,10 +6,10 @@ import { prevOption } from "../hooks/optionUtils";
 const  Contributions = ({option,setOption}) => {
     const [contributions, setContributions] = useState({  
         idF: 10,
-        contributions:"" 
+        contributionsToIPNandCICATA:"" 
     })
     const [newErrorsD,setNewErrorsD] = useState({
-        contributions:""
+        contributionsToIPNandCICATA:""
     });
     
     const handleOnSubmitForm = useFormHandler({
@@ -26,9 +26,9 @@ const  Contributions = ({option,setOption}) => {
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
         const newErrorsDF = {}
-        if (!contributions.contributions || (typeof contributions.contributions === 'string' 
-            && contributions.contributions.trim() === '')) {
-                newErrorsDF.contributions = "El campo es requerido";
+        if (!contributions.contributionsToIPNandCICATA || (typeof contributions.contributionsToIPNandCICATA === 'string' 
+            && contributions.contributionsToIPNandCICATA.trim() === '')) {
+                newErrorsDF.contributionsToIPNandCICATA = "El campo es requerido";
         }
         setNewErrorsD(newErrorsDF)
         if(!Object.keys(newErrorsDF).length>0){
@@ -41,7 +41,7 @@ const  Contributions = ({option,setOption}) => {
             <div className="flex flex-col justify-between">
                 <div>
                     <p className="text-[22px]">Aportaciones del proyecto al IPN y al CICATA Unidad Morelos
-                        <br/> {newErrorsD.contributions && <span className="text-red-600">*{newErrorsD.contributions}</span>}
+                        <br/> {newErrorsD.contributionsToIPNandCICATA && <span className="text-red-600">*{newErrorsD.contributionsToIPNandCICATA}</span>}
                     </p>
                 </div>
                 <div className="flex-1 !mt-5">
@@ -49,8 +49,8 @@ const  Contributions = ({option,setOption}) => {
                         <div className="flex-1">
                             <textarea  
                             className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
-                            name="contributions" 
-                            value={contributions.contributions}
+                            name="contributionsToIPNandCICATA" 
+                            value={contributions.contributionsToIPNandCICATA}
                             onChange={handleChange}
                             placeholder="Escribe las aportaciones del proyecto..."></textarea>
                         </div>

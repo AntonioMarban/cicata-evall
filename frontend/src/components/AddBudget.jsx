@@ -8,9 +8,9 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
     const [isOpen, setIsOpen] = useState(false)
 
     const initialFormValues = {
-        budgetType: "",
-        budgetName: "",
-        budgetAm: ""
+        investmentExpenditure: "",
+        name: "",
+        expenditure: ""
     };
 
     const [budgetForm, setBudgetForm] = useState(initialFormValues)
@@ -18,7 +18,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
 
     const handleBudgetSubmit = useFormAddHandler({
         setState: setBudget,
-        key: 'budget',
+        key: 'p_budgetsJSON',
         onSuccess: () => {
             setIsOpen(false)
             if (onEditComplete && budgetToEdit){
@@ -48,7 +48,6 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
               newErrorsF[key] = `El campo  es requerido`;
             }
         });
-        console.log(newErrorsF)
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
             handleBudgetSubmit(e, budgetForm, budgetToEdit ? budgetToEdit.index : undefined);
@@ -59,9 +58,9 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
     useEffect(()=>{
         if(budgetToEdit){
             setBudgetForm({
-                budgetType: budgetToEdit.budgetType ||"",
-                budgetName: budgetToEdit.budgetName ||"",
-                budgetAm: budgetToEdit.budgetAm || 0
+                investmentExpenditure: budgetToEdit.investmentExpenditure ||"",
+                name: budgetToEdit.name ||"",
+                expenditure: budgetToEdit.expenditure || 0
             });
             setIsOpen(true);
         }
@@ -84,38 +83,38 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Gasto
-                                    <br/>{newErrors.budgetType && <span className="text-red-600">*{newErrors.budgetType}</span>}
+                                    <br/>{newErrors.investmentExpenditure && <span className="text-red-600">*{newErrors.investmentExpenditure}</span>}
                                 </p>
                                 <input 
-                                    name="budgetType" 
+                                    name="investmentExpenditure" 
                                     className="form-pieza-input" 
                                     placeholder="Escribe el tipo de proyecto..."
-                                    value={budgetForm.budgetType}
+                                    value={budgetForm.investmentExpenditure}
                                     onChange={handleInputChange}
                                 ></input>
                             </div>
                             <div className="form-complete-row">
                                 <p>Nombre
-                                    <br/>{newErrors.budgetName && <span className="text-red-600">*{newErrors.budgetName}</span>}
+                                    <br/>{newErrors.name && <span className="text-red-600">*{newErrors.name}</span>}
                                 </p>
                                 <input 
-                                    name="budgetName" 
+                                    name="name" 
                                     className="form-pieza-input" 
                                     placeholder="Escribe el tipo de proyecto..."
-                                    value={budgetForm.budgetName}
+                                    value={budgetForm.name}
                                     onChange={handleInputChange}
                                 ></input>
                             </div>
                             <div className="form-complete-row">
                                 <p>Gasto $0.00
-                                    <br/>{newErrors.budgetAm && <span className="text-red-600">*{newErrors.budgetAm}</span>}
+                                    <br/>{newErrors.expenditure && <span className="text-red-600">*{newErrors.expenditure}</span>}
                                 </p>
                                 <input 
-                                    name="budgetAm" 
+                                    name="expenditure" 
                                     type="number" min={0}
                                     className="form-pieza-input" 
                                     placeholder="Escribe el tipo de proyecto..."
-                                    value={budgetForm.budgetAm}
+                                    value={budgetForm.expenditure}
                                     onChange={handleInputChange}
                                 ></input>
                             </div>

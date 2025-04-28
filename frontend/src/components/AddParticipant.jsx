@@ -7,17 +7,17 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 const  AddParticipant = ({setParticipants, participantToEdit = null, onEditComplete = null}) => {
     const [isOpen, setIsOpen] = useState(false)
     const initialParticipant = {
-        nombre: "",
-        paterno: "",
-        materno: "",
-        insti: "",
-        puesto: "",
-        gAcademico: "",
-        typeInvD: "",
-        levelInvD: "",
+        fName: "",
+        lastName1: "",
+        lastName2: "",
+        institution: "",
+        positionWork: "",
+        academicDegree: "",
+        levelName: "",
+        levelNum: "",
         email: "",
-        tipoInv: "",
-        netInv: 1
+        researchNetworkName: "",
+        researchNetwork: 1
       };
     const [newErrors,setNewErrors] =  useState(initialParticipant);
     const [participant, setParticipant] = useState(initialParticipant);
@@ -40,8 +40,8 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
 
     const handleParticipantSubmit = useFormAddHandler({
         setState: setParticipants,
-        key: 'participants',
-        extraData: { netInv: participant.netInv },
+        key: 'p_membersJSON',
+        extraData: { researchNetwork: participant.researchNetwork },
         onSuccess: () => {
             setIsOpen(false)
             if(onEditComplete && participantToEdit){
@@ -72,9 +72,9 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             if (value === 0){
                 delete newErrorsF[key]
             }
-            if (key=== "netInv" && value === 0 ){
+            if (key=== "researchNetwork" && value === 0 ){
                 delete newErrorsF[key]
-                delete newErrorsF["tipoInv"]
+                delete newErrorsF["researchNetworkName"]
             }
           }
         });
@@ -86,16 +86,16 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
     };
 
     useEffect(()=>{
-        if(participant.typeInvD === "EDI"){
+        if(participant.levelName === "EDI"){
             setLevelToShow(["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"])
         }
-        else if(participant.typeInvD === "COFAA"){
+        else if(participant.levelName === "COFAA"){
             setLevelToShow(["I","II","IV","V"])
         }
-        else if(participant.typeInvD === "SNI"){
+        else if(participant.levelName === "SNI"){
             setLevelToShow(["Candidato","I","II","III","Emerito"])
         }
-    },[participant.typeInvD])
+    },[participant.levelName])
 
     return (
         <>
@@ -111,29 +111,29 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             <div className="participant-form-rows">
                                 <div>
                                     <p>Nombre  
-                                        <br/>{newErrors.nombre && <span className="text-red-600">*{newErrors.nombre}</span>}</p>
+                                        <br/>{newErrors.fName && <span className="text-red-600">*{newErrors.fName}</span>}</p>
                                     <input 
-                                        name="nombre"
-                                        value={participant.nombre}
+                                        name="fName"
+                                        value={participant.fName}
                                         onChange={handleInputChange}
-                                        className="participant-form-pieza-input" placeholder="Escribe el nombre del proyecto..."></input>
+                                        className="participant-form-pieza-input" placeholder="Escribe el nombre del miembro..."></input>
                                 </div>
                                 <div>
                                     <p>Apellido Paterno 
-                                        <br/>{newErrors.paterno && <span className="text-red-600">*{newErrors.paterno}</span>}</p>
+                                        <br/>{newErrors.lastName1 && <span className="text-red-600">*{newErrors.lastName1}</span>}</p>
                                     <input 
-                                        name="paterno"
-                                        value={participant.paterno}
+                                        name="lastName1"
+                                        value={participant.lastName1}
                                         onChange={handleInputChange}
                                         placeholder="Escribe el apellido paterno..."
                                         className="participant-form-pieza-input"></input>
                                 </div>
                                 <div>
                                     <p>Apellido Materno 
-                                        <br/>{newErrors.materno && <span className="text-red-600">*{newErrors.materno}</span>}</p>
+                                        <br/>{newErrors.lastName2 && <span className="text-red-600">*{newErrors.lastName2}</span>}</p>
                                     <input 
-                                        name="materno"
-                                        value={participant.materno}
+                                        name="lastName2"
+                                        value={participant.lastName2}
                                         onChange={handleInputChange}
                                         placeholder="Escribe el apellido materno..."
                                         className="participant-form-pieza-input"></input>
@@ -141,22 +141,22 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             </div>
                             <div className="participant-form-rows">
                                 <div>
-                                    <p>Institución perteneciente 
-                                        <br/>{newErrors.insti && <span className="text-red-600"> *{newErrors.insti}</span>}
+                                    <p>institución perteneciente 
+                                        <br/>{newErrors.institution && <span className="text-red-600"> *{newErrors.institution}</span>}
                                     </p>
                                     <input 
-                                        name="insti"
-                                        value={participant.insti}
+                                        name="institution"
+                                        value={participant.institution}
                                         onChange={handleInputChange}
-                                        className="participant-form-pieza-input" placeholder="Escribe a la institución que pertenece..."></input>
+                                        className="participant-form-pieza-input" placeholder="Escribe a la institución a la que pertenece..."></input>
                                 </div>
                                 <div>
                                     <p>Puesto que desempeña
-                                        <br/>{newErrors.puesto && <span className="text-red-600"> *{newErrors.puesto}</span>}
+                                        <br/>{newErrors.positionWork && <span className="text-red-600"> *{newErrors.positionWork}</span>}
                                     </p>
                                     <input
-                                        name="puesto"
-                                        value={participant.puesto}
+                                        name="positionWork"
+                                        value={participant.positionWork}
                                         onChange={handleInputChange} 
                                         placeholder="Escribe el puesto que desempeña..."
                                         className="participant-form-pieza-input"></input>
@@ -166,19 +166,19 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                 <p>Pertence a alguna red de investigación</p>
                                 <div>
                                     <button type="button" 
-                                        className={participant.netInv === 1  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('netInv',1)}>Si</button>
+                                        className={participant.researchNetwork === 1  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('researchNetwork',1)}>Si</button>
                                     <button type="button"
-                                        className={participant.netInv === 0  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('netInv',0)}>No</button>
+                                        className={participant.researchNetwork === 0  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('researchNetwork',0)}>No</button>
                                 </div>
                             </div>
-                            {participant.netInv === 1 &&
+                            {participant.researchNetwork === 1 &&
                                 <div className="participant-complete-row-2">
                                     <p>¿Cuál?
-                                        <br/>{newErrors.tipoInv && <span className="text-red-600"> *{newErrors.tipoInv}</span>}
+                                        <br/>{newErrors.researchNetworkName && <span className="text-red-600"> *{newErrors.researchNetworkName}</span>}
                                     </p>
                                     <input  
-                                        name="tipoInv"
-                                        value={participant.tipoInv}
+                                        name="researchNetworkName"
+                                        value={participant.researchNetworkName}
                                         onChange={handleInputChange} 
                                         placeholder="Escribe el tipo de investigación..."></input>
                                 </div>
@@ -186,11 +186,11 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             
                             <div className="participant-complete-row-2">
                                 <p>Grado Académico
-                                    <br/>{newErrors.gAcademico && <span className="text-red-600"> *{newErrors.gAcademico}</span>}
+                                    <br/>{newErrors.academicDegree && <span className="text-red-600"> *{newErrors.academicDegree}</span>}
                                 </p>
                                 <input
-                                    name="gAcademico"
-                                    value={participant.gAcademico}
+                                    name="academicDegree"
+                                    value={participant.academicDegree}
                                     onChange={handleInputChange} 
                                     placeholder="Escribe el grado académico..."
                                     ></input>
@@ -198,10 +198,10 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             <div className="participant-form-rows">
                                 <div className="participant-button-degree">
                                     <p>Tipo investigador
-                                        <br/>{newErrors.typeInvD && <span className="text-red-600"> *{newErrors.typeInvD}</span>}
+                                        <br/>{newErrors.levelName && <span className="text-red-600"> *{newErrors.levelName}</span>}
                                     </p>
-                                    <select name="typeInvD" 
-                                        value={participant.typeInvD}
+                                    <select name="levelName" 
+                                        value={participant.levelName}
                                         onChange={handleInputChange}>
                                         <option value="">Selecciona una opción</option>
                                         {Array.isArray(levels) && levels.map((name, index) => (
@@ -211,10 +211,10 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                 </div>
                                 <div className="participant-button-degree">
                                     <p>Nivel
-                                        <br/>{newErrors.levelInvD && <span className="text-red-600"> *{newErrors.levelInvD}</span>}
+                                        <br/>{newErrors.levelNum && <span className="text-red-600"> *{newErrors.levelNum}</span>}
                                     </p>
-                                    <select name="levelInvD" 
-                                        value={participant.levelInvD}
+                                    <select name="levelNum" 
+                                        value={participant.levelNum}
                                         onChange={handleInputChange}>
                                         <option value="">Selecciona una opción</option>
                                         {Array.isArray(levelsToShow) && levelsToShow.map((name, index) => (

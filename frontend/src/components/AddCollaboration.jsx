@@ -8,10 +8,10 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
     const [isOpen, setIsOpen] = useState(false)
     const initialCollaboration = {
         institutionName: "",
-        convenioType: "",
-        convenioNE: "",
-        noConvenio: "",
-        isIPN: 1
+        collaborationAgreement: "",
+        agreementType: "",
+        agreementNumber: "",
+        partOfIPN: 1
     };
     const [newErrors,setNewErrors] =  useState(initialCollaboration);
     const [collaboration, setCollaboration] = useState(initialCollaboration);
@@ -20,10 +20,10 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
         if (collaborationToEdit) {
             setCollaboration({
                 institutionName: collaborationToEdit.institutionName || "",
-                convenioType: collaborationToEdit.convenioType || "",
-                convenioNE: collaborationToEdit.convenioNE || "",
-                noConvenio: collaborationToEdit.noConvenio || "",
-                isIPN: collaborationToEdit.isIPN || 1 
+                collaborationAgreement: collaborationToEdit.collaborationAgreement || "",
+                agreementType: collaborationToEdit.agreementType || "",
+                agreementNumber: collaborationToEdit.agreementNumber || "",
+                partOfIPN: collaborationToEdit.partOfIPN || 1 
             });
             setIsOpen(true);
         }
@@ -38,8 +38,8 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
     
     const handleCollaborationSubmit = useFormAddHandler({
         setState: setCollaborations,
-        key: 'collaborations',
-        extraData: { isIPN: collaboration.isIPN },
+        key: 'p_collaborativeInstitutionsJSON',
+        extraData: { partOfIPN: collaboration.partOfIPN },
         onSuccess: () => {
             setIsOpen(false)
             if(onEditComplete && collaborationToEdit){
@@ -71,13 +71,12 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
             }
           }
         });
-        delete newErrorsF["convenioNE"];
-        delete newErrorsF["noConvenio"];
+        delete newErrorsF["agreementType"];
+        delete newErrorsF["agreementNumber"];
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
         handleCollaborationSubmit(e, collaboration, collaborationToEdit ? collaborationToEdit.index : undefined);
         }
-        console.log(newErrorsF)
     };
 
     return (
@@ -101,16 +100,15 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                                 </div>
                                 <div>
                                     <p>¿Es parte del IPN?
-                                        <br/>{newErrors.isIPN && <span className="text-red-600">*{newErrors.isIPN}</span>}
                                     </p>
                                     <div className="colab-button-container">
                                         <button
                                         type="button" 
-                                        className={collaboration.isIPN === 1  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('isIPN',1)}
+                                        className={collaboration.partOfIPN === 1  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('partOfIPN',1)}
                                         >Si</button>
                                         <button
                                         type="button" 
-                                        className={collaboration.isIPN === 0  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('isIPN',0)}
+                                        className={collaboration.partOfIPN === 0  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('partOfIPN',0)}
                                         >No</button>
                                     </div>
                                 </div>
@@ -118,29 +116,29 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                             <div className="form-complete-row">
                                 <p>¿Ya cuenta con Convenio de Colaboración?
                                     <br/><span className="form-subtext">(General/Específico)</span>
-                                    <br/>{newErrors.convenioType && <span className="text-red-600">*{newErrors.convenioType}</span>}
+                                    <br/>{newErrors.collaborationAgreement && <span className="text-red-600">*{newErrors.collaborationAgreement}</span>}
                                 </p>
                                 <input 
-                                value={collaboration.convenioType}
+                                value={collaboration.collaborationAgreement}
                                 onChange={handleInputChange}
-                                name="convenioType" className="form-colab-input" placeholder="Escribe el convenio de colaboración..."></input>
+                                name="collaborationAgreement" className="form-colab-input" placeholder="Escribe el convenio de colaboración..."></input>
                             </div>
                             <div className="form-rows">
                                 <div>
                                     <p>¿El convenio es Nacional o Extranjero?</p>
                                     <p className="form-subtext">(Si aplica)</p>
                                     <input 
-                                    value={collaboration.convenioNE}
+                                    value={collaboration.agreementType}
                                     onChange={handleInputChange}
-                                    name="convenioNE" className="form-colab-input" placeholder="Escribe el tipo de convenio..."></input>
+                                    name="agreementType" className="form-colab-input" placeholder="Escribe el tipo de convenio..."></input>
                                 </div>
                                 <div>
                                     <p>¿Número de covenio?</p>
                                     <p className="form-subtext">(Si aplica)</p>
                                     <input 
-                                        value={collaboration.noConvenio}
+                                        value={collaboration.agreementNumber}
                                         onChange={handleInputChange}
-                                    name="noConvenio" className="form-colab-input" placeholder="Escribe el número de convenio..."></input>
+                                    name="agreementNumber" className="form-colab-input" placeholder="Escribe el número de convenio..."></input>
                                 </div>
                             </div>
                             <div className="dialog-actions">
