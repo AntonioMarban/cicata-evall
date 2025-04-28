@@ -31,7 +31,28 @@ VALUES
 -- Usuario de tipo secretario de comité con Id 8
 ('Sebastián', 'Martínez', 'Pérez', 'secretario2@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
 -- Usuario de tipo integrante de comité con Id 9
-('Carlos', 'Ramírez', 'Díaz', 'integrante2@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5);
+('Carlos', 'Ramírez', 'Díaz', 'integrante2@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
+-- --------------
+-- Usuario de tipo presidente de comité con Id 10
+('Patricia', 'González', 'López', 'presidente3@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+-- Usuario de tipo secretario de comité con Id 11
+('Fernando', 'González', 'Pérez', 'secretario3@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+-- Usuario de tipo integrante de comité con Id 12
+('Sofía', 'Ramírez', 'Díaz', 'integrante3@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
+-- --------------
+-- Usuario de tipo presidente de comité con Id 13
+('Andrés', 'Hernández', 'Gómez', 'presidente4@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+-- Usuario de tipo secretario de comité con Id 14
+('Valeria', 'Hernández', 'Pérez', 'secretario4@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+-- Usuario de tipo integrante de comité con Id 15
+('Diego', 'Ramírez', 'Díaz', 'integrante4@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
+-- --------------
+-- Usuario de tipo presidente de comité con Id 16
+('Isabel', 'García', 'López', 'presidente5@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+-- Usuario de tipo secretario de comité con Id 17
+('Javier', 'García', 'Pérez', 'secretario5@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+-- Usuario de tipo integrante de comité con Id 18
+('Lucía', 'Ramírez', 'Díaz', 'integrante5@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5);
 
 
 -- =============== INSERTS PROJECTS ===============
@@ -74,7 +95,6 @@ INSERT INTO usersProjects (project_id, user_id) VALUES
 (6, 2),
 (7, 2),
 (8, 2),
-
 (9, 1),
 (10, 2);
 
@@ -98,7 +118,19 @@ INSERT INTO committeeUsers (committeeId, userId) VALUES
 -- Integrantes del comité 2 (Comité de Investigación)
 (2, 7),
 (2, 8),
-(2, 9);
+(2, 9),
+-- Integrantes del comité 3 (Comité de Ética en Investigación)
+(3, 10),
+(3, 11),
+(3, 12),
+-- Integrantes del comité 4 (Comité de Bioseguridad)
+(4, 13),
+(4, 14),
+(4, 15),
+-- Integrantes del comité 5 (Comité Interno para el Cuidado y Uso de los Animales de Laboratorio)
+(5, 16),
+(5, 17),
+(5, 18);
 
 
 -- =============== INSERTS DE EVALUATION TYPES ===============
