@@ -76,16 +76,16 @@ function Dashboard({ projectCards }) {
               <Card
                 key={index}
                 onClick={() => {
-                  const url =
-                    userType === 5
-                      ? `/Acuerdo?projectId=${card.projectId}`
-                      : `/Proyecto?projectId=${card.projectId}`;
+                  const isCommitteeUser = [3, 4, 5].includes(parseInt(userType));
+                  const url = isCommitteeUser
+                    ? `/Acuerdo?projectId=${card.projectId}`
+                    : `/Proyecto?projectId=${card.projectId}`;
                   navigate(url);
-                }}
+                }}                
               >
                 <CardContent>
                   <h2 className="card-title">{card.title}</h2>
-                  <p className="card-text">{card.description}</p>
+                  <p className="card-text">{card.investigador}</p>
                   <p className="card-text">{formatFecha(card.fecha)}</p>
                   <p className="card-text">{card.folio}</p>
                 </CardContent>

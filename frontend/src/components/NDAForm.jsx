@@ -70,7 +70,25 @@ Centro de Investigación en Ciencia Aplicada y Tecnología Avanzada (CICATA) Uni
 
 PRESENTE
 
-En mi calidad de Evaluador del proyecto titulado ${agreementData.title}, dirigido por ${agreementData.researcher} ...
+En mi calidad de Evaluador del proyecto titulado ${agreementData.title}, dirigido por ${agreementData.researcher} y que se lleva a cabo total o parcialmente dentro de las instalaciones del CICATA Unidad Morelos del Instituto Politécnico Nacional, me comprometo a cumplir con los siguientes compromisos:
+
+1. **Confidencialidad:** Trataré toda la información proporcionada como estrictamente confidencial. Esta obligación incluye, pero no se limita a, datos, documentos, resultados preliminares y cualquier otra información relacionada con el proyecto que no esté destinada a ser divulgada públicamente.
+
+2. **Uso Exclusivo:** Utilizaré la información confidencial exclusivamente para los fines establecidos en el ámbito de mi participación en el proyecto. Esto incluye la evaluación, análisis o revisión de los datos en el contexto del proyecto.
+
+3. **Protección de la Información:** Garantizaré la protección de la información confidencial tanto en México como en el extranjero. Implementaré medidas adecuadas para prevenir la divulgación no autorizada, el acceso indebido o la pérdida de dicha información.
+
+4. **Prohibición de Divulgación:** No divulgaré a terceros, por ningún medio, ni las actividades de investigación ni los resultados del proyecto sin contar con la autorización previa y por escrito del Investigador Principal del proyecto. Esto incluye, pero no se limita a, la divulgación en publicaciones, presentaciones, conferencias, comunicación verbal o medios electrónicos.
+
+5. **Responsabilidad Legal:** Reconozco que el incumplimiento de estas obligaciones puede resultar en consecuencias legales y disciplinarias del Instituto Politécnico Nacional o según la normativa vigente aplicable. Estoy consciente de que la violación de la confidencialidad puede implicar responsabilidades legales tanto civiles como penales.
+
+6. **Devolución de Información:** Al finalizar mi participación en el proyecto, devolveré o destruiré toda la información confidencial que me haya sido proporcionada con el fin de no preservar ninguna información relacionada con respecto al proyecto de investigación que me fue asignado para evaluación.
+
+7. **Cumplimiento de Normativas:** Me comprometo a cumplir con todas las políticas y procedimientos de confidencialidad establecidos por el CICATA Unidad Morelos, Instituto Politécnico Nacional, así como con cualquier normativa aplicable relacionada con la protección de la información y la propiedad intelectual.
+
+En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consentimiento para que se apliquen las medidas legales y disciplinarias pertinentes conforme a la normativa aplicable.
+
+ATENTAMENTE,
 `
     : "Cargando acuerdo...";
 
@@ -137,7 +155,7 @@ En mi calidad de Evaluador del proyecto titulado ${agreementData.title}, dirigid
         throw new Error("Error al firmar el acuerdo.");
       }
 
-      navigate("/Inicio"); // o a donde prefieras llevar al usuario después de firmar
+      navigate(`/Proyecto?projectId=${projectId}`); // o a donde prefieras llevar al usuario después de firmar
     } catch (err) {
       setError(err.message);
     } finally {

@@ -25,6 +25,8 @@ export default function HomePage() {
         case 2:
           endpoint = `/subdirectorade/projects/active`;
           break;
+        case 3:
+        case 4:
         case 5:
           if (!committeeId) {
             console.error("Missing committeeId for committee user");
@@ -48,11 +50,13 @@ export default function HomePage() {
         // Transform data to the format expected by Dashboard component
         const formattedCards = data.map((project) => ({
           projectId: project.projectId,
-          title: project.Proyecto,
-          investigador: project.Investigador,
-          folio: project.Folio,
-          fecha: project.FechaInicio,
+          title: project.title,
+          investigador: project.fullName,
+          fecha: project.startDate,
+          folio: project.folio,
+          status: project.status,
         }));
+        
 
         setProjectCards(formattedCards);
       } catch (error) {
