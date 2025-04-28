@@ -9,6 +9,7 @@ import EditRubric from "../pages/EditRubric";
 import EvaluateProject from "../pages/EvaluateProject";
 import CommitteeDictumForm from "./CommitteeDictumForm";
 import ViewCompleteForms from "./ViewCompleteForms";
+import Project from "../pages/Project";
 const Views = () => {
   return (
   <Routes>
@@ -21,7 +22,7 @@ const Views = () => {
     <Route path = "/EditarRubrica" element={<EditRubric/>}></Route>
     <Route path = "/EvaluarProyecto" element={<EvaluateProject/>}></Route>
     <Route path = "/VerFormulario" element={<ViewCompleteForms/>}></Route>
-
+    <Route path = "/Proyecto" element={<Project/>}></Route>
     <Route path = "/Forms" element={<CommitteeDictumForm/>}></Route>
     <Route
         path = "*"

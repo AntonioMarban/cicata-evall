@@ -7,15 +7,38 @@ export default function HomePage() {
   useEffect(() => {
     const fetchProjects = async () => {
       const userId = localStorage.getItem("userId");
+      const userType = localStorage.getItem("userType");
+      const committeeId = localStorage.getItem("committeeId");
       const apiUrl = import.meta.env.VITE_API_URL;
 
-      if (!userId || !apiUrl) {
-        console.error("Missing userId or apiUrl");
+      if (!userId || !apiUrl || !userType) {
+        console.error("Missing userId, userType, or apiUrl");
         return;
       }
 
+      let endpoint = "";
+
+      switch (parseInt(userType)) {
+        case 1:
+          endpoint = `/researchers/${userId}/projects/active`;
+          break;
+        case 2:
+          endpoint = `/subdirectorade/projects/active`;
+          break;
+        case 5:
+          if (!committeeId) {
+            console.error("Missing committeeId for committee user");
+            return;
+          }
+          endpoint = `/committees/${committeeId}/members/${userId}/projects`;
+          break;
+        default:
+          console.error("Unsupported userType:", userType);
+          return;
+      }
+
       try {
-        const response = await fetch(`${apiUrl}/researchers/${userId}/projects/active`);
+        const response = await fetch(`${apiUrl}${endpoint}`);
         if (!response.ok) {
           throw new Error("Failed to fetch projects");
         }
@@ -24,10 +47,11 @@ export default function HomePage() {
 
         // Transform data to the format expected by Dashboard component
         const formattedCards = data.map((project) => ({
+          projectId: project.projectId,
           title: project.Proyecto,
-          description: project.Investigador,
+          investigador: project.Investigador,
           folio: project.Folio,
-          fecha: project.FechaInicio
+          fecha: project.FechaInicio,
         }));
 
         setProjectCards(formattedCards);

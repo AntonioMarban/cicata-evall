@@ -244,7 +244,58 @@ VALUES
 ('Proyecto no aprobado', 40, 'No aprobado', 1, 8, 8);
 
 
+-- =============== INSERTS DE AGREEMENTS ===============
+INSERT INTO agreements (date, agreed, user_id, project_id)
+VALUES 
+-- Proyecto 1
+('2025-04-01', TRUE, 6, 1),    -- Integrante comité 1: evaluó individual
+('2025-04-01', TRUE, 9, 1),    -- Integrante comité 2: evaluó individual
+(NULL, FALSE, 5, 1),           -- Secretario comité 1: no ha evaluado individual
+(NULL, FALSE, 8, 1),           -- Secretario comité 2: no ha evaluado individual
 
+-- Proyecto 2
+('2025-04-01', TRUE, 6, 2),    -- Integrante comité 1: evaluó individual
+('2025-04-01', TRUE, 9, 2),    -- Integrante comité 2: evaluó individual
+('2025-04-01', TRUE, 5, 2),    -- Secretario comité 1: evaluó individual
+('2025-04-01', TRUE, 8, 2),    -- Secretario comité 2: evaluó individual
+
+-- Proyecto 3
+('2025-04-01', TRUE, 6, 3),    -- Integrante comité 1: evaluó individual
+('2025-04-01', TRUE, 9, 3),    -- Integrante comité 2: evaluó individual
+('2025-04-01', TRUE, 5, 3),    -- Secretario comité 1: evaluó individual
+('2025-04-01', TRUE, 8, 3),    -- Secretario comité 2: evaluó individual
+
+-- Proyecto 4
+('2025-04-01', TRUE, 6, 4),    -- Integrante comité 1: evaluó individual
+('2025-04-01', TRUE, 9, 4),    -- Integrante comité 2: evaluó individual
+('2025-04-01', TRUE, 5, 4),    -- Secretario comité 1: evaluó individual
+('2025-04-01', TRUE, 8, 4),    -- Secretario comité 2: evaluó individual
+
+-- Proyecto 5
+('2025-04-01', TRUE, 6, 5),    -- Integrante comité 1: evaluó individual
+(NULL, FALSE, 9, 5),           -- Integrante comité 2: no ha evaluado individual
+(NULL, FALSE, 5, 5),           -- Secretario comité 1: no ha evaluado individual
+(NULL, FALSE, 8, 5),           -- Secretario comité 2: no ha evaluado individual
+
+-- Proyecto 6
+('2025-04-01', TRUE, 6, 6),    -- Integrante comité 1: evaluó individual
+('2025-04-01', TRUE, 9, 6),    -- Integrante comité 2: evaluó individual
+('2025-04-01', TRUE, 5, 6),    -- Secretario comité 1: evaluó individual
+('2025-04-01', TRUE, 8, 6),    -- Secretario comité 2: evaluó individual
+
+-- Proyecto 7
+('2025-04-01', TRUE, 6, 7),    -- Integrante comité 1: evaluó individual
+('2025-04-01', TRUE, 9, 7),    -- Integrante comité 2: evaluó individual
+('2025-04-01', TRUE, 5, 7),    -- Secretario comité 1: evaluó individual
+('2025-04-01', TRUE, 8, 7),    -- Secretario comité 2: evaluó individual
+
+-- Proyecto 8
+('2025-04-01', TRUE, 6, 8),    -- Integrante comité 1: evaluó individual
+('2025-04-01', TRUE, 9, 8),    -- Integrante comité 2: evaluó individual
+('2025-04-01', TRUE, 5, 8),    -- Secretario comité 1: evaluó individual
+('2025-04-01', TRUE, 8, 8);    -- Secretario comité 2: evaluó individual
+
+-- deliverables
 INSERT INTO deliverables (name)
 VALUES
 ('Tesis (Alumnos titulados)'), ('Practicantes profesionales'), ('Alumnos PIFI'),
@@ -372,56 +423,6 @@ VALUES
 ('No aprobado', 'El proyecto ha sido rechazado por el comité', NULL, 8);
 
 
--- =============== INSERTS DE AGREEMENTS ===============
-INSERT INTO agreements (date, agreed, user_id, project_id)
-VALUES 
--- Proyecto 1
-('2025-04-01', TRUE, 6, 1),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 1),    -- Integrante comité 2: evaluó individual
-(NULL, FALSE, 5, 1),           -- Secretario comité 1: no ha evaluado individual
-(NULL, FALSE, 8, 1),           -- Secretario comité 2: no ha evaluado individual
-
--- Proyecto 2
-('2025-04-01', TRUE, 6, 2),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 2),    -- Integrante comité 2: evaluó individual
-('2025-04-01', TRUE, 5, 2),    -- Secretario comité 1: evaluó individual
-('2025-04-01', TRUE, 8, 2),    -- Secretario comité 2: evaluó individual
-
--- Proyecto 3
-('2025-04-01', TRUE, 6, 3),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 3),    -- Integrante comité 2: evaluó individual
-('2025-04-01', TRUE, 5, 3),    -- Secretario comité 1: evaluó individual
-('2025-04-01', TRUE, 8, 3),    -- Secretario comité 2: evaluó individual
-
--- Proyecto 4
-('2025-04-01', TRUE, 6, 4),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 4),    -- Integrante comité 2: evaluó individual
-('2025-04-01', TRUE, 5, 4),    -- Secretario comité 1: evaluó individual
-('2025-04-01', TRUE, 8, 4),    -- Secretario comité 2: evaluó individual
-
--- Proyecto 5
-('2025-04-01', TRUE, 6, 5),    -- Integrante comité 1: evaluó individual
-(NULL, FALSE, 9, 5),           -- Integrante comité 2: no ha evaluado individual
-(NULL, FALSE, 5, 5),           -- Secretario comité 1: no ha evaluado individual
-(NULL, FALSE, 8, 5),           -- Secretario comité 2: no ha evaluado individual
-
--- Proyecto 6
-('2025-04-01', TRUE, 6, 6),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 6),    -- Integrante comité 2: evaluó individual
-('2025-04-01', TRUE, 5, 6),    -- Secretario comité 1: evaluó individual
-('2025-04-01', TRUE, 8, 6),    -- Secretario comité 2: evaluó individual
-
--- Proyecto 7
-('2025-04-01', TRUE, 6, 7),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 7),    -- Integrante comité 2: evaluó individual
-('2025-04-01', TRUE, 5, 7),    -- Secretario comité 1: evaluó individual
-('2025-04-01', TRUE, 8, 7),    -- Secretario comité 2: evaluó individual
-
--- Proyecto 8
-('2025-04-01', TRUE, 6, 8),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 8),    -- Integrante comité 2: evaluó individual
-('2025-04-01', TRUE, 5, 8),    -- Secretario comité 1: evaluó individual
-('2025-04-01', TRUE, 8, 8);    -- Secretario comité 2: evaluó individual
 
 
 -- =============== INSERTS DE AGREEMENTS ===============

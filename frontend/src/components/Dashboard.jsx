@@ -1,8 +1,13 @@
-import '../styles/dashboard.css';
-import { useEffect, useState } from 'react';
+import "../styles/dashboard.css";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Card({ children }) {
-  return <div className="card">{children}</div>;
+function Card({ children, onClick }) {
+  return (
+    <div className="card" onClick={onClick} style={{ cursor: "pointer" }}>
+      {children}
+    </div>
+  );
 }
 
 function CardContent({ children }) {
@@ -11,21 +16,22 @@ function CardContent({ children }) {
 
 function formatFecha(fechaISO) {
   const fecha = new Date(fechaISO);
-  return new Intl.DateTimeFormat('es-MX', {
-    dateStyle: 'long',
-    timeStyle: 'short',
+  return new Intl.DateTimeFormat("es-MX", {
+    dateStyle: "long",
+    timeStyle: "short",
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    hour12: false
+    hour12: false,
   }).format(fecha);
 }
 
 function Dashboard({ projectCards }) {
-  const [userFullName, setUserFullName] = useState('');
+  const [userFullName, setUserFullName] = useState("");
   const [userType, setUserType] = useState(null);
+  const navigate = useNavigate(); // <-- nuevo
 
   useEffect(() => {
-    const nameFromStorage = localStorage.getItem('userFullName') || 'Usuario';
-    const typeFromStorage = parseInt(localStorage.getItem('userType'), 10) || 1; // Default to 1 if not found
+    const nameFromStorage = localStorage.getItem("userFullName") || "Usuario";
+    const typeFromStorage = parseInt(localStorage.getItem("userType"), 10) || 1;
     setUserFullName(nameFromStorage);
     setUserType(typeFromStorage);
   }, []);
@@ -59,22 +65,33 @@ function Dashboard({ projectCards }) {
   return (
     <main className="dashboard-main">
       <h1 className="dashboard-title">¡Hola, {userFullName}!</h1>
-      <h2 className="dashboard-subtitle">{getTitleMessage()}</h2>
 
       {projectCards.length === 0 ? (
         <p className="empty-message">{getEmptyMessage()}</p>
       ) : (
-        <div className="card-grid">
-          {projectCards.map((card, index) => (
-            <Card key={index}>
-              <CardContent>
-                <h2 className="card-title">{card.title}</h2>
-                <p className="card-text">{card.description}</p>
-                <p className="card-text">{formatFecha(card.fecha)}</p>
-                <p className="card-text">{card.folio}</p>
-              </CardContent>
-            </Card>
-          ))}
+        <div>
+          <h2 className="dashboard-subtitle">{getTitleMessage()}</h2>
+          <div className="card-grid">
+            {projectCards.map((card, index) => (
+              <Card
+                key={index}
+                onClick={() => {
+                  const url =
+                    userType === 5
+                      ? `/Acuerdo?projectId=${card.projectId}`
+                      : `/Proyecto?projectId=${card.projectId}`;
+                  navigate(url);
+                }}
+              >
+                <CardContent>
+                  <h2 className="card-title">{card.title}</h2>
+                  <p className="card-text">{card.description}</p>
+                  <p className="card-text">{formatFecha(card.fecha)}</p>
+                  <p className="card-text">{card.folio}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       )}
     </main>
