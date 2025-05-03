@@ -1,18 +1,8 @@
 import "../styles/dashboard.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-function Card({ children, onClick }) {
-  return (
-    <div className="card" onClick={onClick} style={{ cursor: "pointer" }}>
-      {children}
-    </div>
-  );
-}
-
-function CardContent({ children }) {
-  return <div className="card-content">{children}</div>;
-}
+import DashboardCards from "./DashboardCards";
+const { Card, CardContent } = DashboardCards;
 
 function formatFecha(fechaISO) {
   const fecha = new Date(fechaISO);
