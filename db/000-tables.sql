@@ -15,6 +15,7 @@ CREATE TABLE `users` (
   `lastName1` varchar(50),
   `lastName2` varchar(50),
   `email` varchar(255),
+  `phone` varchar(255),
   `password` varchar(255),
   `institution` varchar(50),
   `positionWork` varchar(50),
@@ -86,6 +87,7 @@ CREATE TABLE `associatedProjects` (
   `associatedProjectId` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(50),
   `associationDate` date,
+  `project_type` TEXT,
   `externalRegister` varchar(30),
   `SIPRegister` varchar(30),
   `project_id` integer
@@ -103,7 +105,8 @@ CREATE TABLE `collaborativeInstitutions` (
 
 CREATE TABLE `specificObjectives` (
   `specificObjectiveId` integer PRIMARY KEY AUTO_INCREMENT,
-  `objective` TEXT,
+  `objectiveName` TEXT,
+  `objectiveDescription` TEXT,
   `project_id` integer
 );
 
@@ -132,6 +135,7 @@ CREATE TABLE `members` (
   `lastName1` varchar(50),
   `lastName2` varchar(50),
   `email` varchar(255),
+  `phone` varchar(255),
   `institution` varchar(50),
   `positionWork` varchar(50),
   `researchNetwork` bool,
@@ -193,6 +197,30 @@ CREATE TABLE `rubrics` (
   `committee_id` integer
 );
 
+CREATE TABLE `goals` (
+  `goal_id` integer PRIMARY KEY AUTO_INCREMENT,
+  `goal` TEXT,
+  `project_id` integer
+);
+
+CREATE TABLE `methodologies` (
+  `methodology_id` integer PRIMARY KEY AUTO_INCREMENT,
+  `methodology` TEXT,
+  `project_id` integer
+);
+
+CREATE TABLE `p_references` (
+  `references_id` integer PRIMARY KEY AUTO_INCREMENT,
+  `reference` TEXT,
+  `project_id` integer
+);
+
+CREATE TABLE `budgetTypes` (
+  `budgetTypeId` integer PRIMARY KEY AUTO_INCREMENT,
+  `type_name` varchar(150),
+  `description` varchar(255)
+);
+
 ALTER TABLE `users` ADD FOREIGN KEY (`userType_id`) REFERENCES `userTypes` (`userTypeId`);
 
 ALTER TABLE `committeeUsers` ADD FOREIGN KEY (`committeeId`) REFERENCES `committees` (`committeeId`);
@@ -241,3 +269,16 @@ ALTER TABLE `rubrics` ADD FOREIGN KEY (`committee_id`) REFERENCES `committees` (
 
 -- Para la parte de notificaciones
 ALTER TABLE `projects` ADD COLUMN `notification` BOOLEAN DEFAULT FALSE;
+
+-- Para cuando selecciona "Otro" en el tipo de investigación
+ALTER TABLE projects ADD COLUMN otherTypeResearch VARCHAR(100);
+ALTER TABLE projects MODIFY typeResearch VARCHAR(50) NULL;
+
+-- Booleano para saber si el proyecto se alinea con el PNI o los ODS
+ALTER TABLE projects ADD COLUMN alignsWithPNIorODS BOOLEAN DEFAULT NULL;
+
+-- En caso de que el proyecto no necesite colaboración, se agrega un campo para justificarlo
+ALTER TABLE projects ADD COLUMN hasCollaboration BOOLEAN DEFAULT TRUE, ADD COLUMN collaborationJustification TEXT;
+
+-- Para la parte de presupuesto, se agrega un campo para el tipo de presupuesto
+ALTER TABLE budgets ADD COLUMN budgetTypeId INT, ADD CONSTRAINT fk_budgetType FOREIGN KEY (budgetTypeId) REFERENCES budgetTypes(budgetTypeId);

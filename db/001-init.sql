@@ -104,6 +104,10 @@ CREATE PROCEDURE createProject(
     IN p_aditionalComments TEXT,
     IN p_folio VARCHAR(50),
     IN p_status VARCHAR(50),
+    IN p_otherTypeResearch VARCHAR(100),
+    IN p_alignsWithPNIorODS BOOLEAN,
+    IN p_hasCollaboration BOOLEAN,
+    IN p_collaborationJustification TEXT,
 
     -- Arreglos
     IN p_associatedProjectsJSON JSON,
@@ -112,6 +116,9 @@ CREATE PROCEDURE createProject(
     IN p_scheduleActivitiesJSON JSON,
     IN p_deliverablesJSON JSON,
     IN p_budgetsJSON JSON,
+    IN p_goalsJSON JSON,
+    IN p_methodologiesJSON JSON,
+    IN p_referencesJSON JSON,
 
     -- Usuario
     IN p_userId INT
@@ -125,13 +132,15 @@ BEGIN
     INSERT INTO projects (
         title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary, introduction, background,
         statementOfProblem, justification, hypothesis, generalObjective, ethicalAspects, workWithHumans, workWithAnimals,
-        biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status
+        biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
+        otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification
     )
     VALUES (
         p_title, p_startDate, p_endDate, p_typeResearch, p_topic, p_subtopic, p_alignmentPNIorODS, p_summary,
         p_introduction, p_background, p_statementOfProblem, p_justification, p_hypothesis, p_generalObjective,
         p_ethicalAspects, p_workWithHumans, p_workWithAnimals, p_biosecurityConsiderations, p_contributionsToIPNandCICATA,
-        p_conflictOfInterest, p_aditionalComments, p_folio, p_status
+        p_conflictOfInterest, p_aditionalComments, p_folio, p_status,
+        p_otherTypeResearch, p_alignsWithPNIorODS, p_hasCollaboration, p_collaborationJustification
     );
 
     SET v_projectId = LAST_INSERT_ID();
@@ -140,10 +149,11 @@ BEGIN
     SET i = 0;
     SET total = JSON_LENGTH(p_associatedProjectsJSON);
     WHILE i < total DO
-        INSERT INTO associatedProjects (name, associationDate, externalRegister, SIPRegister, project_id)
+        INSERT INTO associatedProjects (name, associationDate, project_type, externalRegister, SIPRegister, project_id)
         VALUES (
             JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].name'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].associationDate'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].project_type'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].externalRegister'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].SIPRegister'))),
             v_projectId
@@ -156,7 +166,7 @@ BEGIN
     SET total = JSON_LENGTH(p_membersJSON);
     WHILE i < total DO
         INSERT INTO members (
-            fName, lastName1, lastName2, email, institution, positionWork, researchNetwork, researchNetworkName,
+            fName, lastName1, lastName2, email, phone, institution, positionWork, researchNetwork, researchNetworkName,
             academicDegree, levelName, levelNum, tutorName, project_id
         )
         VALUES (
@@ -164,6 +174,7 @@ BEGIN
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].lastName1'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].lastName2'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].email'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].phone'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].institution'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].positionWork'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetwork'))),
@@ -227,11 +238,48 @@ BEGIN
     SET i = 0;
     SET total = JSON_LENGTH(p_budgetsJSON);
     WHILE i < total DO
-        INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id)
+        INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id, budgetTypeId)
         VALUES (
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].investmentExpenditure'))),
-            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetName'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].name'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].expenditure'))),
+            v_projectId,
+            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetTypeId')))
+        );
+        SET i = i + 1;
+    END WHILE;
+
+    -- goals
+    SET i = 0;
+    SET total = JSON_LENGTH(p_goalsJSON);
+    WHILE i < total DO
+        INSERT INTO goals (goal, project_id)
+        VALUES (
+            JSON_UNQUOTE(JSON_EXTRACT(p_goalsJSON, CONCAT('$[', i, '].goal'))),
+            v_projectId
+        );
+        SET i = i + 1;
+    END WHILE;
+
+    -- methodologies
+    SET i = 0;
+    SET total = JSON_LENGTH(p_methodologiesJSON);
+    WHILE i < total DO
+        INSERT INTO methodologies (methodology, project_id)
+        VALUES (
+            JSON_UNQUOTE(JSON_EXTRACT(p_methodologiesJSON, CONCAT('$[', i, '].methodology'))),
+            v_projectId
+        );
+        SET i = i + 1;
+    END WHILE;
+
+    -- p_references
+    SET i = 0;
+    SET total = JSON_LENGTH(p_referencesJSON);
+    WHILE i < total DO
+        INSERT INTO p_references (reference, project_id)
+        VALUES (
+            JSON_UNQUOTE(JSON_EXTRACT(p_referencesJSON, CONCAT('$[', i, '].reference'))),
             v_projectId
         );
         SET i = i + 1;
@@ -262,51 +310,83 @@ CREATE PROCEDURE getProjectDetails(IN p_projectId INT)
 BEGIN
     -- datos principales del proyecto
     SELECT 
-        p.projectId, p.title, p.startDate, p.endDate, p.typeResearch, p.topic, p.subtopic, 
-        p.alignmentPNIorODS, p.summary, p.introduction, p.background, p.statementOfProblem, 
+        p.title, 
+        DATE_FORMAt(p.startDate, '%Y-%m-%d') AS startDate,
+        DATE_FORMAT(p.endDate, '%Y-%m-%d') AS endDate,
+        p.typeResearch, p.otherTypeResearch,
+        p.topic, p.subtopic, p.alignmentPNIorODS, p.alignsWithPNIorODS,
+        p.summary, p.introduction, p.background, p.statementOfProblem, 
         p.justification, p.hypothesis, p.generalObjective, p.ethicalAspects, 
         p.workWithHumans, p.workWithAnimals, p.biosecurityConsiderations, 
         p.contributionsToIPNandCICATA, p.conflictOfInterest, p.aditionalComments, 
-        p.folio, p.status
+        p.folio, p.status, p.hasCollaboration, p.collaborationJustification
     FROM projects p
     WHERE p.projectId = p_projectId;
 
     -- associatedProjects
     SELECT 
-        associatedProjectId, name, associationDate, externalRegister, SIPRegister
+        name, 
+        DATE_FORMAT(associationDate, '%Y-%m-%d') AS associationDate,
+        project_type, externalRegister, SIPRegister
     FROM associatedProjects
     WHERE project_id = p_projectId;
 
     -- members
     SELECT 
-        memberId, fName, lastName1, lastName2, email, institution, positionWork, researchNetwork, 
+        fName, lastName1, lastName2, email, phone, institution, positionWork, researchNetwork, 
         researchNetworkName, academicDegree, levelName, levelNum, tutorName
     FROM members
     WHERE project_id = p_projectId;
 
     -- collaborativeInstitutions
     SELECT 
-        collaborativeInstitutionId, name, partOfIPN, collaborationAgreement, agreementType, agreementNumber
+        name, partOfIPN, collaborationAgreement, agreementType, agreementNumber
     FROM collaborativeInstitutions
     WHERE project_id = p_projectId;
 
     -- scheduleActivities
     SELECT 
-        scheduleActivityId, goal, institution, responsibleMember, startDate, endDate
+        goal, institution, responsibleMember, 
+        DATE_FORMAt(startDate, '%Y-%m-%d') AS startDate,
+        DATE_FORMAT(endDate, '%Y-%m-%d') AS endDate
     FROM scheduleActivities
     WHERE project_id = p_projectId;
 
     -- deliverablesProjects
     SELECT 
-        deliverableProjectId, quantity, deliverableId, deliverableTypeId
+        quantity, deliverableId, deliverableTypeId
     FROM deliverablesProjects
     WHERE projectId = p_projectId;
 
     -- budgets
     SELECT 
-        budgetstId, investmentExpenditure, name, expenditure
-    FROM budgets
+        b.investmentExpenditure, b.name, b.expenditure, bt.budgetTypeId, bt.type_name, bt.description
+    FROM budgets b
+    JOIN budgetTypes bt ON b.budgetTypeId = bt.budgetTypeId
+    WHERE b.project_id = p_projectId;
+
+    -- goals
+    SELECT goal
+    FROM goals
     WHERE project_id = p_projectId;
+
+    -- methodologies
+    SELECT methodology
+    FROM methodologies
+    WHERE project_id = p_projectId;
+
+    -- references
+    SELECT reference
+    FROM p_references
+    WHERE project_id = p_projectId;
+
+    -- investigador (usuario que registró el proyecto)
+    SELECT u.fName, u.lastName1, u.lastName2, u.email, u.phone, u.institution, u.positionWork, u.researchNetwork, 
+        u.researchNetworkName, u.academicDegree, u.levelName, u.levelNum
+    FROM usersProjects up
+    JOIN users u ON up.user_id = u.userId
+    WHERE up.project_id = p_projectId;
+
 END //
 DELIMITER ;
 

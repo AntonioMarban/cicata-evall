@@ -1,3 +1,5 @@
+SET NAMES utf8mb4;
+
 -- Este archivo contiene los inserts para poblar las tablas de la base de datos
 
 -- =============== INSERTS USER TYPES  ===============
@@ -354,12 +356,13 @@ VALUES
 ('Universidad de Colaboración 2', TRUE, 'Acuerdo D', 'Convenio Específico', 'AC012', 4);
 
 -- specificObjectives
-INSERT INTO specificObjectives (objective, project_id)
+INSERT INTO specificObjectives (objectiveName, objectiveDescription, project_id)
 VALUES 
-('Desarrollar un prototipo funcional', 1),
-('Realizar pruebas de laboratorio', 2),
-('Analizar los resultados obtenidos', 3), ('Publicar los hallazgos en una revista científica', 4),
-('Colaborar con instituciones externas para validar el proyecto', 5);
+('Prototipo', 'Desarrollar un prototipo funcional', 1),
+('Pruebas', 'Realizar pruebas de laboratorio', 2),
+('Analisis', 'Analizar los resultados obtenidos', 3), 
+('Publicaciones', 'Publicar los hallazgos en una revista científica', 4),
+('Colaboracion Externa', 'Colaborar con instituciones externas para validar el proyecto', 5);
 
 -- scheduleActivities
 INSERT INTO scheduleActivities (goal, institution, responsibleMember, startDate, endDate, project_id)
@@ -384,6 +387,35 @@ VALUES
 (25000, 'Honorarios', 10200, 6),
 (35000, 'Publicidad y difusión', 20000, 7), 
 (40000, 'Otros gastos', 40300, 8);
+
+-- budgetTypes
+INSERT INTO budgetTypes (type_name, description) VALUES 
+-- Primera tabla
+('Equipo de laboratorio', 'Gasto de Inversion'),
+('Equipo de cómputo', 'Gasto de Inversion'),
+('Herramientas y accesorios', 'Gasto de Inversion'),
+('Otros (especifique)', 'Gasto de Inversion'),
+('Artículos, materiales y útiles diversos', 'Gasto Corriente'),
+('Gastos de trabajo de campo', 'Gasto Corriente'),
+('Difusión de los resultados de investigación', 'Gasto Corriente'),
+('Pago por servicios externos', 'Gasto Corriente'),
+('Viáticos, pasajes y gastos de transportación', 'Gasto Corriente'),
+('Gastos de atención a profesores visitantes, técnicos o expertos visitantes', 'Gasto Corriente'),
+('Compra de libros y suscripción a revistas', 'Gasto Corriente'),
+('Gastos de publicación en revistas nacionales e internacionales', 'Gasto Corriente'),
+('Registro de patentes y propiedad intelectual', 'Gasto Corriente'),
+('Validación de concepto tecnológico', 'Gasto Corriente'),
+('Animales para protocolos de investigación', 'Gasto Corriente'),
+('Otros (especifique)', 'Gasto Corriente'),
+-- Segunda tabla
+('Proyectos de investigacion cientifica y desarrollo tecnologico', 'Internas'),
+('Proyectos de Investigación en el Programa Especial de Consolidación de Investigadores', 'Internas'),
+('Proyectos de Desarrollo Tecnológico o Innovación en el IPN', 'Internas'),
+('Proyectos de Investigación Multidisciplinarios y Transdisciplinarios de Investigación Científica y Desarrollo Tecnológico', 'Internas'),
+('Proyecto transdiciplinario', 'Internas'),
+('Proyectos de Desarrollo Tecnológico o Innovación para alumnos del IPN', 'Internas'),
+('Externas', 'Externas');
+
 
 -- members
 INSERT INTO members (fName, lastName1, lastName2, email, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelName, levelNum, tutorName, project_id)

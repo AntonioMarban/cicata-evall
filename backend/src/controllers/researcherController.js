@@ -31,6 +31,7 @@ const createProject = async (req, res) => {
         introduction, background, statementOfProblem, justification, hypothesis, generalObjective,
         ethicalAspects, workWithHumans, workWithAnimals, biosecurityConsiderations,
         contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
+        otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification,
 
         // Arreglos
         associatedProjects,
@@ -39,6 +40,9 @@ const createProject = async (req, res) => {
         scheduleActivities,
         deliverables,
         budgets, 
+        goals,
+        methodologies,
+        references,
 
         // Usuario
         userId 
@@ -51,36 +55,59 @@ const createProject = async (req, res) => {
     const scheduleActivitiesJSON = JSON.stringify(scheduleActivities);
     const deliverablesJSON = JSON.stringify(deliverables);
     const budgetsJSON = JSON.stringify(budgets); 
+    const goalsJSON = JSON.stringify(goals);
+    const methodologiesJSON = JSON.stringify(methodologies);
+    const referencesJSON = JSON.stringify(references);
 
-    // Nueva query con 31 parámetros
-    const query = `CALL createProject(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+    const projectStartDate = new Date(startDate);
+    const year = projectStartDate.getFullYear();
+    const month = String(projectStartDate.getMonth()).padStart(2, '0');    
 
-    const values = [
-        // Proyecto
-        title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary,
-        introduction, background, statementOfProblem, justification, hypothesis, generalObjective,
-        ethicalAspects, workWithHumans, workWithAnimals, biosecurityConsiderations,
-        contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
+    const countQuery = `SELECT COUNT(*) AS count FROM projects WHERE YEAR(startDate) = ? AND MONTH(startDate) = ?`;
 
-        // JSONs
-        associatedProjectsJSON,
-        membersJSON,
-        collaborativeInstitutionsJSON,
-        scheduleActivitiesJSON,
-        deliverablesJSON,
-        budgetsJSON,
-
-        // Usuario
-        userId
-    ];
-
-    pool.query(query, values, (error, results) => {
-        if (error) {
-            console.error(error);
-            return res.status(500).json({ error: 'Error creating project' });
+    pool.query(countQuery, [year, month], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error generating folio' });
         }
 
-        res.status(201).json({ message: 'Project created successfully' });
+        const count = result[0].count + 1;
+        const consecutivo = String(count).padStart(4, '0');
+        const folio = `CICATAMOR/SICIT/${year}/${month}/${consecutivo}`;
+
+        const query = `CALL createProject(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
+        const values = [
+            // Proyecto
+            title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary,
+            introduction, background, statementOfProblem, justification, hypothesis, generalObjective,
+            ethicalAspects, workWithHumans, workWithAnimals, biosecurityConsiderations,
+            contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
+            otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification,
+
+            // JSONs
+            associatedProjectsJSON,
+            membersJSON,
+            collaborativeInstitutionsJSON,
+            scheduleActivitiesJSON,
+            deliverablesJSON,
+            budgetsJSON,
+            goalsJSON,
+            methodologiesJSON,
+            referencesJSON,
+
+            // Usuario
+            userId
+        ];
+
+        pool.query(query, values, (error, results) => {
+            if (error) {
+                console.error(error);
+                return res.status(500).json({ error: 'Error creating project' });
+            }
+
+            res.status(201).json({ message: 'Project created successfully' });
+        });
     });
 };
 
@@ -124,7 +151,11 @@ const getProjectDetails = (req, res) => {
             collaborativeInstitutions,
             scheduleActivities,
             deliverablesProjects,
-            budgets
+            budgets,
+            goals,
+            methodologies,
+            references,
+            investigator
         ] = results;
         
         // todo se obtiene como arreglos de objetos(esto de los arreglos le ahorraba tiempo a Gordinho)
@@ -135,7 +166,11 @@ const getProjectDetails = (req, res) => {
             collaborativeInstitutions: collaborativeInstitutions || [],
             scheduleActivities: scheduleActivities || [],
             deliverablesProjects: deliverablesProjects || [],
-            budgets: budgets || []
+            budgets: budgets || [],
+            goals: goals || [],
+            methodologies: methodologies || [],
+            references: references || [],
+            investigator: investigator.length > 0 ? investigator[0] : null
         });
     });
 };

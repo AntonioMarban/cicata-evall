@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { getActiveProjects, getInactiveProjects, createProject, uploadDocuments, getProjectDetails } = require('../controllers/researcherController')
+const { getActiveProjects, getInactiveProjects, createProject, uploadDocuments, getProjectDetails, getProjectDocuments } = require('../controllers/researcherController')
 const middleware = require('../middleware/jwt.middleware')
 const uploadSingle  = require('../middleware/multer.middleware') //Solucion Chapucera, por alguna razon funciona para multiples documentos, bienvenida sea esa opcion, yo no me quejo
 
