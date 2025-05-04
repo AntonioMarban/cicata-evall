@@ -143,6 +143,36 @@ const getCommitteeSecretaryPresident = async (req, res) => {
 };
 
 /*
+ Función para obtener las evaluaciones de la segunda etapa, en este caso de los comités CIP
+ En caso de que el proyecto tenga marcado el uso de animales se obtiene la evaluación del comité CIQUAL
+ Se hace uso de un procedimiento almacenado getFirstStageEvaluations
+ @param projectId: Id del proyecto
+ @returns: Lista de evaluaciones de la segunda etapa: nombre del comité, resultado y comentarios
+           stageCompleted: indica si la etapa se ha completado, jumpThirdStage: indica si se salta la tercera etapa
+*/
+const getFirstStageEvaluations = async (req, res) => {
+  const { projectId } = req.params;
+  const query = "CALL getFirstStageEvaluations(?)";
+  const values = [projectId];
+  pool.query(query, values, (error, results) => {
+    if (error) {
+      console.error(error);
+      return res.status(400).json({ error: "Invalid query parameters" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Resource does not exist" });
+    }
+    const evaluations = results[0];
+    const controlVariables = results[1]
+    res.status(200).json({
+      evaluations,
+      controlVariables
+    });
+  })
+};  
+
+
+/*
     Función para crear las evaluaciones de la primera etapa, en este caso del 
     CIP, relacionadas a un proyecto
     Se hace uso de un procedimiento almacena createFirstStageEvaluations
@@ -166,6 +196,42 @@ const createFirstStageEvaluations = async (req, res) => {
       .json({ message: "First stage evaluations created successfully" });
   });
 };
+
+
+/*
+    Función para obtener las evaluaciones de la segunda etapa, en este caso del comité CIQUAL
+    Se hace uso de un procedimiento almacena getSecondStageEvaluations
+    @param projectId: Id del proyecto
+*/
+
+const getSecondStageEvaluations = async (req, res) => {
+  const { projectId } = req.params;
+  const query = "CALL getSecondStageEvaluations(?)";
+  const values = [projectId];
+  pool.query(query, values, (error, results) => {
+    if (error) {
+      console.error(error);
+      return res.status(400).json({ error: "Invalid query parameters" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Resource does not exist" });
+    }
+    const response = {
+      evaluations: [],
+      controlVariables: {}
+    };
+    for (let i = 0; i < results.length - 2; i++) {
+      if (results[i].length > 0) {
+          response.evaluations.push(results[i][0]);
+      }
+    }
+    if (results[results.length - 2].length > 0) {
+      response.controlVariables = results[results.length - 2][0];
+    }
+    res.status(200).json(response);
+  });
+}
+
 
 /*
     Función para crear las evaluaciones de la segunda etapa, en este caso de los comités CEI, CB y CI. 
@@ -192,6 +258,7 @@ const createSecondStageEvaluations = async (req, res) => {
   });
 };
 
+
 module.exports = {
   getUsersByRole,
   createUser,
@@ -199,6 +266,8 @@ module.exports = {
   getActiveProjectsSub,
   getAllCommittees,
   getCommitteeSecretaryPresident,
+  getFirstStageEvaluations,
   createFirstStageEvaluations,
+  getSecondStageEvaluations,
   createSecondStageEvaluations,
 };

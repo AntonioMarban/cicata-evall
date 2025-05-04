@@ -860,6 +860,53 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Función para obtener las evaluaciones de la primera etapa, en este caso del
+-- CIP, relacionadas a un proyecto
+-- Se hace uso de un procedimiento almacena getFirstStageEvaluations
+-- @param projectId: Id del proyecto
+-- @returns: Lista de evaluaciones de la primera etapa: nombre del comité, resultado y comentarios
+--           stageCompleted: indica si la etapa se ha completado, jumpThirdStage: indica si se salta la tercera etapa
+DELIMITER //
+CREATE PROCEDURE getFirstStageEvaluations(
+    IN p_projectId INT
+)
+BEGIN
+    DECLARE v_committeeId INT;
+    DECLARE v_userId INT;
+    DECLARE v_result VARCHAR(50);
+    DECLARE stageCompleted BOOLEAN DEFAULT FALSE;
+    DECLARE jumpThirdStage BOOLEAN DEFAULT FALSE;
+
+    -- Obtener el ID del primer comite y el ID del usuario (presidente)
+    SELECT cu.committeeId, u.userId INTO v_committeeId, v_userId
+    FROM committeeUsers cu
+    JOIN users u ON cu.userId = u.userId
+    WHERE cu.committeeId = 1 AND u.userType_id = 3
+    LIMIT 1;
+
+    -- Obtener el resultado de la evaluación
+    SELECT e.result INTO v_result FROM evaluations e
+    JOIN committeeUsers cu ON e.user_id = cu.userId
+    JOIN committees c ON cu.committeeId = c.committeeId
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userId
+    LIMIT 1;
+
+    IF v_result = 'Aprobado' THEN
+        SET stageCompleted = TRUE;
+    ELSEIF v_result = 'No aprobado' OR v_result = 'Pendiente de correcciones' THEN
+        SET jumpThirdStage = TRUE;
+    END IF;
+
+    SELECT c.name, e.result, e.comments FROM evaluations e
+    JOIN committeeUsers cu ON e.user_id = cu.userId
+    JOIN committees c ON cu.committeeId = c.committeeId
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userId
+    LIMIT 1;
+
+    SELECT stageCompleted, jumpThirdStage;
+
+END //
+DELIMITER ;
 
 
 -- Función para crear las evaluaciones de la primera etapa, en este caso del 
@@ -1012,3 +1059,140 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Función para obtener las evaluaciones de la segunda etapa, en este caso de los comités CEI, CB y CI.
+-- En caso de que el proyecto tenga marcado el uso de animales se obtiene la evaluación del comité CIQUAL
+-- Se hace uso de un procedimiento almacenado getSecondStageEvaluations
+-- @param projectId: Id del proyecto
+-- @returns: Lista de evaluaciones de la segunda etapa: nombre del comité, resultado y comentarios
+--           stageCompleted: indica si la etapa se ha completado, jumpThirdStage: indica si se salta la tercera etapa
+DELIMITER //
+CREATE PROCEDURE getSecondStageEvaluations(
+    IN p_projectId INT
+)
+BEGIN
+    DECLARE stageCompleted BOOLEAN DEFAULT FALSE;
+    DECLARE jumpThirdStage BOOLEAN DEFAULT FALSE;
+    DECLARE pendingEvaluations BOOLEAN DEFAULT FALSE;
+
+    DECLARE v_committeeCI INT;
+    DECLARE v_resultCI VARCHAR(50);
+
+    DECLARE v_committeeCB INT;
+    DECLARE v_resultCB VARCHAR(50);
+
+    DECLARE v_committeeCEI INT;
+    DECLARE v_resultCEI VARCHAR(50);
+
+    DECLARE v_committeeCIQUAL INT;
+    DECLARE v_resultCIQUAL VARCHAR(50);
+
+    DECLARE v_userIdCI INT;
+    DECLARE v_userIdCB INT;
+    DECLARE v_userIdCEI INT;
+    DECLARE v_userIdCIQUAL INT;
+
+    DECLARE v_workWithAnimals BOOLEAN;
+
+    -- Obtener el ID del comité CI y el ID del usuario (presidente)
+    SELECT cu.committeeId, u.userId INTO v_committeeCI, v_userIdCI
+    FROM committeeUsers cu
+    JOIN users u ON cu.userId = u.userId
+    WHERE cu.committeeId = 2 AND u.userType_id = 3
+    LIMIT 1;
+    -- Guardamos el resultado de la evaluación del CI
+    SELECT e.result INTO v_resultCI FROM evaluations e
+    JOIN committeeUsers cu ON e.user_id = cu.userId
+    JOIN committees c ON cu.committeeId = c.committeeId
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCI
+    LIMIT 1;
+    -- Seleccionamos para devolver el nombre del comité, su resultado y comentarios
+    SELECT c.name, e.result, e.comments  FROM evaluations e
+    JOIN committeeUsers cu ON e.user_id = cu.userId
+    JOIN committees c ON cu.committeeId = c.committeeId
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCI
+    LIMIT 1;
+
+    -- Obtener el ID del comité CB y el ID del usuario (presidente)
+    SELECT cu.committeeId, u.userId INTO v_committeeCB, v_userIdCB
+    FROM committeeUsers cu
+    JOIN users u ON cu.userId = u.userId
+    WHERE cu.committeeId = 3 AND u.userType_id = 3
+    LIMIT 1;
+    -- Guardamos el resultado de la evaluación CB
+    SELECT e.result INTO v_resultCB  FROM evaluations e
+    JOIN committeeUsers cu ON e.user_id = cu.userId
+    JOIN committees c ON cu.committeeId = c.committeeId
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCB
+    LIMIT 1;
+    -- Seleccionamos para devolver el nombre del comité, su resultado y comentarios
+    SELECT c.name, e.result, e.comments  FROM evaluations e
+    JOIN committeeUsers cu ON e.user_id = cu.userId
+    JOIN committees c ON cu.committeeId = c.committeeId
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCB
+    LIMIT 1;
+
+    -- Obtener el ID del comité CEI y el ID del usuario (presidente)
+    SELECT cu.committeeId, u.userId INTO v_committeeCEI, v_userIdCEI
+    FROM committeeUsers cu
+    JOIN users u ON cu.userId = u.userId
+    WHERE cu.committeeId = 4 AND u.userType_id = 3
+    LIMIT 1;
+    -- Guardamos el resultado de evaluación del CEI
+    SELECT e.result INTO v_resultCEI FROM evaluations e
+    JOIN committeeUsers cu ON e.user_id = cu.userId
+    JOIN committees c ON cu.committeeId = c.committeeId
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCEI
+    LIMIT 1;
+    -- Seleccionamos para devolver el nombre, resultado y comentarios del CEI
+    SELECT c.name, e.result, e.comments  FROM evaluations e
+    JOIN committeeUsers cu ON e.user_id = cu.userId
+    JOIN committees c ON cu.committeeId = c.committeeId
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCEI
+    LIMIT 1;
+
+    -- Verificar si el proyecto tiene marcado el uso de animales
+    SELECT workWithAnimals INTO v_workWithAnimals
+    FROM projects
+    WHERE projectId = p_projectId;
+
+    -- Si el proyecto tiene marcado el uso de animales, guardamos el resultado y devolvemos la información de la evaluación
+    IF v_workWithAnimals THEN
+        SELECT cu.committeeId, u.userId INTO v_committeeCIQUAL, v_userIdCIQUAL
+        FROM committeeUsers cu
+        JOIN users u ON cu.userId = u.userId
+        WHERE cu.committeeId = 5 AND u.userType_id = 3
+        LIMIT 1;
+        SELECT e.result INTO v_resultCIQUAL  FROM evaluations e
+        JOIN committeeUsers cu ON e.user_id = cu.userId
+        JOIN committees c ON cu.committeeId = c.committeeId
+        WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCIQUAL
+        LIMIT 1;
+        SELECT c.name, e.result, e.comments  FROM evaluations e
+        JOIN committeeUsers cu ON e.user_id = cu.userId
+        JOIN committees c ON cu.committeeId = c.committeeId
+        WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCIQUAL
+        LIMIT 1;
+        -- Si el resultado es nulo es que la evaluación sigue pendiente
+        IF v_resultCIQUAL IS NULL
+        THEN
+            SET pendingEvaluations = TRUE;
+        END IF;
+    END IF;
+
+    -- Si los resultados son nulos es que hay evaluaciones pendientes
+    IF v_resultCB IS NULL
+       OR v_resultCI IS NULL
+       OR v_resultCEI IS NULL
+    THEN
+        SET pendingEvaluations = True;
+    END IF;
+    -- Si ya no hay evaluaciones pendientes entonces la etapa fue completada y saltamos a la tercera y última etapa
+    IF !pendingEvaluations
+    THEN
+        SET stageCompleted = True;
+        SET jumpThirdStage = True;
+    END IF;
+
+    SELECT stageCompleted, jumpThirdStage;
+END //
+DELIMITER ;
