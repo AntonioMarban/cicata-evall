@@ -142,7 +142,7 @@ CREATE TABLE `members` (
   `researchNetworkName` varchar(50),
   `academicDegree` varchar(50),
   `levelName` varchar(50),
-  `levelNum` integer,
+  `levelNum` varchar(50),
   `tutorName` varchar(100),
   `project_id` integer
 );

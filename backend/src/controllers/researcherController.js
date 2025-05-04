@@ -134,6 +134,42 @@ const uploadDocuments = (req, res) => {
     res.status(200).json({ message: 'Documents uploaded successfully' });
 };
 
+const groupDeliverables = (deliverables) => {
+    const educativos = [
+        'Tesis (Alumnos titulados)', 'Practicantes profesionales', 'Alumnos PIFI',
+        'Prestante de servicio social', 'Otro (especificar)'
+    ];
+
+    const difusion = [
+        'Artículo de divulgación', 'Congresos', 'Cursos', 'Libros',
+        'Conferencias o ponencias', 'Artículo científico', 'Seminarios',
+        'Manuales', 'Programas de Radio y/o TV', 'Otro, especificar'
+    ];
+
+    const tecnologicos = [
+        'Patente', 'Hardware', 'Prototipo', 'Certificado de invención',
+        'Software', 'Otro (especificar)'
+    ];
+
+    const grouped = {
+        educativos: [],
+        difusion: [],
+        tecnologicos: []
+    };
+
+    deliverables.forEach(item => {
+        if (educativos.includes(item.name)) {
+        grouped.educativos.push(item);
+        } else if (difusion.includes(item.name)) {
+        grouped.difusion.push(item);
+        } else if (tecnologicos.includes(item.name)) {
+        grouped.tecnologicos.push(item);
+        }
+    });
+
+    return grouped;
+};
+
 const getProjectDetails = (req, res) => {
     const projectId = req.params.projectId;
     const query = 'CALL getProjectDetails(?)';
@@ -150,7 +186,7 @@ const getProjectDetails = (req, res) => {
             members,
             collaborativeInstitutions,
             scheduleActivities,
-            deliverablesProjects,
+            deliverables,
             budgets,
             goals,
             methodologies,
@@ -165,7 +201,7 @@ const getProjectDetails = (req, res) => {
             members: members || [],
             collaborativeInstitutions: collaborativeInstitutions || [],
             scheduleActivities: scheduleActivities || [],
-            deliverablesProjects: deliverablesProjects || [],
+            deliverables: groupDeliverables(deliverables) || [],
             budgets: budgets || [],
             goals: goals || [],
             methodologies: methodologies || [],

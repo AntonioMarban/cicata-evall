@@ -354,9 +354,14 @@ BEGIN
 
     -- deliverablesProjects
     SELECT 
-        quantity, deliverableId, deliverableTypeId
-    FROM deliverablesProjects
-    WHERE projectId = p_projectId;
+        dp.quantity, 
+        d.deliverableId,
+        dt.deliverableTypeId,
+        d.name
+    FROM deliverablesProjects dp
+    JOIN deliverables d ON dp.deliverableId = d.deliverableId
+    JOIN deliverableTypes dt ON dp.deliverableTypeId = dt.deliverableTypeId
+    WHERE dp.projectId = p_projectId;
 
     -- budgets
     SELECT 
