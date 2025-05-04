@@ -40,7 +40,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
 
     const handleParticipantSubmit = useFormAddHandler({
         setState: setParticipants,
-        key: 'p_membersJSON',
+        key: 'members',
         extraData: { researchNetwork: participant.researchNetwork },
         onSuccess: () => {
             setIsOpen(false)

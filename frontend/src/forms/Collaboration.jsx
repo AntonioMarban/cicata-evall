@@ -9,8 +9,11 @@ import { useState } from "react";
 
 
 const  Collaboration = ({option,setOption}) => {
-    const [collaborate, setCollaborate] = useState(1);
-    const [collaborations, setCollaborations] = useState({ idF: 4, collaborate,collaborateText:"", p_collaborativeInstitutionsJSON: [] });
+    const [hasCollaboration, sethasCollaboration] = useState(1);
+    const [collaborations, setCollaborations] = useState({ idF: 4, 
+        hasCollaboration,
+        collaborationJustification:"", 
+        collaborativeInstitutions: [] });
 
     const [collaborationToEdit, setCollaborationToEdit] = useState(null);
     const handleOnSubmitForm = useFormHandler({
@@ -21,7 +24,7 @@ const  Collaboration = ({option,setOption}) => {
     const handleDeleteArray = (index) => {
         setCollaborations({
             ...collaborations,
-            p_collaborativeInstitutionsJSON: removeItemByIndex(collaborations.p_collaborativeInstitutionsJSON, index)
+            collaborativeInstitutions: removeItemByIndex(collaborations.collaborativeInstitutions, index)
         });
     };
     
@@ -56,20 +59,20 @@ const  Collaboration = ({option,setOption}) => {
                     <p className="w-3/4">¿El Cuenta con colaboración de otras instituciones?</p>
                     <div className="w-1/4 min-w-[200px] flex justify-between">
                         <button type="button"
-                            className={collaborations.collaborate === 1  ? 
+                            className={collaborations.hasCollaboration === 1  ? 
                             'bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[45%] min-w-[100px]' 
                             : 
                             'bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[45%] min-w-[100px]'} 
-                            onClick={() => handleChangeButton('collaborate', 1)} >Si</button>
+                            onClick={() => handleChangeButton('hasCollaboration', 1)} >Si</button>
                         <button type="button"
-                            className={collaborations.collaborate === 0  ? 
+                            className={collaborations.hasCollaboration === 0  ? 
                             'bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[45%] min-w-[100px]'
                             : 
                             'bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[45%] min-w-[100px]'} 
-                            onClick={() => handleChangeButton('collaborate', 0)} >No</button>
+                            onClick={() => handleChangeButton('hasCollaboration', 0)} >No</button>
                     </div>
                 </div>
-                {collaborations.collaborate ? (
+                {collaborations.hasCollaboration ? (
                 <>
                     <div className="rounded-lg p-0 w-full">
                         <div className="flex justify-between !p-2">
@@ -80,7 +83,7 @@ const  Collaboration = ({option,setOption}) => {
                             <p className="flex-1"></p>
                         </div>
                     </div>
-                    <CardAdd cards={collaborations.p_collaborativeInstitutionsJSON} 
+                    <CardAdd cards={collaborations.collaborativeInstitutions} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}
                     slice={4} />
@@ -98,9 +101,9 @@ const  Collaboration = ({option,setOption}) => {
                     <p className="!mb-5 text-[17px] text-gray-600">(Declarar porque no existe colaboración con otras instituciones)</p>
                         <textarea  
                         className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
-                        name="collaborateText" 
+                        name="collaborationJustification" 
                         placeholder="Escribe porque no hay colaboración con otras instituciones..."
-                        value={collaborations.collaborateText}
+                        value={collaborations.collaborationJustification}
                         onChange={handleChange}></textarea>
                     </div>
                 )}

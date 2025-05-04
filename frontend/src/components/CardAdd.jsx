@@ -1,8 +1,12 @@
 import React from 'react';
 import Trash from '../assets/trash.svg'
+import DeletePopUp from './DeletePopUp';
 
-const CardAdd = ({cards, slice,handleDeleteFile,handleEditModal}) => {  
 
+const CardAdd = ({cards, slice,handleDeleteFile,handleEditModal,nameArray,setData}) => {  
+    const onClick = (index, card,setData) =>{
+        handleEditModal(index, card,setData);
+    }
     return (
     <div className="rounded-lg p-0 w-full">
         <div  className="rounded-lg p-0 w-full border-2 border-gray-300">
@@ -14,10 +18,11 @@ const CardAdd = ({cards, slice,handleDeleteFile,handleEditModal}) => {
                 <button 
                     className='cursor-pointer !mr-2' 
                     type="button" 
-                    onClick={() => handleEditModal(index, card)}
+                    onClick={() => onClick(index, card,setData)}
                     >Editar
                 </button>
-                <button className='cursor-pointer' type="button" onClick={()=>{handleDeleteFile(index)}}><img src={Trash}></img></button>
+                <button className='cursor-pointer' type="button" onClick={()=>{handleDeleteFile(index,nameArray)}}></button>
+                <DeletePopUp handleDeleteFile={handleDeleteFile} index={index} nameArray={nameArray}/>
             </div>
         ))}
         </div>

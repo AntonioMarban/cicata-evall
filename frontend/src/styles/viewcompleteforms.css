@@ -163,6 +163,9 @@
     font-weight: 600;
     margin-bottom: 20px;
 }
+.subtitle-text{
+    font-weight: normal;
+}
 @media print {
     .div-button {
       display: none !important;

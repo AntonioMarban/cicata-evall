@@ -1,6 +1,6 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
-const Contributions = ({Contributions}) => {  
+const Contributions = ({contributions}) => {  
     return (
     <>
         <table className='BackgroundTable'>
@@ -11,7 +11,7 @@ const Contributions = ({Contributions}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>1</td>
+                    <td>{contributions}</td>
                 </tr>
             </tbody>
         </table>

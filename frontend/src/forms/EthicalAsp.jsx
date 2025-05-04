@@ -9,7 +9,7 @@ const  EthicalAsp = ({option,setOption}) => {
     const [workWithAnimals, setWorkWithAnimals] = useState(1);
     const [filesSend,setFilesSend] = useState([]);
     const [ethicalAsp, setEthicalAsp] = useState({   
-        idF: 6,
+        idF: 7,
         ethicalAspects:"",
         workWithHumans,
         workWithAnimals,

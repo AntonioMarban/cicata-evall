@@ -57,11 +57,11 @@
   background-color: #D6D6D6;
 }
 .texto-modal{
-  width: 100% !important;
+  width: 100%;
   color: black;
   text-align: center; 
   box-sizing: border-box;
-font-size: 17px !important;
+  font-size: 17px ;
   font-weight: 100px;
 }
 .form-pieza{
@@ -135,6 +135,7 @@ font-size: 17px !important;
   background-color: #B3DBEB; 
   text-decoration: None;
   color: black;
+  padding: 10px;
 }
 .modalAddProject:hover{
   background-color: #8ABFD6; 

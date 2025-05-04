@@ -5,7 +5,7 @@ import { prevOption } from "../hooks/optionUtils";
 
 const  ConflictoInt = ({option,setOption}) => {
     const [conflict, setConflict] = useState({   
-        idF: 12,
+        idF: 13,
         conflictOfInterest:"" 
     });
     const [newErrorsD,setNewErrorsD] = useState({

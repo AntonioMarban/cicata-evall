@@ -11,7 +11,7 @@ const Desglose = ({desglose}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>Introdhdjfsa</td>
+                    <td>{desglose.introduction}</td>
                 </tr>
             </tbody>
         </table>
@@ -24,24 +24,11 @@ const Desglose = ({desglose}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>Introdhdjfsa</td>
+                    <td>{desglose.background}</td>
                 </tr>
             </tbody>
         </table>
 
-
-        <table className='BackgroundTable'>
-            <thead className='table-form-header'>
-                <tr>
-                    <th>Antecedentes</th>
-                </tr>
-            </thead>
-            <tbody className='table-form-body'>
-                <tr>
-                    <td>Introdhdjfsa</td>
-                </tr>
-            </tbody>
-        </table>
 
         <table className='BackgroundTable'>
             <thead className='table-form-header'>
@@ -51,7 +38,7 @@ const Desglose = ({desglose}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>Introdhdjfsa</td>
+                    <td>{desglose.statementOfProblem}</td>
                 </tr>
             </tbody>
         </table>
@@ -64,7 +51,7 @@ const Desglose = ({desglose}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>Introdhdjfsa</td>
+                    <td>{desglose.justification}</td>
                 </tr>
             </tbody>
         </table>
@@ -78,7 +65,7 @@ const Desglose = ({desglose}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>Introdhdjfsa</td>
+                    <td>{desglose.hypothesis}</td>
                 </tr>
             </tbody>
         </table>
@@ -91,20 +78,7 @@ const Desglose = ({desglose}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>Introdhdjfsa</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <table className='BackgroundTable'>
-            <thead className='table-form-header'>
-                <tr>
-                    <th>Objetivos Específicos</th>
-                </tr>
-            </thead>
-            <tbody className='table-form-body'>
-                <tr>
-                    <td>Introdhdjfsa</td>
+                    <td>{desglose.generalObjective}</td>
                 </tr>
             </tbody>
         </table>
@@ -118,10 +92,12 @@ const Desglose = ({desglose}) => {
                     </tr>
                 </thead>
                 <tbody className='table-form-body'>
+                    {/*{Array.isArray(sObjectives) && sObjectives.map((sObjective, index) => (
                     <tr>
-                        <td>1</td>
-                        <td>Nombre</td>
+                        <td>{index}</td>
+                        <td>{sObjectives.objective}</td>
                     </tr>
+                    ))}*/}
                 </tbody>
         </table>
 
@@ -146,7 +122,7 @@ const Desglose = ({desglose}) => {
                 <thead className='table-form-header'>
                     <tr>
                         <th>No.</th>
-                        <th>Metodología <span>(Detallar en la meta que corresponda: tipo de estudio, población de estudio, 
+                        <th>Metodología <br/><span className='subtitle-text'>(Detallar en la meta que corresponda: tipo de estudio, población de estudio, 
                             criterios de inclusión, exclusión y eliminación, tipo de muestreo, cálculo del tamaño de muestra,
                                 controles, variables a analizar, técnicas, materiales y equipos a utilizar, análisis estadístico 
                                 a realizar, etc. La intención es dar una idea precisa de lo que se va a realizar)</span></th>

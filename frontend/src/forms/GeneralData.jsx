@@ -3,18 +3,18 @@ import useLoadFormData from "../hooks/useLoadFormData";
 import { useFormHandler } from "../hooks/useFormHandler";
 
 const  GeneralData = ({option,setOption}) => {
-    const [objectiveA, setObjectiveA] = useState(1);
-    const [typeInv, setTypeInv] = useState(1);
+    const [alignsWithPNIorODS, setalignsWithPNIorODS] = useState(1);
+    const [typeResearch, setTypeResearch] = useState(1);
     const [generalData, setGeneralData] = useState(
         {   idF: 1,
             title: "",
             startDate:"",
             endDate:"",
-            typeInv, 
-            typeInvText: "", 
+            typeResearch, 
+            otherTypeResearch: "", 
             topic: "",
             subtopic: "", 
-            objectiveA,
+            alignsWithPNIorODS,
             alignmentPNIorODS: "",
             summary:"" });
     
@@ -22,11 +22,11 @@ const  GeneralData = ({option,setOption}) => {
             title: "",
             startDate:"",
             endDate:"",
-            typeInv, 
-            typeInvText: "", 
+            typeResearch, 
+            otherTypeResearch: "", 
             topic: "",
             subtopic: "", 
-            objectiveA,
+            alignsWithPNIorODS,
             alignmentPNIorODS: "",
             summary:""
     });
@@ -65,8 +65,8 @@ const  GeneralData = ({option,setOption}) => {
           if (!value || (typeof value === 'string' && value.trim() === '')) {
             newErrorsF[key] = `El campo  es requerido`;
           }
-          if(generalData.typeInv < 4){
-            delete newErrorsF['typeInvText'];
+          if(generalData.typeResearch < 4){
+            delete newErrorsF['otherTypeResearch'];
         }
         });
         setNewErrors(newErrorsF)
@@ -120,48 +120,48 @@ const  GeneralData = ({option,setOption}) => {
                     <p className="text-lg">Tipo de investigación</p>
                     <div className="flex flex-wrap justify-between w-full mt-2.5">
                             <button
-                                className={generalData.typeInv === 1  ? 
+                                className={generalData.typeResearch === 1  ? 
                                 '!mt-2 bg-[#5CB7E6] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer mt-5' 
                                 : 
                                 '!mt-2 bg-[#E1E1E1] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer mt-5'} 
-                                onClick={() => handleChangeButton('typeInv', 1)}
+                                onClick={() => handleChangeButton('typeResearch', 1)}
                                 type="button">Básica
                             </button>
 
                             <button
-                                className={generalData.typeInv  === 2  ? 
+                                className={generalData.typeResearch  === 2  ? 
                                 '!mt-2 bg-[#5CB7E6] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer mt-5' 
                                 : 
                                 '!mt-2 bg-[#E1E1E1] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer mt-5'} 
-                                onClick={() => handleChangeButton('typeInv', 2)}
+                                onClick={() => handleChangeButton('typeResearch', 2)}
                                 type="button">Aplicada-clínica
                             </button>
 
                             <button
-                                className={generalData.typeInv  === 3  ? 
+                                className={generalData.typeResearch  === 3  ? 
                                 '!mt-2 bg-[#5CB7E6] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer mt-5' 
                                 : 
                                 '!mt-2 bg-[#E1E1E1] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer mt-5'} 
-                                onClick={() => handleChangeButton('typeInv', 3)}
+                                onClick={() => handleChangeButton('typeResearch', 3)}
                                 type="button">Desarrollo tecnológico
                             </button>
                             <button
-                                className={generalData.typeInv  === 4  ? 
+                                className={generalData.typeResearch  === 4  ? 
                                 '!mt-2 bg-[#5CB7E6] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer mt-5' 
                                 : 
                                 '!mt-2 bg-[#E1E1E1] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer mt-5'} 
-                                onClick={() => handleChangeButton('typeInv', 4)}
+                                onClick={() => handleChangeButton('typeResearch', 4)}
                                 type="button">Otro
                             </button>
                     </div>
-                    {generalData.typeInv === 4 &&
+                    {generalData.typeResearch === 4 &&
                         <div className="!mt-5 w-100% flex-1">
-                            <p>¿Cuál? {newErrors.typeInvText && <span className="text-red-600">*{newErrors.typeInvText}</span>}</p>
+                            <p>¿Cuál? {newErrors.otherTypeResearch && <span className="text-red-600">*{newErrors.otherTypeResearch}</span>}</p>
                             <input  
                                     className="!p-2 w-4/10 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3" 
-                                    name="typeInvText" 
+                                    name="otherTypeResearch" 
                                     type="text"
-                                    value={generalData.typeInvText}
+                                    value={generalData.otherTypeResearch}
                                     onChange={handleChange}
                                     placeholder="Escribe el tipo de investigación..."></input>
                         </div>
@@ -194,17 +194,17 @@ const  GeneralData = ({option,setOption}) => {
                     <p className="w-3/4">¿El proyecto se alinea con las Prioridades Nacionales de Investigación y/o con los objetivos de la Agenda de desarrollo sostenible?</p>
                     <div className="ml-2 w-1/4 min-w-[200px] flex justify-between">
                         <button type="button"
-                            className={generalData.objectiveA === 1  ? 
+                            className={generalData.alignsWithPNIorODS === 1  ? 
                             '!ml-2 bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px]' 
                             : 
                             '!ml-2 bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px]'} 
-                            onClick={() => handleChangeButton('objectiveA', 1)} >Si</button>
+                            onClick={() => handleChangeButton('alignsWithPNIorODS', 1)} >Si</button>
                         <button type="button"
-                            className={generalData.objectiveA === 0  ? 
+                            className={generalData.alignsWithPNIorODS === 0  ? 
                             'bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px]'
                             : 
                             'bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px]'} 
-                            onClick={() => handleChangeButton('objectiveA', 0)} >No</button>
+                            onClick={() => handleChangeButton('alignsWithPNIorODS', 0)} >No</button>
                     </div>
                 </div>
                 

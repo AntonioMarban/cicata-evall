@@ -30,7 +30,7 @@ const createProject = async (req, res) => {
         title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary,
         introduction, background, statementOfProblem, justification, hypothesis, generalObjective,
         ethicalAspects, workWithHumans, workWithAnimals, biosecurityConsiderations,
-        contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
+        contributionsToIPNandCICATA, conflictOfInterest, aditionalComments,
         otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification,
 
         // Arreglos

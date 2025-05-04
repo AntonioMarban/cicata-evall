@@ -18,7 +18,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
 
     const handleBudgetSubmit = useFormAddHandler({
         setState: setBudget,
-        key: 'p_budgetsJSON',
+        key: 'budgets',
         onSuccess: () => {
             setIsOpen(false)
             if (onEditComplete && budgetToEdit){
@@ -71,12 +71,12 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
     return (
         <>
             {!budgetToEdit && (
-                <button type="button" className='modalAddProject' onClick={() => setIsOpen(true)}>
+                <button type="button" className='modalAddProject' onClick={() => {setIsOpen(true)}}>
                     Agregar presupuesto
                 </button>
             )}
 
-            <Dialog open={isOpen} onClose={() => { if(!budgetToEdit) setIsOpen(false)}} className="dialog-overlay">
+            <Dialog open={isOpen} onClose={() => { }} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <p className="dialog-title">{budgetToEdit ? "Editar Presupuesto" : "Agregar Presupuesto"}</p>
@@ -111,7 +111,9 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                 </p>
                                 <input 
                                     name="expenditure" 
-                                    type="number" min={0}
+                                    type="number" 
+                                    min={0}
+                                    step="0.01"
                                     className="form-pieza-input" 
                                     placeholder="Escribe el tipo de proyecto..."
                                     value={budgetForm.expenditure}

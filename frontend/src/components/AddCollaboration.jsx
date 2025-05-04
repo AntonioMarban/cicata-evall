@@ -38,7 +38,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
     
     const handleCollaborationSubmit = useFormAddHandler({
         setState: setCollaborations,
-        key: 'p_collaborativeInstitutionsJSON',
+        key: 'collaborativeInstitutions',
         extraData: { partOfIPN: collaboration.partOfIPN },
         onSuccess: () => {
             setIsOpen(false)

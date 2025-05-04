@@ -135,14 +135,12 @@ const  Desglose = ({option,setOption}) => {
                             <div className="rounded-lg p-0 w-full">
                                 <div className="flex justify-between !p-2">
                                     <p className="flex-1">Nombre del Objetivo específico</p>
-                                    <p className="flex-1 text-center">Descripción</p>
-                                    <p className="flex-1"></p>
                                 </div>
                             </div>
                             <CardAdd cards={desglose.sObjectives} 
                                 handleDeleteFile={handleDeleteArray}
                                 handleEditModal={handleEditModal}
-                                slice={2}/>
+                                slice={1}/>
                         </div>
                         <div className="!flex items-center justify-center">
                                 <AddObjectivesSpe 

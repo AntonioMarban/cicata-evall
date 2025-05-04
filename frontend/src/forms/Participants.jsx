@@ -8,7 +8,7 @@ import CardAdd from "../components/CardAdd";
 import { useState } from "react";
 
 const  Participants = ({option,setOption}) => {
-    const [participants, setParticipants] = useState({ idF: 3, p_membersJSON: [] });
+    const [participants, setParticipants] = useState({ idF: 3, members: [] });
     const [participantToEdit, setParticipantToEdit] = useState(null);
 
     const handleOnSubmitForm = useFormHandler({
@@ -19,7 +19,7 @@ const  Participants = ({option,setOption}) => {
     const handleDeleteArray = (index) => {
         setParticipants({
             ...participants,
-            p_membersJSON: removeItemByIndex(participants.p_membersJSON, index)
+            members: removeItemByIndex(participants.members, index)
         });
     };
 
@@ -49,7 +49,7 @@ const  Participants = ({option,setOption}) => {
                     </div>
                 </div>
                 <CardAdd 
-                    cards={participants.p_membersJSON} 
+                    cards={participants.members} 
                     handleDeleteFile={handleDeleteArray}
                     handleEditModal={handleEditModal}
                     slice={5}/>

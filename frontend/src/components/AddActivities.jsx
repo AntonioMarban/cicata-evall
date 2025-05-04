@@ -36,7 +36,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
 
     const handleActivitySubmit  = useFormAddHandler({
         setState: setActivities,
-        key: 'p_scheduleActivitiesJSON',
+        key: 'scheduleActivities',
         onSuccess: ()=> {
             setIsOpen(false)
             if (onEditComplete && activitesToEdit){
@@ -73,7 +73,6 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
             handleActivitySubmit(e, activity, activitesToEdit ? activitesToEdit.index : undefined);
         }
     };
-
     return (
         <>
             <button className='modalAddProject' onClick={() => setIsOpen(true)}>Agregar actividad</button>
@@ -119,8 +118,8 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                                         value={activity.responsibleMember}
                                         onChange={handleInputChange}
                                     >   
-                                    <option>Selecciona un responsibleMembere</option>
-                                        {Array.isArray(responsable.p_membersJSON) && responsable.p_membersJSON.map((person, index) => (
+                                    <option>Selecciona un participante responsable</option>
+                                        {Array.isArray(responsable.members) && responsable.members.map((person, index) => (
                                                 <option key={index} value={`${person.fName} ${person.lastName1} ${person.lastName2}`}>{`${person.fName} ${person.lastName1} ${person.lastName2}`}</option>
                                         ))}
                                     </select>

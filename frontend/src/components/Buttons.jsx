@@ -3,7 +3,7 @@ const Buttons =({option,setOption}) => {
   
   const options = [
     "Datos Generales", "Proyectos", "Participantes", "Colaboracion", 
-    "Desglose", "Aspectos éticos", "Consideraciones", "Cronograma", 
+    "Desglose",'Metas' ,"Aspectos éticos", "Consideraciones", "Cronograma", 
     "Entregables", "Aportaciones", "Presupuesto", "Conflicto de Interes", "Anexos"
   ];
   

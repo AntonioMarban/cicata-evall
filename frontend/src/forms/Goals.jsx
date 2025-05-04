@@ -1,0 +1,137 @@
+import useLoadFormData from "../hooks/useLoadFormData";
+import { prevOption } from "../hooks/optionUtils";
+import { useFormHandler } from "../hooks/useFormHandler";
+import { removeItemByIndex } from "../hooks/removeItemByIndex";
+
+import CardAdd from "../components/CardAdd";
+import AddGoals from "../components/AddGoals";
+import AddReferences from "../components/AddReferences";
+import AddMethodology from "../components/AddMethodology";
+
+import { useState } from "react";
+const  Goals = ({option,setOption}) => {
+    const [desglose, setDesglose] = useState(
+        {   idF: 6,
+            goals: [],
+            references: [],
+            methodologies: []
+        });
+    const [goalsToEdit, setGoalsToEdit] = useState(null);
+    const [referencesToEdit, setReferencesToEdit] = useState(null);
+    const [methodologiesToEdit, setMethodologiesToEdit] = useState(null);
+
+    const handleOnSubmitForm = useFormHandler({
+        form: desglose,
+        onSuccess: ()=> setOption(prevOption => prevOption + 1),
+    });
+
+    const handleSubmitWithValidation = (event) => {
+        event.preventDefault();
+        handleOnSubmitForm(event); 
+    }
+
+    const handleDeleteArray = (index,arrayToEdit) => {
+        setDesglose({
+            ...desglose,
+            [arrayToEdit]: removeItemByIndex(desglose[arrayToEdit], index)
+        });
+    };
+
+    const handleEditModal = (index, project, setData) => {
+        setData({...project, index});
+    };
+
+    const handleEditComplete = (setData) => {
+        setData(null);
+    };
+
+    useLoadFormData(desglose.idF,setDesglose);
+    return (
+        <div>
+            <div className="flex flex-col justify-between">
+                <div>
+                    <p className="text-2xl">Desglose del proyecto</p>
+                </div>
+                <div className="flex-1 mt-5">
+                    <div className="flex flex-wrap flex-col">
+                        
+                        <div className="flex-1">
+                            <p className="!mt-2 text-xl">Metas </p>
+                            <div className="rounded-lg p-0 w-full">
+                                <div className="flex justify-between !p-2">
+                                    <p className="flex-1">Nombre de la meta</p>
+                                </div>
+                            </div>
+                            <CardAdd cards={desglose.goals} 
+                                handleDeleteFile={handleDeleteArray}
+                                handleEditModal={handleEditModal}
+                                setData = {setGoalsToEdit}
+                                nameArray='goals'
+                                slice={1}/>
+                        </div>
+                        <div className="!flex items-center justify-center">
+                                <AddGoals 
+                                    setDesglose={setDesglose}
+                                    goalsToEdit={goalsToEdit}
+                                    setData ={setGoalsToEdit}
+                                    onEditComplete={handleEditComplete}
+                                />
+                        </div>
+
+                        <div className="flex-1">
+                            <p className="!mt-2 text-xl">Referencias </p>
+                            <div className="rounded-lg p-0 w-full">
+                                <div className="flex justify-between !p-2">
+                                    <p className="flex-1">Nombre de la referencia</p>
+                                </div>
+                            </div>
+                            <CardAdd cards={desglose.references} 
+                                handleDeleteFile={handleDeleteArray}
+                                handleEditModal={handleEditModal}
+                                setData = {setReferencesToEdit}
+                                nameArray='references'
+                                slice={1}/>
+                        </div>
+                        <div className="!flex items-center justify-center">
+                                <AddReferences 
+                                    setDesglose={setDesglose}
+                                    referencesToEdit={referencesToEdit}
+                                    setData ={setReferencesToEdit}
+                                    onEditComplete={handleEditComplete}
+                                />
+                        </div>
+
+                        <div className="flex-1">
+                            <p className="!mt-2 text-xl">Metodologías </p>
+                            <div className="rounded-lg p-0 w-full">
+                                <div className="flex justify-between !p-2">
+                                    <p className="flex-1">Nombre de la Metodología</p>
+                                </div>
+                            </div>
+                            <CardAdd cards={desglose.methodologies} 
+                                handleDeleteFile={handleDeleteArray}
+                                handleEditModal={handleEditModal}
+                                setData = {setMethodologiesToEdit}
+                                nameArray='methodologies'
+                                slice={1}/>
+                        </div>
+                        <div className="!flex items-center justify-center">
+                                <AddMethodology 
+                                    setDesglose={setDesglose}
+                                    methodologiesToEdit={methodologiesToEdit}
+                                    setData={setMethodologiesToEdit}
+                                    onEditComplete={handleEditComplete}
+                                />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="flex justify-end items-center mt-5 mb-5">
+                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
+                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleSubmitWithValidation}>Siguiente</button>
+            </div>
+        </div>
+    )
+}
+
+export default Goals;

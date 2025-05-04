@@ -3,19 +3,19 @@ import { useFormHandler } from "../hooks/useFormHandler";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import "../styles/deliverables.css"
-const  Deliverables = ({option,setOption}) => {
-    const [p_deliverablesJSON, setP_deliverablesJSON] = useState(
+const  DeliverablesView = ({option,setOption}) => {
+    const [deliverables, setDeliverables] = useState(
     {
-        idF: 9
+        idF: 10
     }
     );
 
     const handleOnSubmitForm = useFormHandler({
-        form: p_deliverablesJSON,
+        form: deliverables,
         onSuccess: ()=> setOption(prevOption => prevOption + 1),
     });
     const handleChange = (section, deliverable, category, value) => {
-        setP_deliverablesJSON((prev) => ({
+        setDeliverables((prev) => ({
           ...prev,
           [section]: {
             ...prev[section],
@@ -46,7 +46,7 @@ const  Deliverables = ({option,setOption}) => {
         "Programas de Radio y/o TV",
         "Otro"
       ];
-    const deliverables = [
+    const deliverables1 = [
     "Tesis (Alumnos titulados)",
     "Practicantes profesionales",
     "Alumnos PIFI",
@@ -55,7 +55,7 @@ const  Deliverables = ({option,setOption}) => {
     ];
     const categories = ["Nacional", "Internacional"];
     const categories2 = ["Medio", "Superior","Posgrado"];
-    useLoadFormData(p_deliverablesJSON.idF,setP_deliverablesJSON);
+    useLoadFormData(deliverables.idF,setDeliverables);
     return (
         <div>
             <table className="table">
@@ -74,13 +74,13 @@ const  Deliverables = ({option,setOption}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {deliverables.map((deliverable) => (
+                    {deliverables1.map((deliverable) => (
                     <tr key={deliverable}>
                         <td data-label="Entregable">{deliverable}</td>
                         {categories2.map((category) => (
                         <td key={category} data-label={category}>
-                            <input type="number" min={0} value={p_deliverablesJSON["educativos"]?.[deliverable]?.[category] || ""}
-                            onChange={(e) =>handleChange("educativos", deliverable, category, e.target.value)}/>
+                            <input type="number" min={0} value={deliverables["educational"]?.[deliverable]?.[category] || ""}
+                            onChange={(e) =>handleChange("educational", deliverable, category, e.target.value)}/>
                         </td>
                         ))}
                     </tr>
@@ -104,8 +104,8 @@ const  Deliverables = ({option,setOption}) => {
                         {categories.map((category) => (
                         <td key={category} data-label={category}>
                             <input type="number" 
-                                value={p_deliverablesJSON["difusion"]?.[deliverable]?.[category] || ""}
-                                onChange={(e) =>handleChange("difusion", deliverable, category, e.target.value)}/>
+                                value={deliverables["diffusion"]?.[deliverable]?.[category] || ""}
+                                onChange={(e) =>handleChange("diffusion", deliverable, category, e.target.value)}/>
                         </td>
                         ))}
                     </tr>
@@ -128,8 +128,8 @@ const  Deliverables = ({option,setOption}) => {
                         <td data-label="Entregable">{deliverable}</td>
                         {categories.map((category) => (
                         <td key={category} data-label={category}>
-                            <input type="number" value={p_deliverablesJSON["tecnologia"]?.[deliverable]?.[category] || ""}
-                                onChange={(e) => handleChange("tecnologia", deliverable, category, e.target.value)}/>
+                            <input type="number" value={deliverables["technology"]?.[deliverable]?.[category] || ""}
+                                onChange={(e) => handleChange("technology", deliverable, category, e.target.value)}/>
                         </td>
                         ))}
                     </tr>
@@ -146,4 +146,4 @@ const  Deliverables = ({option,setOption}) => {
     )
 }
 
-export default Deliverables;
+export default DeliverablesView;

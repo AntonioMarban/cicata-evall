@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import "../styles/viewcompleteforms.css"
 import ViewGeneralData from './ViewForm/GeneralData';
 import Members from './ViewForm/Members';
@@ -13,61 +13,81 @@ import ConflictInterest from './ViewForm/ConflictInterest';
 import Budget from './ViewForm/Budget'
 
 const ViewCompleteForms = () => {  
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const [completeForm, setCompleteForm] = useState(null);
+
+    const fetchData = (url,setData) =>{
+        fetch(url,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token") || ""}`,
+            },
+        })
+        .then(data => data.json())
+        .then((data) => {
+            setData(data);
+        });
+    };
 
     const handlePrint = () => {
         window.print();
         };
-
+    useEffect(()=>{
+        fetchData(`${apiUrl}/researchers/projects/1`,setCompleteForm);
+    },[]);
     return (
     <div className='fullTable-background'>
         <div className='div-button'>
             <button className='button-download' onClick={handlePrint}>Descargar proyecto</button>
         </div>
+        {completeForm && (
         <div className='fullTable-body'>
             <h1>1. DATOS GENERALES DEL PROYECTO</h1>
             
-            <ViewGeneralData/>
+            <ViewGeneralData generalData={completeForm.project[0]} associatedProjects={completeForm.associatedProjects} />
 
             <h1>2. DATOS DE LOS PARTICIPANTES</h1>
             
-            <Members/>
+            <Members members={completeForm.members}/>
             
             <h1>3. COLABORACIÓN CON OTRAS INSTITUCIONES</h1>
 
-            <CollaborativeInstitutions/>
+            <CollaborativeInstitutions collaborativeInstitutions={completeForm.collaborativeInstitutions}/>
 
             <h1>4. DESGLOSE</h1>
 
-            <Desglose/>
+             <Desglose desglose={completeForm.project[0]}/>
+
 
             <h1>5. ASPECTOS ÉTICOS</h1>
 
-            <EthicalAspects/>
+             <EthicalAspects EthicalAspects={completeForm.project[0].ethicalAspects}/>
 
             <h1>6. CONSIDERACIONES DE BIOSEGURIDAD</h1>
 
-            <Biosecurity/>
+             <Biosecurity biosecurityConsiderations={completeForm.project[0].biosecurityConsiderations}/>
 
             <h1>7. CRONOGRAMA DE ACTIVIDADES</h1>
 
-            <Activities/>
+            <Activities scheduleActivities={completeForm.scheduleActivities}/>
 
             <h1>8. ENTREGABLES</h1>
 
-            <Deliverables/>
+            {/*<Deliverables/>*/}
 
             <h1>9. APORTACIONES</h1>
 
-            <Contributions/>
+            <Contributions contributions={completeForm.project[0].contributionsToIPNandCICATA}/>
 
             <h1>10. DESCRIPCIÓN DE PRESUPUESTO REQUERIDO Y POSIBLES FUENTES DE OBTENCIÓN</h1>
 
-            <Budget/>
+            {/*<Budget/>*/}
 
             <h1>11. CONFLICTO DE INTERÉS</h1>
-
-            <ConflictInterest/>
+            <ConflictInterest conflictOfInterest={completeForm.project[0].conflictOfInterest}/>
         </div>
+        )}
     </div>
   );
 };

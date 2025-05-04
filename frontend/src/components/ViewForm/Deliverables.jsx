@@ -31,11 +31,11 @@ const Deliverables = ({Deliverables}) => {
         "Otro"
       ];
     const deliverables = [
-    "Tesis (Alumnos titulados)",
-    "Practicantes profesionales",
-    "Alumnos PIFI",
-    "Prestante del servicio social",
-    "Otro",
+        "Tesis (Alumnos titulados)",
+        "Practicantes profesionales",
+        "Alumnos PIFI",
+        "Prestante del servicio social",
+        "Otro",
     ];
     const categories = ["Nacional", "Internacional"];
     const categories2 = ["Medio", "Superior","Posgrado"];

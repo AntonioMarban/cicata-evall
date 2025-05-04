@@ -6,10 +6,13 @@ import DragDrop from "../components/DragDrop";
 import { useNavigate  } from 'react-router-dom'
 
 const  Anexos = ({option,setOption}) => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
+    const [filesForms, setFilesForms] = useState([]);
+    const [response, setResponse] = useState();
     const [filesSend,setFilesSend] = useState([]);
     const [anexos, setAnexos] = useState({   
-        idF: 13,
+        idF: 14,
         aditionalComments:"",
         afilesSend: filesSend 
     });
@@ -29,9 +32,19 @@ const  Anexos = ({option,setOption}) => {
         try{
             const  formData  = await getAllData();
             if(formData){
-                setForms(formData)
-                console.log(formData)
-                navigate('/VerFormulario')
+                const { afilesSend, efilesSend,idF, ...cleanFormData } = formData;
+                setForms(cleanFormData)
+                setFilesForms(formData.afilesSend, formData.efilesSend);
+                console.log(cleanFormData)
+                const response = await fetch(`${apiUrl}/researchers/projects`, {
+                    method: 'POST',
+                    body: forms,
+                  });
+            
+                  const data = await response.json();
+                  if (data.idProject) {
+                    navigate(`/VerFormulario/${data.idProject}`);
+                  }
             }
         }catch(error){
            alert("Error al obtener el formulario",error);

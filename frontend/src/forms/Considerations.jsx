@@ -5,7 +5,7 @@ import { prevOption } from "../hooks/optionUtils";
 
 const  Considerations = ({option,setOption}) => {
     const [considerationsBio, setConsiderationsBio] = useState(
-        {   idF: 7,
+        {   idF: 8,
             biosecurityConsiderations:"" });
     const [newErrorsD,setNewErrorsD] = useState({
             biosecurityConsiderations:""

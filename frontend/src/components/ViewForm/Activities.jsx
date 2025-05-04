@@ -1,6 +1,6 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
-const Activities = ({Activities}) => {  
+const Activities = ({scheduleActivities}) => {  
     return (
     <>
         <table className='BackgroundTable'>
@@ -16,14 +16,16 @@ const Activities = ({Activities}) => {
                     </tr>
                 </thead>
                 <tbody className='table-form-body'>
-                    <tr>
-                        <td>1</td>
-                        <td>Nombre</td>
-                        <td>Tipo del proyecto</td>
-                        <td>232</td>
-                        <td>4324</td>
-                        <td>4324</td>
+                {Array.isArray(scheduleActivities) && scheduleActivities.map((scheduleActivity, index) => (
+                    <tr key={index}>
+                        <td>{index+1}</td>
+                        <td>{scheduleActivity.goal}</td>
+                        <td>{scheduleActivity.institution}</td>
+                        <td>{scheduleActivity.responsibleMember}</td>
+                        <td>{scheduleActivity.startDate}</td>
+                        <td>{scheduleActivity.endDate}</td>
                     </tr>
+                ))}
                 </tbody>
         </table>
     </>

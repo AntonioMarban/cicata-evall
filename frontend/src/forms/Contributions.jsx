@@ -5,7 +5,7 @@ import { prevOption } from "../hooks/optionUtils";
 
 const  Contributions = ({option,setOption}) => {
     const [contributions, setContributions] = useState({  
-        idF: 10,
+        idF: 11,
         contributionsToIPNandCICATA:"" 
     })
     const [newErrorsD,setNewErrorsD] = useState({

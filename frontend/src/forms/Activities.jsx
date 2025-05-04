@@ -7,7 +7,7 @@ import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
 import { useState } from "react";
 const  Activities = ({option,setOption}) => {
-    const [activities, setActivities] = useState({ idF: 8, p_scheduleActivitiesJSON: [] });
+    const [activities, setActivities] = useState({ idF: 9, scheduleActivities: [] });
     const [activitiesToEdit, setActivitiesToEdit] = useState(null);
 
     const handleOnSubmitForm = useFormHandler({
@@ -18,7 +18,7 @@ const  Activities = ({option,setOption}) => {
     const handleDeleteArray = (index) => {
         setActivities({
             ...activities,
-            p_scheduleActivitiesJSON: removeItemByIndex(activities.p_scheduleActivitiesJSON, index)
+            scheduleActivities: removeItemByIndex(activities.scheduleActivities, index)
         });
     };
 
@@ -49,7 +49,7 @@ const  Activities = ({option,setOption}) => {
                     <p className="flex-1"></p>
                     </div>
                 </div>
-                <CardAdd cards={activities.p_scheduleActivitiesJSON} 
+                <CardAdd cards={activities.scheduleActivities} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}
                     slice={5}/>

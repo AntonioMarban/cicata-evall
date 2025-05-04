@@ -63,7 +63,6 @@ export function getAllData() {
         const combined = form.reduce((acc, curr) => {
             return { ...acc, ...curr };
           }, {});
-        console.log(combined)
         resolve(combined)
       };
   

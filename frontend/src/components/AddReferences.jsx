@@ -4,64 +4,65 @@ import { useFormAddHandler } from "../hooks/useFormAddHandler";
 import { useState, useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
-const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete = null}) => {
+const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = null, setData}) => {
     const [isOpen, setIsOpen] = useState(false)
     const initialValues = {
-        objectiveName: "",
+        referenceName: "",
     }
-    const [objectiveSpe, setObjectiveSpe] = useState(initialValues)
+    const [references, setReferences] = useState(initialValues)
     const [newErrors,setNewErrors] =  useState(initialValues);
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setObjectiveSpe(prev => ({
+        setReferences(prev => ({
             ...prev,
             [name]: value
         }));
     };
 
     useEffect(()=>{
-        if (desgloseToEdit){
-            setObjectiveSpe({
-                objectiveName: desgloseToEdit.objectiveName || ""
+        if (referencesToEdit){
+            setReferences({
+                referenceName: referencesToEdit.referenceName || ""
             });
             setIsOpen(true);
         }
-    }, [desgloseToEdit])
+    }, [referencesToEdit])
  
     const handleObjectiveSubmit = useFormAddHandler({
         setState: setDesglose,
-        key: 'sObjectives',
+        key: 'references',
         onSuccess: () => {
             setIsOpen(false);
-            if (onEditComplete && desgloseToEdit){
-                onEditComplete();
+            if (onEditComplete && referencesToEdit){
+                onEditComplete(setData);
             }
             //reset
-            setObjectiveSpe(initialValues);
+            setReferences(initialValues);
         },
-        initialData: desgloseToEdit,
-        isEditMode: !!desgloseToEdit
-      });
+        initialData: referencesToEdit,
+        isEditMode: !!referencesToEdit
+      }
+    );
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const newErrorsF = {}
-        Object.entries(objectiveSpe).forEach(([key, value]) => {
+        Object.entries(references).forEach(([key, value]) => {
           if (!value || (typeof value === 'string' && value.trim() === '')) {
             newErrorsF[key] = `El campo  es requerido`;
           }
         });
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
-            handleObjectiveSubmit(e, objectiveSpe, desgloseToEdit ? desgloseToEdit.index : undefined);
+            handleObjectiveSubmit(e, references, referencesToEdit ? referencesToEdit.index : undefined);
         }
     };
-
     return (
         <>
-            {!desgloseToEdit && (
+            {!referencesToEdit && (
                 <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
-                    Agregar Objetivo
+                    Agregar Referencia
                 </button>
             )
             }
@@ -69,28 +70,28 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
             <Dialog open={isOpen} onClose={() => {}} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p className="dialog-title">{desgloseToEdit ? "Editar Objetivo Específico" : "Agregar Objetivo Específico"}</p>
+                        <p className="dialog-title">{referencesToEdit ? "Editar Referencia" : "Agregar Referencia"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
-                                <p>Nombre del Objetivo específico
-                                <br/>{newErrors.objectiveName && <span className="text-red-600">*{newErrors.objectiveName}</span>}
+                                <p>Nombre de la Referencia
+                                <br/>{newErrors.referenceName && <span className="text-red-600">*{newErrors.referenceName}</span>}
                                 </p>
-                                <input name="objectiveName" 
+                                <input name="referenceName" 
                                        className="form-pieza-input" 
-                                       placeholder="Escribe el nombre del objetivo..."
-                                       value={objectiveSpe.objectiveName}
+                                       placeholder="Escribe el nombre de la Referencia..."
+                                       value={references.referenceName}
                                        onChange={handleInputChange}></input>
                             </div>
                             <div className="dialog-actions">
                                 <button className="button-confirm">
-                                    {desgloseToEdit ? "Guardar cambios" : "Guardar objetivo"}
+                                    {referencesToEdit ? "Guardar cambios" : "Guardar Referencia"}
                                 </button>
-                                {!desgloseToEdit && (
+                                {!referencesToEdit && (
                                     <button 
                                     type="button" 
                                     onClick={(e) => {
                                         setIsOpen(false)
-                                        setObjectiveSpe(initialValues)
+                                        setReferences(initialValues)
                                         setNewErrors(initialValues)
                                     }} 
                                     className="button-cancel"
@@ -107,4 +108,4 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
     )
 }
 
-export default AddObjectivesSpe;
+export default AddReferences;

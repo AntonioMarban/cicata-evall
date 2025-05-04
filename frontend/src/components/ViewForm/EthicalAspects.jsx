@@ -7,7 +7,8 @@ const EthicalAspects = ({EthicalAspects}) => {
             <thead className='table-form-header'>
                 <tr>
                     <th>Aspectos éticos de la investigación
-                        <span>
+                        <br/>
+                        <span className='subtitle-text'>
                             Describir cómo el proyecto se apega a los principios bioéticos especificados en la Declaración de Helsinki y otros aspectos bioéticos que sea importante mencionar. En caso de trabajar con humanos o muestras de humanos, adjuntar el consentimiento informado y el aviso de privacidad) 
                         </span>
                     </th>
@@ -15,7 +16,7 @@ const EthicalAspects = ({EthicalAspects}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>Introdhdjfsa</td>
+                    <td>{EthicalAspects}</td>
                 </tr>
             </tbody>
         </table>

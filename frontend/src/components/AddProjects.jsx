@@ -32,7 +32,7 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
 
     const handleActivitySubmit  = useFormAddHandler({
         setState: setProjects,
-        key: 'p_associatedProjectsJSON',
+        key: 'associatedProjects',
          onSuccess: () => {
             setIsOpen(false);
             if (onEditComplete && projectToEdit) {

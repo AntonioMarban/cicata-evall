@@ -1,23 +1,23 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
-const ViewGeneralData = ({generalData}) => {  
+const ViewGeneralData = ({generalData,associatedProjects}) => { 
     return (
     <>
     <table className='BackgroundTable'>
         <thead className='table-form-header'>
             <tr>
                 <th>Evaluación por primera vez</th>
-                <th>Reevaluación (Número de reevaluación)</th>
-                <th>Comité o comités que solicitaron modificaciones(Si aplica)</th>
-                <th>Número de registro en CICATA Unidad Morelos (En las solicitudes de primera vez, este campo será llenado por la SICIT*)</th>
+                <th>Reevaluación <br/><span className='subtitle-text'>(Número de reevaluación)</span></th>
+                <th>Comité o comités que solicitaron modificaciones<br/><span className='subtitle-text'>(Si aplica)</span></th>
+                <th>Número de registro en CICATA Unidad Morelos <br/><span className='subtitle-text'>(En las solicitudes de primera vez, este campo será llenado por la SICIT*)</span></th>
             </tr>
         </thead>
         <tbody className='table-form-body'>
             <tr>
-                <td>Eva</td>
-                <td>Ree</td>
-                <td>Comite</td>
-                <td>Número</td>
+                <td>{generalData.firstTime}</td>
+                <td>{generalData.numberR}</td>
+                <td>{generalData.committee}</td>
+                <td>{generalData.folio}</td>
             </tr>
         </tbody>
     </table>
@@ -32,9 +32,9 @@ const ViewGeneralData = ({generalData}) => {
                 <th>Años totales</th>
             </tr>
             <tr className='second-table-form-body'>
-                <td>JKAS2</td>
-                <td>JKAS2</td>
-                <td>JKAS2</td>
+                <td>{generalData.startDate}</td>
+                <td>{generalData.endDate}</td>
+                <td>generalData.endDate-generalData.startDate</td>
             </tr>
         </tbody>
     </table>
@@ -47,7 +47,7 @@ const ViewGeneralData = ({generalData}) => {
         </thead>
         <tbody className='table-form-body'>
             <tr>
-                <td>Título</td>
+                <td>{generalData.title}</td>
             </tr>
         </tbody>
     </table>
@@ -61,7 +61,7 @@ const ViewGeneralData = ({generalData}) => {
         </thead>
         <tbody className='table-form-body'>
             <tr>
-                <td>Tipo de</td>
+                <td>{generalData.typeResearch}</td>
             </tr>
         </tbody>
     </table>
@@ -76,8 +76,8 @@ const ViewGeneralData = ({generalData}) => {
         </thead>
         <tbody className='table-form-body'>
             <tr>
-                <td>Tipo</td>
-                <td>SYVBTipo</td>
+                <td>{generalData.topic}</td>
+                <td>{generalData.subtopic}</td>
             </tr>
         </tbody>
     </table>
@@ -87,7 +87,7 @@ const ViewGeneralData = ({generalData}) => {
         <tbody>
             <tr>
                 <td>¿El proyecto se alinea con las Prioridades Nacionales de Investigación y/o con los objetivos de la Agenda de desarrollo sostenible?</td>
-                <td>SI / NO</td>
+                <td>{generalData.ods}</td>
             </tr>
         </tbody>
     </table>
@@ -100,7 +100,7 @@ const ViewGeneralData = ({generalData}) => {
         </thead>
         <tbody className='table-form-body'>
             <tr>
-                <td>Tipo</td>
+                <td>{generalData.alignmentPNIorODS}</td>
             </tr>
         </tbody>
     </table>
@@ -114,33 +114,40 @@ const ViewGeneralData = ({generalData}) => {
         </thead>
         <tbody className='table-form-body'>
             <tr>
-                <td>Tipo de</td>
+                <td>{generalData.summary}</td>
             </tr>
         </tbody>
     </table>
-
     <table className='BackgroundTable'>
-            <caption className="table-form-caption">Relación de Proyectos Asociados al proyecto principal</caption>
-            <thead className='table-form-header'>
-                <tr>
-                    <th>No. 1</th>
-                    <th>Nombre del proyecto</th>
-                    <th>Tipo de proyecto</th>
-                    <th>Número de registro externo</th>
-                    <th>Número de registro SIP*</th>
-                    <th>Fecha de asociación</th>
-                </tr>
-            </thead>
-            <tbody className='table-form-body'>
-                <tr>
-                    <td>1</td>
-                    <td>Nombre</td>
+        <caption className="table-form-caption">Relación de Proyectos Asociados al proyecto principal</caption>
+        <thead className='table-form-header'>
+            <tr>
+                <th>No. 1</th>
+                <th>Nombre del proyecto</th>
+                <th>Tipo de proyecto
+                    <br/><span className='subtitle-text'>(p.e. Tesis maestría, convocatoria interna innovación, convocatoria externa fronteras, etc.)</span>
+                </th>
+                <th>Número de registro externo
+                    <br/><span className='subtitle-text'>(Si aplica)</span>
+                </th>
+                <th>Número de registro SIP*
+                <br/><span className='subtitle-text'>(Si aplica)</span>
+                </th>
+                <th>Fecha de asociación</th>
+            </tr>
+        </thead>
+        <tbody className='table-form-body'>
+            {Array.isArray(associatedProjects) && associatedProjects.map((associatedProject, index) => (
+                <tr key={index}>
+                    <td>{index+1}</td>
+                    <td>{associatedProject.name}</td>
                     <td>Tipo del proyecto</td>
-                    <td>232</td>
-                    <td>4324</td>
-                    <td>4324</td>
+                    <td>{associatedProject.externalRegister}</td>
+                    <td>{associatedProject.SIPRegister}</td>
+                    <td>{associatedProject.associationDate}</td>
                 </tr>
-            </tbody>
+            ))}
+        </tbody>
     </table>
     </>
   );
