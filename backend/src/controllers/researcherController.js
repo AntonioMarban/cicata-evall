@@ -75,14 +75,14 @@ const createProject = async (req, res) => {
         const consecutivo = String(count).padStart(4, '0');
         const folio = `CICATAMOR/SICIT/${year}/${month}/${consecutivo}`;
 
-        const query = `CALL createProject(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+        const query = `CALL createProject(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
         const values = [
             // Proyecto
             title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary,
             introduction, background, statementOfProblem, justification, hypothesis, generalObjective,
             ethicalAspects, workWithHumans, workWithAnimals, biosecurityConsiderations,
-            contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
+            contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio,
             otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification,
 
             // JSONs
@@ -105,8 +105,9 @@ const createProject = async (req, res) => {
                 console.error(error);
                 return res.status(500).json({ error: 'Error creating project' });
             }
-
-            res.status(201).json({ message: 'Project created successfully' });
+            
+            const projectId = results[0][0].projectId;
+            res.status(201).json({ message: 'Project created successfully', projectId});
         });
     });
 };

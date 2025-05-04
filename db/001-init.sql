@@ -103,7 +103,6 @@ CREATE PROCEDURE createProject(
     IN p_conflictOfInterest TEXT,
     IN p_aditionalComments TEXT,
     IN p_folio VARCHAR(50),
-    IN p_status VARCHAR(50),
     IN p_otherTypeResearch VARCHAR(100),
     IN p_alignsWithPNIorODS BOOLEAN,
     IN p_hasCollaboration BOOLEAN,
@@ -132,14 +131,14 @@ BEGIN
     INSERT INTO projects (
         title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary, introduction, background,
         statementOfProblem, justification, hypothesis, generalObjective, ethicalAspects, workWithHumans, workWithAnimals,
-        biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
+        biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, 
         otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification
     )
     VALUES (
         p_title, p_startDate, p_endDate, p_typeResearch, p_topic, p_subtopic, p_alignmentPNIorODS, p_summary,
         p_introduction, p_background, p_statementOfProblem, p_justification, p_hypothesis, p_generalObjective,
         p_ethicalAspects, p_workWithHumans, p_workWithAnimals, p_biosecurityConsiderations, p_contributionsToIPNandCICATA,
-        p_conflictOfInterest, p_aditionalComments, p_folio, p_status,
+        p_conflictOfInterest, p_aditionalComments, p_folio,
         p_otherTypeResearch, p_alignsWithPNIorODS, p_hasCollaboration, p_collaborationJustification
     );
 
@@ -289,6 +288,7 @@ BEGIN
     INSERT INTO usersProjects (user_id, project_id)
     VALUES (p_userId, v_projectId);
 
+    SELECT v_projectId AS projectId;
 END //
 DELIMITER ;
 
