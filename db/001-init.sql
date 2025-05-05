@@ -53,11 +53,12 @@ BEGIN
         p.status,
         p.notification
     FROM projects p
-    LEFT JOIN usersProjects up ON p.projectId = up.project_id
-    LEFT JOIN users u ON up.user_id = u.userId
-    WHERE (p.status = 'En revisión' OR p.status = 'Pendiente de correcciones') AND up.user_id = userId;
+    JOIN usersProjects up ON p.projectId = up.project_id
+    JOIN users u ON up.user_id = u.userId
+    WHERE (p.status = 'En revision' OR p.status = 'Pendiente de correcciones') AND up.user_id = userId;
 END //
 DELIMITER ;
+
 
 -- obtener proyectos inactivos
 DELIMITER //
@@ -672,9 +673,9 @@ BEGIN
         p.folio,
         p.status
     FROM projects p
-    LEFT JOIN usersProjects up ON p.projectId = up.project_id
-    LEFT JOIN users u ON up.user_id = u.userId
-    WHERE p.status IN ('En revisión', 'Pendiente de correcciones');
+    JOIN usersProjects up ON p.projectId = up.project_id
+    JOIN users u ON up.user_id = u.userId
+    WHERE (p.status = 'En revision' OR p.status = 'Pendiente de correcciones');
 END //
 DELIMITER ;
 
