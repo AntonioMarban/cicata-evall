@@ -34,6 +34,10 @@ body {
   .SideBar-noPrint {
     display: none !important;
   }
+
+  .main-content-with-sidebar {
+    margin-left: 0 !important;
+  }
 }
 
 .main-content-with-sidebar {
