@@ -21,7 +21,7 @@ const Views = () => {
     <Route path = "/FormularioDeUsuario" element={<ManageIndividualUserForm/>}></Route>
     <Route path = "/EditarRubrica" element={<EditRubric/>}></Route>
     <Route path = "/EvaluarProyecto" element={<EvaluateProject/>}></Route>
-    <Route path = "/VerFormulario" element={<ViewCompleteForms/>}></Route>
+    <Route path = "/VerFormulario/:id" element={<ViewCompleteForms/>}></Route>
     <Route path = "/Proyecto" element={<Project/>}></Route>
     <Route path = "/Forms" element={<CommitteeDictumForm/>}></Route>
     <Route

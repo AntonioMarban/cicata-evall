@@ -11,8 +11,9 @@ import Deliverables from './ViewForm/Deliverables';
 import Contributions from './ViewForm/Contributions';
 import ConflictInterest from './ViewForm/ConflictInterest';
 import Budget from './ViewForm/Budget'
-
+import { useParams  } from 'react-router-dom'
 const ViewCompleteForms = () => {  
+    const { id }  = useParams();
     const apiUrl = import.meta.env.VITE_API_URL;
     const [completeForm, setCompleteForm] = useState(null);
 
@@ -34,7 +35,7 @@ const ViewCompleteForms = () => {
         window.print();
         };
     useEffect(()=>{
-        fetchData(`${apiUrl}/researchers/projects/1`,setCompleteForm);
+        fetchData(`${apiUrl}/researchers/projects/${id}`,setCompleteForm);
     },[]);
     return (
     <div className='fullTable-background'>
