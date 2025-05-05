@@ -33,17 +33,20 @@ const  Anexos = ({option,setOption}) => {
             const  formData  = await getAllData();
             if(formData){
                 const { afilesSend, efilesSend,idF, ...cleanFormData } = formData;
-                setForms(cleanFormData)
+                const userId = localStorage.getItem('userId');
                 setFilesForms(formData.afilesSend, formData.efilesSend);
-                console.log(cleanFormData)
+                cleanFormData.userId = userId;
                 const response = await fetch(`${apiUrl}/researchers/projects`, {
                     method: 'POST',
-                    body: forms,
+                    body: JSON.stringify(cleanFormData),
+                    headers: {
+                        'Content-Type': 'application/json'
+                      },
                   });
             
                   const data = await response.json();
-                  if (data.idProject) {
-                    navigate(`/VerFormulario/${data.idProject}`);
+                  if (data.projectId) {
+                    navigate(`/VerFormulario/${data.projectId}`);
                   }
             }
         }catch(error){
