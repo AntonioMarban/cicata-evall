@@ -15,7 +15,7 @@ function App() {
         <div className='SideBar-noPrint'>
           <Sidebar/>
         </div>
-        <div className='w-screen'>
+        <div className='main-content-with-sidebar'>
           <Views/>
         </div>
       </>
