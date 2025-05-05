@@ -84,12 +84,13 @@
 }
 
 .stage {
+  margin-top: 0.5rem;
   margin-bottom: 2rem;
   width: 100%;
 }
 
 .stage h3 {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   margin-bottom: 0.5rem;
   font-weight: 600; /* Slightly bold label */
 }
