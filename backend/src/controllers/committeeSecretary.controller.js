@@ -1,5 +1,29 @@
 const pool = require("../helpers/mysql_config");
 
+
+/*
+  Función para obtener los proyectos pendientes a enviar evaluación del comité
+  Se hace uso de un procedimiento almacena getPendingCommitteeEvaluations
+  @param userId: Id del presidente o secretario deñ comité
+  @returns: Lista de proyectos pendientes
+*/
+const getPendingCommitteeEvaluations = (req, res) => {
+  const { userId, committeeId } = req.params;
+  const sql = `CALL getPendingCommitteeEvaluations(?, ?)`;
+  const values = [userId, committeeId];
+  pool.query(sql, values, (err, results) => {
+    if (err) {
+      console.error("Error getting pending committee evaluations:", err);
+      return res.status(400).json({ error: "Invalid query parameters" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ message: "Resource does not exist" });
+    }
+    return res.status(200).json(results[0]);
+  }
+  );
+};
+
 /*
     Función para actualizar la rúbrica de evaluación de un comité en específico
     Se hace uso de un procedimiento almacena updateCommitteeRubric
@@ -125,6 +149,7 @@ const getProjectEvaluations = (req, res) => {
 
 
 module.exports = {
+  getPendingCommitteeEvaluations,
   updateCommitteeRubric,
   getProjectNonEvaluators,
   createProjectEvaluator,

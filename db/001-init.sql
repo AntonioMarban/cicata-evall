@@ -562,6 +562,46 @@ END //
 DELIMITER ;
 
 
+-- Función para obtener los proyectos pendientes a enviar evaluación del comité
+-- @param userId: Id del presidente o secretario deñ comité
+-- @returns: Lista de proyectos pendientes
+DELIMITER //
+CREATE PROCEDURE getPendingCommitteeEvaluations(
+    IN p_userId INT,
+    IN p_committeeId INT
+)
+BEGIN
+    DECLARE presidentId INT;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    ELSE
+        SELECT u.userId INTO presidentId
+        FROM committeeUsers cu
+        JOIN users u ON cu.userId = u.userId
+        WHERE cu.committeeId = p_committeeId AND u.userType_id = 3
+        LIMIT 1;
+
+        SELECT
+            p.projectId,
+            p.title,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            p.startDate,
+            p.folio,
+            p.status
+        FROM
+            projects p
+        JOIN evaluations e ON p.projectId = e.project_id
+        JOIN users u ON e.user_id = u.userId
+        WHERE
+            e.user_id = presidentId AND e.evaluation_type_id = 2 AND e.result IS NULL;
+    END IF;
+END //
+DELIMITER ;
 
 
 -- --------------------------- Subdireccion ----------------------------
