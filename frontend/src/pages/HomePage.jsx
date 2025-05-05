@@ -52,7 +52,8 @@ export default function HomePage() {
           projectId: project.projectId,
           title: project.title,
           investigador: project.fullName,
-          fecha: project.startDate,
+          startDate: project.startDate,
+          endDate: project.endDate,
           folio: project.folio,
           status: project.status,
         }));

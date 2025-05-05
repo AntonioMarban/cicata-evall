@@ -7,7 +7,7 @@ const { Card, CardContent } = DashboardCards;
 function formatFecha(fechaISO) {
   const fecha = new Date(fechaISO);
   return new Intl.DateTimeFormat("es-MX", {
-    dateStyle: "long",
+    dateStyle: "short",
     timeStyle: "short",
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     hour12: false,
@@ -66,18 +66,36 @@ function Dashboard({ projectCards }) {
               <Card
                 key={index}
                 onClick={() => {
-                  const isCommitteeUser = [3, 4, 5].includes(parseInt(userType));
+                  const isCommitteeUser = [3, 4, 5].includes(
+                    parseInt(userType)
+                  );
                   const url = isCommitteeUser
                     ? `/Acuerdo?projectId=${card.projectId}`
                     : `/Proyecto?projectId=${card.projectId}`;
                   navigate(url);
-                }}                
+                }}
               >
                 <CardContent>
-                  <h2 className="card-title">{card.title}</h2>
-                  <p className="card-text">{card.investigador}</p>
-                  <p className="card-text">{formatFecha(card.fecha)}</p>
-                  <p className="card-text">{card.folio}</p>
+                  <div>
+                    <div className="card-text">{card.title}</div>
+                    <div className="card-text">{card.investigador}</div>
+                  </div>
+                  <div>
+                    <div className="card-title">Fecha Inicio</div>
+                    <div className="card-text">{formatFecha(card.startDate)}</div>
+                  </div>
+                  <div>
+                    <div className="card-title">Fecha Fin</div>
+                    <div className="card-text">{formatFecha(card.endDate)}</div>
+                  </div>
+                  <div>
+                    <div className="card-title">Folio</div>
+                    <div className="card-text">{card.folio}</div>
+                  </div>
+                  <div>
+                    <div className="card-title">Status</div>
+                    <div className="card-text">{card.status}</div>
+                  </div>
                 </CardContent>
               </Card>
             ))}

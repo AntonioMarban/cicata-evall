@@ -3,9 +3,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 1.5rem;
-  overflow: hidden;
-  height: 100%;
+  padding: 3.5rem;
 }
 
 .dashboard-title {
@@ -33,10 +31,7 @@
 .card-grid {
   display: grid;
   gap: 1rem;
-  margin-bottom: 2rem;
   margin-inline: 2rem;
-  max-height: 70vh;
-  overflow-y: auto;
   padding-right: 0.5rem; 
 }
 
@@ -51,14 +46,23 @@
 }
 
 .card-content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* O ajusta según el número de datos */
+  gap: 20px;
+  align-items: start;
   padding: 0.5rem;
 }
 
-.card-title {
-  font-size: 1.25rem;
+.card-text {
+  font-size: 12px;
   font-weight: 600;
+  color: #555;
 }
 
-.card-text {
-  color: #4b5563;
+.card-title {
+  font-size: 10px;
+  font-weight: 500;
+  color: #888;
+  margin-bottom: 4px;
 }
+

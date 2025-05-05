@@ -1,8 +1,8 @@
 .projectstatus-main {
-  background-color: white;
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
   padding: 3.5rem;
   width: 100%;
@@ -10,7 +10,6 @@
 
 .project-header {
   width: 100%;
-  max-width: 1200px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -75,7 +74,6 @@
 
 .evaluation-section {
   width: 100%;
-  max-width: 1200px;
   margin-top: 2rem;
   margin-inline: auto;
   display: flex;
@@ -146,16 +144,22 @@
 
 .stage-button {
   margin-top: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.2rem;
   border: none;
   border-radius: 5px;
   font-size: 0.95rem;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .stage-button.active {
   background-color: #5cb7e6;
   color: white;
+}
+
+.stage-button.active:hover {
+  background-color: #47a2d3;
+  transform: translateY(-2px);
 }
 
 .stage-button.disabled {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import "../styles/projectstatus.css";
 
@@ -11,10 +11,30 @@ export default function ProjectStatus() {
 
   const [projectData, setProjectData] = useState(null);
   const [stage1Evaluations, setStage1Evaluations] = useState([]);
+  const [sendingStage1, setSendingStage1] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const [stageCompleted, setStageCompleted] = useState(null);
   const [jumpThirdStage, setJumpThirdStage] = useState(null);
+
+  const fetchStage1Evaluations = useCallback(async () => {
+    try {
+      if (!projectId) return;
+      const response = await fetch(
+        `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage1`
+      );
+      const data = await response.json();
+      if (data && Array.isArray(data.evaluations)) {
+        setStage1Evaluations(data.evaluations);
+      }
+      if (data.controlVariables && data.controlVariables.length > 0) {
+        setStageCompleted(data.controlVariables[0].stageCompleted);
+        setJumpThirdStage(data.controlVariables[0].jumpThirdStage);
+      }
+    } catch (error) {
+      console.error("Error fetching stage 1 evaluations:", error);
+    }
+  }, [projectId]);
 
   useEffect(() => {
     async function fetchProject() {
@@ -38,27 +58,8 @@ export default function ProjectStatus() {
   }, [projectId]);
 
   useEffect(() => {
-    async function fetchStage1() {
-      try {
-        if (!projectId) return;
-        const response = await fetch(
-          `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage1`
-        );
-        const data = await response.json();
-        if (data && Array.isArray(data.evaluations)) {
-          setStage1Evaluations(data.evaluations);
-        }
-        if (data.controlVariables && data.controlVariables.length > 0) {
-          setStageCompleted(data.controlVariables[0].stageCompleted);
-          setJumpThirdStage(data.controlVariables[0].jumpThirdStage);
-        }
-      } catch (error) {
-        console.error("Error fetching stage 1 evaluations:", error);
-      }
-    }
-
-    fetchStage1();
-  }, [projectId]);
+    fetchStage1Evaluations();
+  }, [fetchStage1Evaluations]);
 
   if (loading) {
     return <main className="projectstatus-main">Cargando...</main>;
@@ -72,6 +73,30 @@ export default function ProjectStatus() {
     if (!dateString) return "-";
     const date = new Date(dateString);
     return date.toLocaleDateString("es-MX");
+  };
+
+  const handleSendStage1 = async () => {
+    try {
+      setSendingStage1(true);
+      const response = await fetch(
+        `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage1`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        await fetchStage1Evaluations(); // Actualizar datos
+      } else {
+        console.error("Error en el envío de evaluación etapa 1.");
+      }
+    } catch (error) {
+      console.error("Error en el POST de etapa 1:", error);
+    } finally {
+      setSendingStage1(false);
+    }
   };
 
   return (
@@ -108,7 +133,16 @@ export default function ProjectStatus() {
         <div className="stage">
           <h3>Etapa 1</h3>
           {stage1Evaluations.length === 0 ? (
-            <p>Este proyecto aún no ha sido enviado al CIP.</p>
+            <>
+              <p>Este proyecto aún no ha sido enviado al CIP.</p>
+              <button
+                className="stage-button active"
+                onClick={handleSendStage1}
+                disabled={sendingStage1}
+              >
+                {sendingStage1 ? "Enviando..." : "Enviar a evaluación"}
+              </button>
+            </>
           ) : (
             <table className="stage-table">
               <thead>

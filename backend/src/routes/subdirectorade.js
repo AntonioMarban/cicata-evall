@@ -11,7 +11,7 @@ const {
     createFirstStageEvaluations,
     getSecondStageEvaluations,
     createSecondStageEvaluations
-} = require('../controllers/subdirectorateController')
+} = require('../controllers/subdirectorade.controller')
 
 router.get('/users', getUsersByRole)
 router.post('/users', createUser)

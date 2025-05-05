@@ -49,6 +49,7 @@ BEGIN
         p.title,
         CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
         p.startDate,
+        p.endDate,
         p.folio,
         p.status,
         p.notification
@@ -670,6 +671,7 @@ BEGIN
         p.title,
         CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
         p.startDate,
+        p.endDate,
         p.folio,
         p.status
     FROM projects p
