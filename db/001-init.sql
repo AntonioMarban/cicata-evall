@@ -616,11 +616,11 @@ BEGIN
 END //
 DELIMITER ;
 
--- Función para obtener todos los proyectos inactivos existentes, es decir,
--- en status 'Aprobado' o 'No aprobado'
+-- Función para obtener todos los proyectos activos existentes, es decir,
+-- en status "En revisión" o "Pendiente de correcciones"
 -- Se hace uso de un procedimiento almacena getCommitteeRubric
--- @param status: Estado inactivo del proyecto
--- @returns: Lista de proyectos inactivos
+-- @param status: Estado activo del proyecto
+-- @returns: Lista de proyectos activos
 DELIMITER //
 CREATE PROCEDURE getActiveProjectsSub()
 BEGIN
@@ -632,9 +632,9 @@ BEGIN
         p.folio,
         p.status
     FROM projects p
-    JOIN usersProjects up ON p.projectId = up.project_id
-    JOIN users u ON up.user_id = u.userId
-    WHERE (p.status = 'En revisión' OR p.status = 'Pendiente de correcciones');
+    LEFT JOIN usersProjects up ON p.projectId = up.project_id
+    LEFT JOIN users u ON up.user_id = u.userId
+    WHERE p.status IN ('En revisión', 'Pendiente de correcciones');
 END //
 DELIMITER ;
 
