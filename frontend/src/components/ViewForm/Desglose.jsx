@@ -1,6 +1,6 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
-const Desglose = ({desglose}) => {  
+const Desglose = ({desglose, goals, methodologies, references}) => {  
     return (
     <>
         <table className='BackgroundTable'>
@@ -88,11 +88,11 @@ const Desglose = ({desglose}) => {
                 <thead className='table-form-header'>
                     <tr>
                         <th>No.</th>
-                        <th>Nombre del proyecto</th>
+                        <th>Nombre del objetivo</th>
                     </tr>
                 </thead>
                 <tbody className='table-form-body'>
-                    {/*{Array.isArray(sObjectives) && sObjectives.map((sObjective, index) => (
+                    {/*{Array.isArray(scheduleActivities) && sObjectives.map((scheduleActivities, index) => (
                     <tr>
                         <td>{index}</td>
                         <td>{sObjectives.objective}</td>
@@ -110,10 +110,12 @@ const Desglose = ({desglose}) => {
                     </tr>
                 </thead>
                 <tbody className='table-form-body'>
-                    <tr>
-                        <td>1</td>
-                        <td>Nombre</td>
-                    </tr>
+                    {Array.isArray(goals) && goals.map((goal, index) => (
+                        <tr>
+                            <td>{index+1}</td>
+                            <td>{goal.name}</td>
+                        </tr>
+                    ))}
                 </tbody>
         </table>
 
@@ -129,10 +131,12 @@ const Desglose = ({desglose}) => {
                     </tr>
                 </thead>
                 <tbody className='table-form-body'>
-                    <tr>
-                        <td>1</td>
-                        <td>Nombre</td>
-                    </tr>
+                    {Array.isArray(methodologies) && goals.map((methodology, index) => (
+                        <tr>
+                            <td>{index+1}</td>
+                            <td>{methodology.name}</td>
+                        </tr>
+                    ))}
                 </tbody>
         </table>
 
@@ -144,9 +148,11 @@ const Desglose = ({desglose}) => {
                 </tr>
             </thead>
             <tbody className='table-form-body'>
-                <tr>
-                    <td>Introdhdjfsa</td>
-                </tr>
+                {Array.isArray(references) && references.map((reference, index) => (
+                    <tr>
+                        <td>{index+1}</td>
+                    </tr>
+                ))}
             </tbody>
         </table>
     </>

@@ -32,15 +32,19 @@ const ViewCompleteForms = () => {
     };
 
     const handlePrint = () => {
+        alert("Por favor, marca 'Headers and footers' y 'background graphics' en las opciones de impresión para una mejor visualización.");
         window.print();
         };
     useEffect(()=>{
         fetchData(`${apiUrl}/researchers/projects/${id}`,setCompleteForm);
+
     },[]);
+    console.log(completeForm)
     return (
     <div className='fullTable-background'>
         <div className='div-button'>
-            <button className='button-download' onClick={handlePrint}>Descargar proyecto</button>
+            <button onClick={handlePrint}>Descargar anexos</button>
+            <button onClick={handlePrint}>Descargar proyecto</button>
         </div>
         {completeForm && (
         <div className='fullTable-body'>
@@ -58,16 +62,16 @@ const ViewCompleteForms = () => {
 
             <h1>4. DESGLOSE</h1>
 
-             <Desglose desglose={completeForm.project[0]}/>
+            <Desglose references={completeForm.references} methodologies={completeForm.methodologies} goals={completeForm.goals} desglose={completeForm.project[0]}/>
 
 
             <h1>5. ASPECTOS ÉTICOS</h1>
 
-             <EthicalAspects EthicalAspects={completeForm.project[0].ethicalAspects}/>
+            <EthicalAspects EthicalAspects={completeForm.project[0].ethicalAspects}/>
 
             <h1>6. CONSIDERACIONES DE BIOSEGURIDAD</h1>
 
-             <Biosecurity biosecurityConsiderations={completeForm.project[0].biosecurityConsiderations}/>
+            <Biosecurity biosecurityConsiderations={completeForm.project[0].biosecurityConsiderations}/>
 
             <h1>7. CRONOGRAMA DE ACTIVIDADES</h1>
 

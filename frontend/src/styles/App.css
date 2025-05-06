@@ -39,7 +39,6 @@ body {
     margin-left: 0 !important;
   }
 }
-
 .main-content-with-sidebar {
   margin-left: 16rem; /* same as Tailwind's ml-64 (64 * 0.25rem = 16rem = 256px) */
   width: 100%;

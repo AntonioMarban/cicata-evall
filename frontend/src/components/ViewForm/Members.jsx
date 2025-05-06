@@ -29,7 +29,7 @@ const Members = ({members}) => {
                     <div>
                         <p className='participant-tag'>Institución a la que pertenece</p>
                     </div>
-                    <div>
+                    <div className='participant-tag-data'>
                         <p>IPN</p>
                     </div>
                 </div>
@@ -37,7 +37,7 @@ const Members = ({members}) => {
                     <div>
                         <p className='participant-tag'>Puesto que desempeña en dicha institución</p>
                     </div>
-                    <div>
+                    <div className='participant-tag-data'>
                         <p>Investigador</p>
                     </div>                       
                 </div>
@@ -47,7 +47,7 @@ const Members = ({members}) => {
                     <div>
                         <p className='participant-tag'>¿Pertenece a alguna red de investigación?</p>
                     </div>
-                    <div>
+                    <div className='participant-tag-data'>
                         <p>SI</p>
                     </div>
                 </div>
@@ -55,7 +55,7 @@ const Members = ({members}) => {
                     <div>
                         <p className='participant-tag'>En caso afirmativo ¿Cuál?</p>
                     </div>
-                    <div>
+                    <div className='participant-tag-data'>
                         <p>SNI</p>    
                     </div>                    
                 </div>
@@ -65,7 +65,7 @@ const Members = ({members}) => {
                     <div>
                         <p className='participant-tag'>Grado Académico</p>
                     </div>
-                    <div>
+                    <div className='participant-tag-data'>
                         <p>Alto</p>
                     </div>
                 </div>
@@ -73,7 +73,7 @@ const Members = ({members}) => {
                     <div>
                         <p className='participant-tag'>Nivel</p>
                     </div>
-                    <div>
+                    <div className='participant-tag-data'>
                         <p>IV</p>
                     </div>                        
                 </div>
@@ -82,7 +82,7 @@ const Members = ({members}) => {
                 <div className='participant-data-subname'>
                     <p className='participant-tag'>Datos del contacto</p>
                 </div>
-                <div>
+                <div className='participant-row'>
                     <p>luisnavarro2004@yahoo.com.mx</p>
                     <p className='participant-label'>email</p>
                 </div>
@@ -139,7 +139,7 @@ const Members = ({members}) => {
                             <p className='participant-tag'>¿Pertenece a alguna red de investigación?</p>
                         </div>
                         <div>
-                            <p>{member.researchNetwork}</p>
+                            <p>{member.researchNetwork === 1 ? 'Sí' : 'No'}</p>
                         </div>
                     </div>
                     <div className='participant-institution-inner'>

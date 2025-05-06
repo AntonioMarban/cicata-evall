@@ -26,7 +26,7 @@ const CollaborativeInstitutions = ({collaborativeInstitutions}) => {
                 <tr key={index}>
                     <td>{index+1}</td>
                     <td>{collaborativeInstitution.name}</td>
-                    <td>{collaborativeInstitution.partOfIPN}</td>
+                    <td>{collaborativeInstitution.partOfIPN === 1 ? 'Sí' : 'No'}</td>
                     <td>{collaborativeInstitution.collaborationAgreement}</td>
                     <td>{collaborativeInstitution.agreementType}</td>
                     <td>{collaborativeInstitution.agreementNumber}</td>

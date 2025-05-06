@@ -21,7 +21,7 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
             </tr>
         </tbody>
     </table>
-
+    <p>*SICIT. Subdirección de investigación Científica e Innovación Tecnológica.</p>
 
     <table className='BackgroundTable'>
         <tbody>
