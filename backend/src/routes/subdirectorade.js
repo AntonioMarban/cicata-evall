@@ -10,7 +10,8 @@ const {
     getFirstStageEvaluations,
     createFirstStageEvaluations,
     getSecondStageEvaluations,
-    createSecondStageEvaluations
+    createSecondStageEvaluations,
+    getResultThirdStage
 } = require('../controllers/subdirectorade.controller')
 
 router.get('/users', getUsersByRole)
@@ -23,5 +24,6 @@ router.get('/projects/:projectId/evaluations/stage1', getFirstStageEvaluations)
 router.post('/projects/:projectId/evaluations/stage1', createFirstStageEvaluations)
 router.get('/projects/:projectId/evaluations/stage2', getSecondStageEvaluations)
 router.post('/projects/:projectId/evaluations/stage2', createSecondStageEvaluations)
+router.get('/projects/:projectId/evaluations/stage3', getResultThirdStage)
 
 module.exports = router

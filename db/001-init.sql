@@ -1239,3 +1239,40 @@ BEGIN
     SELECT stageCompleted, jumpThirdStage;
 END //
 DELIMITER ;
+
+
+-- Función para obtener resultados de evaluación de un proyecto en específico
+-- @param projectId: Id del proyecto
+-- @returns: finalResult: resultado de las evaluaciones de comités
+DELIMITER //
+CREATE PROCEDURE getResultThirdStage(
+    IN p_projectId INT
+)
+BEGIN
+    DECLARE finalResult VARCHAR(50);
+    DECLARE v_result VARCHAR(50);
+    DECLARE found INTEGER DEFAULT 1;
+    DECLARE resultCursor CURSOR FOR
+        SELECT result FROM evaluations WHERE project_id = p_projectId AND evaluation_type_id = 2;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET found = 0;
+    OPEN resultCursor;
+    bucle: LOOP
+        FETCH resultCursor INTO v_result;
+        IF NOT found THEN
+            LEAVE bucle;
+        END IF;
+        IF v_result = 'No aprobado' THEN
+            SET finalResult = 'No aprobado';
+        ELSEIF v_result = 'Pendiente de correcciones' THEN
+            SET finalResult = 'Pendiente de correcciones';
+        ELSEIF v_result IS NULL THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'The project has pending evaluations';
+        ELSE
+            SET finalResult = 'Aprobado';
+        END IF;
+    END LOOP bucle;
+    CLOSE resultCursor;
+    SELECT finalResult;
+END //
+DELIMITER ;

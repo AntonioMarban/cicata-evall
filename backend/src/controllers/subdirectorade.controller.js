@@ -258,6 +258,29 @@ const createSecondStageEvaluations = async (req, res) => {
   });
 };
 
+/*
+  Función para obtener resultados de evaluación de un proyecto en específico
+  Se hace uso de un procedimiento almacenado getResultThirdStage
+  @param projectId: Id del proyecto
+  @returns: finalResult: resultado de las evaluaciones de comités
+           stageCompleted: indica si la etapa se ha completado, jumpThirdStage: indica si se salta la tercera etapa
+*/
+
+const getResultThirdStage = async (req, res) => {
+  const { projectId } = req.params;
+  const query = "CALL getResultThirdStage(?)";
+  const values = [projectId];
+  pool.query(query, values, (error, results) => {
+    if (error) {
+      console.error(error);
+      return res.status(400).json({ error: "Invalid query parameters" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Resource does not exist" });
+    }
+    res.status(200).json(results[0]);
+  })
+}
 
 module.exports = {
   getUsersByRole,
@@ -270,4 +293,5 @@ module.exports = {
   createFirstStageEvaluations,
   getSecondStageEvaluations,
   createSecondStageEvaluations,
+  getResultThirdStage,
 };
