@@ -15,7 +15,7 @@ const  DeletePopUp = ({handleDeleteFile, index, nameArray,value}) => {
                         <p className="dialog-title">¿Seguro que deseas borrar la tarjeta?"</p>
                         <div className="dialog-actions">
                                 <button className="button-confirm"
-                                onClick={()=>{handleDeleteFile(index,nameArray)}}>
+                                onClick={()=>{handleDeleteFile(index,nameArray); setIsOpen(false);}}>
                                    Borrar tarjeta
                                 </button>
                                 <button 

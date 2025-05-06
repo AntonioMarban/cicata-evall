@@ -78,7 +78,7 @@ function Dashboard({ projectCards }) {
                 }}
               >
                 <CardContent>
-                  {userType === 1 && (
+                  {userType > 1 && (
                     <div className={card.notification === 1 ? 'show-notification' : 'hide-notification'}>
                       <img src={NOTIFICATION} alt="Notification" />
                     </div>

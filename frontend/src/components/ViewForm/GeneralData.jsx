@@ -125,7 +125,6 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
                 <th>No. 1</th>
                 <th>Nombre del proyecto</th>
                 <th>Tipo de proyecto
-                    <br/><span className='subtitle-text'>(p.e. Tesis maestría, convocatoria interna innovación, convocatoria externa fronteras, etc.)</span>
                 </th>
                 <th>Número de registro externo
                     <br/><span className='subtitle-text'>(Si aplica)</span>

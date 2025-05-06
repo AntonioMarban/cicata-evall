@@ -103,11 +103,11 @@ const Members = ({members}) => {
                         <p className='participant-tag'>Nombre Completo</p>
                     </div>
                     <div>
-                        <p>{member.lastname1}</p>
+                        <p>{member.lastName1}</p>
                         <p className='participant-label'>Apellido paterno</p>
                     </div>
                     <div>
-                        <p>{member.lastname2}</p>
+                        <p>{member.lastName2}</p>
                         <p className='participant-label'>Apellido materno</p>                  
                     </div>
                     <div>
