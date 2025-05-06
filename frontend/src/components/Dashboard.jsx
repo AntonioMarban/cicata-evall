@@ -2,6 +2,7 @@ import "../styles/dashboard.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardCards from "./DashboardCards";
+import NOTIFICATION from "../assets/Notification.svg"
 const { Card, CardContent } = DashboardCards;
 
 function formatFecha(fechaISO) {
@@ -22,6 +23,7 @@ function Dashboard({ projectCards }) {
   useEffect(() => {
     const nameFromStorage = localStorage.getItem("userFullName") || "Usuario";
     const typeFromStorage = parseInt(localStorage.getItem("userType"), 10) || 1;
+    console.log(typeFromStorage)
     setUserFullName(nameFromStorage);
     setUserType(typeFromStorage);
   }, []);
@@ -76,6 +78,16 @@ function Dashboard({ projectCards }) {
                 }}
               >
                 <CardContent>
+                  {userType === 1 && (
+                    <div className={card.notification === 1 ? 'show-notification' : 'hide-notification'}>
+                      <img src={NOTIFICATION} alt="Notification" />
+                    </div>
+                  )}
+                  {userType === 0  && (
+                    <div className={card.notification === 0 ? 'show-notification' : 'hide-notification'}>
+                    <img src={NOTIFICATION} alt="Notification" />
+                    </div>
+                  )}
                   <div>
                     <div className="card-text">{card.title}</div>
                     <div className="card-text">{card.investigador}</div>

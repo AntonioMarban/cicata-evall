@@ -17,7 +17,6 @@ import Deliverables from '../forms/DeliverablesView';
 import "../styles/formsnavigation.css"
 const FormsNavigation = () => {
   const [option, setOption] = useState(0);
-  console.log(option)
   const mystyle = {
     backgroundColor: "#5CB7E6",
     padding: "10px",

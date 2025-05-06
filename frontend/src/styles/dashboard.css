@@ -47,7 +47,7 @@
 
 .card-content {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* O ajusta según el número de datos */
+  grid-template-columns: repeat(6, 1fr); /* O ajusta según el número de datos */
   gap: 20px;
   align-items: start;
   padding: 0.5rem;
@@ -65,4 +65,13 @@
   color: #888;
   margin-bottom: 4px;
 }
-
+.show-notification {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.hide-notification {
+  display: none;
+}

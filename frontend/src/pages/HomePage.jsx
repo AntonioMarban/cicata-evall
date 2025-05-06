@@ -46,8 +46,8 @@ export default function HomePage() {
         }
 
         const data = await response.json();
-
         // Transform data to the format expected by Dashboard component
+        console.log(data)
         const formattedCards = data.map((project) => ({
           projectId: project.projectId,
           title: project.title,
@@ -56,6 +56,7 @@ export default function HomePage() {
           endDate: project.endDate,
           folio: project.folio,
           status: project.status,
+          notification: project.notification
         }));
         
 
