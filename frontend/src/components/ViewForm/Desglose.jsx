@@ -124,10 +124,7 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
                 <thead className='table-form-header'>
                     <tr>
                         <th>No.</th>
-                        <th>Metodología <br/><span className='subtitle-text'>(Detallar en la meta que corresponda: tipo de estudio, población de estudio, 
-                            criterios de inclusión, exclusión y eliminación, tipo de muestreo, cálculo del tamaño de muestra,
-                                controles, variables a analizar, técnicas, materiales y equipos a utilizar, análisis estadístico 
-                                a realizar, etc. La intención es dar una idea precisa de lo que se va a realizar)</span></th>
+                        <th>Metodología </th>
                     </tr>
                 </thead>
                 <tbody className='table-form-body'>
