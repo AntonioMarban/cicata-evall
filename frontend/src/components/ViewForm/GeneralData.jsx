@@ -21,7 +21,7 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
             </tr>
         </tbody>
     </table>
-    <p>*SICIT. Subdirección de investigación Científica e Innovación Tecnológica.</p>
+    <p className='message-after-data'>*SICIT. Subdirección de investigación Científica e Innovación Tecnológica.</p>
 
     <table className='BackgroundTable'>
         <tbody>
@@ -61,7 +61,14 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
         </thead>
         <tbody className='table-form-body'>
             <tr>
-                <td>{generalData.typeResearch}</td>
+                <td>
+                    {{
+                        1: 'Básica',
+                        2: 'Aplicada clínica',
+                        3: 'Desarrollo tecnológico',
+                        4: 'Otro',
+                        }[generalData.typeResearch] || 'Desconocido'}
+                    </td>
             </tr>
         </tbody>
     </table>
@@ -83,11 +90,11 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
     </table>
 
 
-    <table >
-        <tbody>
+    <table className='BackgroundTable'>
+        <tbody className='table-form-body'>
             <tr>
                 <td>¿El proyecto se alinea con las Prioridades Nacionales de Investigación y/o con los objetivos de la Agenda de desarrollo sostenible?</td>
-                <td>{generalData.ods}</td>
+                <td className='table-alginPNIODS'>{generalData.alignsWithPNIorODS === 1 ? 'Sí' : 'No'}</td>
             </tr>
         </tbody>
     </table>
@@ -148,6 +155,10 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
             ))}
         </tbody>
     </table>
+    <p className='message-after-data'>Agregar el número de filas necesarias para todos los proyectos asociados al proyecto principal
+        <br/>
+        *SIP. Secretaría de Investigación y Posgrado
+    </p>
     </>
   );
 };

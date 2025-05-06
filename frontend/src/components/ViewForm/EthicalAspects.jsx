@@ -8,9 +8,6 @@ const EthicalAspects = ({EthicalAspects}) => {
                 <tr>
                     <th>Aspectos éticos de la investigación
                         <br/>
-                        <span className='subtitle-text'>
-                            Describir cómo el proyecto se apega a los principios bioéticos especificados en la Declaración de Helsinki y otros aspectos bioéticos que sea importante mencionar. En caso de trabajar con humanos o muestras de humanos, adjuntar el consentimiento informado y el aviso de privacidad) 
-                        </span>
                     </th>
                 </tr>
             </thead>

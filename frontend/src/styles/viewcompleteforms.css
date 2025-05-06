@@ -71,6 +71,7 @@
 .participant-data{
     display: flex;
     flex-wrap: wrap;
+    background-color: #E9E9E9;
 }
 .participant-data div{
     flex: 1;
@@ -181,6 +182,13 @@
 }
 .subtitle-text{
     font-weight: normal;
+}
+.table-alginPNIODS{
+    padding: 20px;
+    width: 20%;
+}
+.message-after-data{
+    margin-bottom: 20px;
 }
 @media print {
     .div-button {

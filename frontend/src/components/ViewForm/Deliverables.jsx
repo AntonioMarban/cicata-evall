@@ -3,12 +3,6 @@ import "../../styles/viewcompleteforms.css"
 import { useState } from "react";
 
 const Deliverables = ({Deliverables}) => {  
-    const [deliverablesF, setDeliverablesF] = useState(
-        {
-            idF: 9
-        }
-        );
-
     const deliverables3 = [
         "Proceso",
         "Patente",
@@ -57,7 +51,7 @@ const Deliverables = ({Deliverables}) => {
                 </tr>
             </thead>
             <tbody className='table-form-show-body'>
-                {deliverables.map((deliverable) => (
+                {Deliverables.educativos.map((deliverable) => (
                 <tr key={deliverable}>
                     <td data-label="Entregable">{deliverable}</td>
                     {categories2.map((category) => (
@@ -80,7 +74,7 @@ const Deliverables = ({Deliverables}) => {
                 </tr>
             </thead>
             <tbody className='table-form-show-body'>
-                {deliverables2.map((deliverable) => (
+                {Deliverables.difusion.map((deliverable) => (
                 <tr key={deliverable}>
                     <td data-label="Entregable">{deliverable}</td>
                     {categories.map((category) => (
@@ -103,7 +97,7 @@ const Deliverables = ({Deliverables}) => {
                 </tr>
             </thead>
             <tbody className='table-form-show-body'>
-                {deliverables3.map((deliverable) => (
+                {Deliverables.tecnologicos.map((deliverable) => (
                 <tr key={deliverable}>
                     <td data-label="Entregable">{deliverable}</td>
                     {categories.map((category) => (
