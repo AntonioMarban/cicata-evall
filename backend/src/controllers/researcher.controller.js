@@ -212,5 +212,24 @@ const getProjectDetails = (req, res) => {
     });
 };
 
+const getProjectDocuments = (req, res) => {
+    const { projectId } = req.params;
+    const query = 'CALL getProjectDocuments(?)';
+  
+    pool.query( query, [projectId], (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Error al obtener documentos del proyecto' });
+      }
+  
+      const documents = results[0].map(row => ({
+        annexeId: row.annexeId,
+        projectId: row.projectId,
+        document: row.document ? Buffer.from(row.document).toString('base64') : null
+      }));
+  
+      res.status(200).json({ documents });
+    });
+  };
 
-module.exports = { getActiveProjects, getInactiveProjects, createProject, uploadDocuments, getProjectDetails }
+module.exports = { getActiveProjects, getInactiveProjects, createProject, uploadDocuments, getProjectDetails, getProjectDocuments }

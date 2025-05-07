@@ -1,4 +1,5 @@
 -- Aqui se crean procedimientos almacenados y mas
+SET NAMES utf8mb4;
 
 
 -- login
@@ -134,14 +135,17 @@ BEGIN
         title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary, introduction, background,
         statementOfProblem, justification, hypothesis, generalObjective, ethicalAspects, workWithHumans, workWithAnimals,
         biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, 
-        otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification
+        otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification, formVersion, 
+        nextReview, preparedBy, reviewedBy, approvedBy, preparedDate, reviewedDate, approvedDate
     )
     VALUES (
         p_title, p_startDate, p_endDate, p_typeResearch, p_topic, p_subtopic, p_alignmentPNIorODS, p_summary,
         p_introduction, p_background, p_statementOfProblem, p_justification, p_hypothesis, p_generalObjective,
         p_ethicalAspects, p_workWithHumans, p_workWithAnimals, p_biosecurityConsiderations, p_contributionsToIPNandCICATA,
         p_conflictOfInterest, p_aditionalComments, p_folio,
-        p_otherTypeResearch, p_alignsWithPNIorODS, p_hasCollaboration, p_collaborationJustification
+        p_otherTypeResearch, p_alignsWithPNIorODS, p_hasCollaboration, p_collaborationJustification,
+        '03', 'septiembre 2025', 'Leslie Olmedo Nieva', 'Leslie Olmedo Nieva', 'Paul Mondragón Terán',
+        '2024-06-01', '2024-07-08', '2024-11-04'
     );
 
     SET v_projectId = LAST_INSERT_ID();
@@ -321,7 +325,12 @@ BEGIN
         p.justification, p.hypothesis, p.generalObjective, p.ethicalAspects, 
         p.workWithHumans, p.workWithAnimals, p.biosecurityConsiderations, 
         p.contributionsToIPNandCICATA, p.conflictOfInterest, p.aditionalComments, 
-        p.folio, p.status, p.hasCollaboration, p.collaborationJustification
+        p.folio, p.status, p.hasCollaboration, p.collaborationJustification,
+        p.formVersion, p.nextReview, p.preparedBy,
+        p.reviewedBy, p.approvedBy, 
+        DATE_FORMAT(p.preparedDate, '%Y-%m-%d') AS preparedDate, 
+        DATE_FORMAT(p.reviewedDate, '%Y-%m-%d') AS reviewedDate, 
+        DATE_FORMAT(p.approvedDate, '%Y-%m-%d') AS approvedDate
     FROM projects p
     WHERE p.projectId = p_projectId;
 
@@ -394,6 +403,21 @@ BEGIN
     JOIN users u ON up.user_id = u.userId
     WHERE up.project_id = p_projectId;
 
+END //
+DELIMITER ;
+
+-- procedimiento almacenado para obtener los documentos de un proyecto
+DELIMITER //
+CREATE PROCEDURE getProjectDocuments(
+  IN p_projectId INT
+)
+BEGIN
+  SELECT 
+    annexeId,
+    projectId,
+    document
+  FROM annexes
+  WHERE projectId = p_projectId;
 END //
 DELIMITER ;
 

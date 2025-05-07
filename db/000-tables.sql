@@ -1,4 +1,6 @@
 -- mysql -u root -p
+SET NAMES utf8mb4;
+
 DROP DATABASE IF EXISTS mydb;
 CREATE DATABASE mydb;
 USE mydb;
@@ -282,3 +284,14 @@ ALTER TABLE projects ADD COLUMN hasCollaboration BOOLEAN DEFAULT TRUE, ADD COLUM
 
 -- Para la parte de presupuesto, se agrega un campo para el tipo de presupuesto
 ALTER TABLE budgets ADD COLUMN budgetTypeId INT, ADD CONSTRAINT fk_budgetType FOREIGN KEY (budgetTypeId) REFERENCES budgetTypes(budgetTypeId);
+
+-- Datos estaticos para la parte superior del formulario
+ALTER TABLE projects
+ADD COLUMN formVersion VARCHAR(10) DEFAULT '03',
+ADD COLUMN nextReview VARCHAR(20) DEFAULT 'septiembre 2025',
+ADD COLUMN preparedBy VARCHAR(100) DEFAULT 'Leslie Olmedo Nieva',
+ADD COLUMN reviewedBy VARCHAR(100) DEFAULT 'Leslie Olmedo Nieva',
+ADD COLUMN approvedBy VARCHAR(100) DEFAULT 'Paul Mondragón Terán',
+ADD COLUMN preparedDate DATE DEFAULT '2024-06-01',
+ADD COLUMN reviewedDate DATE DEFAULT '2024-07-08',
+ADD COLUMN approvedDate DATE DEFAULT '2024-11-04';
