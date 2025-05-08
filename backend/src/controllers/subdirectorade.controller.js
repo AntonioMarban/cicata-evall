@@ -167,7 +167,7 @@ const getFirstStageEvaluations = async (req, res) => {
     res.status(200).json({
       evaluations,
       controlVariables
-    });
+    }); 
   })
 };  
 
@@ -282,6 +282,29 @@ const getResultThirdStage = async (req, res) => {
   })
 }
 
+/*
+  Función para simular el envío de resultados de evaluación a un investigador
+  actualizando el status de este de acuerdo al resultado global dado por los comités
+  Se hace uso de un procedimiento almacenado sendEvaluationResult
+  @param projectId: Id del proyecto
+  @returns: mensaje de éxito o error       
+*/
+const sendEvaluationResult = async (req, res) => {
+  const { projectId } = req.params;
+  const query = "CALL sendEvaluationResult(?)";
+  const values = [projectId];
+  pool.query(query, values, (error, results) => {
+    if (error) {
+      console.error(error);
+      return res.status(400).json({ error: "Invalid query parameters" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Resource does not exist" });
+    }
+    res.status(200).json({ message: "Evaluation result sent successfully" });
+  })
+};
+
 module.exports = {
   getUsersByRole,
   createUser,
@@ -294,4 +317,5 @@ module.exports = {
   getSecondStageEvaluations,
   createSecondStageEvaluations,
   getResultThirdStage,
+  sendEvaluationResult
 };

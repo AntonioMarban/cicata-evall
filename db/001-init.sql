@@ -1264,16 +1264,14 @@ BEGIN
 END //
 DELIMITER ;
 
-
 -- Función para obtener resultados de evaluación de un proyecto en específico
 -- @param projectId: Id del proyecto
--- @returns: finalResult: resultado de las evaluaciones de comités
+-- @returns: @finalResult: resultado de las evaluaciones de comités
 DELIMITER //
 CREATE PROCEDURE getResultThirdStage(
     IN p_projectId INT
 )
 BEGIN
-    DECLARE finalResult VARCHAR(50);
     DECLARE v_result VARCHAR(50);
     DECLARE found INTEGER DEFAULT 1;
     DECLARE resultCursor CURSOR FOR
@@ -1286,17 +1284,32 @@ BEGIN
             LEAVE bucle;
         END IF;
         IF v_result = 'No aprobado' THEN
-            SET finalResult = 'No aprobado';
+            SET @finalResult = 'No aprobado';
         ELSEIF v_result = 'Pendiente de correcciones' THEN
-            SET finalResult = 'Pendiente de correcciones';
+            SET @finalResult = 'Pendiente de correcciones';
         ELSEIF v_result IS NULL THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'The project has pending evaluations';
         ELSE
-            SET finalResult = 'Aprobado';
+            SET @finalResult = 'Aprobado';
         END IF;
     END LOOP bucle;
     CLOSE resultCursor;
-    SELECT finalResult;
+    SELECT @finalResult;
 END //
 DELIMITER ;
+
+-- Función para simular el envío de resultados de evaluación a un investigador
+-- actualizando el status de este de acuerdo al resultado global dado por los comités
+-- @param projectId: Id del proyecto
+-- @returns: mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE sendEvaluationResult(
+    IN p_projectId INT
+)
+BEGIN
+    CALL getResultThirdStage(p_projectId);
+    UPDATE projects SET status = @finalResult WHERE projectId = p_projectId;
+END //
+DELIMITER ;
+
