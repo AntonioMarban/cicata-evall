@@ -7,7 +7,8 @@ const {
     updateCommitteeRubric,
     getProjectNonEvaluators,
     createProjectEvaluator,
-    getProjectEvaluations
+    getProjectEvaluations,
+    sendCommitteeEvaluationResult,
 } = committeeSecretaryController;
 
 router.get('/committees/:committeeId/secretaries/:userId/evaluations', getPendingCommitteeEvaluations);
@@ -15,5 +16,6 @@ router.put('/committees/:committeeId/secretaries/:userId/rubric', updateCommitte
 router.get('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/non-evaluators', getProjectNonEvaluators);
 router.post('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/evaluators', createProjectEvaluator);
 router.get('/committees/:committeeId/secretaries/:userId/evaluations/:projectId', getProjectEvaluations);
+router.patch('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/verdict', sendCommitteeEvaluationResult);
 
 module.exports = router;

@@ -146,12 +146,42 @@ const getProjectEvaluations = (req, res) => {
     return res.status(200).json(results[0]);
   });
 };
+/*
+  Función para simular enviar el resultado de la evaluación del comité
+  Se hace uso de un procedimiento almacena sendCommitteeEvaluationResult
+  @param commitee_id: id del comité
+  @param user_id: id del usuario
+  @param project_id: id del proyecto
+  @param result: resultado de la evaluación
+  @param comments: comentarios de la evaluación
+  @returns: Lista de proyectos pendientes
+*/
+const sendCommitteeEvaluationResult = (req, res) => {
+  const { committeeId, userId, projectId } = req.params;
+  const { result, comments } = req.body;
 
+  const sql = `CALL sendCommitteeEvaluationResult(?, ?, ?, ?, ?)`;
+  const values = [committeeId, userId, projectId, result, comments];
+
+  pool.query(sql, values, (err, results) => {
+    if (err) {
+      console.error("Error sending committee evaluation result:", err);
+      return res.status(400).json({ error: "Invalid query parameters" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ message: "Resource does not exist" });
+    }
+    return res
+      .status(200)
+      .json({ message: "Committee evaluation result sent successfully" });
+  });
+};
 
 module.exports = {
   getPendingCommitteeEvaluations,
   updateCommitteeRubric,
   getProjectNonEvaluators,
   createProjectEvaluator,
-  getProjectEvaluations
+  getProjectEvaluations,
+  sendCommitteeEvaluationResult
 };

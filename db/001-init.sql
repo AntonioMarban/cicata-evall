@@ -629,6 +629,45 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Función para simular enviar el resultado de la evaluación del comité
+-- @param commitee_id: id del comité
+-- @param user_id: id del usuario
+-- @param project_id: id del proyecto
+-- @param result: resultado de la evaluación
+-- @param comments: comentarios de la evaluación
+-- @returns: Lista de proyectos pendientes
+    DELIMITER //
+CREATE PROCEDURE sendCommitteeEvaluationResult(
+    IN p_committeeId INT,
+    IN p_userId INT,
+    IN p_project_id INT,
+    IN p_result VARCHAR(50),
+    IN p_comments VARCHAR(100)
+)
+BEGIN
+    DECLARE v_presidentId INT;
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    ELSE
+        SELECT
+            u.userId INTO v_presidentId
+        FROM
+            committeeUsers cu
+        JOIN users u ON cu.userId = u.userId
+        WHERE
+            cu.committeeId = p_committeeId AND u.userType_id = 3;
+        UPDATE evaluations
+        SET comments = p_comments, result = p_result
+        WHERE evaluation_type_id = 2 
+             AND project_id = p_project_id
+             AND user_id = v_presidentId;
+    END IF;
+END //
+DELIMITER ;
 
 -- --------------------------- Subdireccion ----------------------------
 
