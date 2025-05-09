@@ -16,7 +16,7 @@ const ViewCompleteForms = () => {
     const { id }  = useParams();
     const apiUrl = import.meta.env.VITE_API_URL;
     const [completeForm, setCompleteForm] = useState(null);
-
+    console.log(completeForm)
     const fetchData = (url,setData) =>{
         fetch(url,{
             method: "GET",
@@ -34,7 +34,10 @@ const ViewCompleteForms = () => {
     const handlePrint = () => {
         alert("Por favor, marca 'Headers and footers' y 'background graphics' en las opciones de impresión para una mejor visualización.");
         window.print();
-        };
+    };
+    const handlePrint2 = () => {
+        alert("Falta endpoint");
+    };
     useEffect(()=>{
         fetchData(`${apiUrl}/researchers/projects/${id}`,setCompleteForm);
 
@@ -43,7 +46,7 @@ const ViewCompleteForms = () => {
     return (
     <div className='fullTable-background'>
         <div className='div-button'>
-            <button onClick={handlePrint}>Descargar anexos</button>
+            <button onClick={handlePrint2}>Descargar anexos</button>
             <button onClick={handlePrint}>Descargar proyecto</button>
         </div>
         {completeForm && (
@@ -54,7 +57,7 @@ const ViewCompleteForms = () => {
 
             <h1>2. DATOS DE LOS PARTICIPANTES</h1>
             
-            <Members members={completeForm.members}/>
+            <Members investigator={completeForm.investigator} members={completeForm.members}/>
             
             <h1>3. COLABORACIÓN CON OTRAS INSTITUCIONES</h1>
 
@@ -79,7 +82,7 @@ const ViewCompleteForms = () => {
 
             <h1>8. ENTREGABLES</h1>
 
-            {/*<Deliverables/>*/}
+            <Deliverables Deliverables={completeForm.deliverables}/>
 
             <h1>9. APORTACIONES</h1>
 
@@ -87,7 +90,7 @@ const ViewCompleteForms = () => {
 
             <h1>10. DESCRIPCIÓN DE PRESUPUESTO REQUERIDO Y POSIBLES FUENTES DE OBTENCIÓN</h1>
 
-            {/*<Budget/>*/}
+            <Budget Budget={completeForm.budget}/>
 
             <h1>11. CONFLICTO DE INTERÉS</h1>
             <ConflictInterest conflictOfInterest={completeForm.project[0].conflictOfInterest}/>

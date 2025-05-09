@@ -6,13 +6,13 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 
 const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => {
     const [isOpen, setIsOpen] = useState(false)
-
+    const budgetsTypes = ["Gasto de Inversión","Gasto Corriente","Obtención presupuesto interno","Obtención presupuesto externo"]
     const initialFormValues = {
         investmentExpenditure: "",
         name: "",
         expenditure: ""
     };
-
+    const [typeToShow, setTypeToShow] = useState([]);
     const [budgetForm, setBudgetForm] = useState(initialFormValues)
     const [newErrors,setNewErrors] = useState(initialFormValues);
 
@@ -65,9 +65,48 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
             setIsOpen(true);
         }
     }, [budgetToEdit])
-
-
-
+    useEffect(()=>{
+        if(budgetForm.investmentExpenditure === "Gasto de Inversión"){
+            setTypeToShow([
+                "Equipo de laboratorio",
+                "Equipo de cómputo",
+                "Herramientas y accesorios",
+                "Otros (especifique)"
+              ])
+        }
+        else if(budgetForm.investmentExpenditure === "Gasto Corriente"){
+            setTypeToShow([
+                "Artículos, materiales y útiles diversos",
+                "Gastos de trabajo de campo",
+                "Difusión de los resultados de investigación",
+                "Pago por servicios externos",
+                "Viáticos, pasajes y gastos de transportación",
+                "Gastos de atención a profesores visitantes, técnicos o expertos visitantes",
+                "Compra de libros y suscripción a revistas",
+                "Gastos de publicación en revistas nacionales e internacionales",
+                "Registro de patentes y propiedad intelectual",
+                "Validación de concepto tecnológico",
+                "Animales para el desarrollo de protocolos de investigación",
+                "Otros (especifique)"
+              ])
+        }
+        else if(budgetForm.investmentExpenditure === "Obtención presupuesto interno"){
+            setTypeToShow([
+                "Proyectos de Investigación Científica y Desarrollo Tecnológico",
+                "Proyectos de Investigación en el Programa Especial de Consolidación de Investigadores",
+                "Proyectos de Desarrollo Tecnológico o Innovación en el IPN",
+                "Proyectos de Investigación Multidisciplinarios y Transdisciplinarios de Investigación Científica y Desarrollo Tecnológico",
+                "Proyecto transdiciplinario",
+                "Proyectos de Desarrollo Tecnológico o Innovación para alumnos del IPN"
+              ])
+        }
+        else if(budgetForm.investmentExpenditure === "Obtención presupuesto externo"){
+            setTypeToShow([
+                "Especificar el nombre de la convocatoria y año"
+              ])
+        }
+    },[budgetForm.investmentExpenditure])
+    console.log(budgetForm.investmentExpenditure,typeToShow)
     return (
         <>
             {!budgetToEdit && (
@@ -85,25 +124,29 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                 <p>Gasto
                                     <br/>{newErrors.investmentExpenditure && <span className="text-red-600">*{newErrors.investmentExpenditure}</span>}
                                 </p>
-                                <input 
+                                <select 
                                     name="investmentExpenditure" 
-                                    className="form-pieza-input" 
-                                    placeholder="Escribe el tipo de proyecto..."
                                     value={budgetForm.investmentExpenditure}
-                                    onChange={handleInputChange}
-                                ></input>
+                                    onChange={handleInputChange}>
+                                    <option value="">Selecciona una opción</option>
+                                    {Array.isArray(budgetsTypes) && budgetsTypes.map((name, index) => (
+                                        <option key={index} value={name}>{name}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="form-complete-row">
                                 <p>Nombre
                                     <br/>{newErrors.name && <span className="text-red-600">*{newErrors.name}</span>}
                                 </p>
-                                <input 
+                                <select 
                                     name="name" 
-                                    className="form-pieza-input" 
-                                    placeholder="Escribe el tipo de proyecto..."
                                     value={budgetForm.name}
-                                    onChange={handleInputChange}
-                                ></input>
+                                    onChange={handleInputChange}>
+                                    <option value="">Selecciona una opción</option>
+                                    {Array.isArray(typeToShow) && typeToShow.map((name, index) => (
+                                        <option key={index} value={index}>{name}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="form-complete-row">
                                 <p>Gasto $0.00

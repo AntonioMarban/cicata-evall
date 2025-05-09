@@ -120,7 +120,7 @@ const Members = ({members ,investigator}) => {
                         <div>
                             <p className='participant-tag'>Institución a la que pertenece</p>
                         </div>
-                        <div>
+                        <div className='participant-tag-data'>
                             <p>{member.institution}</p>
                         </div>
                     </div>
@@ -128,7 +128,7 @@ const Members = ({members ,investigator}) => {
                         <div>
                             <p className='participant-tag'>Puesto que desempeña en dicha institución</p>
                         </div>
-                        <div>
+                        <div className='participant-tag-data'>
                             <p>{member.positionWork}</p>
                         </div>                       
                     </div>
@@ -138,7 +138,7 @@ const Members = ({members ,investigator}) => {
                         <div>
                             <p className='participant-tag'>¿Pertenece a alguna red de investigación?</p>
                         </div>
-                        <div>
+                        <div className='participant-tag-data'>
                             <p>{member.researchNetwork === 1 ? 'Sí' : 'No'}</p>
                         </div>
                     </div>
@@ -146,11 +146,12 @@ const Members = ({members ,investigator}) => {
                         <div>
                             <p className='participant-tag'>En caso afirmativo ¿Cuál?</p>
                         </div>
-                        <div>
+                        <div className='participant-tag-data'>
                             <p>{member.researchNetworkName}</p>    
                         </div>                    
                     </div>
                 </div>
+                {member.tutorName && (
                 <div className='participant-institution'>
                     <div className='participant-institution-inner'>
                         <div>
@@ -161,12 +162,13 @@ const Members = ({members ,investigator}) => {
                         </div>
                     </div>
                 </div>
+                )}
                 <div className='participant-institution'>
                     <div className='participant-institution-inner'>
                         <div>
                             <p className='participant-tag'>Grado Académico</p>
                         </div>
-                        <div>
+                        <div className='participant-tag-data'>
                             <p>{member.academicDegree}</p>
                         </div>
                     </div>
@@ -174,7 +176,7 @@ const Members = ({members ,investigator}) => {
                         <div>
                             <p className='participant-tag'>Nivel</p>
                         </div>
-                        <div>
+                        <div className='participant-tag-data'>
                             <p>{member.levelName} - {member.levelNum}</p>
                         </div>                        
                     </div>

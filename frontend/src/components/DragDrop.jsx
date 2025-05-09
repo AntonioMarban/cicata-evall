@@ -33,7 +33,6 @@ const DragDrop = ({ setFilesSend, filesSend }) => {
             <input
               className="hidden"
               type="file"
-              accept="image/*"
               multiple
               onChange={handleFileChange}
             />

@@ -13,6 +13,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         institution: "",
         positionWork: "",
         academicDegree: "",
+        tutorName: "",
         levelName: "",
         levelNum: "",
         email: "",
@@ -157,6 +158,17 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                     <input
                                         name="positionWork"
                                         value={participant.positionWork}
+                                        onChange={handleInputChange} 
+                                        placeholder="Escribe el puesto que desempeña..."
+                                        className="participant-form-pieza-input"></input>
+                                </div>
+                                <div>
+                                    <p>tutorName
+                                        <br/>{newErrors.tutorName && <span className="text-red-600"> *{newErrors.tutorName}</span>}
+                                    </p>
+                                    <input
+                                        name="tutorName"
+                                        value={participant.tutorName}
                                         onChange={handleInputChange} 
                                         placeholder="Escribe el puesto que desempeña..."
                                         className="participant-form-pieza-input"></input>

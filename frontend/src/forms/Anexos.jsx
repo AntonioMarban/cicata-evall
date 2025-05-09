@@ -8,8 +8,10 @@ import { useNavigate  } from 'react-router-dom'
 const  Anexos = ({option,setOption}) => {
     const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
+    
     const [filesForms, setFilesForms] = useState([]);
-    const [response, setResponse] = useState();
+
+
     const [filesSend,setFilesSend] = useState([]);
     const [anexos, setAnexos] = useState({   
         idF: 14,
@@ -19,40 +21,87 @@ const  Anexos = ({option,setOption}) => {
     const [newErrors,setNewErrors] = useState({
         aditionalComments:""
     });
-
-    const [forms,setForms] = useState([]);
     const handleOnSubmit = async (event) => {
         event.preventDefault();
-        try{
+        
+        try {
             await updateForm(anexos);
+        } catch (error) {
+            console.error("Error saving form to IndexedDB:", error);
+            alert("Error al guardar el formulario. Por favor, inténtalo de nuevo.");
+            return; 
+        }
 
-        } catch(error){
-            alert("Error al guardar el formulario",error);
-        }
-        try{
-            const  formData  = await getAllData();
-            if(formData){
-                const { afilesSend, efilesSend,idF, ...cleanFormData } = formData;
-                const userId = localStorage.getItem('userId');
-                setFilesForms(formData.afilesSend, formData.efilesSend);
-                cleanFormData.userId = userId;
-                const response = await fetch(`${apiUrl}/researchers/projects`, {
-                    method: 'POST',
-                    body: JSON.stringify(cleanFormData),
-                    headers: {
-                        'Content-Type': 'application/json'
-                      },
-                  });
-            
-                  const data = await response.json();
-                  if (data.projectId) {
-                    navigate(`/VerFormulario/${data.projectId}`);
-                  }
+        try {
+            const formData = await getAllData();
+            if (!formData) {
+                throw new Error("No se encontraron datos del formulario.");
             }
-        }catch(error){
-           alert("Error al obtener el formulario",error);
+    
+            const { afilesSend, efilesSend, idF, ...cleanFormData } = formData;
+            const userId = localStorage.getItem('userId');
+            cleanFormData.userId = userId;
+    
+            console.log("Submitting project data:", cleanFormData);
+            console.log("Files to upload (afilesSend):", afilesSend);
+    
+            const response = await fetch(`${apiUrl}/researchers/projects`, {
+                method: 'POST',
+                body: JSON.stringify(cleanFormData),
+                headers: { 'Content-Type': 'application/json' },
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+    
+            if (data.projectId) {
+                console.log("Project created successfully, ID:", data.projectId);
+                
+                if (afilesSend && afilesSend.length > 0) {
+                    try {
+                        console.log("Uploading document:", afilesSend[0].name);
+                        
+                        const formDataFiles = new FormData();
+                        formDataFiles.append('projectId', data.projectId);
+                        formDataFiles.append('documents', afilesSend[0]);
+    
+                        const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
+                            method: 'POST',                    
+                            body: formDataFiles,
+                        });
+    
+                        if (!uploadResponse.ok) {
+                            throw new Error(`File upload failed: ${uploadResponse.status}`);
+                        }
+    
+                        const uploadData = await uploadResponse.json();
+                        
+                        if (uploadData.message == 'Documents uploaded successfully') {
+                            console.log("File uploaded successfully:", uploadData.message);
+                            navigate(`/VerFormulario/${data.projectId}`);
+                            indexedDB.deleteDatabase('Cicata');
+                        } else {
+                            console.warn("Upload succeeded but no confirmation message:", uploadData);
+                        }
+                    } catch (uploadError) {
+                        console.error("Error uploading file:", uploadError);
+                        alert("El proyecto se creó, pero hubo un error al subir el archivo.");
+                    }
+                } else {
+                    navigate(`/VerFormulario/${data.projectId}`);
+                    indexedDB.deleteDatabase('Cicata');
+                }
+            } else {
+                throw new Error("Missing projectId in server response.");
+            }
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            alert("Error al enviar el formulario. Por favor, inténtalo de nuevo.");
         }
-    }
+    };
     const handleChange = (e) => {
         const { name, value } = e.target;
         setAnexos({ ...anexos, [name]: value });
