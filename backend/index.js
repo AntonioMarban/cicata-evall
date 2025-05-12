@@ -30,7 +30,7 @@ app.use('/', committeeMember);
 
 
 app.get("/", (req, res) =>{
-    res.send("Te estoy viendao")
+    res.send("Te estoy viendo")
 })
 
 // Iniciar el servidor

@@ -22,39 +22,39 @@ VALUES
 ('Ana', 'Pérez', 'López', 'admin@gmail.com', SHA2('admin123', 256), 'IPN', 'Profesor', TRUE, 'RedBio', 'Doctorado', 'SNI I', 1, 2),
 -- --------------
 -- Usuario de tipo presidente de comité con Id 4
-('Luis', 'Martínez', 'Gómez', 'presidente1@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+('Luis', 'Martínez', 'Gómez', 'presidenteCIP@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
 -- Usuario de tipo secretario de comité con Id 5
-('Pablo', 'Martínez', 'Pérez', 'secretario1@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+('Pablo', 'Martínez', 'Pérez', 'secretarioCIP@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
 -- Usuario de tipo integrante de comité con Id 6
-('María', 'Ramírez', 'Díaz', 'integrante1@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
+('María', 'Ramírez', 'Díaz', 'integranteCIP@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
 -- --------------
 -- Usuario de tipo presidente de comité con Id 7
-('José', 'Martínez', 'Gómez', 'presidente2@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+('José', 'Martínez', 'Gómez', 'presidenteCI@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
 -- Usuario de tipo secretario de comité con Id 8
-('Sebastián', 'Martínez', 'Pérez', 'secretario2@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+('Sebastián', 'Martínez', 'Pérez', 'secretarioCI@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
 -- Usuario de tipo integrante de comité con Id 9
-('Carlos', 'Ramírez', 'Díaz', 'integrante2@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
+('Carlos', 'Ramírez', 'Díaz', 'integranteCI@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
 -- --------------
 -- Usuario de tipo presidente de comité con Id 10
-('Patricia', 'González', 'López', 'presidente3@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+('Patricia', 'González', 'López', 'presidenteCEI@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
 -- Usuario de tipo secretario de comité con Id 11
-('Fernando', 'González', 'Pérez', 'secretario3@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+('Fernando', 'González', 'Pérez', 'secretarioCEI@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
 -- Usuario de tipo integrante de comité con Id 12
-('Sofía', 'Ramírez', 'Díaz', 'integrante3@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
+('Sofía', 'Ramírez', 'Díaz', 'integranteCEI@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
 -- --------------
 -- Usuario de tipo presidente de comité con Id 13
-('Andrés', 'Hernández', 'Gómez', 'presidente4@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+('Andrés', 'Hernández', 'Gómez', 'presidenteCB@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
 -- Usuario de tipo secretario de comité con Id 14
-('Valeria', 'Hernández', 'Pérez', 'secretario4@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+('Valeria', 'Hernández', 'Pérez', 'secretarioCB@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
 -- Usuario de tipo integrante de comité con Id 15
-('Diego', 'Ramírez', 'Díaz', 'integrante4@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
+('Diego', 'Ramírez', 'Díaz', 'integranteCB@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
 -- --------------
 -- Usuario de tipo presidente de comité con Id 16
-('Isabel', 'García', 'López', 'presidente5@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+('Isabel', 'García', 'López', 'presidenteCICUAL@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
 -- Usuario de tipo secretario de comité con Id 17
-('Javier', 'García', 'Pérez', 'secretario5@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+('Javier', 'García', 'Pérez', 'secretarioCICUAL@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
 -- Usuario de tipo integrante de comité con Id 18
-('Lucía', 'Ramírez', 'Díaz', 'integrante5@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5);
+('Lucía', 'Ramírez', 'Díaz', 'integranteCICUAL@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5);
 
 
 -- =============== INSERTS PROJECTS ===============
