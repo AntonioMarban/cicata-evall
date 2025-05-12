@@ -52,11 +52,11 @@ const Deliverables = ({Deliverables}) => {
             </thead>
             <tbody className='table-form-show-body'>
                 {Deliverables.educativos.map((deliverable) => (
-                <tr key={deliverable}>
-                    <td data-label="Entregable">{deliverable}</td>
-                    {categories2.map((category) => (
+                <tr key={deliverable.deliveryId}>
+                    <td data-label="Entregable">{deliverable.name}</td>
+                    {categories2.map((category,index) => (
                     <td key={category} data-label={category}>
-                        <p></p>
+                        <p>{deliverable.deliverableTypeId == index+1 && (deliverable.quantity)}</p>
                     </td>
                     ))}
                 </tr>
@@ -75,11 +75,11 @@ const Deliverables = ({Deliverables}) => {
             </thead>
             <tbody className='table-form-show-body'>
                 {Deliverables.difusion.map((deliverable) => (
-                <tr key={deliverable}>
-                    <td data-label="Entregable">{deliverable}</td>
-                    {categories.map((category) => (
-                    <td key={category} data-label={category}>
-                        <p></p>
+                <tr key={deliverable.deliveryId}>
+                    <td data-label="Entregable">{deliverable.name}</td>
+                    {categories.map((category,index) => (
+                     <td key={category} data-label={category}>
+                        <p>{deliverable.deliverableTypeId == index+1 && (deliverable.quantity)}</p>
                     </td>
                     ))}
                 </tr>
@@ -98,12 +98,12 @@ const Deliverables = ({Deliverables}) => {
             </thead>
             <tbody className='table-form-show-body'>
                 {Deliverables.tecnologicos.map((deliverable) => (
-                <tr key={deliverable}>
-                    <td data-label="Entregable">{deliverable}</td>
-                    {categories.map((category) => (
-                        <td key={category} data-label={category}>
-                            <p></p>
-                        </td>
+                <tr key={deliverable.deliveryId}>
+                    <td data-label="Entregable">{deliverable.name}</td>
+                    {categories.map((category,index) => (
+                    <td key={category} data-label={category}>
+                        <p>{deliverable.deliverableTypeId == index+1 && (deliverable.quantity)}</p>
+                    </td>
                     ))}
                 </tr>
                 ))}

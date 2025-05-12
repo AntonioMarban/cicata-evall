@@ -1,0 +1,23 @@
+const Files = ({files}) => {  
+    const mostrarPdf = (base64) => {
+    const blob = new Blob([Uint8Array.from(atob(base64), c => c.charCodeAt(0))], {
+            type: "application/pdf",
+        });
+        const blobUrl = URL.createObjectURL(blob);
+        window.open(blobUrl);
+    };
+    const handleViewFile = (fileBase64) => {
+        mostrarPdf(fileBase64);
+    };
+    return (
+    <div className="flex flex-col">
+        {Array.isArray(files.documents) && files.documents.map((file, index) => (
+            <button className="cursor-pointer" key={index} onClick={() => handleViewFile(file.document)}>
+            Archivo {file.annexeId}
+            </button>
+        ))}
+    </div>
+  );
+};
+
+export default Files;
