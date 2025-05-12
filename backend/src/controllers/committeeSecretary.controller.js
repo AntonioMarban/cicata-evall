@@ -103,7 +103,7 @@ const createProjectEvaluator = (req, res) => {
   const { committeeId, userId, projectId } = req.params;
   const { evaluatorId } = req.body;
 
-  const sql = `CALL createProjectEvaluator(?, ?, ?, ?)`;
+  const sql = `CALL addEvaluatorToProject(?, ?, ?, ?)`;
   const values = [committeeId, userId, projectId, evaluatorId];
 
   pool.query(sql, values, (err, results) => {
