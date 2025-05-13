@@ -17,7 +17,7 @@ export default function HomePage() {
       }
 
       let endpoint = "";
-
+      console.log(userType)
       switch (parseInt(userType)) {
         case 1:
           endpoint = `/researchers/${userId}/projects/active`;
@@ -26,13 +26,26 @@ export default function HomePage() {
           endpoint = `/subdirectorade/projects/active`;
           break;
         case 3:
+          if (!committeeId) {
+            console.error("Missing committeeId for committee user");
+            return;
+          }
+          console.log(userType + " aaaaaaaaaaaaaaaaa")
+          endpoint = `/committees/${committeeId}/secretaries/${userId}/evaluations`;
+          break;
         case 4:
+          if (!committeeId) {
+            console.error("Missing committeeId for committee user");
+            return;
+          }
+          endpoint = `/committees/${committeeId}/secretaries/${userId}/evaluations`;
+          break;
         case 5:
           if (!committeeId) {
             console.error("Missing committeeId for committee user");
             return;
           }
-          endpoint = `/committees/${committeeId}/members/${userId}/projects`;
+          endpoint = `/committees/${committeeId}/members/${userId}/evaluations`;
           break;
         default:
           console.error("Unsupported userType:", userType);
