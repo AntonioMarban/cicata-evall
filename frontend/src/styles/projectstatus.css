@@ -95,6 +95,11 @@
   font-style: italic;
 }
 
+.not-approved {
+  color: #f44336; 
+  font-weight: bold;
+}
+
 
 .stage-button {
   margin-top: 1rem;

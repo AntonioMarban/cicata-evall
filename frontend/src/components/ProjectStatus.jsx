@@ -3,14 +3,20 @@ import "../styles/projectstatus.css";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export default function ProjectStatus( { projectId }) {
+export default function ProjectStatus({ projectId }) {
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const [stage1Evaluations, setStage1Evaluations] = useState([]);
   const [sendingStage1, setSendingStage1] = useState(false);
+  const [stage1Completed, setStage1Completed] = useState(0);
 
-  const [stageCompleted, setStageCompleted] = useState(null);
-  const [jumpThirdStage, setJumpThirdStage] = useState(null);
+  const [stage2Evaluations, setStage2Evaluations] = useState([]);
+  const [sendingStage2, setSendingStage2] = useState(false);
+  const [stage2Completed, setStage2Completed] = useState(0);
+
+  const [jumpThirdStage, setJumpThirdStage] = useState(0);
+  const [sendingPending, setSendingPending] = useState(0);
 
   const fetchStage1Evaluations = useCallback(async () => {
     try {
@@ -22,12 +28,31 @@ export default function ProjectStatus( { projectId }) {
       if (data && Array.isArray(data.evaluations)) {
         setStage1Evaluations(data.evaluations);
       }
-      if (data.controlVariables && data.controlVariables.length > 0) {
-        setStageCompleted(data.controlVariables[0].stageCompleted);
-        setJumpThirdStage(data.controlVariables[0].jumpThirdStage);
+      if (data.controlVariables) {
+        setStage1Completed(data.controlVariables.stageCompleted);
+        setJumpThirdStage(data.controlVariables.jumpThirdStage);
       }
     } catch (error) {
       console.error("Error fetching stage 1 evaluations:", error);
+    }
+  }, [projectId]);
+
+  const fetchStage2Evaluations = useCallback(async () => {
+    try {
+      if (!projectId) return;
+      const response = await fetch(
+        `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage2`
+      );
+      const data = await response.json();
+      if (data && Array.isArray(data.evaluations)) {
+        setStage2Evaluations(data.evaluations);
+      }
+      if (data.controlVariables) {
+        setStage2Completed(data.controlVariables.stageCompleted);
+        setSendingPending(data.controlVariables.sendingPending);
+      }
+    } catch (error) {
+      console.error("Error fetching stage 2 evaluations:", error);
     }
   }, [projectId]);
 
@@ -56,6 +81,13 @@ export default function ProjectStatus( { projectId }) {
     fetchStage1Evaluations();
   }, [fetchStage1Evaluations]);
 
+  useEffect(() => {
+    if (stage1Completed === 1) {
+      fetchStage2Evaluations();
+    }
+    console.log(jumpThirdStage + " " + stage1Completed);
+  }, [stage1Completed, fetchStage2Evaluations]);
+
   if (loading) {
     return <main className="projectstatus-main">Cargando...</main>;
   }
@@ -77,7 +109,7 @@ export default function ProjectStatus( { projectId }) {
         }
       );
       if (response.ok) {
-        await fetchStage1Evaluations(); // Actualizar datos
+        await fetchStage1Evaluations();
       } else {
         console.error("Error en el envío de evaluación etapa 1.");
       }
@@ -88,11 +120,35 @@ export default function ProjectStatus( { projectId }) {
     }
   };
 
+  const handleSendStage2 = async () => {
+    console.log("hola");
+    try {
+      setSendingStage2(true);
+      const response = await fetch(
+        `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage2`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        await fetchStage2Evaluations();
+      } else {
+        console.error("Error en el envío de evaluación etapa 2.");
+      }
+    } catch (error) {
+      console.error("Error en el POST de etapa 2:", error);
+    } finally {
+      setSendingStage2(false);
+    }
+  };
+
   if (loading || !projectData) return null;
 
   return (
     <main className="projectstatus-main">
-
       <div className="evaluation-section">
         <h2 className="subtitle">Progreso de evaluación</h2>
 
@@ -127,12 +183,15 @@ export default function ProjectStatus( { projectId }) {
                       className={
                         evaluation.result === "Aprobado"
                           ? "approved"
-                          : "not-approved"
+                          : evaluation.result === "Pendiente de correcciones" ||
+                            evaluation.result === "No aprobado"
+                          ? "not-approved"
+                          : "pending"
                       }
                     >
-                      {evaluation.result}
+                      {evaluation.result ?? "Pendiente de evaluación"}
                     </td>
-                    <td>{evaluation.comments}</td>
+                    <td>{evaluation.comments ?? "—"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -143,15 +202,77 @@ export default function ProjectStatus( { projectId }) {
         {/* Etapa 2 */}
         <div className="stage">
           <h3>Etapa 2</h3>
-          <p>Este proyecto aún no ha sido enviado al CEI, CB y CI.</p>
-          <button
-            className={`stage-button ${
-              stageCompleted === 0 ? "disabled" : "active"
-            }`}
-            disabled={stageCompleted === 0}
-          >
-            Enviar a evaluación
-          </button>
+          {stage2Evaluations.length === 0 ? (
+            <>
+              <p>
+                Este proyecto aún no ha sido enviado al CEI, CB y CI aaaaaa.
+              </p>
+              <button
+                className={`stage-button ${
+                  stage1Completed === 1 && !sendingStage2
+                    ? "active"
+                    : "disabled"
+                }`}
+                onClick={handleSendStage2}
+                disabled={stage1Completed !== 1 || sendingStage2}
+              >
+                {sendingStage2 ? "Enviando..." : "Enviar a evaluación"}
+              </button>
+            </>
+          ) : (
+            <>
+              {sendingPending === 1 ? (
+                <>
+                  <p>Este proyecto está pendiente de enviar a evaluación.</p>
+                </>
+              ) : (
+                <></>
+              )}
+              <table className="stage-table">
+                <thead>
+                  <tr>
+                    <th>Comité</th>
+                    <th>Aprobado/No aprobado</th>
+                    <th>Comentario</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stage2Evaluations.map((evaluation, index) => (
+                    <tr key={index}>
+                      <td>{evaluation.name}</td>
+                      <td
+                        className={
+                          evaluation.result === "Aprobado"
+                            ? "approved"
+                            : evaluation.result === "Pendiente de correcciones"
+                            ? "not-approved"
+                            : "pending"
+                        }
+                      >
+                        {evaluation.result ?? "Pendiente de evaluación"}
+                      </td>
+                      <td>{evaluation.comments ?? "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {sendingPending === 1 ? (
+                <>
+                  <button
+                    className={`stage-button ${
+                      sendingStage2 ? "disabled" : "active"
+                    }`}
+                    onClick={handleSendStage2}
+                    disabled={sendingStage2}
+                  >
+                    {sendingStage2 ? "Enviando..." : "Enviar a evaluación"}
+                  </button>
+                </>
+              ) : (
+                <></>
+              )}
+            </>
+          )}
         </div>
 
         {/* Etapa 3 */}
@@ -163,7 +284,9 @@ export default function ProjectStatus( { projectId }) {
           </p>
           <button
             className={`stage-button ${
-              jumpThirdStage === 1 ? "active" : "disabled"
+              jumpThirdStage === 1 || stage2Completed === 1
+                ? "active"
+                : "disabled"
             }`}
             disabled={jumpThirdStage !== 1}
           >
