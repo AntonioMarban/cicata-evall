@@ -1355,7 +1355,7 @@ BEGIN
         END IF;
     END LOOP bucle;
     CLOSE resultCursor;
-    IF (SELECT status FROM projects WHERE projectId = p_projectId) != @finalResult
+    IF (SELECT status COLLATE utf8mb4_unicode_ci FROM projects WHERE projectId = p_projectId) != @finalResult COLLATE utf8mb4_unicode_ci
     THEN
         SET sendingPending = TRUE;
     END IF;
