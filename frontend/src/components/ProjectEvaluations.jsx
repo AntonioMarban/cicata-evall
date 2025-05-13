@@ -71,6 +71,10 @@ export default function ProjectEvaluations({ projectId }) {
     }
 
     const openDictumForm = () => {
+        if (evaluations.length === 0) {
+            alert("No se puede enviar un dictamen de comité sin evaluaciones.");
+            return;
+        }
         setIsDictumFormLoaded(true);
     };
 
@@ -113,22 +117,23 @@ export default function ProjectEvaluations({ projectId }) {
           <div className="evaluation-section">
             <h2 className="subtitle">Evaluaciones</h2>
 
-            <div className="evaluations-table">
-                <table className="table">
+            {evaluations.length > 0 ? (
+                <div className="evaluations-table">
+                    <table className="table">
                     <thead>
-                    <tr>
+                        <tr>
                         <th>Evaluador</th>
                         <th>Puntaje</th>
                         <th>Resultado de evaluación</th>
                         <th>Comentarios</th>
-                    </tr>
+                        </tr>
                     </thead>
                     <tbody>
-                    {evaluations.map((evaluation, index) => (
+                        {evaluations.map((evaluation, index) => (
                         <tr key={index}>
-                        <td>{evaluation.fullName}</td>
-                        <td>{evaluation.score !== null ? evaluation.score : "—"}</td>
-                        <td className={
+                            <td>{evaluation.fullName}</td>
+                            <td>{evaluation.score !== null ? evaluation.score : "—"}</td>
+                            <td className={
                             evaluation.result === "Aprobado"
                                 ? "result-approved"
                                 : evaluation.result === "No aprobado"
@@ -136,13 +141,19 @@ export default function ProjectEvaluations({ projectId }) {
                                 : ""
                             }>
                             {evaluation.result || "—"}
-                        </td>
-                        <td>{evaluation.comments || "—"}</td>
+                            </td>
+                            <td>{evaluation.comments || "—"}</td>
                         </tr>
-                    ))}
+                        ))}
                     </tbody>
-                </table>
-            </div>
+                    </table>
+                </div>
+                ) : (
+                <div className="no-evaluations-message">
+                    <p className="text-gray-700">Este proyecto aún no tiene evaluaciones asignadas.</p>
+                    <p className="text-gray-700">Por favor, agrega evaluadores para iniciar el proceso de evaluación.</p>
+                </div>
+            )}
 
             <div className="dictumForm">
                 {isDictumFormLoaded ? (
