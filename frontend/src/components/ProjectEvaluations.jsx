@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/projectevaluations.css";
 
 import CommitteeDictumForm from "./CommitteeDictumForm";
@@ -18,6 +19,8 @@ export default function ProjectEvaluations({ projectId }) {
     const [loading, setLoading] = useState(true);
     const [evaluations, setEvaluations] = useState([]);
     const [isDictumFormLoaded, setIsDictumFormLoaded] = useState(false);
+
+    const navigate = useNavigate();
 
     const fetchEvaluations = useCallback(async () => {
         try {
@@ -51,6 +54,12 @@ export default function ProjectEvaluations({ projectId }) {
     const openDictumForm = () => {
         setIsDictumFormLoaded(true);
     };
+
+    const handleDictumFormSubmit = () => {
+        setIsDictumFormLoaded(false);
+        alert("Dictamen enviado correctamente.");
+        navigate("/Inicio");
+    }
     
 
     return (
@@ -92,7 +101,7 @@ export default function ProjectEvaluations({ projectId }) {
 
             <div className="dictumForm">
                 {isDictumFormLoaded ? (
-                    <CommitteeDictumForm />
+                    <CommitteeDictumForm projectId={projectId} onSubmit={handleDictumFormSubmit} />
                 ) : (
                     <p>El formulario de dictamen no se ha cargado.</p>
                 )}
