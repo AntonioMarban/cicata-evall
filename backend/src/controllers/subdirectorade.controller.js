@@ -162,12 +162,13 @@ const getFirstStageEvaluations = async (req, res) => {
     if (results.length === 0) {
       return res.status(404).json({ error: "Resource does not exist" });
     }
-    const evaluations = results[0];
-    const controlVariables = results[1]
-    res.status(200).json({
-      evaluations,
-      controlVariables
-    }); 
+    const response = {
+      evaluations: [],
+      controlVariables: {}
+    };
+    response.evaluations = results[0]
+    response.controlVariables = results[1][0]
+    res.status(200).json(response); 
   })
 };  
 
