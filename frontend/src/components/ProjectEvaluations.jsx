@@ -1,13 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
 import { useNavigate } from "react-router-dom";
 import "../styles/projectevaluations.css";
 
 import CommitteeDictumForm from "./CommitteeDictumForm";
-
-function openDialogAddEvaluator() {
-    // Aquí puedes implementar la lógica para abrir el modal
-    console.log("Abrir modal para agregar evaluador");
-}
 
 export default function ProjectEvaluations({ projectId }) {
 
@@ -19,6 +15,29 @@ export default function ProjectEvaluations({ projectId }) {
     const [loading, setLoading] = useState(true);
     const [evaluations, setEvaluations] = useState([]);
     const [isDictumFormLoaded, setIsDictumFormLoaded] = useState(false);
+    const [isAddEvaluatorOpen, setIsAddEvaluatorOpen] = useState(false);
+    const [potentialEvaluators, setPotentialEvaluators] = useState([]);
+
+    const openDialogAddEvaluator = async () => {
+        try {
+          const response = await fetch(
+            `${apiUrl}/committees/${committeeId}/secretaries/${userId}/evaluations/${projectId}/non-evaluators`
+          );
+      
+          const data = await response.json();
+      
+          if (Array.isArray(data) && data.length > 0) {
+            setPotentialEvaluators(data);
+            setIsAddEvaluatorOpen(true);
+          } else {
+            alert("Ya no hay más miembros del comité disponibles para asignar como evaluadores.");
+          }
+        } catch (error) {
+          console.error("Error al cargar posibles evaluadores:", error);
+          alert("Ocurrió un error al intentar cargar los evaluadores.");
+        }
+    };
+    const closeDialogAddEvaluator = () => setIsAddEvaluatorOpen(false);
 
     const navigate = useNavigate();
 
@@ -52,6 +71,10 @@ export default function ProjectEvaluations({ projectId }) {
     }
 
     const openDictumForm = () => {
+        if (evaluations.length === 0) {
+            alert("No se puede enviar un dictamen de comité sin evaluaciones.");
+            return;
+        }
         setIsDictumFormLoaded(true);
     };
 
@@ -60,6 +83,32 @@ export default function ProjectEvaluations({ projectId }) {
         alert("Dictamen enviado correctamente.");
         navigate("/Inicio");
     }
+
+    const addEvaluator = async (evaluatorId) => {
+        try {
+          const response = await fetch(
+            `${apiUrl}/committees/${committeeId}/secretaries/${userId}/evaluations/${projectId}/evaluators`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ evaluatorId })
+            }
+          );
+      
+          if (!response.ok) {
+            throw new Error("No se pudo agregar el evaluador.");
+          }
+      
+          alert("Evaluador agregado exitosamente.");
+          setIsAddEvaluatorOpen(false);
+          window.location.reload(); // Recarga toda la página para refrescar las evaluaciones
+        } catch (error) {
+          console.error("Error al agregar evaluador:", error);
+          alert("Ocurrió un error al intentar agregar el evaluador.");
+        }
+      };
     
 
     return (
@@ -68,22 +117,23 @@ export default function ProjectEvaluations({ projectId }) {
           <div className="evaluation-section">
             <h2 className="subtitle">Evaluaciones</h2>
 
-            <div className="evaluations-table">
-                <table className="table">
+            {evaluations.length > 0 ? (
+                <div className="evaluations-table">
+                    <table className="table">
                     <thead>
-                    <tr>
+                        <tr>
                         <th>Evaluador</th>
                         <th>Puntaje</th>
                         <th>Resultado de evaluación</th>
                         <th>Comentarios</th>
-                    </tr>
+                        </tr>
                     </thead>
                     <tbody>
-                    {evaluations.map((evaluation, index) => (
+                        {evaluations.map((evaluation, index) => (
                         <tr key={index}>
-                        <td>{evaluation.fullName}</td>
-                        <td>{evaluation.score !== null ? evaluation.score : "—"}</td>
-                        <td className={
+                            <td>{evaluation.fullName}</td>
+                            <td>{evaluation.score !== null ? evaluation.score : "—"}</td>
+                            <td className={
                             evaluation.result === "Aprobado"
                                 ? "result-approved"
                                 : evaluation.result === "No aprobado"
@@ -91,19 +141,25 @@ export default function ProjectEvaluations({ projectId }) {
                                 : ""
                             }>
                             {evaluation.result || "—"}
-                        </td>
-                        <td>{evaluation.comments || "—"}</td>
+                            </td>
+                            <td>{evaluation.comments || "—"}</td>
                         </tr>
-                    ))}
+                        ))}
                     </tbody>
-                </table>
-            </div>
+                    </table>
+                </div>
+                ) : (
+                <div className="no-evaluations-message">
+                    <p className="text-gray-700">Este proyecto aún no tiene evaluaciones asignadas.</p>
+                    <p className="text-gray-700">Por favor, agrega evaluadores para iniciar el proceso de evaluación.</p>
+                </div>
+            )}
 
             <div className="dictumForm">
                 {isDictumFormLoaded ? (
                     <CommitteeDictumForm projectId={projectId} onSubmit={handleDictumFormSubmit} />
                 ) : (
-                    <p>El formulario de dictamen no se ha cargado.</p>
+                    <></>
                 )}
             </div>
 
@@ -123,6 +179,47 @@ export default function ProjectEvaluations({ projectId }) {
                     </button>
                 </div>
             )}
+
+            <Dialog open={isAddEvaluatorOpen} onClose={closeDialogAddEvaluator} className="relative z-50">
+                <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+
+                <div className="fixed inset-0 flex items-center justify-center">
+                    <DialogPanel className="w-full max-w-xl rounded-xl bg-white p-10! shadow-xl">
+                        <DialogTitle className="text-xl font-bold mb-4!">Agregar evaluador de proyecto</DialogTitle>
+
+                        {potentialEvaluators.length > 0 ? (
+                            <div className="overflow-x-auto">
+                            <table className="min-w-full">
+                                <thead>
+                                <tr>
+                                    <th className="text-left py-2! px-4!">Nombre</th>
+                                    <th className="text-left py-2! px-4!">Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {potentialEvaluators.map((evaluator) => (
+                                    <tr key={evaluator.userId} className="py-2! px-4!">
+                                    <td className="py-2! px-4!">{evaluator.fullName}</td>
+                                    <td className="py-2! px-4!">
+                                        <button
+                                        className="bg-[#5CB7E6] text-white px-3! py-1! rounded-lg hover:bg-[#1591D1]"
+                                        onClick={() => addEvaluator(evaluator.userId)}
+                                        >
+                                        Agregar evaluador
+                                        </button>
+                                    </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                            </div>
+                        ) : (
+                            <p className="text-gray-600">No hay evaluadores disponibles.</p>
+                        )}
+
+                    </DialogPanel>
+                </div>
+            </Dialog>
 
           </div>
         </main>
