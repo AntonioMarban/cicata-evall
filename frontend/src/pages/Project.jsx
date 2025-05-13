@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 
 import ProjectStatus from "../components/ProjectStatus";
 import ProjectHeader from "../components/ProjectHeader";
+import ProjectProgress from "../components/ProjectProgress";
+import ProjectEvaluations from "../components/ProjectEvaluations";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const userType = Number(localStorage.getItem("userType"))

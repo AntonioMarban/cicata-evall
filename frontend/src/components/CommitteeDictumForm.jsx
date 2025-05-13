@@ -21,7 +21,7 @@ const CommitteeDictumForm = ({ committee, onSubmit }) => {
     return (
         <>
             <div id="projectEvaluationForm" style={{ padding: '20px 0' }}>
-                <h2 className="font-semibold text-2xl">Resultado de la evaluación</h2>
+                <h2 className="font-semibold text-2xl pb-4!">Formulario de evaluación de comité</h2>
 
                 <div id="evaluationQuestions" className="flex flex-col gap-4 !mb-6">
 
