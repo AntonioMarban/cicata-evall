@@ -5,6 +5,8 @@
     align-items: flex-start;
     margin-inline: auto;
     margin-bottom: 2rem;
+    padding: 3.5rem;
+    padding-bottom: 0;
 }
 
 .project-info {

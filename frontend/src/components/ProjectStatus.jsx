@@ -1,19 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
-import { useLocation } from "react-router-dom";
-import ProjectHeader from "./ProjectHeader";
 import "../styles/projectstatus.css";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export default function ProjectStatus() {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const projectId = searchParams.get("projectId");
-
+export default function ProjectStatus( { projectId }) {
   const [projectData, setProjectData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [stage1Evaluations, setStage1Evaluations] = useState([]);
   const [sendingStage1, setSendingStage1] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   const [stageCompleted, setStageCompleted] = useState(null);
   const [jumpThirdStage, setJumpThirdStage] = useState(null);
@@ -94,16 +88,10 @@ export default function ProjectStatus() {
     }
   };
 
+  if (loading || !projectData) return null;
+
   return (
     <main className="projectstatus-main">
-
-      <ProjectHeader
-        title={projectData.title}
-        startDate={projectData.startDate}
-        endDate={projectData.endDate}
-        folio={projectData.folio}
-        status={projectData.status}
-      />
 
       <div className="evaluation-section">
         <h2 className="subtitle">Progreso de evaluación</h2>
