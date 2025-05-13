@@ -285,6 +285,10 @@ ALTER TABLE projects ADD COLUMN hasCollaboration BOOLEAN DEFAULT TRUE, ADD COLUM
 -- Para la parte de presupuesto, se agrega un campo para el tipo de presupuesto
 ALTER TABLE budgets ADD COLUMN budgetTypeId INT, ADD CONSTRAINT fk_budgetType FOREIGN KEY (budgetTypeId) REFERENCES budgetTypes(budgetTypeId);
 
+-- Se agrega id de comité a la tabla evaluaciones
+ALTER TABLE evaluations ADD COLUMN committee_id INT, ADD CONSTRAINT fk_committee FOREIGN KEY (committee_id) REFERENCES committees(committeeId);
+
+
 -- Datos estaticos para la parte superior del formulario
 ALTER TABLE projects
 ADD COLUMN formVersion VARCHAR(10) DEFAULT '03',

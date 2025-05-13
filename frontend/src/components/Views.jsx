@@ -10,6 +10,7 @@ import EvaluateProject from "../pages/EvaluateProject";
 import ViewCompleteForm from "./ViewCompleteForm";
 import Project from "../pages/Project";
 import CommentsCommittee from "../pages/CommentsCommittee";
+import FinishedProjects from "../pages/FinishedProjects";
 const Views = () => {
   return (
   <Routes>
@@ -24,6 +25,7 @@ const Views = () => {
     <Route path = "/VerFormulario/:id" element={<ViewCompleteForm/>}></Route>
     <Route path = "/Proyecto" element={<Project/>}></Route>
     <Route path = "/comentarios" element={<CommentsCommittee/>}></Route>
+    <Route path = "/ProyectosFinalizados" element={<FinishedProjects/>}></Route>
     <Route
         path = "*"
         element={<Navigate to="/Inicio" replace/>} ></Route>

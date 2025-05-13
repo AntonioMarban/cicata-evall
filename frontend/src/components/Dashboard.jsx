@@ -28,7 +28,12 @@ function Dashboard({ projectCards }) {
     setUserType(typeFromStorage);
   }, []);
 
+  const isFinalizados = location.pathname === "/ProyectosFinalizados";
+
   const getTitleMessage = () => {
+    if (isFinalizados) {
+      return "Estos son los proyectos finalizados";
+    }
     switch (userType) {
       case 1:
         return "Estos son los proyectos activos que tienes";
@@ -42,6 +47,9 @@ function Dashboard({ projectCards }) {
   };
 
   const getEmptyMessage = () => {
+    if (isFinalizados) {
+      return "No hay proyectos finalizados disponibles.";
+    }
     switch (userType) {
       case 1:
         return "No tienes proyectos activos disponibles.";

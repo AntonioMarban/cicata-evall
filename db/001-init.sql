@@ -765,6 +765,7 @@ DELIMITER ;
 -- Procedimiento para guardar resultados de evaluación y comentarios
 DELIMITER //
 CREATE PROCEDURE saveEvaluationResults(
+    IN p_committeeId INT,
     IN p_projectId INT,
     IN p_userId INT,
     IN p_evaluationTypeId INT,
@@ -776,8 +777,8 @@ BEGIN
     DECLARE v_committeeId INT;
 
     -- Insertar los resultados de la evaluación
-    INSERT INTO evaluations (project_id, user_id, evaluation_type_id, score, result, comments)
-    VALUES (p_projectId, p_userId, p_evaluationTypeId, p_score, p_result, p_comments);
+    INSERT INTO evaluations (committee_id, project_id, user_id, evaluation_type_id, score, result, comments)
+    VALUES (p_committeeId, p_projectId, p_userId, p_evaluationTypeId, p_score, p_result, p_comments);
 END //
 
 
@@ -1367,6 +1368,8 @@ DELIMITER ;
 -- actualizando el status de este de acuerdo al resultado global dado por los comités
 -- @param projectId: Id del proyecto
 -- @returns: mensaje de éxito o error
+
+
 DELIMITER //
 CREATE PROCEDURE sendEvaluationResult(
     IN p_projectId INT

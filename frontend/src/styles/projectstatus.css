@@ -90,6 +90,12 @@
   color: #008000;
 }
 
+.pending {
+  color: #ff9800; 
+  font-style: italic;
+}
+
+
 .stage-button {
   margin-top: 1rem;
   padding: 0.5rem 1.2rem;
