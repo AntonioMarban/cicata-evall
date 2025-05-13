@@ -53,10 +53,14 @@
   padding: 10px;
 }
 .participant-form-rows{
+  margin-top: 10px;
   display: flex;
   width: 100%;
   justify-content: flex-start;
   gap: 2rem;
+}
+.participant-button-degree p{
+  margin-bottom: 10px;
 }
 .participant-form-rows div{
   width: 30%;

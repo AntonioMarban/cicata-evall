@@ -19,6 +19,13 @@
   padding: 20px;
 }
 
+.dialog-container2 {
+  position: relative;
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 .dialog-panel {
   background: white;
   padding: 20px;
@@ -82,6 +89,7 @@
 }
 .form-complete-row{
   width: 100%;
+  margin-top: 20px;
 }
 .form-complete-row input{
   border-radius: 10px;
