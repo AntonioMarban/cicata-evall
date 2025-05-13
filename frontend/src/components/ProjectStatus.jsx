@@ -72,7 +72,7 @@ export default function ProjectStatus({ projectId }) {
       );
       const data = await response.json();
       if (data) {
-        setFinalResult(data.controlVariables["@finalResult"]);
+        setFinalResult(data["@finalResult"]);
         setSendingPendingResearcher(data.sendingPending);
       }
     } catch (error) {
