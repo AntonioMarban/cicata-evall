@@ -190,6 +190,79 @@
 .message-after-data{
     margin-bottom: 20px;
 }
+
+
+.background-table-header{
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid black;
+    width: 100%;
+    font-weight: 480;
+}
+.background-images{
+    display: flex;
+    height: 100px;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding: 0 1rem; 
+    margin-bottom: 20px;
+}
+.background-images img {
+    max-height: 100%;  
+    max-width: 45%;     
+    height: auto;
+    width: auto;
+    object-fit: contain;
+}
+.background-header{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.row-header{
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+}
+.row-header div{
+    flex: 1;
+    border-right: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.folio-version{
+    display: flex;
+}
+.folio-version-first{
+    border-right: 1px solid black;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+}
+.folio-version-second{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+}
+.text-soli{
+    margin-top: 20px;
+    text-align: center;
+    width: 50%;
+    font-weight: 600;
+}
 @media print {
     .div-button {
       display: none !important;

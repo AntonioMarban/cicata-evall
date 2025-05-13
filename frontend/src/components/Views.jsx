@@ -7,8 +7,7 @@ import ManageAccounts from "../pages/ManageAccounts";
 import ManageIndividualUserForm from "../pages/ManageIndividualUserForm";
 import EditRubric from "../pages/EditRubric";
 import EvaluateProject from "../pages/EvaluateProject";
-import CommitteeDictumForm from "./CommitteeDictumForm";
-import ViewCompleteForms from "./ViewCompleteForms";
+import ViewCompleteForm from "./ViewCompleteForm";
 import Project from "../pages/Project";
 import CommentsCommittee from "../pages/CommentsCommittee";
 import FinishedProjects from "../pages/FinishedProjects";
@@ -23,9 +22,8 @@ const Views = () => {
     <Route path = "/FormularioDeUsuario" element={<ManageIndividualUserForm/>}></Route>
     <Route path = "/EditarRubrica" element={<EditRubric/>}></Route>
     <Route path = "/EvaluarProyecto" element={<EvaluateProject/>}></Route>
-    <Route path = "/VerFormulario/:id" element={<ViewCompleteForms/>}></Route>
+    <Route path = "/VerFormulario/:id" element={<ViewCompleteForm/>}></Route>
     <Route path = "/Proyecto" element={<Project/>}></Route>
-    <Route path = "/Forms" element={<CommitteeDictumForm/>}></Route>
     <Route path = "/comentarios" element={<CommentsCommittee/>}></Route>
     <Route path = "/ProyectosFinalizados" element={<FinishedProjects/>}></Route>
     <Route

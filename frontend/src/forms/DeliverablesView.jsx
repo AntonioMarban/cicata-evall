@@ -146,13 +146,13 @@ const DeliverablesView = ({ option, setOption }) => {
                 ))}
                 </tr>
             ))}
-            <tr>
+            {/* <tr>
                 <td>
                 <button className="button-other" onClick={()=>{handleOnClick2(setExtras1,extras1,deliverables1)}}>
                     Otro
                 </button>
                 </td>
-            </tr>
+            </tr> */}
             </tbody>
         </table>
 
@@ -193,13 +193,13 @@ const DeliverablesView = ({ option, setOption }) => {
                 ))}
                 </tr>
             ))}
-            <tr>
+            {/* <tr>
                 <td>
                 <button className="button-other" onClick={()=>{handleOnClick2(setExtras2,extras2,deliverables2)}}>
                     Otro
                 </button>
                 </td>
-            </tr>
+            </tr> */}
             </tbody>
         </table>
 
@@ -239,13 +239,13 @@ const DeliverablesView = ({ option, setOption }) => {
                 ))}
                 </tr>
             ))}
-            <tr>
+            {/* <tr>
                 <td>
                 <button className="button-other" onClick={()=>{handleOnClick2(setExtras3,extras3,deliverables3)}}>
                     Otro
                 </button>
                 </td>
-            </tr>
+            </tr> */}
             </tbody>
         </table>
 
