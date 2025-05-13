@@ -12,10 +12,12 @@ import Contributions from './ViewForm/Contributions';
 import ConflictInterest from './ViewForm/ConflictInterest';
 import Budget from './ViewForm/Budget'
 import { useParams  } from 'react-router-dom'
+import Files from './ViewForm/Files';
 const ViewCompleteForms = () => {  
     const { id }  = useParams();
     const apiUrl = import.meta.env.VITE_API_URL;
     const [completeForm, setCompleteForm] = useState(null);
+    const [files, setFiles] = useState([]);
     console.log(completeForm)
     const fetchData = (url,setData) =>{
         fetch(url,{
@@ -36,13 +38,26 @@ const ViewCompleteForms = () => {
         window.print();
     };
     const handlePrint2 = () => {
-        alert("Falta endpoint");
+    if (Array.isArray(files.documents)) {
+        files.documents.forEach((file) => {
+        const link = document.createElement('a');
+        link.href = `data:application/octet-stream;base64,${file.document}`;
+        link.download = file.name || `archivo-${file.annexeId}.pdf`; // ajusta el nombre o extensión si sabes el tipo
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        });
+    }
     };
+
     useEffect(()=>{
         fetchData(`${apiUrl}/researchers/projects/${id}`,setCompleteForm);
-
+        fetchData(`${apiUrl}/researchers/projects/${id}/documents`,setFiles);
     },[]);
-    console.log(completeForm)
+
+
+
+    console.log(files)
     return (
     <div className='fullTable-background'>
         <div className='div-button'>
@@ -94,6 +109,9 @@ const ViewCompleteForms = () => {
 
             <h1>11. CONFLICTO DE INTERÉS</h1>
             <ConflictInterest conflictOfInterest={completeForm.project[0].conflictOfInterest}/>
+
+            <h1>12. ANEXOS</h1>
+            <Files files={files}/>
         </div>
         )}
     </div>

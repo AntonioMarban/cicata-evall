@@ -10,25 +10,25 @@ CREATE PROCEDURE login(
 BEGIN
     DECLARE _userId INT;
     DECLARE _committeeId INT DEFAULT NULL;
-    
+
     SET _userId = (SELECT userId FROM users WHERE email = user_email AND password = SHA2(user_password,256));
-    
-    SET _committeeId = (SELECT committeeId 
-                        FROM committeeUsers 
+
+    SET _committeeId = (SELECT committeeId
+                        FROM committeeUsers
                         WHERE userId = _userId
                         LIMIT 1);
-                        
+
     IF _committeeId IS NULL THEN
-        SELECT 
-            userId, 
+        SELECT
+            userId,
             email,
             CONCAT(fName, ' ', lastName1, ' ', lastName2) AS fullName,
             userType_id
-        FROM users 
+        FROM users
         WHERE userId = _userId;
     ELSE
-        SELECT 
-            u.userId, 
+        SELECT
+            u.userId,
             u.email,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
             u.userType_id,
@@ -134,8 +134,8 @@ BEGIN
     INSERT INTO projects (
         title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary, introduction, background,
         statementOfProblem, justification, hypothesis, generalObjective, ethicalAspects, workWithHumans, workWithAnimals,
-        biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, 
-        otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification, formVersion, 
+        biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio,
+        otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification, formVersion,
         nextReview, preparedBy, reviewedBy, approvedBy, preparedDate, reviewedDate, approvedDate
     )
     VALUES (
@@ -298,7 +298,7 @@ BEGIN
 END //
 DELIMITER ;
 
--- procedimiento almacenado para subir documentos relacionados con el proyecto 
+-- procedimiento almacenado para subir documentos relacionados con el proyecto
 DELIMITER //
 CREATE PROCEDURE uploadDocument(
   IN p_document LONGBLOB,
@@ -315,57 +315,57 @@ DELIMITER //
 CREATE PROCEDURE getProjectDetails(IN p_projectId INT)
 BEGIN
     -- datos principales del proyecto
-    SELECT 
-        p.title, 
+    SELECT
+        p.title,
         DATE_FORMAt(p.startDate, '%Y-%m-%d') AS startDate,
         DATE_FORMAT(p.endDate, '%Y-%m-%d') AS endDate,
         p.typeResearch, p.otherTypeResearch,
         p.topic, p.subtopic, p.alignmentPNIorODS, p.alignsWithPNIorODS,
-        p.summary, p.introduction, p.background, p.statementOfProblem, 
-        p.justification, p.hypothesis, p.generalObjective, p.ethicalAspects, 
-        p.workWithHumans, p.workWithAnimals, p.biosecurityConsiderations, 
-        p.contributionsToIPNandCICATA, p.conflictOfInterest, p.aditionalComments, 
+        p.summary, p.introduction, p.background, p.statementOfProblem,
+        p.justification, p.hypothesis, p.generalObjective, p.ethicalAspects,
+        p.workWithHumans, p.workWithAnimals, p.biosecurityConsiderations,
+        p.contributionsToIPNandCICATA, p.conflictOfInterest, p.aditionalComments,
         p.folio, p.status, p.hasCollaboration, p.collaborationJustification,
         p.formVersion, p.nextReview, p.preparedBy,
-        p.reviewedBy, p.approvedBy, 
-        DATE_FORMAT(p.preparedDate, '%Y-%m-%d') AS preparedDate, 
-        DATE_FORMAT(p.reviewedDate, '%Y-%m-%d') AS reviewedDate, 
+        p.reviewedBy, p.approvedBy,
+        DATE_FORMAT(p.preparedDate, '%Y-%m-%d') AS preparedDate,
+        DATE_FORMAT(p.reviewedDate, '%Y-%m-%d') AS reviewedDate,
         DATE_FORMAT(p.approvedDate, '%Y-%m-%d') AS approvedDate
     FROM projects p
     WHERE p.projectId = p_projectId;
 
     -- associatedProjects
-    SELECT 
-        name, 
+    SELECT
+        name,
         DATE_FORMAT(associationDate, '%Y-%m-%d') AS associationDate,
         project_type, externalRegister, SIPRegister
     FROM associatedProjects
     WHERE project_id = p_projectId;
 
     -- members
-    SELECT 
-        fName, lastName1, lastName2, email, phone, institution, positionWork, researchNetwork, 
+    SELECT
+        fName, lastName1, lastName2, email, phone, institution, positionWork, researchNetwork,
         researchNetworkName, academicDegree, levelName, levelNum, tutorName
     FROM members
     WHERE project_id = p_projectId;
 
     -- collaborativeInstitutions
-    SELECT 
+    SELECT
         name, partOfIPN, collaborationAgreement, agreementType, agreementNumber
     FROM collaborativeInstitutions
     WHERE project_id = p_projectId;
 
     -- scheduleActivities
-    SELECT 
-        goal, institution, responsibleMember, 
+    SELECT
+        goal, institution, responsibleMember,
         DATE_FORMAt(startDate, '%Y-%m-%d') AS startDate,
         DATE_FORMAT(endDate, '%Y-%m-%d') AS endDate
     FROM scheduleActivities
     WHERE project_id = p_projectId;
 
     -- deliverablesProjects
-    SELECT 
-        dp.quantity, 
+    SELECT
+        dp.quantity,
         d.deliverableId,
         dt.deliverableTypeId,
         d.name
@@ -375,7 +375,7 @@ BEGIN
     WHERE dp.projectId = p_projectId;
 
     -- budgets
-    SELECT 
+    SELECT
         b.investmentExpenditure, b.name, b.expenditure, bt.budgetTypeId, bt.type_name, bt.description
     FROM budgets b
     JOIN budgetTypes bt ON b.budgetTypeId = bt.budgetTypeId
@@ -397,7 +397,7 @@ BEGIN
     WHERE project_id = p_projectId;
 
     -- investigador (usuario que registró el proyecto)
-    SELECT u.fName, u.lastName1, u.lastName2, u.email, u.phone, u.institution, u.positionWork, u.researchNetwork, 
+    SELECT u.fName, u.lastName1, u.lastName2, u.email, u.phone, u.institution, u.positionWork, u.researchNetwork,
         u.researchNetworkName, u.academicDegree, u.levelName, u.levelNum
     FROM usersProjects up
     JOIN users u ON up.user_id = u.userId
@@ -412,7 +412,7 @@ CREATE PROCEDURE getProjectDocuments(
   IN p_projectId INT
 )
 BEGIN
-  SELECT 
+  SELECT
     annexeId,
     projectId,
     document
@@ -475,22 +475,22 @@ DELIMITER //
 CREATE PROCEDURE getAgreementSignature( IN p_userId INT, IN p_projectId INT)
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM evaluations 
+        SELECT 1 FROM evaluations
         WHERE user_id = p_userId AND project_id = p_projectId
     ) THEN
-        SIGNAL SQLSTATE '45000' 
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user is not an evaluator for this project';
-    ELSE    
+    ELSE
         SELECT
             DATE_FORMAT(a.date, '%Y-%m-%d') AS date,
             a.agreed,
             p.title,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher
-        FROM 
+        FROM
             agreements a
         JOIN users u ON a.user_id = u.userId
         JOIN projects p ON a.project_id = p.projectId
-        WHERE 
+        WHERE
             a.user_id = p_userId
             AND a.project_id = p_projectId;
     END IF;
@@ -503,31 +503,31 @@ DELIMITER ;
 -- @returns: Mensaje de éxito o error
 DELIMITER //
 CREATE PROCEDURE updateAgreementSignature(
-    IN p_userId INT, 
-    IN p_projectId INT, 
+    IN p_userId INT,
+    IN p_projectId INT,
     IN p_email VARCHAR(100),
     IN p_password VARCHAR(100)
 )
 BEGIN
     IF NOT EXISTS(
-        SELECT 1 FROM users 
+        SELECT 1 FROM users
         WHERE userId = p_userId AND email = p_email AND password = SHA2(p_password,256)
     ) THEN
-        SIGNAL SQLSTATE '45000' 
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Invalid credentials';
     ELSEIF NOT EXISTS (
-        SELECT 1 FROM evaluations 
+        SELECT 1 FROM evaluations
         WHERE user_id = p_userId AND project_id = p_projectId
     ) THEN
-        SIGNAL SQLSTATE '45000' 
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user is not an evaluator for this project';
-    ELSE    
-        UPDATE 
+    ELSE
+        UPDATE
             agreements
         SET
             agreed = TRUE,
             date = NOW()
-        WHERE 
+        WHERE
             user_id = p_userId
             AND project_id = p_projectId;
     END IF;
@@ -544,17 +544,17 @@ DELIMITER //
 CREATE PROCEDURE getCommitteeRubric(IN p_committeeId INT, IN p_userId INT)
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM committeeUsers 
+        SELECT 1 FROM committeeUsers
         WHERE userId = p_userId AND committeeId = p_committeeId
     ) THEN
-        SIGNAL SQLSTATE '45000' 
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user does not belong to this committee';
-    ELSE    
-        SELECT 
+    ELSE
+        SELECT
             rubric
-        FROM 
-            rubrics 
-        WHERE 
+        FROM
+            rubrics
+        WHERE
             committee_id = p_committeeId;
     END IF;
 END //
@@ -571,17 +571,17 @@ DELIMITER //
 CREATE PROCEDURE updateCommitteeRubric(IN p_committeeId INT, IN p_userId INT, IN p_rubric LONGBLOB)
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM committeeUsers 
+        SELECT 1 FROM committeeUsers
         WHERE userId = p_userId AND committeeId = p_committeeId
     ) THEN
-        SIGNAL SQLSTATE '45000' 
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user does not belong to this committee';
-    ELSE    
-        UPDATE 
+    ELSE
+        UPDATE
             rubrics
-        SET 
+        SET
             rubric = p_rubric
-        WHERE 
+        WHERE
             committee_id = p_committeeId;
     END IF;
 END //
@@ -662,7 +662,7 @@ BEGIN
             cu.committeeId = p_committeeId AND u.userType_id = 3;
         UPDATE evaluations
         SET comments = p_comments, result = p_result
-        WHERE evaluation_type_id = 2 
+        WHERE evaluation_type_id = 2
              AND project_id = p_project_id
              AND user_id = v_presidentId;
     END IF;
@@ -774,7 +774,7 @@ CREATE PROCEDURE saveEvaluationResults(
 )
 BEGIN
     DECLARE v_committeeId INT;
-    
+
     -- Insertar los resultados de la evaluación
     INSERT INTO evaluations (project_id, user_id, evaluation_type_id, score, result, comments)
     VALUES (p_projectId, p_userId, p_evaluationTypeId, p_score, p_result, p_comments);
@@ -790,19 +790,19 @@ DELIMITER //
 CREATE PROCEDURE getUsersByRole(IN p_userType_id INT)
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM userTypes 
+        SELECT 1 FROM userTypes
         WHERE userTypeId = p_userType_id
     ) THEN
-        SIGNAL SQLSTATE '45000' 
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user type does not exist';
     END IF;
-    SELECT 
+    SELECT
         u.userId,
         CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
         u.email
-    FROM 
+    FROM
         users u
-    WHERE 
+    WHERE
         u.userType_id = p_userType_id;
 END //
 DELIMITER ;
@@ -815,10 +815,10 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE getAllCommittees()
 BEGIN
-    SELECT 
+    SELECT
         c.committeeId,
         c.name
-    FROM 
+    FROM
         committees c;
 END //
 DELIMITER ;
@@ -833,30 +833,30 @@ DELIMITER //
 CREATE PROCEDURE getCommitteeSecretaryPresident(IN p_committee_id INT)
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM committees 
+        SELECT 1 FROM committees
         WHERE committeeId = p_committee_id
     ) THEN
-        SIGNAL SQLSTATE '45000' 
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The committee does not exist';
     ELSE
-        SELECT 
+        SELECT
             u.userId,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS secretary,
             u.email
-        FROM 
+        FROM
             committeeUsers cu
         JOIN users u ON cu.userId = u.userId
-        WHERE 
+        WHERE
             cu.committeeId = p_committee_id AND u.userType_id = 4;
 
-        SELECT 
+        SELECT
             u.userId,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS president,
             u.email
-        FROM 
+        FROM
             committeeUsers cu
         JOIN users u ON cu.userId = u.userId
-        WHERE 
+        WHERE
             cu.committeeId = p_committee_id AND u.userType_id = 3;
     END IF;
 END //
@@ -872,25 +872,25 @@ DELIMITER ;
 -- @returns: Lista de integrantes del comité que no son evaluadores del proyecto
 DELIMITER //
 CREATE PROCEDURE getProjectNonEvaluators(
-    IN p_committeeId INT, 
-    IN p_userId INT, 
+    IN p_committeeId INT,
+    IN p_userId INT,
     IN p_projectId INT
 )
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM committeeUsers 
+        SELECT 1 FROM committeeUsers
         WHERE userId = p_userId AND committeeId = p_committeeId
     ) THEN
-        SIGNAL SQLSTATE '45000' 
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user does not belong to this committee';
-    ELSE    
-        SELECT 
+    ELSE
+        SELECT
             u.userId,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName
-        FROM 
+        FROM
             committeeUsers cu
         JOIN users u ON cu.userId = u.userId
-        WHERE 
+        WHERE
             cu.committeeId = p_committeeId AND u.userType_id = 4 AND u.userId NOT IN (
                 SELECT user_id FROM evaluations WHERE project_id = p_projectId
             );
@@ -902,25 +902,25 @@ END //
 -- @param committeeId: Id del comité
 -- @param userId: Id del miembro del comité, en este caso el secretario
 -- @param projectId: Id del proyecto
--- body: { 
+-- body: {
 --   evaluatorId: Id del evaluador que se va a agregar al proyecto
 -- }
 -- @returns: Mensaje de éxito o error
 DELIMITER //
 CREATE PROCEDURE addEvaluatorToProject(
-    IN p_committeeId INT, 
-    IN p_userId INT, 
+    IN p_committeeId INT,
+    IN p_userId INT,
     IN p_projectId INT,
     IN p_evaluatorId INT
 )
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM committeeUsers 
+        SELECT 1 FROM committeeUsers
         WHERE userId = p_userId AND committeeId = p_committeeId
     ) THEN
-        SIGNAL SQLSTATE '45000' 
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user does not belong to this committee';
-    ELSE    
+    ELSE
         INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
         VALUES (p_evaluatorId, p_projectId, 1);
     END IF;
@@ -936,29 +936,29 @@ DELIMITER ;
 -- @returns: Lista de evaluaciones del proyecto
 DELIMITER //
 CREATE PROCEDURE getProjectEvaluations(
-    IN p_committeeId INT, 
-    IN p_userId INT, 
+    IN p_committeeId INT,
+    IN p_userId INT,
     IN p_projectId INT
 )
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM committeeUsers 
+        SELECT 1 FROM committeeUsers
         WHERE userId = p_userId AND committeeId = p_committeeId
     ) THEN
-        SIGNAL SQLSTATE '45000' 
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user does not belong to this committee';
-    ELSE    
-        SELECT 
+    ELSE
+        SELECT
             u.userId,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
             e.score,
             e.result,
             e.comments
-        FROM 
+        FROM
             evaluations e
         JOIN users u ON e.user_id = u.userId
         JOIN committeeUsers cu ON u.userId = cu.userId
-        WHERE 
+        WHERE
             e.project_id = p_projectId
             AND e.evaluation_type_id = 1
             AND cu.committeeId = p_committeeId;
@@ -982,6 +982,7 @@ BEGIN
     DECLARE v_result VARCHAR(50);
     DECLARE stageCompleted BOOLEAN DEFAULT FALSE;
     DECLARE jumpThirdStage BOOLEAN DEFAULT FALSE;
+    DECLARE sendingPending BOOLEAN DEFAULT FALSE;
 
     -- Obtener el ID del primer comite y el ID del usuario (presidente)
     SELECT cu.committeeId, u.userId INTO v_committeeId, v_userId
@@ -997,10 +998,15 @@ BEGIN
     WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userId
     LIMIT 1;
 
-    IF v_result = 'Aprobado' THEN
-        SET stageCompleted = TRUE;
-    ELSEIF v_result = 'No aprobado' OR v_result = 'Pendiente de correcciones' THEN
-        SET jumpThirdStage = TRUE;
+    IF ROW_COUNT() = 0
+    THEN
+        SET sendingPending = TRUE;
+    ELSE
+        IF v_result = 'Aprobado' THEN
+            SET stageCompleted = TRUE;
+        ELSEIF v_result = 'No aprobado' OR v_result = 'Pendiente de correcciones' THEN
+            SET jumpThirdStage = TRUE;
+        END IF;
     END IF;
 
     SELECT c.name, e.result, e.comments FROM evaluations e
@@ -1009,13 +1015,13 @@ BEGIN
     WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userId
     LIMIT 1;
 
-    SELECT stageCompleted, jumpThirdStage;
+    SELECT stageCompleted, jumpThirdStage, sendingPending;
 
 END //
 DELIMITER ;
 
 
--- Función para crear las evaluaciones de la primera etapa, en este caso del 
+-- Función para crear las evaluaciones de la primera etapa, en este caso del
 -- CIP, relacionadas a un proyecto
 -- Se hace uso de un procedimiento almacena createFirstStageEvaluations
 -- @param projectId: Id del proyecto
@@ -1037,13 +1043,13 @@ BEGIN
 
     -- Verificar si el proyecto ya tiene evaluaciones de la primera etapa
     IF EXISTS (
-        SELECT 1 FROM evaluations 
+        SELECT 1 FROM evaluations
         WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userId
     ) THEN
-        SIGNAL SQLSTATE '45000' 
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The project already has evaluations of the first stage';
     END IF;
-    -- Insertar la evaluación de la primera etapa, de tipo comité para el comité 1 (CIP), 
+    -- Insertar la evaluación de la primera etapa, de tipo comité para el comité 1 (CIP),
     -- relacionada al secretario del comité
     INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
     VALUES (v_userId, p_projectId, 2);
@@ -1051,7 +1057,7 @@ END //
 DELIMITER ;
 
 
--- Función para crear las evaluaciones de la segunda etapa, en este caso de los comités CEI, CB y CI. 
+-- Función para crear las evaluaciones de la segunda etapa, en este caso de los comités CEI, CB y CI.
 -- En caso de que el proyecto tenga marcado el uso de animales se crea la evaluación del comité CIQUAL
 -- Se hace uso de un procedimiento almacenado createSecondStageEvaluations
 -- @param projectId: Id del proyecto
@@ -1085,7 +1091,7 @@ BEGIN
 
     -- Verificar si el proyecto ya tiene evaluaciones de la primera etapa
     IF EXISTS (
-        SELECT 1 FROM evaluations 
+        SELECT 1 FROM evaluations
         WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCIP AND result = 'Aprobado'
     ) THEN
         -- Obtener el ID del comité CI y el ID del usuario (presidente)
@@ -1109,7 +1115,7 @@ BEGIN
 
         -- Verificar si el proyecto ya tiene evaluaciones del comité CI
         IF NOT EXISTS (
-            SELECT 1 FROM evaluations 
+            SELECT 1 FROM evaluations
             WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCI
         ) THEN
             -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 2 (CI),
@@ -1119,17 +1125,17 @@ BEGIN
 
         -- Verificar si el proyecto ya tiene evaluaciones del comité CB
         IF NOT EXISTS (
-            SELECT 1 FROM evaluations 
+            SELECT 1 FROM evaluations
             WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCB
         ) THEN
             -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 3 (CB),
             INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
             VALUES (v_userIdCB, p_projectId, 2);
         END IF;
-        
+
         -- Verificar si el proyecto ya tiene evaluaciones del comité CEI
         IF NOT EXISTS (
-            SELECT 1 FROM evaluations 
+            SELECT 1 FROM evaluations
             WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCEI
         ) THEN
             -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 4 (CEI),
@@ -1151,7 +1157,7 @@ BEGIN
             LIMIT 1;
 
             IF NOT EXISTS (
-                SELECT 1 FROM evaluations 
+                SELECT 1 FROM evaluations
                 WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCIQUAL
             ) THEN
                 INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
@@ -1159,7 +1165,7 @@ BEGIN
             END IF;
         END IF;
     ELSE
-        SIGNAL SQLSTATE '45000' 
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The project does not have evaluations approved from first stage by the CIP committee';
     END IF;
 END //
@@ -1179,6 +1185,7 @@ BEGIN
     DECLARE stageCompleted BOOLEAN DEFAULT FALSE;
     DECLARE jumpThirdStage BOOLEAN DEFAULT FALSE;
     DECLARE pendingEvaluations BOOLEAN DEFAULT FALSE;
+    DECLARE sendingPending BOOLEAN DEFAULT FALSE;
 
     DECLARE v_committeeCI INT;
     DECLARE v_resultCI VARCHAR(50);
@@ -1217,7 +1224,10 @@ BEGIN
     JOIN committees c ON cu.committeeId = c.committeeId
     WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCI
     LIMIT 1;
-
+    IF FOUND_ROWS() = 0
+    THEN
+        SET sendingPending = TRUE;
+    END IF;
     -- Obtener el ID del comité CB y el ID del usuario (presidente)
     SELECT cu.committeeId, u.userId INTO v_committeeCB, v_userIdCB
     FROM committeeUsers cu
@@ -1236,7 +1246,10 @@ BEGIN
     JOIN committees c ON cu.committeeId = c.committeeId
     WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCB
     LIMIT 1;
-
+    IF FOUND_ROWS() = 0
+    THEN
+        SET sendingPending = TRUE;
+    END IF;
     -- Obtener el ID del comité CEI y el ID del usuario (presidente)
     SELECT cu.committeeId, u.userId INTO v_committeeCEI, v_userIdCEI
     FROM committeeUsers cu
@@ -1255,7 +1268,10 @@ BEGIN
     JOIN committees c ON cu.committeeId = c.committeeId
     WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCEI
     LIMIT 1;
-
+    IF FOUND_ROWS() = 0
+    THEN
+        SET sendingPending = TRUE;
+    END IF;
     -- Verificar si el proyecto tiene marcado el uso de animales
     SELECT workWithAnimals INTO v_workWithAnimals
     FROM projects
@@ -1278,6 +1294,10 @@ BEGIN
         JOIN committees c ON cu.committeeId = c.committeeId
         WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCIQUAL
         LIMIT 1;
+        IF FOUND_ROWS() = 0
+        THEN
+            SET sendingPending = TRUE;
+        END IF;
         -- Si el resultado es nulo es que la evaluación sigue pendiente
         IF v_resultCIQUAL IS NULL
         THEN
@@ -1299,7 +1319,7 @@ BEGIN
         SET jumpThirdStage = True;
     END IF;
 
-    SELECT stageCompleted, jumpThirdStage;
+    SELECT stageCompleted, jumpThirdStage, sendingPending;
 END //
 DELIMITER ;
 
@@ -1311,12 +1331,15 @@ CREATE PROCEDURE getResultThirdStage(
     IN p_projectId INT
 )
 BEGIN
+    DECLARE sendingPending BOOLEAN DEFAULT FALSE;
+
     DECLARE v_result VARCHAR(50);
     DECLARE found INTEGER DEFAULT 1;
     DECLARE resultCursor CURSOR FOR
         SELECT result FROM evaluations WHERE project_id = p_projectId AND evaluation_type_id = 2;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET found = 0;
     OPEN resultCursor;
+    SET @finalResult = 'Aprobado';
     bucle: LOOP
         FETCH resultCursor INTO v_result;
         IF NOT found THEN
@@ -1329,12 +1352,14 @@ BEGIN
         ELSEIF v_result IS NULL THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'The project has pending evaluations';
-        ELSE
-            SET @finalResult = 'Aprobado';
         END IF;
     END LOOP bucle;
     CLOSE resultCursor;
-    SELECT @finalResult;
+    IF (SELECT status COLLATE utf8mb4_unicode_ci FROM projects WHERE projectId = p_projectId) != @finalResult COLLATE utf8mb4_unicode_ci
+    THEN
+        SET sendingPending = TRUE;
+    END IF;
+    SELECT @finalResult, sendingPending;
 END //
 DELIMITER ;
 

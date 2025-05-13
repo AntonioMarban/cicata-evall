@@ -27,7 +27,7 @@ const  Anexos = ({option,setOption}) => {
         try {
             await updateForm(anexos);
         } catch (error) {
-            console.error("Error saving form to IndexedDB:", error);
+            //console.error("Error saving form to IndexedDB:", error);
             alert("Error al guardar el formulario. Por favor, inténtalo de nuevo.");
             return; 
         }
@@ -42,8 +42,8 @@ const  Anexos = ({option,setOption}) => {
             const userId = localStorage.getItem('userId');
             cleanFormData.userId = userId;
     
-            console.log("Submitting project data:", cleanFormData);
-            console.log("Files to upload (afilesSend):", afilesSend);
+            //console.log("Submitting project data:", cleanFormData);
+            //console.log("Files to upload (afilesSend):", afilesSend);
     
             const response = await fetch(`${apiUrl}/researchers/projects`, {
                 method: 'POST',
@@ -58,16 +58,21 @@ const  Anexos = ({option,setOption}) => {
             const data = await response.json();
     
             if (data.projectId) {
-                console.log("Project created successfully, ID:", data.projectId);
+                //console.log("Project created successfully, ID:", data.projectId);
                 
-                if (afilesSend && afilesSend.length > 0) {
+                if ((afilesSend && afilesSend.length > 0) || (efilesSend && efilesSend.length > 0)) {
                     try {
-                        console.log("Uploading document:", afilesSend[0].name);
+                        //console.log("Uploading document:", afilesSend[0].name);
                         
                         const formDataFiles = new FormData();
                         formDataFiles.append('projectId', data.projectId);
-                        formDataFiles.append('documents', afilesSend[0]);
-    
+                        Object.entries(afilesSend).forEach(([key, value]) => {
+                            formDataFiles.append('documents',value)
+                        });
+                        Object.entries(efilesSend).forEach(([key, value]) => {
+                            formDataFiles.append('documents',value)
+                        });
+                        //console.log(formDataFiles)
                         const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
                             method: 'POST',                    
                             body: formDataFiles,
@@ -80,14 +85,14 @@ const  Anexos = ({option,setOption}) => {
                         const uploadData = await uploadResponse.json();
                         
                         if (uploadData.message == 'Documents uploaded successfully') {
-                            console.log("File uploaded successfully:", uploadData.message);
+                            //console.log("File uploaded successfully:", uploadData.message);
                             navigate(`/VerFormulario/${data.projectId}`);
                             indexedDB.deleteDatabase('Cicata');
                         } else {
-                            console.warn("Upload succeeded but no confirmation message:", uploadData);
+                            //console.warn("Upload succeeded but no confirmation message:", uploadData);
                         }
                     } catch (uploadError) {
-                        console.error("Error uploading file:", uploadError);
+                        //console.error("Error uploading file:", uploadError);
                         alert("El proyecto se creó, pero hubo un error al subir el archivo.");
                     }
                 } else {
@@ -98,7 +103,7 @@ const  Anexos = ({option,setOption}) => {
                 throw new Error("Missing projectId in server response.");
             }
         } catch (error) {
-            console.error("Error submitting form:", error);
+            //console.error("Error submitting form:", error);
             alert("Error al enviar el formulario. Por favor, inténtalo de nuevo.");
         }
     };

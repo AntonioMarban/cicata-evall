@@ -5,7 +5,7 @@ import { useFormHandler } from "../hooks/useFormHandler";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
 import { useState } from "react";
-import CardAdd from "../components/CardAdd";
+import CardAdd from "../components/CardAddBudget";
 
 const  Budget = ({option,setOption}) => {
     const [budget, setBudget] = useState({
@@ -13,7 +13,6 @@ const  Budget = ({option,setOption}) => {
         budgets:[]
     });
     const [budgetToEdit, setBudgetToEdit] = useState(null);
-
     
     const handleOnSubmitForm = useFormHandler({
         form: budget,
@@ -34,7 +33,6 @@ const  Budget = ({option,setOption}) => {
     const handleEditComplete = () => {
         setBudgetToEdit(null);
     };
-
     useLoadFormData(budget.idF,setBudget);
 
     return (
@@ -46,15 +44,15 @@ const  Budget = ({option,setOption}) => {
                 <div className="rounded-lg p-0 w-full">
                     <div className="flex justify-between !p-2">
                     <p className="flex-1">Tipo presupuesto</p>
-                    <p className="flex-1 ">Nombre</p>
-                    <p className="flex-1 text-center">Gasto $0.00</p>
-                    <p className="flex-1"></p>
+                    <p className="flex-1 text-start">Nombre</p>
+                    <p className="flex-1 text-start">Gasto $</p>
+                    <p className="flex-1 text-start"></p>
                     </div>
                 </div>
                 <CardAdd cards={budget.budgets} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}
-                    slice={5}
+                    slice={3}
                 />
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
