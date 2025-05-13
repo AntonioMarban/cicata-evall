@@ -10,6 +10,7 @@ import Activities from './ViewForm/Activities';
 import Deliverables from './ViewForm/Deliverables';
 import Contributions from './ViewForm/Contributions';
 import ConflictInterest from './ViewForm/ConflictInterest';
+import Header from './ViewForm/Header';
 import Budget from './ViewForm/Budget'
 import { useParams  } from 'react-router-dom'
 import Files from './ViewForm/Files';
@@ -66,6 +67,9 @@ const ViewCompleteForms = () => {
         </div>
         {completeForm && (
         <div className='fullTable-body'>
+
+            <Header generalData={completeForm.project[0]}/>
+
             <h1>1. DATOS GENERALES DEL PROYECTO</h1>
             
             <ViewGeneralData generalData={completeForm.project[0]} associatedProjects={completeForm.associatedProjects} />

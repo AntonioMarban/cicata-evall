@@ -163,14 +163,14 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                         className="participant-form-pieza-input"></input>
                                 </div>
                                 <div>
-                                    <p>tutorName
+                                    <p>Nombre del tutor
                                         <br/>{newErrors.tutorName && <span className="text-red-600"> *{newErrors.tutorName}</span>}
                                     </p>
                                     <input
                                         name="tutorName"
                                         value={participant.tutorName}
                                         onChange={handleInputChange} 
-                                        placeholder="Escribe el puesto que desempeña..."
+                                        placeholder="Escribe el nombre del tutor..."
                                         className="participant-form-pieza-input"></input>
                                 </div>
                             </div>
@@ -209,7 +209,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             </div>
                             <div className="participant-form-rows">
                                 <div className="participant-button-degree">
-                                    <p>Tipo investigador
+                                    <p >Tipo investigador
                                         <br/>{newErrors.levelName && <span className="text-red-600"> *{newErrors.levelName}</span>}
                                     </p>
                                     <select name="levelName" 

@@ -122,7 +122,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
             )}
 
             <Dialog open={isOpen} onClose={() => { }} className="dialog-overlay">
-                <div className="dialog-container">
+                <div className="dialog-container2">
                     <DialogPanel className="dialog-panel">
                         <p className="dialog-title">{budgetToEdit ? "Editar Presupuesto" : "Agregar Presupuesto"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
@@ -173,7 +173,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                     min={0}
                                     step="0.01"
                                     className="form-pieza-input" 
-                                    placeholder="Escribe el tipo de proyecto..."
+                                    placeholder="Escribe la cantidad del gasto..."
                                     value={budgetForm.expenditure}
                                     onChange={handleInputChange}
                                 ></input>
