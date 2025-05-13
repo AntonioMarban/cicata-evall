@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
+import ProjectHeader from "./ProjectHeader";
 import "../styles/projectstatus.css";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -69,12 +70,6 @@ export default function ProjectStatus() {
     return <main className="projectstatus-main">Proyecto no encontrado.</main>;
   }
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "-";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("es-MX");
-  };
-
   const handleSendStage1 = async () => {
     try {
       setSendingStage1(true);
@@ -101,30 +96,14 @@ export default function ProjectStatus() {
 
   return (
     <main className="projectstatus-main">
-      <div className="project-header">
-        <div className="project-info">
-          <h1 className="project-title">{projectData.title || "Sin título"}</h1>
-          <div className="info-grid">
-            <div className="info-item">
-              <p className="label">Fecha inicio</p>
-              <p>{formatDate(projectData.startDate)}</p>
-            </div>
-            <div className="info-item">
-              <p className="label">Fecha fin</p>
-              <p>{formatDate(projectData.endDate)}</p>
-            </div>
-            <div className="info-item">
-              <p className="label">Folio</p>
-              <p>{projectData.folio || "-"}</p>
-            </div>
-            <div className="info-item">
-              <p className="label">Status</p>
-              <p>{projectData.status || "-"}</p>
-            </div>
-          </div>
-        </div>
-        <button className="info-button">Información</button>
-      </div>
+
+      <ProjectHeader
+        title={projectData.title}
+        startDate={projectData.startDate}
+        endDate={projectData.endDate}
+        folio={projectData.folio}
+        status={projectData.status}
+      />
 
       <div className="evaluation-section">
         <h2 className="subtitle">Progreso de evaluación</h2>
