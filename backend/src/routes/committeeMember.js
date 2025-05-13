@@ -10,7 +10,7 @@ const {
 
 router.get('/committees/:committeeId/members/:userId/projects', getPendingProjects); // Obtiene los proyectos pendientes de evaluación (individuales)
 router.get('/committees/:committeeId/members/:userId/rubric', getCommitteeRubric);
-router.post('/committees/members/projects/evaluation', saveEvaluationResults);
+router.patch('/committees/:committeeId/members/:userId/projects/:projectId/evaluations', saveEvaluationResults);
 
 
 module.exports = router;
