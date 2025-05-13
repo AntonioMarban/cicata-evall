@@ -7,14 +7,22 @@ export default function ProjectStatus({ projectId }) {
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Stage 1
   const [stage1Evaluations, setStage1Evaluations] = useState([]);
   const [sendingStage1, setSendingStage1] = useState(false);
   const [stage1Completed, setStage1Completed] = useState(0);
 
+  // Stage 2
   const [stage2Evaluations, setStage2Evaluations] = useState([]);
   const [sendingStage2, setSendingStage2] = useState(false);
   const [stage2Completed, setStage2Completed] = useState(0);
 
+  // Stage 3
+  const [finalResult, setFinalResult] = useState(null);
+  const [sendingStage3, setSendingStage3] = useState(false);
+  const [sendingPendingResearcher, setSendingPendingResearcher] = useState(0);
+
+  // Control Variables
   const [jumpThirdStage, setJumpThirdStage] = useState(0);
   const [sendingPending, setSendingPending] = useState(0);
 
@@ -56,6 +64,22 @@ export default function ProjectStatus({ projectId }) {
     }
   }, [projectId]);
 
+  const fetchStage3 = useCallback(async () => {
+    try {
+      if (!projectId) return;
+      const response = await fetch(
+        `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage3`
+      );
+      const data = await response.json();
+      if (data) {
+        setFinalResult(data.controlVariables["@finalResult"]);
+        setSendingPendingResearcher(data.sendingPending);
+      }
+    } catch (error) {
+      console.error("Error fetching stage 3:", error);
+    }
+  }, [projectId]);
+
   useEffect(() => {
     async function fetchProject() {
       try {
@@ -85,8 +109,13 @@ export default function ProjectStatus({ projectId }) {
     if (stage1Completed === 1) {
       fetchStage2Evaluations();
     }
-    console.log(jumpThirdStage + " " + stage1Completed);
   }, [stage1Completed, fetchStage2Evaluations]);
+
+  useEffect(() => {
+    if (stage2Completed === 1) {
+      fetchStage3();
+    }
+  }, [stage2Completed, fetchStage3]);
 
   if (loading) {
     return <main className="projectstatus-main">Cargando...</main>;
@@ -140,6 +169,31 @@ export default function ProjectStatus({ projectId }) {
       }
     } catch (error) {
       console.error("Error en el POST de etapa 2:", error);
+    } finally {
+      setSendingStage2(false);
+    }
+  };
+
+  const handleSendStage3 = async () => {
+    console.log("hola");
+    try {
+      setSendingStage3(true);
+      const response = await fetch(
+        `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage3`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        await fetchStage3();
+      } else {
+        console.error("Error en el envío de evaluación etapa 3.");
+      }
+    } catch (error) {
+      console.error("Error en el POST de etapa 3:", error);
     } finally {
       setSendingStage2(false);
     }
@@ -284,13 +338,22 @@ export default function ProjectStatus({ projectId }) {
           </p>
           <button
             className={`stage-button ${
-              jumpThirdStage === 1 || stage2Completed === 1
+              sendingStage3
+                ? "disabled"
+                : (sendingPendingResearcher === 1 ||
+                    sendingPendingResearcher == null) &&
+                  (jumpThirdStage === 1 || stage2Completed === 1)
                 ? "active"
                 : "disabled"
             }`}
-            disabled={jumpThirdStage !== 1}
+            onClick={handleSendStage3}
+            disabled={
+              sendingStage3 ||
+              sendingPendingResearcher === 0 ||
+              (jumpThirdStage !== 1 && stage2Completed !== 1)
+            }
           >
-            Enviar al investigador
+            {sendingStage3 ? "Enviando..." : "Enviar al investigador"}
           </button>
         </div>
       </div>
