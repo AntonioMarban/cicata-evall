@@ -259,7 +259,7 @@ export default function ProjectStatus({ projectId }) {
           {stage2Evaluations.length === 0 ? (
             <>
               <p>
-                Este proyecto aún no ha sido enviado al CEI, CB y CI aaaaaa.
+                Este proyecto aún no ha sido enviado al CEI, CB y CI.
               </p>
               <button
                 className={`stage-button ${
