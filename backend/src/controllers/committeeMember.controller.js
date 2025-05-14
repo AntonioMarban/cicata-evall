@@ -72,11 +72,11 @@ const getCommitteeRubric = (req, res) => {
 
 
 const saveEvaluationResults = (req, res) => {
-  const {committeeId, userId, projectId } = req.params;
-  const {evalutionTypeId, score, results, comments } = req.body;
+  const { committeeId, userId, projectId } = req.params;
+  const { score, results, comments } = req.body;
   
-  const query = `CALL saveEvaluationResults(?, ?, ?, ?, ?, ?, ?)`;
-  const values = [committeeId, projectId, userId, evalutionTypeId, score, results, comments];
+  const query = `CALL saveEvaluationResults(?, ?, ?, ?, ?, ?)`;
+  const values = [committeeId, projectId, userId, score, results, comments];
   pool.query(query, values, (err, results) => {
     if (err) {
       console.error("Error saving evaluation results:", err);

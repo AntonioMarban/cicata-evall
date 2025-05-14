@@ -769,18 +769,20 @@ CREATE PROCEDURE saveEvaluationResults(
     IN p_committeeId INT,
     IN p_projectId INT,
     IN p_userId INT,
-    IN p_evaluationTypeId INT,
     IN p_score INT,
     IN p_result VARCHAR(50),
     IN p_comments TEXT
 )
 BEGIN
-    DECLARE v_committeeId INT;
-
-    -- Insertar los resultados de la evaluación
-    INSERT INTO evaluations (committee_id, project_id, user_id, evaluation_type_id, score, result, comments)
-    VALUES (p_committeeId, p_projectId, p_userId, p_evaluationTypeId, p_score, p_result, p_comments);
+    UPDATE evaluations
+        SET score = p_score,
+            result = p_result,
+            comments = p_comments
+        WHERE project_id = p_projectId
+            AND user_id = p_userId
+            AND evaluation_type_id = 1;
 END //
+DELIMITER ;
 
 
 
