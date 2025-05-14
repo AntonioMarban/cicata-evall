@@ -27,7 +27,7 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
     <table className='BackgroundTable'>
         <tbody>
             <tr className='second-table-form-header'>
-                <th rowSpan={2}>Pertiodo del proyecto</th>
+                <th rowSpan={2}>Periodo del proyecto</th>
                 <th>Mes y año de inicio</th>
                 <th>Mes y año de fin</th>
                 <th>Años totales (Días totales)</th>

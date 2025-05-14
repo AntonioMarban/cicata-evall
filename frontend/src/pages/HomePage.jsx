@@ -30,7 +30,6 @@ export default function HomePage() {
             console.error("Missing committeeId for committee user");
             return;
           }
-          console.log(userType + " aaaaaaaaaaaaaaaaa")
           endpoint = `/committees/${committeeId}/secretaries/${userId}/evaluations`;
           break;
         case 4:

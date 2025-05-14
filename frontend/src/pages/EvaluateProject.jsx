@@ -106,9 +106,6 @@ const EvaluateProject = () => {
                         Enviar evaluación
                     </button>
                 </div>
-
-
-
             </div>
         </>
     )
