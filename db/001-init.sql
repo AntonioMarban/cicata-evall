@@ -245,8 +245,8 @@ BEGIN
     WHILE i < total DO
         INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id, budgetTypeId)
         VALUES (
-            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].investmentExpenditure'))),
-            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].name'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].idType'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].idName'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].expenditure'))),
             v_projectId,
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetTypeId')))

@@ -66,12 +66,16 @@ const  Anexos = ({option,setOption}) => {
                         
                         const formDataFiles = new FormData();
                         formDataFiles.append('projectId', data.projectId);
+                        if (afilesSend){
                         Object.entries(afilesSend).forEach(([key, value]) => {
                             formDataFiles.append('documents',value)
                         });
+                        }
+                        if (efilesSend){
                         Object.entries(efilesSend).forEach(([key, value]) => {
                             formDataFiles.append('documents',value)
                         });
+                        }
                         //console.log(formDataFiles)
                         const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
                             method: 'POST',                    
@@ -85,14 +89,14 @@ const  Anexos = ({option,setOption}) => {
                         const uploadData = await uploadResponse.json();
                         
                         if (uploadData.message == 'Documents uploaded successfully') {
-                            //console.log("File uploaded successfully:", uploadData.message);
+                            console.log("File uploaded successfully:", uploadData.message);
                             navigate(`/VerFormulario/${data.projectId}`);
                             indexedDB.deleteDatabase('Cicata');
                         } else {
-                            //console.warn("Upload succeeded but no confirmation message:", uploadData);
+                            console.warn("Upload succeeded but no confirmation message:", uploadData);
                         }
                     } catch (uploadError) {
-                        //console.error("Error uploading file:", uploadError);
+                        console.error("Error uploading file:", uploadError);
                         alert("El proyecto se creó, pero hubo un error al subir el archivo.");
                     }
                 } else {
@@ -103,7 +107,7 @@ const  Anexos = ({option,setOption}) => {
                 throw new Error("Missing projectId in server response.");
             }
         } catch (error) {
-            //console.error("Error submitting form:", error);
+            console.error("Error submitting form:", error);
             alert("Error al enviar el formulario. Por favor, inténtalo de nuevo.");
         }
     };

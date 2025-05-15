@@ -126,6 +126,7 @@ const DeliverablesView = ({ option, setOption }) => {
                     {deliverable}
                     {extras1.includes(deliverable) && (
                     <div>
+                        <input placeholder="Agrega el nombre del entregable"></input>
                         <button onClick={() => handleDelete1(deliverable)} style={{ marginLeft: 8 }}>
                             Eliminar Funciona
                         </button>
@@ -146,13 +147,13 @@ const DeliverablesView = ({ option, setOption }) => {
                 ))}
                 </tr>
             ))}
-            {/* <tr>
+            <tr>
                 <td>
                 <button className="button-other" onClick={()=>{handleOnClick2(setExtras1,extras1,deliverables1)}}>
                     Otro
                 </button>
                 </td>
-            </tr> */}
+            </tr> 
             </tbody>
         </table>
 
