@@ -474,9 +474,26 @@ DELIMITER //
 DELIMITER //
 CREATE PROCEDURE getAgreementSignature( IN p_userId INT, IN p_projectId INT)
 BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM evaluations
-        WHERE user_id = p_userId AND project_id = p_projectId
+    IF NOT(
+        EXISTS (
+            SELECT 1
+            FROM evaluations
+            WHERE user_id = p_userId
+              AND project_id = p_projectId
+        )
+        OR EXISTS (
+            SELECT 1
+            FROM evaluations e
+            JOIN users u ON u.userId = e.user_id
+            JOIN committeeUsers cu ON cu.userId = u.userId
+            WHERE cu.committeeId IN (
+                SELECT committeeId
+                FROM committeeUsers
+                WHERE userId = p_userId
+            )
+            AND e.result IS NULL
+            AND e.project_id = p_projectId
+        )
     ) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user is not an evaluator for this project';
@@ -515,9 +532,26 @@ BEGIN
     ) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Invalid credentials';
-    ELSEIF NOT EXISTS (
-        SELECT 1 FROM evaluations
-        WHERE user_id = p_userId AND project_id = p_projectId
+    ELSEIF NOT (
+        EXISTS (
+            SELECT 1
+            FROM evaluations
+            WHERE user_id = p_userId
+              AND project_id = p_projectId
+        )
+        OR EXISTS (
+            SELECT 1
+            FROM evaluations e
+            JOIN users u ON u.userId = e.user_id
+            JOIN committeeUsers cu ON cu.userId = u.userId
+            WHERE cu.committeeId IN (
+                SELECT committeeId
+                FROM committeeUsers
+                WHERE userId = p_userId
+            )
+            AND e.result IS NULL
+            AND e.project_id = p_projectId
+        )
     ) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user is not an evaluator for this project';
@@ -671,6 +705,41 @@ END //
 DELIMITER ;
 
 -- --------------------------- Subdireccion ----------------------------
+-- Función auxiliar para obtener id de presidente de un comité
+-- @param committeeId: id del comité
+-- @returns: id del presidente del comité
+DELIMITER //
+CREATE FUNCTION getCommitteePresidentId(p_committeeId INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE v_presidentId INT;
+    SELECT u.userId INTO v_presidentId
+    FROM committeeUsers cu
+    JOIN users u ON cu.userId = u.userId
+    WHERE cu.committeeId = p_committeeId AND u.userType_id = 3
+    LIMIT 1;
+    RETURN v_presidentId;
+END //
+DELIMITER ;
+
+-- Función auxiliar para obtener id de secretario de un comité
+-- @param committeeId: id del comité
+-- @returns: id del secretario del comité
+DELIMITER //
+CREATE FUNCTION getCommitteeSecretaryId(p_committeeId INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE v_secretaryId INT;
+    SELECT u.userId INTO v_secretaryId
+    FROM committeeUsers cu
+    JOIN users u ON cu.userId = u.userId
+    WHERE cu.committeeId = p_committeeId AND u.userType_id = 4
+    LIMIT 1;
+    RETURN v_secretaryId;
+END //
+    DELIMITER ;
 
 -- crear usuario
 DELIMITER //
@@ -981,25 +1050,23 @@ CREATE PROCEDURE getFirstStageEvaluations(
     IN p_projectId INT
 )
 BEGIN
-    DECLARE v_committeeId INT;
-    DECLARE v_userId INT;
+    DECLARE v_committeeCIP INT;
+    DECLARE v_presidentId INT;
     DECLARE v_result VARCHAR(50);
     DECLARE stageCompleted BOOLEAN DEFAULT FALSE;
     DECLARE jumpThirdStage BOOLEAN DEFAULT FALSE;
     DECLARE sendingPending BOOLEAN DEFAULT FALSE;
 
+    SET v_committeeCIP = 1;
+
     -- Obtener el ID del primer comite y el ID del usuario (presidente)
-    SELECT cu.committeeId, u.userId INTO v_committeeId, v_userId
-    FROM committeeUsers cu
-    JOIN users u ON cu.userId = u.userId
-    WHERE cu.committeeId = 1 AND u.userType_id = 3
-    LIMIT 1;
+    SET v_presidentId = getCommitteePresidentId(v_committeeCIP);
 
     -- Obtener el resultado de la evaluación
     SELECT e.result INTO v_result FROM evaluations e
     JOIN committeeUsers cu ON e.user_id = cu.userId
     JOIN committees c ON cu.committeeId = c.committeeId
-    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userId
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentId
     LIMIT 1;
 
     IF ROW_COUNT() = 0
@@ -1016,13 +1083,14 @@ BEGIN
     SELECT c.name, e.result, e.comments FROM evaluations e
     JOIN committeeUsers cu ON e.user_id = cu.userId
     JOIN committees c ON cu.committeeId = c.committeeId
-    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userId
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentId
     LIMIT 1;
 
     SELECT stageCompleted, jumpThirdStage, sendingPending;
 
 END //
 DELIMITER ;
+
 
 
 -- Función para crear las evaluaciones de la primera etapa, en este caso del
@@ -1035,28 +1103,32 @@ CREATE PROCEDURE createFirstStageEvaluations(
     IN p_projectId INT
 )
 BEGIN
-    DECLARE v_committeeId INT;
-    DECLARE v_userId INT;
+    DECLARE v_committeeCIP INT;
+    DECLARE v_presidentId INT;
+    DECLARE v_secretaryId INT;
+    SET v_committeeCIP = 1;
 
-    -- Obtener el ID del primer comite y el ID del usuario (presidente)
-    SELECT cu.committeeId, u.userId INTO v_committeeId, v_userId
-    FROM committeeUsers cu
-    JOIN users u ON cu.userId = u.userId
-    WHERE cu.committeeId = 1 AND u.userType_id = 3
-    LIMIT 1;
+    SET v_presidentId = getCommitteePresidentId(v_committeeCIP);
+    SET v_secretaryId = getCommitteeSecretaryId(v_committeeCIP);
 
     -- Verificar si el proyecto ya tiene evaluaciones de la primera etapa
     IF EXISTS (
         SELECT 1 FROM evaluations
-        WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userId
+        WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_presidentId
     ) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The project already has evaluations of the first stage';
     END IF;
+
     -- Insertar la evaluación de la primera etapa, de tipo comité para el comité 1 (CIP),
-    -- relacionada al secretario del comité
+    -- relacionada con secretario del comité
     INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
-    VALUES (v_userId, p_projectId, 2);
+    VALUES (v_presidentId, p_projectId, 2);
+
+    -- Creamos los acuerdos de confidencialidad para el presidente y secretario de ese comité
+    INSERT INTO agreements (agreed, user_id, project_id)
+    VALUES(false, v_presidentId, p_projectId),
+          (false, v_secretaryId, p_projectId);
 END //
 DELIMITER ;
 
@@ -1071,80 +1143,90 @@ CREATE PROCEDURE createSecondStageEvaluations(
     IN p_projectId INT
 )
 BEGIN
+    DECLARE v_committeeCIP INT;
     DECLARE v_committeeCI INT;
     DECLARE v_committeeCB INT;
     DECLARE v_committeeCEI INT;
     DECLARE v_committeeCIQUAL INT;
 
-    DECLARE v_userIdCI INT;
-    DECLARE v_userIdCB INT;
-    DECLARE v_userIdCEI INT;
-    DECLARE v_userIdCIQUAL INT;
+    DECLARE v_presidentIdCI INT;
+    DECLARE v_presidentIdCB INT;
+    DECLARE v_presidentIdCEI INT;
+    DECLARE v_presidentIdCIQUAL INT;
+
+    DECLARE v_secretaryIdCI INT;
+    DECLARE v_secretaryIdCB INT;
+    DECLARE v_secretaryIdCEI INT;
+    DECLARE v_secretaryIdCIQUAL INT;
 
     DECLARE v_workWithAnimals BOOLEAN;
 
+    DECLARE v_presidentIdCIP INT;
 
-    DECLARE v_userIdCIP INT;
+    SET v_committeeCIP = 1;
+    SET v_committeeCI = 2;
+    SET v_committeeCB = 3;
+    SET v_committeeCEI = 4;
+    SET v_committeeCIQUAL = 5;
 
     -- Obtener el ID del comité CIP y el ID del usuario (presidente)
-    SELECT u.userId INTO v_userIdCIP
-    FROM committeeUsers cu
-    JOIN users u ON cu.userId = u.userId
-    WHERE cu.committeeId = 1 AND u.userType_id = 3
-    LIMIT 1;
+    SET v_presidentIdCI = getCommitteePresidentId(v_committeeCIP);
 
     -- Verificar si el proyecto ya tiene evaluaciones de la primera etapa
     IF EXISTS (
         SELECT 1 FROM evaluations
-        WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCIP AND result = 'Aprobado'
+        WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_presidentIdCIP AND result = 'Aprobado'
     ) THEN
-        -- Obtener el ID del comité CI y el ID del usuario (presidente)
-        SELECT cu.committeeId, u.userId INTO v_committeeCI, v_userIdCI
-        FROM committeeUsers cu
-        JOIN users u ON cu.userId = u.userId
-        WHERE cu.committeeId = 2 AND u.userType_id = 3
-        LIMIT 1;
-        -- Obtener el ID del comité CB y el ID del usuario (presidente)
-        SELECT cu.committeeId, u.userId INTO v_committeeCB, v_userIdCB
-        FROM committeeUsers cu
-        JOIN users u ON cu.userId = u.userId
-        WHERE cu.committeeId = 3 AND u.userType_id = 3
-        LIMIT 1;
-        -- Obtener el ID del comité CEI y el ID del usuario (presidente)
-        SELECT cu.committeeId, u.userId INTO v_committeeCEI, v_userIdCEI
-        FROM committeeUsers cu
-        JOIN users u ON cu.userId = u.userId
-        WHERE cu.committeeId = 4 AND u.userType_id = 3
-        LIMIT 1;
+        -- Obtener el ID del comité CI y el ID del usuario presidente y secretario
+        SET v_presidentIdCI = getCommitteePresidentId(v_committeeCI);
+        SET v_secretaryIdCI = getCommitteeSecretaryId(v_committeeCI);
+        -- Obtener el ID del comité CB y el ID del usuario presidente y secretario
+        SET v_presidentIdCB = getCommitteePresidentId(v_committeeCB);
+        SET v_secretaryIdCB = getCommitteeSecretaryId(v_committeeCB);
+        -- Obtener el ID del comité CEI y el ID del usuario presidente y secretario
+        SET v_presidentIdCEI = getCommitteePresidentId(v_committeeCEI);
+        SET v_secretaryIdCEI = getCommitteeSecretaryId(v_committeeCEI);
+
 
         -- Verificar si el proyecto ya tiene evaluaciones del comité CI
         IF NOT EXISTS (
             SELECT 1 FROM evaluations
-            WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCI
+            WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_presidentIdCI
         ) THEN
             -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 2 (CI),
             INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
-            VALUES (v_userIdCI, p_projectId, 2);
+            VALUES (v_presidentIdCI, p_projectId, 2);
+            -- Insertar acuerdo de confidencialidad del secretario y presidente de ese comité
+            INSERT INTO agreements (agreed, user_id, project_id)
+            VALUES(false, v_presidentIdCI, p_projectId),
+                  (false, v_secretaryIdCI, p_projectId);
         END IF;
 
         -- Verificar si el proyecto ya tiene evaluaciones del comité CB
         IF NOT EXISTS (
             SELECT 1 FROM evaluations
-            WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCB
+            WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_presidentIdCB
         ) THEN
             -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 3 (CB),
             INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
-            VALUES (v_userIdCB, p_projectId, 2);
+            VALUES (v_presidentIdCB, p_projectId, 2);
+            INSERT INTO agreements (agreed, user_id, project_id)
+            VALUES(false, v_presidentIdCB, p_projectId),
+                  (false, v_secretaryIdCB, p_projectId);
         END IF;
 
         -- Verificar si el proyecto ya tiene evaluaciones del comité CEI
         IF NOT EXISTS (
             SELECT 1 FROM evaluations
-            WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCEI
+            WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_presidentIdCEI
         ) THEN
             -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 4 (CEI),
             INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
-            VALUES (v_userIdCEI, p_projectId, 2);
+            VALUES (v_presidentIdCEI, p_projectId, 2);
+
+            INSERT INTO agreements (agreed, user_id, project_id)
+            VALUES(false, v_presidentIdCEI, p_projectId),
+                  (false, v_secretaryIdCEI, p_projectId);
         END IF;
 
         -- Verificar si el proyecto tiene marcado el uso de animales
@@ -1154,18 +1236,18 @@ BEGIN
 
         -- Si el proyecto tiene marcado el uso de animales, insertar la evaluación del comité CIQUAL
         IF v_workWithAnimals THEN
-            SELECT cu.committeeId, u.userId INTO v_committeeCIQUAL, v_userIdCIQUAL
-            FROM committeeUsers cu
-            JOIN users u ON cu.userId = u.userId
-            WHERE cu.committeeId = 5 AND u.userType_id = 3
-            LIMIT 1;
+            SET v_presidentIdCIQUAL = getCommitteePresidentId(v_committeeCIQUAL);
+            SET v_secretaryIdCIQUAL = getCommitteeSecretaryId(v_committeeCIQUAL);
 
             IF NOT EXISTS (
                 SELECT 1 FROM evaluations
-                WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_userIdCIQUAL
+                WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_presidentIdCIQUAL
             ) THEN
                 INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
-                VALUES (v_userIdCIQUAL, p_projectId, 2);
+                VALUES (v_presidentIdCIQUAL, p_projectId, 2);
+                INSERT INTO agreements (agreed, user_id, project_id)
+                VALUES(false, v_presidentIdCIQUAL, p_projectId),
+                      (false, v_secretaryIdCIQUAL, p_projectId);
             END IF;
         END IF;
     ELSE
@@ -1193,84 +1275,77 @@ BEGIN
 
     DECLARE v_committeeCI INT;
     DECLARE v_resultCI VARCHAR(50);
+    DECLARE v_presidentIdCI INT;
 
     DECLARE v_committeeCB INT;
     DECLARE v_resultCB VARCHAR(50);
+    DECLARE v_presidentIdCB INT;
 
     DECLARE v_committeeCEI INT;
     DECLARE v_resultCEI VARCHAR(50);
+    DECLARE v_presidentIdCEI INT;
 
     DECLARE v_committeeCIQUAL INT;
     DECLARE v_resultCIQUAL VARCHAR(50);
-
-    DECLARE v_userIdCI INT;
-    DECLARE v_userIdCB INT;
-    DECLARE v_userIdCEI INT;
-    DECLARE v_userIdCIQUAL INT;
+    DECLARE v_presidentIdCIQUAL INT;
 
     DECLARE v_workWithAnimals BOOLEAN;
 
+    SET v_committeeCI = 2;
+    SET v_committeeCB = 3;
+    SET v_committeeCEI = 4;
+    SET v_committeeCIQUAL = 5;
+
     -- Obtener el ID del comité CI y el ID del usuario (presidente)
-    SELECT cu.committeeId, u.userId INTO v_committeeCI, v_userIdCI
-    FROM committeeUsers cu
-    JOIN users u ON cu.userId = u.userId
-    WHERE cu.committeeId = 2 AND u.userType_id = 3
-    LIMIT 1;
+    SET v_presidentIdCI = getCommitteePresidentId(v_committeeCI);
     -- Guardamos el resultado de la evaluación del CI
     SELECT e.result INTO v_resultCI FROM evaluations e
     JOIN committeeUsers cu ON e.user_id = cu.userId
     JOIN committees c ON cu.committeeId = c.committeeId
-    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCI
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentIdCI
     LIMIT 1;
     -- Seleccionamos para devolver el nombre del comité, su resultado y comentarios
     SELECT c.name, e.result, e.comments  FROM evaluations e
     JOIN committeeUsers cu ON e.user_id = cu.userId
     JOIN committees c ON cu.committeeId = c.committeeId
-    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCI
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentIdCI
     LIMIT 1;
+
     IF FOUND_ROWS() = 0
     THEN
         SET sendingPending = TRUE;
     END IF;
     -- Obtener el ID del comité CB y el ID del usuario (presidente)
-    SELECT cu.committeeId, u.userId INTO v_committeeCB, v_userIdCB
-    FROM committeeUsers cu
-    JOIN users u ON cu.userId = u.userId
-    WHERE cu.committeeId = 3 AND u.userType_id = 3
-    LIMIT 1;
+    SET v_presidentIdCB = getCommitteePresidentId(v_committeeCB);
     -- Guardamos el resultado de la evaluación CB
     SELECT e.result INTO v_resultCB  FROM evaluations e
     JOIN committeeUsers cu ON e.user_id = cu.userId
     JOIN committees c ON cu.committeeId = c.committeeId
-    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCB
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentIdCB
     LIMIT 1;
     -- Seleccionamos para devolver el nombre del comité, su resultado y comentarios
     SELECT c.name, e.result, e.comments  FROM evaluations e
     JOIN committeeUsers cu ON e.user_id = cu.userId
     JOIN committees c ON cu.committeeId = c.committeeId
-    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCB
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentIdCB
     LIMIT 1;
     IF FOUND_ROWS() = 0
     THEN
         SET sendingPending = TRUE;
     END IF;
     -- Obtener el ID del comité CEI y el ID del usuario (presidente)
-    SELECT cu.committeeId, u.userId INTO v_committeeCEI, v_userIdCEI
-    FROM committeeUsers cu
-    JOIN users u ON cu.userId = u.userId
-    WHERE cu.committeeId = 4 AND u.userType_id = 3
-    LIMIT 1;
+    SET v_presidentIdCEI = getCommitteePresidentId(v_committeeCEI);
     -- Guardamos el resultado de evaluación del CEI
     SELECT e.result INTO v_resultCEI FROM evaluations e
     JOIN committeeUsers cu ON e.user_id = cu.userId
     JOIN committees c ON cu.committeeId = c.committeeId
-    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCEI
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentIdCEI
     LIMIT 1;
     -- Seleccionamos para devolver el nombre, resultado y comentarios del CEI
     SELECT c.name, e.result, e.comments  FROM evaluations e
     JOIN committeeUsers cu ON e.user_id = cu.userId
     JOIN committees c ON cu.committeeId = c.committeeId
-    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCEI
+    WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentIdCEI
     LIMIT 1;
     IF FOUND_ROWS() = 0
     THEN
@@ -1283,20 +1358,16 @@ BEGIN
 
     -- Si el proyecto tiene marcado el uso de animales, guardamos el resultado y devolvemos la información de la evaluación
     IF v_workWithAnimals THEN
-        SELECT cu.committeeId, u.userId INTO v_committeeCIQUAL, v_userIdCIQUAL
-        FROM committeeUsers cu
-        JOIN users u ON cu.userId = u.userId
-        WHERE cu.committeeId = 5 AND u.userType_id = 3
-        LIMIT 1;
+        SET v_presidentIdCIQUAL = getCommitteePresidentId(v_committeeCIQUAL);
         SELECT e.result INTO v_resultCIQUAL  FROM evaluations e
         JOIN committeeUsers cu ON e.user_id = cu.userId
         JOIN committees c ON cu.committeeId = c.committeeId
-        WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCIQUAL
+        WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentIdCIQUAL
         LIMIT 1;
         SELECT c.name, e.result, e.comments  FROM evaluations e
         JOIN committeeUsers cu ON e.user_id = cu.userId
         JOIN committees c ON cu.committeeId = c.committeeId
-        WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_userIdCIQUAL
+        WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentIdCIQUAL
         LIMIT 1;
         IF FOUND_ROWS() = 0
         THEN
