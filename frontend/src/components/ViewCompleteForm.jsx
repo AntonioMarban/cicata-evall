@@ -58,7 +58,7 @@ const ViewCompleteForms = () => {
 
 
 
-    console.log(files)
+    console.log("todo",completeForm)
     return (
     <div className='fullTable-background'>
         <div className='div-button'>

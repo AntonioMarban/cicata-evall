@@ -33,6 +33,7 @@ const DragDrop = ({ setFilesSend, filesSend }) => {
             <input
               className="hidden"
               type="file"
+              accept="application/pdf"
               multiple
               onChange={handleFileChange}
             />
