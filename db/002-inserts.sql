@@ -61,26 +61,26 @@ VALUES
 INSERT INTO projects (title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary, introduction, background, statementOfProblem, justification, hypothesis, generalObjective, ethicalAspects, workWithHumans, workWithAnimals, biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status)
 VALUES 
 -- Proyecto en status "En revisión" con id 1
-('Proyecto prueba 1', '2025-01-01', '2025-12-31', 'Científica', 'Biotecnología', 'Genética', 'ODS 3, ODS 9', 'Resumen del proyecto Alfa...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-001', 'En revisión'),
+('Proyecto prueba 1', '2025-01-01', '2025-12-31', 'Científica', 'Biotecnología', 'Genética', 'ODS 3, ODS 9', 'Resumen del proyecto Alfa...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-001', 'En revisión'),
 -- Proyecto en status "Pendiente de correcciones" con id 2
-('Proyecto prueba 2', '2025-01-01', '2025-12-31', 'Tecnológica', 'Nanotecnología', 'Materiales', 'ODS 7, ODS 12', 'Resumen del proyecto Beta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-002', 'Pendiente de correcciones'),
+('Proyecto prueba 2', '2025-01-01', '2025-12-31', 'Tecnológica', 'Nanotecnología', 'Materiales', 'ODS 7, ODS 12', 'Resumen del proyecto Beta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, TRUE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-002', 'Pendiente de correcciones'),
 -- Proyecto en status "Aprobado" con id 3
-('Proyecto prueba 3', '2025-01-01', '2025-12-31', 'Científica', 'Biomedicina', 'Farmacología', 'ODS 3, ODS 9', 'Resumen del proyecto Gama...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-003', 'Aprobado'),
+('Proyecto prueba 3', '2025-01-01', '2025-12-31', 'Científica', 'Biomedicina', 'Farmacología', 'ODS 3, ODS 9', 'Resumen del proyecto Gama...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-003', 'Aprobado'),
 -- Proyecto en status "No aprobado" con id 4
-('Proyecto prueba 4', '2025-01-01', '2025-12-31', 'Tecnológica', 'Robótica', 'Inteligencia Artificial', 'ODS 4, ODS 8', 'Resumen del proyecto Delta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-004', 'No aprobado'),
+('Proyecto prueba 4', '2025-01-01', '2025-12-31', 'Tecnológica', 'Robótica', 'Inteligencia Artificial', 'ODS 4, ODS 8', 'Resumen del proyecto Delta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-004', 'No aprobado'),
 -- Proyecto en status "En revisión" con id 5
-('Proyecto prueba 5', '2025-01-01', '2025-12-31', 'Científica', 'Biotecnología', 'Genética', 'ODS 3, ODS 9', 'Resumen del proyecto Alfa...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-001', 'En revisión'),
+('Proyecto prueba 5', '2025-01-01', '2025-12-31', 'Científica', 'Biotecnología', 'Genética', 'ODS 3, ODS 9', 'Resumen del proyecto Alfa...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, TRUE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-001', 'En revisión'),
 -- Proyecto en status "Pendiente de correcciones" con id 6
-('Proyecto prueba 6', '2025-01-01', '2025-12-31', 'Tecnológica', 'Nanotecnología', 'Materiales', 'ODS 7, ODS 12', 'Resumen del proyecto Beta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-002', 'Pendiente de correcciones'),
+('Proyecto prueba 6', '2025-01-01', '2025-12-31', 'Tecnológica', 'Nanotecnología', 'Materiales', 'ODS 7, ODS 12', 'Resumen del proyecto Beta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-002', 'Pendiente de correcciones'),
 -- Proyecto en status "Aprobado" con id 7
-('Proyecto prueba 7', '2025-01-01', '2025-12-31', 'Científica', 'Biomedicina', 'Farmacología', 'ODS 3, ODS 9', 'Resumen del proyecto Gama...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-003', 'Aprobado'),
+('Proyecto prueba 7', '2025-01-01', '2025-12-31', 'Científica', 'Biomedicina', 'Farmacología', 'ODS 3, ODS 9', 'Resumen del proyecto Gama...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-003', 'Aprobado'),
 -- Proyecto en status "No aprobado" con id 8
-('Proyecto prueba 8', '2025-01-01', '2025-12-31', 'Tecnológica', 'Robótica', 'Inteligencia Artificial', 'ODS 4, ODS 8', 'Resumen del proyecto Delta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-004', 'No aprobado'),
+('Proyecto prueba 8', '2025-01-01', '2025-12-31', 'Tecnológica', 'Robótica', 'Inteligencia Artificial', 'ODS 4, ODS 8', 'Resumen del proyecto Delta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-004', 'No aprobado'),
 
 -- Proyecto en status "En revisión" con id 9
-('Proyecto prueba 9', '2025-01-01', '2025-12-31', 'Científica', 'Biotecnología', 'Genética', 'ODS 3, ODS 9', 'Resumen del proyecto Alfa...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-001', 'En revisión'),
+('Proyecto prueba 9', '2025-01-01', '2025-12-31', 'Científica', 'Biotecnología', 'Genética', 'ODS 3, ODS 9', 'Resumen del proyecto Alfa...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-001', 'En revisión'),
 -- Proyecto en status "En revisión" con id 10
-('Proyecto prueba 10', '2025-01-01', '2025-12-31', 'Tecnológica', 'Nanotecnología', 'Materiales', 'ODS 7, ODS 12', 'Resumen del proyecto Beta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', TRUE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-002', 'En revisión');
+('Proyecto prueba 10', '2025-01-01', '2025-12-31', 'Tecnológica', 'Nanotecnología', 'Materiales', 'ODS 7, ODS 12', 'Resumen del proyecto Beta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-002', 'En revisión');
 
 
 
@@ -145,247 +145,264 @@ VALUES
 -- ==========================================================
 -- =================== EVALUACIONES DE COMITÉ ===============
 -- ==========================================================
-
--- ---------- Comité 1 ----------
--- Secretario (user_id: 4)
-INSERT INTO evaluations (comments, score, result, evaluation_type_id, user_id, project_id)
+INSERT INTO evaluations (result, comments, score, evaluation_type_id, user_id, project_id)
 VALUES
-('Proyecto aprobado', NULL, 'Aprobado', 2, 4, 1),
-('Corregir', NULL, 'Pendiente de correcciones', 2, 4, 2),
-('Proyecto aprobado', NULL, 'Aprobado', 2, 4, 3),
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 4, 4),
-('Proyecto aprobado', NULL, 'Aprobado', 2, 4, 5),
-('Corregir', NULL, 'Pendiente de correcciones', 2, 4, 6),
-('Proyecto aprobado', NULL, 'Aprobado', 2, 4, 7),
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 4, 8),
-('Proyecto aprobado', NULL, 'Aprobado', 2, 4, 9);
-
--- ---------- Comité 2 ----------
--- Secretario (user_id: 7)
-INSERT INTO evaluations (comments, score, result, evaluation_type_id, user_id, project_id)
-VALUES
-('Proyecto aprobado', NULL, 'Aprobado', 2, 7, 1),
-('Corregir', NULL, 'Pendiente de correcciones', 2, 7, 2),
-('Proyecto aprobado', NULL, 'Aprobado', 2, 7, 3),
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 7, 4),
+-- Proyecto 1 con estatus en revisión
+-- Con todas las evaluaciones aprobadas, pero con el estatus sin actualizar
+('Aprobado', 'Comentarios del comité 1', NULL, 2, 4, 1),
+('Aprobado', 'Comentarios del comité 2', NULL, 2, 7, 1),
+('Aprobado', 'Comentarios del comité 3', NULL, 2, 10, 1),
+('Aprobado', 'Comentarios del comité 4', NULL, 2, 13, 1),
+('Aprobado', 'Comentarios del comité 5', NULL, 2, 16, 1),
+-- Proyecto 2 con estatus pendiente de correcciones
+-- Primera etapa y segunda etapa completas, pero en segunda etapa se pidieron correccciones
+('Aprobado', 'Comentarios del comité 1', NULL, 2, 4, 2),
+('Aprobado', 'Comentarios del comité 2', NULL, 2, 7, 2),
+('Aprobado', 'Comentarios del comité 3', NULL, 2, 10, 2),
+('Pendiente de correcciones', 'Comentarios del comité 4', NULL, 2, 13, 2),
+('Pendiente de correcciones', 'Comentarios del comité 5', NULL, 2, 16, 2),
+-- Proyecto 3 con estatus aprobado
+-- Amabas etapas completas con todas las evaluaciones aprobadas
+('Aprobado', 'Comentarios del comité 1', NULL, 2, 4, 3),
+('Aprobado', 'Comentarios del comité 2', NULL, 2, 7, 3),
+('Aprobado', 'Comentarios del comité 3', NULL, 2, 10, 3),
+('Aprobado', 'Comentarios del comité 4', NULL, 2, 13, 3),
+('Aprobado', 'Comentarios del comité 5', NULL, 2, 16, 3),
+-- Proyecto 4 con estatus no aprobado
+-- Amabas etapas completas con algunas evaluaciones no aprobadas
+('Aprobado', 'Comentarios del comité 1', NULL, 2, 4, 4),
+('Aprobado', 'Comentarios del comité 2', NULL, 2, 7, 4),
+('No aprobado', 'Comentarios del comité 3', NULL, 2, 10, 4),
+('No aprobado', 'Comentarios del comité 4', NULL, 2, 13, 4),
+('No aprobado', 'Comentarios del comité 5', NULL, 2, 16, 4),
+-- Proyecto 5 con estatus en revisión
+-- Con primera etapa completa, pero en espera de evaluaciones de la segunda etapa
+('Aprobado', 'Comentarios del comité 1', NULL, 2, 4, 5),
 (NULL, NULL, NULL, 2, 7, 5),
-('Corregir', NULL, 'Pendiente de correcciones', 2, 7, 6),
-('Proyecto aprobado', NULL, 'Aprobado', 2, 7, 7),
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 7, 8);
-
--- ---------- Comité 3 ----------
--- Presidente (user_id: 10)
-INSERT INTO evaluations (comments, score, result, evaluation_type_id, user_id, project_id)
-VALUES
-('Proyecto aprobado', NULL, 'Aprobado', 2, 10, 1),
-('Corregir', NULL, 'Pendiente de correcciones', 2, 10, 2),
-('Proyecto aprobado', NULL, 'Aprobado', 2, 10, 3),
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 10, 4),
 (NULL, NULL, NULL, 2, 10, 5),
-('Corregir', NULL, 'Pendiente de correcciones', 2, 10, 6),
-('Proyecto aprobado', NULL, 'Aprobado', 2, 10, 7),
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 10, 8);
-
--- ---------- Comité 4 ----------
--- Presidente (user_id: 13)
-INSERT INTO evaluations (comments, score, result, evaluation_type_id, user_id, project_id)
-VALUES
-('Proyecto aprobado', NULL, 'Aprobado', 2, 13, 1),
-('Corregir', NULL, 'Pendiente de correcciones', 2, 13, 2),
-('Proyecto aprobado', NULL, 'Aprobado', 2, 13, 3),
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 13, 4),
-(NULL, NULL, NULL, 2, 13, 5),
-('Corregir', NULL, 'Pendiente de correcciones', 2, 13, 6),
-('Proyecto aprobado', NULL, 'Aprobado', 2, 13, 7),
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 13, 8);
-
--- ---------- Comité 5 ----------
--- Presidente (user_id: 16)
-INSERT INTO evaluations (comments, score, result, evaluation_type_id, user_id, project_id)
-VALUES
-('Proyecto aprobado', NULL, 'Aprobado', 2, 16, 1),
-('Corregir', NULL, 'Pendiente de correcciones', 2, 16, 2),
-('Proyecto aprobado', NULL, 'Aprobado', 2, 16, 3),
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 16, 4),
+(NULL, NULL, NULL, 2, 13, 5), 
 (NULL, NULL, NULL, 2, 16, 5),
-('Corregir', NULL, 'Pendiente de correcciones', 2, 16, 6),
-('Proyecto aprobado', NULL, 'Aprobado', 2, 16, 7),
-('Proyecto no aprobado', NULL, 'No aprobado', 2, 16, 8);
-
+-- Proyecto 6 con estatus pendiente de correcciones
+-- Con pendiente de correcciones desde la primera etapa, sin  llegar a segunda etapa
+('Pendiente de correcciones', 'Comentarios del comité 1', NULL, 2, 4, 6),
+-- Proyecto 7 con estatus aprobado
+-- Con todas las evaluaciones aprobadas
+('Aprobado', 'Comentarios del comité 1', NULL, 2, 4, 7),
+('Aprobado', 'Comentarios del comité 2', NULL, 2, 7, 7),
+('Aprobado', 'Comentarios del comité 3', NULL, 2, 10, 7),
+('Aprobado', 'Comentarios del comité 4', NULL, 2, 13, 7),
+('Aprobado', 'Comentarios del comité 5', NULL, 2, 16, 7),
+-- Proyecto 8 con estatus no aprobado
+-- No aprobado desde la primera etapa
+('No aprobado', 'Comentarios del comité 1', NULL, 2, 4, 8),
+-- Proyecto 9 con estatus en revisión
+-- Con primera etapa completa, pero sin haber continuado con la segunda etapa
+('Aprobado', 'Comentarios del comité 1', NULL, 2, 4, 9),
+-- Proyect 10 con estatus en revisión
+-- Sin evaluaciones creadas aún
 -- ==========================================================
--- =================== EVALUACIONES INDIVIDUALES ============
+-- =============== EVALUACIONES DE INDIVIDUALES =============
 -- ==========================================================
+-- Proyecto 1 con estatus en revisión
+-- Todas las evaluaciones aprobadas y al menos una por integrante de cada comité
+("Aprobado", "Comentarios del integrante de comité 1", 100, 1, 6, 1),
+("Aprobado", "Comentarios del integrante de comité 2", 100, 1, 9, 1),
+("Aprobado", "Comentarios del integrante de comité 3", 100, 1, 12, 1),
+("Aprobado", "Comentarios del integrante de comité 4", 100, 1, 15, 1),
+("Aprobado", "Comentarios del integrante de comité 5", 100, 1, 18, 1),
+-- Proyecto 2 con estatus pendiente de correcciones
+-- Con evaluaciones aprobadas, excepto del comité 4 y 5
+("Aprobado", "Comentarios del integrante de comité 1", 100, 1, 6, 2),
+("Aprobado", "Comentarios del integrante de comité 2", 100, 1, 9, 2),
+("Aprobado", "Comentarios del integrante de comité 3", 100, 1, 12, 2),
+("Pendiente de correcciones", "Comentarios del integrante de comité 4", NULL, 1, 15, 2),
+("Pendiente de correcciones", "Comentarios del integrante de comité 5", NULL, 1, 18, 2),
+-- Proyecto 3 con estatus aprobado
+-- Con todas las evaluaciones aprobadas
+("Aprobado", "Comentarios del integrante de comité 1", 100, 1, 6, 3),
+("Aprobado", "Comentarios del integrante de comité 2", 100, 1, 9, 3),
+("Aprobado", "Comentarios del integrante de comité 3", 100, 1, 12, 3),
+("Aprobado", "Comentarios del integrante de comité 4", 100, 1, 15, 3),
+("Aprobado", "Comentarios del integrante de comité 5", 100, 1, 18, 3),
+-- Proyecto 4 con estatus no aprobado
+-- Con todas las evaluaciones no aprobadas
+("No aprobado", "Comentarios del integrante de comité 1", 50, 1, 6, 4),
+("No aprobado", "Comentarios del integrante de comité 2", 60, 1, 9, 4),
+("No aprobado", "Comentarios del integrante de comité 3", 20, 1, 12, 4),
+("No aprobado", "Comentarios del integrante de comité 4", 40, 1, 15, 4),
+("No aprobado", "Comentarios del integrante de comité 5", 50, 1, 18, 4),
+-- Proyecto 5 con estatus en revisión
+-- Con evaluaciones aprobadas de la primera etapa, pero con algunos evaluadores de la segunda etapa
+("Aprobado", "Comentarios del integrante de comité 1", 90, 1, 6, 5),
+("Aprobado", "Comentario del integrante del comité 2", NULL, 1, 9, 5),
+-- Sin evaludaroes del comité 3
+(NULL, NULL, NULL, 1, 15, 5), -- Evaluación pendiente del integrante del comité 4
+-- Sin evaludaroes del comité 5
+-- Proyecto 6 con estatus pendiente de correcciones
+-- Con evaluadores solo del primer comité y también evalúo el secretario
+("Pendiente de correcciones", "Comentarios del secretario del comité 1", NULL, 1, 5, 6),
+("Pendiente de correcciones", "Comentarios del integrante de comité 1", NULL, 1, 6, 6),
+-- Proyecto 7 con estatus aprobado
+-- Con todas las evaluaciones aprobadas
+("Aprobado", "Comentarios del integrante de comité 1", 100, 1, 6, 7),
+("Aprobado", "Comentarios del integrante de comité 2", 90, 1, 9, 7),
+("Aprobado", "Comentarios del integrante de comité 3", 100, 1, 12, 7),
+("Aprobado", "Comentarios del integrante de comité 4", 100, 1, 15, 7),
+("Aprobado", "Comentarios del integrante de comité 5", 95, 1, 18, 7),
+-- Proyecto 8 con estatus no aprobado
+-- Con todas las evaluaciones no aprobadas
+("No aprobado", "Comentarios del integrante de comité 1", 50, 1, 6, 8),
+-- Proyecto 9 con estatus en revisión
+-- Con evaluaciones aprobadas de la primera etapa y también evalúo el presidente y secretario
+("Aprobado", "Comentarios del presidente del comité 1", 96, 1, 4, 9),
+("Aprobado", "Comentarios del secretario del comité 1", 100, 1, 5, 9),
+("Aprobado", "Comentarios del integrante de comité 1", 90, 1, 6, 9);
+-- Proyecto 10 con estatus en revisión
+-- Sin evaluadores asignados aún
 
--- ---------- Comité 1 ----------
--- Secretario (user_id: 5)
--- Integrante (user_id: 6)
-INSERT INTO evaluations (comments, score, result, evaluation_type_id, user_id, project_id)
-VALUES
--- Proyecto 1
-('Proyecto aprobado', 100, 'Aprobado', 1, 5, 1),
-('Proyecto aprobado', 100, 'Aprobado', 1, 6, 1),
-
--- Proyecto 2
-('Corregir, proyecto no aprobado', 40, 'Pendiente de correcciones', 1, 5, 2),
-('Corregir, proyecto no aprobado', 40, 'Pendiente de correcciones', 1, 6, 2),
-
--- Proyecto 3
-('Proyecto aprobado', 100, 'Aprobado', 1, 5, 3),
-('Proyecto aprobado', 100, 'Aprobado', 1, 6, 3),
-
--- Proyecto 4
-('Proyecto no aprobado', 40, 'No aprobado', 1, 5, 4),
-('Proyecto no aprobado', 40, 'No aprobado', 1, 6, 4),
-
--- Proyecto 5
-(NULL, NULL, NULL, 1, 5, 5),
-('Proyecto aprobado', 100, 'Aprobado', 1, 6, 5),
-
--- Proyecto 6
-('Corregir, proyecto no aprobado', 40, 'Pendiente de correcciones', 1, 5, 6),
-('Corregir, proyecto no aprobado', 40, 'Pendiente de correcciones', 1, 6, 6),
-
--- Proyecto 7
-('Proyecto aprobado', 100, 'Aprobado', 1, 5, 7),
-('Proyecto aprobado', 100, 'Aprobado', 1, 6, 7),
-
--- Proyecto 8
-('Proyecto no aprobado', 40, 'No aprobado', 1, 5, 8),
-('Proyecto no aprobado', 40, 'No aprobado', 1, 6, 8),
-
--- Proyecto 9
-('Proyecto aprobado', 100, 'Aprobado', 1, 5, 9),
-('Proyecto aprobado', 100, 'Aprobado', 1, 6, 9);
-
--- ---------- Comité 2 ----------
--- Secretario (user_id: 8)
--- Integrante (user_id: 9)
-INSERT INTO evaluations (comments, score, result, evaluation_type_id, user_id, project_id)
-VALUES
--- Proyecto 1
-('Proyecto aprobado', 100, 'Aprobado', 1, 8, 1),
-('Proyecto aprobado', NULL, 'Aprobado', 1, 9, 1),
-
--- Proyecto 2
-('Corregir, proyecto no aprobado', 40, 'Pendiente de correcciones', 1, 8, 2),
-('Corregir, proyecto no aprobado', NULL, 'Pendiente de correcciones', 1, 9, 2),
-
--- Proyecto 3
-('Proyecto aprobado', 100, 'Aprobado', 1, 8, 3),
-('Proyecto aprobado', NULL, 'Aprobado', 1, 9, 3),
-
--- Proyecto 4
-('Proyecto no aprobado', 40, 'No aprobado', 1, 8, 4),
-('Proyecto no aprobado', NULL, 'No aprobado', 1, 9, 4),
-
--- Proyecto 5
-(NULL, NULL, NULL, 1, 8, 5),
-(NULL, NULL, NULL, 1, 9, 5),
-
--- Proyecto 6
-('Corregir, proyecto no aprobado', 40, 'Pendiente de correcciones', 1, 8, 6),
-('Corregir, proyecto no aprobado', NULL, 'Pendiente de correcciones', 1, 9, 6),
-
--- Proyecto 7
-('Proyecto aprobado', 100, 'Aprobado', 1, 8, 7),
-('Proyecto aprobado', NULL, 'Aprobado', 1, 9, 7),
-
--- Proyecto 8
-('Proyecto no aprobado', 40, 'No aprobado', 1, 8, 8),
-('Proyecto no aprobado', NULL, 'No aprobado', 1, 9, 8);
-
--- ---------- Comité 3 ----------
--- Secretario (user_id: 11)
--- Integrante (user_id: 12)
-INSERT INTO evaluations (comments, score, result, evaluation_type_id, user_id, project_id)
-VALUES
-('Proyecto aprobado', 100, 'Aprobado', 1, 11, 1),
-('Proyecto aprobado', 100, 'Aprobado', 1, 12, 1);
-
--- ---------- Comité 4 ----------
--- Secretario (user_id: 14)
--- Integrante (user_id: 15)
-INSERT INTO evaluations (comments, score, result, evaluation_type_id, user_id, project_id)
-VALUES
-('Proyecto aprobado', 100, 'Aprobado', 1, 14, 1),
-('Proyecto aprobado', 100, 'Aprobado', 1, 15, 1);
-
--- ---------- Comité 5 ----------
--- Secretario (user_id: 17)
--- Integrante (user_id: 18)
-INSERT INTO evaluations (comments, score, result, evaluation_type_id, user_id, project_id)
-VALUES
-('Proyecto aprobado', 100, 'Aprobado', 1, 17, 1),
-('Proyecto aprobado', 100, 'Aprobado', 1, 18, 1);
-
-
-
--- =============== INSERTS DE AGREEMENTS ===============
+-- ==========================================
+-- ========== ACUERDOS DE CONFIDENCIALIDAD ===
+-- ==========================================
 INSERT INTO agreements (date, agreed, user_id, project_id)
-VALUES 
--- Proyecto 1
-('2025-04-01', TRUE, 6, 1),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 1),    -- Integrante comité 2: evaluó individual
-(NULL, FALSE, 5, 1),           -- Secretario comité 1: no ha evaluado individual
-(NULL, FALSE, 8, 1),           -- Secretario comité 2: no ha evaluado individual
+VALUES
+-- ===================== Proyecto 1 =====================
+('2025-05-15', true, 4, 1),  -- Presidente del comité 1, evaluó proyecto 1
+('2025-05-15', true, 5, 1),  -- Secretario del comité 1, su presidente evaluó proyecto 1
+('2025-05-15', true, 6, 1),  -- Integrante del comité 1, tiene evaluación individual en proyecto 1
 
--- Proyecto 2
-('2025-04-01', TRUE, 6, 2),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 2),    -- Integrante comité 2: evaluó individual
-('2025-04-01', TRUE, 5, 2),    -- Secretario comité 1: evaluó individual
-('2025-04-01', TRUE, 8, 2),    -- Secretario comité 2: evaluó individual
+('2025-05-15', true, 7, 1),  -- Presidente del comité 2, evaluó proyecto 1
+('2025-05-15', true, 8, 1),  -- Secretario del comité 2, su presidente evaluó proyecto 1
+('2025-05-15', true, 9, 1),  -- Integrante del comité 2, tiene evaluación individual en proyecto 1
 
--- Proyecto 3
-('2025-04-01', TRUE, 6, 3),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 3),    -- Integrante comité 2: evaluó individual
-('2025-04-01', TRUE, 5, 3),    -- Secretario comité 1: evaluó individual
-('2025-04-01', TRUE, 8, 3),    -- Secretario comité 2: evaluó individual
+('2025-05-15', true, 10, 1), -- Presidente del comité 3, evaluó proyecto 1
+('2025-05-15', true, 11, 1), -- Secretario del comité 3, su presidente evaluó proyecto 1
+('2025-05-15', true, 12, 1), -- Integrante del comité 3, tiene evaluación individual en proyecto 1
 
--- Proyecto 4
-('2025-04-01', TRUE, 6, 4),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 4),    -- Integrante comité 2: evaluó individual
-('2025-04-01', TRUE, 5, 4),    -- Secretario comité 1: evaluó individual
-('2025-04-01', TRUE, 8, 4),    -- Secretario comité 2: evaluó individual
+('2025-05-15', true, 13, 1), -- Presidente del comité 4, evaluó proyecto 1
+('2025-05-15', true, 14, 1), -- Secretario del comité 4, su presidente evaluó proyecto 1
+('2025-05-15', true, 15, 1), -- Integrante del comité 4, tiene evaluación individual en proyecto 1
 
--- Proyecto 5
-('2025-04-01', TRUE, 6, 5),    -- Integrante comité 1: evaluó individual
-(NULL, FALSE, 9, 5),           -- Integrante comité 2: no ha evaluado individual
-(NULL, FALSE, 5, 5),           -- Secretario comité 1: no ha evaluado individual
-(NULL, FALSE, 8, 5),           -- Secretario comité 2: no ha evaluado individual
+('2025-05-15', true, 16, 1), -- Presidente del comité 5, evaluó proyecto 1
+('2025-05-15', true, 17, 1), -- Secretario del comité 5, su presidente evaluó proyecto 1
+('2025-05-15', true, 18, 1), -- Integrante del comité 5, tiene evaluación individual en proyecto 1
 
--- Proyecto 6
-('2025-04-01', TRUE, 6, 6),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 6),    -- Integrante comité 2: evaluó individual
-('2025-04-01', TRUE, 5, 6),    -- Secretario comité 1: evaluó individual
-('2025-04-01', TRUE, 8, 6),    -- Secretario comité 2: evaluó individual
+-- ===================== Proyecto 2 =====================
+('2025-05-15', true, 4, 2),  -- Presidente del comité 1, evaluó proyecto 2
+('2025-05-15', true, 5, 2),  -- Secretario del comité 1
+('2025-05-15', true, 6, 2),  -- Integrante del comité 1, tiene evaluación individual en proyecto 2
 
--- Proyecto 7
-('2025-04-01', TRUE, 6, 7),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 7),    -- Integrante comité 2: evaluó individual
-('2025-04-01', TRUE, 5, 7),    -- Secretario comité 1: evaluó individual
-('2025-04-01', TRUE, 8, 7),    -- Secretario comité 2: evaluó individual
+('2025-05-15', true, 7, 2),  -- Presidente del comité 2, evaluó proyecto 2
+('2025-05-15', true, 8, 2),  -- Secretario del comité 2
+('2025-05-15', true, 9, 2),  -- Integrante del comité 2, tiene evaluación individual en proyecto 2
 
--- Proyecto 8
-('2025-04-01', TRUE, 6, 8),    -- Integrante comité 1: evaluó individual
-('2025-04-01', TRUE, 9, 8),    -- Integrante comité 2: evaluó individual
-('2025-04-01', TRUE, 5, 8),    -- Secretario comité 1: evaluó individual
-('2025-04-01', TRUE, 8, 8),    -- Secretario comité 2: evaluó individual
+('2025-05-15', true, 10, 2), -- Presidente del comité 3, evaluó proyecto 2
+('2025-05-15', true, 11, 2), -- Secretario del comité 3
+('2025-05-15', true, 12, 2), -- Integrante del comité 3, tiene evaluación individual en proyecto 2
 
--- Proyecto 9
-('2025-04-01', TRUE, 6, 9),    -- Integrante comité 1: evaluó individual
+('2025-05-15', true, 13, 2), -- Presidente del comité 4, evaluó proyecto 2
+('2025-05-15', true, 14, 2), -- Secretario del comité 4
+('2025-05-15', true, 15, 2),  -- Integrante del comité 4, evaluación individual sin resultado
 
--- Comité 3
-('2025-04-01', TRUE, 11, 1),
-('2025-04-01', TRUE, 12, 1),
+('2025-05-15', true, 16, 2), -- Presidente del comité 5, evaluó proyecto 2
+('2025-05-15', true, 17, 2), -- Secretario del comité 5
+('2025-05-15', true, 18, 2),        -- Integrante del comité 5, evaluación individual sin resultado
 
--- Comité 4
-('2025-04-01', TRUE, 14, 1),
-('2025-04-01', TRUE, 15, 1),
+-- ===================== Proyecto 3 =====================
+('2025-05-15', true, 4, 3),  -- Presidente del comité 1
+('2025-05-15', true, 5, 3),  -- Secretario del comité 1
+('2025-05-15', true, 6, 3),  -- Integrante del comité 1
 
--- Comité 5
-('2025-04-01', TRUE, 17, 1),
-('2025-04-01', TRUE, 18, 1);
+('2025-05-15', true, 7, 3),  -- Presidente del comité 2
+('2025-05-15', true, 8, 3),  -- Secretario del comité 2
+('2025-05-15', true, 9, 3),  -- Integrante del comité 2
 
+('2025-05-15', true, 10, 3), -- Presidente del comité 3
+('2025-05-15', true, 11, 3), -- Secretario del comité 3
+('2025-05-15', true, 12, 3), -- Integrante del comité 3
+
+('2025-05-15', true, 13, 3), -- Presidente del comité 4
+('2025-05-15', true, 14, 3), -- Secretario del comité 4
+('2025-05-15', true, 15, 3), -- Integrante del comité 4
+
+('2025-05-15', true, 16, 3), -- Presidente del comité 5
+('2025-05-15', true, 17, 3), -- Secretario del comité 5
+('2025-05-15', true, 18, 3), -- Integrante del comité 5
+
+-- ===================== Proyecto 4 =====================
+('2025-05-15', true, 4, 4),  -- Presidente del comité 1
+('2025-05-15', true, 5, 4),  -- Secretario del comité 1
+('2025-05-15', true, 6, 4),  -- Integrante del comité 1
+
+('2025-05-15', true, 7, 4),  -- Presidente del comité 2
+('2025-05-15', true, 8, 4),  -- Secretario del comité 2
+('2025-05-15', true, 9, 4),  -- Integrante del comité 2
+
+('2025-05-15', true, 10, 4), -- Presidente del comité 3
+('2025-05-15', true, 11, 4), -- Secretario del comité 3
+('2025-05-15', true, 12, 4), -- Integrante del comité 3
+
+('2025-05-15', true, 13, 4), -- Presidente del comité 4
+('2025-05-15', true, 14, 4), -- Secretario del comité 4
+('2025-05-15', true, 15, 4), -- Integrante del comité 4
+
+('2025-05-15', true, 16, 4), -- Presidente del comité 5
+('2025-05-15', true, 17, 4), -- Secretario del comité 5
+('2025-05-15', true, 18, 4), -- Integrante del comité 5
+
+-- ===================== Proyecto 5 =====================
+('2025-05-15', true, 4, 5),  -- Presidente del comité 1
+('2025-05-15', true, 5, 5),  -- Secretario del comité 1
+('2025-05-15', true, 6, 5),  -- Integrante del comité 1
+
+('2025-05-15', true, 7, 5),  -- Presidente del comité 2
+('2025-05-15', true, 8, 5),  -- Secretario del comité 2
+('2025-05-15', true, 9, 5),  -- Integrante del comité 2
+
+(NULL, false, 10, 5), -- Presidente del comité 3
+(NULL, false, 11, 5), -- Secretario del comité 3
+
+('2025-05-15', true, 13, 5), -- Presidente del comité 4, tiene evaluación vacía
+('2025-05-15', true, 14, 5), -- Secretario del comité 4
+(NULL, false, 15, 5),        -- Integrante del comité 4, evaluación sin resultado
+
+(NULL, false, 16, 5), -- Presidente del comité 5, evaluación vacía
+(NULL, false, 17, 5), -- Secretario del comité 5
+
+-- ===================== Proyecto 6 =====================
+('2025-05-15', true, 4, 6),  -- Presidente del comité 1
+('2025-05-15', true, 5, 6),  -- Secretario del comité 1
+('2025-05-15', true, 6, 6),  -- Integrante del comité 1
+
+-- ===================== Proyecto 7 =====================
+('2025-05-15', true, 4, 7),  -- Presidente del comité 1
+('2025-05-15', true, 5, 7),  -- Secretario del comité 1
+('2025-05-15', true, 6, 7),  -- Integrante del comité 1
+('2025-05-15', true, 7, 7),  -- Presidente del comité 2
+('2025-05-15', true, 8, 7),  -- Secretario del comité 2
+('2025-05-15', true, 9, 7),  -- Integrante del comité 2
+('2025-05-15', true, 10, 7), -- Presidente del comité 3
+('2025-05-15', true, 11, 7), -- Secretario del comité 3
+('2025-05-15', true, 12, 7), -- Integrante del comité 3
+('2025-05-15', true, 13, 7), -- Presidente del comité 4
+('2025-05-15', true, 14, 7), -- Secretario del comité 4
+('2025-05-15', true, 15, 7), -- Integrante del comité 4
+('2025-05-15', true, 16, 7), -- Presidente del comité 5
+('2025-05-15', true, 17, 7), -- Secretario del comité 5
+('2025-05-15', true, 18, 7), -- Integrante del comité 5
+
+-- ===================== Proyecto 8 =====================
+('2025-05-15', true, 4, 8),  -- Presidente del comité 1
+('2025-05-15', true, 5, 8),  -- Secretario del comité 1
+('2025-05-15', true, 6, 8),  -- Integrante del comité 1
+
+-- ===================== Proyecto 9 =====================
+('2025-05-15', true, 4, 9),  -- Presidente del comité 1
+('2025-05-15', true, 5, 9),  -- Secretario del comité 1
+('2025-05-15', true, 6, 9)  -- Integrante del comité 1
+
+-- Proyecto 10
+-- Sin evaluadores asignados aún
+;
 
 -- deliverables
 INSERT INTO deliverables (name)

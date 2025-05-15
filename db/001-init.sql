@@ -1170,7 +1170,7 @@ BEGIN
     SET v_committeeCIQUAL = 5;
 
     -- Obtener el ID del comité CIP y el ID del usuario (presidente)
-    SET v_presidentIdCI = getCommitteePresidentId(v_committeeCIP);
+    SET v_presidentIdCIP = getCommitteePresidentId(v_committeeCIP);
 
     -- Verificar si el proyecto ya tiene evaluaciones de la primera etapa
     IF EXISTS (
