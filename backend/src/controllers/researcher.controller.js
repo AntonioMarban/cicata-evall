@@ -32,6 +32,8 @@ const createProject = async (req, res) => {
         ethicalAspects, workWithHumans, workWithAnimals, biosecurityConsiderations,
         contributionsToIPNandCICATA, conflictOfInterest, aditionalComments,
         otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification,
+        otherEducationalDeliverable, otherDiffusionDeliverable, otherCurrentBudget,
+        otherInvestmentBudget,
 
         // Arreglos
         associatedProjects,
@@ -75,7 +77,7 @@ const createProject = async (req, res) => {
         const consecutivo = String(count).padStart(4, '0');
         const folio = `CICATAMOR/SICIT/${year}/${month}/${consecutivo}`;
 
-        const query = `CALL createProject(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+        const query = `CALL createProject(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
         const values = [
             // Proyecto
@@ -84,6 +86,7 @@ const createProject = async (req, res) => {
             ethicalAspects, workWithHumans, workWithAnimals, biosecurityConsiderations,
             contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio,
             otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification,
+            otherEducationalDeliverable,otherDiffusionDeliverable, otherCurrentBudget, otherInvestmentBudget,
 
             // JSONs
             associatedProjectsJSON,
@@ -230,6 +233,26 @@ const getProjectDocuments = (req, res) => {
   
       res.status(200).json({ documents });
     });
-  };
+};
 
-module.exports = { getActiveProjects, getInactiveProjects, createProject, uploadDocuments, getProjectDetails, getProjectDocuments }
+const getCommitteeComments = (req, res) => {
+  const { projectId } = req.params;
+  const sql = 'CALL getCommitteeComments(?)';
+
+  pool.query(sql, [projectId], (err, results) => {
+    if (err) {
+      console.error("Error fetching committee comments:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    const [comments] = results;
+    if (!comments.length) {
+      return res.status(404).json({ message: "No comments found" });
+    }
+
+    return res.status(200).json(comments);
+  });
+};
+
+
+module.exports = { getActiveProjects, getInactiveProjects, createProject, uploadDocuments, getProjectDetails, getProjectDocuments, getCommitteeComments }

@@ -288,6 +288,14 @@ ALTER TABLE budgets ADD COLUMN budgetTypeId INT, ADD CONSTRAINT fk_budgetType FO
 -- Se agrega id de comité a la tabla evaluaciones
 ALTER TABLE evaluations ADD COLUMN committee_id INT, ADD CONSTRAINT fk_committee FOREIGN KEY (committee_id) REFERENCES committees(committeeId);
 
+ALTER TABLE projects 
+ADD otherEducationalDeliverable TEXT,
+ADD otherDiffusionDeliverable TEXT;
+
+ALTER TABLE projects
+ADD COLUMN otherCurrentBudget TEXT,
+ADD COLUMN otherInvestmentBudget TEXT;
+
 
 -- Datos estaticos para la parte superior del formulario
 ALTER TABLE projects

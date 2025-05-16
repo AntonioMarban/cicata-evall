@@ -110,6 +110,10 @@ CREATE PROCEDURE createProject(
     IN p_alignsWithPNIorODS BOOLEAN,
     IN p_hasCollaboration BOOLEAN,
     IN p_collaborationJustification TEXT,
+    IN p_otherEducationalDeliverable TEXT,
+    IN p_otherDiffusionDeliverable TEXT,
+    IN p_otherCurrentBudget TEXT,
+    IN p_otherInvestmentBudget TEXT,
 
     -- Arreglos
     IN p_associatedProjectsJSON JSON,
@@ -136,7 +140,8 @@ BEGIN
         statementOfProblem, justification, hypothesis, generalObjective, ethicalAspects, workWithHumans, workWithAnimals,
         biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio,
         otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification, formVersion,
-        nextReview, preparedBy, reviewedBy, approvedBy, preparedDate, reviewedDate, approvedDate
+        nextReview, preparedBy, reviewedBy, approvedBy, preparedDate, reviewedDate, approvedDate, 
+        otherEducationalDeliverable, otherDiffusionDeliverable, otherCurrentBudget, otherInvestmentBudget
     )
     VALUES (
         p_title, p_startDate, p_endDate, p_typeResearch, p_topic, p_subtopic, p_alignmentPNIorODS, p_summary,
@@ -145,7 +150,8 @@ BEGIN
         p_conflictOfInterest, p_aditionalComments, p_folio,
         p_otherTypeResearch, p_alignsWithPNIorODS, p_hasCollaboration, p_collaborationJustification,
         '03', 'septiembre 2025', 'Leslie Olmedo Nieva', 'Leslie Olmedo Nieva', 'Paul Mondragón Terán',
-        '2024-06-01', '2024-07-08', '2024-11-04'
+        '2024-06-01', '2024-07-08', '2024-11-04', p_otherEducationalDeliverable, p_otherDiffusionDeliverable,
+        p_otherCurrentBudget, p_otherInvestmentBudget
     );
 
     SET v_projectId = LAST_INSERT_ID();
@@ -330,7 +336,11 @@ BEGIN
         p.reviewedBy, p.approvedBy,
         DATE_FORMAT(p.preparedDate, '%Y-%m-%d') AS preparedDate,
         DATE_FORMAT(p.reviewedDate, '%Y-%m-%d') AS reviewedDate,
-        DATE_FORMAT(p.approvedDate, '%Y-%m-%d') AS approvedDate
+        DATE_FORMAT(p.approvedDate, '%Y-%m-%d') AS approvedDate,
+        p.otherEducationalDeliverable,
+        p.otherDiffusionDeliverable,
+        p.otherCurrentBudget, 
+        p.otherInvestmentBudget
     FROM projects p
     WHERE p.projectId = p_projectId;
 
@@ -422,6 +432,24 @@ END //
 DELIMITER ;
 
 
+DELIMITER //
+CREATE PROCEDURE getCommitteeComments(
+    IN p_projectId INT
+)
+BEGIN
+    SELECT 
+        c.name AS committeeName,
+        e.comments
+    FROM evaluations e
+    JOIN users u ON e.user_id = u.userId
+    JOIN committeeUsers cu ON cu.userId = u.userId
+    JOIN committees c ON cu.committeeId = c.committeeId
+    WHERE e.evaluation_type_id = 2
+      AND e.project_id = p_projectId
+      AND e.comments IS NOT NULL
+    GROUP BY c.name, e.comments;
+END //
+DELIMITER ;
 
 -- Miembro de comité -> Pantalla de inicio de proyectos pendientes
 -- Procedimiento almacenado para obtener los proyectos pendientes de evaluación
