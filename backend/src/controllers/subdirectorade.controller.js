@@ -24,12 +24,32 @@ const getUsersByRole = async (req, res) => {
   });
 };
 
+/*
+    Función para crear un nuevo usuario
+    Se hace uso de un procedimiento almacena createUser
+    @param fName: Nombre del usuario
+    @param lastName1: Primer apellido del usuario
+    @param lastName2: Segundo apellido del usuario
+    @param email: Correo electrónico del usuario
+    @param phone: Teléfono del usuario
+    @param password: Contraseña del usuario
+    @param institution: Institución del usuario
+    @param positionWork: Puesto de trabajo del usuario
+    @param researchNetwork: Red de investigación del usuario
+    @param researchNetworkName: Nombre de la red de investigación del usuario
+    @param academicDegree: Grado académico del usuario
+    @param levelName: Nombre del nivel del usuario
+    @param levelNum: Número del nivel del usuario
+    @param userType_id: Id del rol de usuario
+    @return message: Mensaje de éxito o error
+*/
 const createUser = async (req, res) => {
   const {
     fName,
     lastName1,
     lastName2,
     email,
+    phone,
     password,
     institution,
     positionWork,
@@ -41,12 +61,13 @@ const createUser = async (req, res) => {
     userType_id,
   } = req.body;
 
-  const query = "CALL createUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const query = "CALL createUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     fName,
     lastName1,
     lastName2,
     email,
+    phone,	
     password,
     institution,
     positionWork,
@@ -65,6 +86,92 @@ const createUser = async (req, res) => {
     }
 
     res.status(201).json({ message: "User created successfully" });
+  });
+};
+
+/*
+ Función para obtener todos los datos de un usuario
+ @param userId: Id del usuario
+ @returns: Todos los datos de ese usuario
+*/
+const getUser = async (req, res) => {
+  const { userId } = req.params;
+  const query = "CALL getUser(?)";
+  const values = [userId];
+  pool.query(query, values, (error, results) => {
+    if (error) {
+      console.error(error);
+      return res.status(400).json({ error: "Invalid query parameters" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Resource does not exist" });
+    }
+    res.status(200).json(results[0][0]);
+  });
+};
+
+/*
+  Función para actualizar datos de un usuario 
+  @param userId: Id del usuario
+  @param fName: Nombre del usuario
+  @param lastName1: Primer apellido del usuario
+  @param lastName2: Segundo apellido del usuario
+  @param email: Correo electrónico del usuario
+  @param phone: Teléfono del usuario
+  @param password: Contraseña del usuario
+  @param institution: Institución del usuario
+  @param positionWork: Puesto de trabajo del usuario
+  @param researchNetwork: Red de investigación del usuario
+  @param researchNetworkName: Nombre de la red de investigación del usuario
+  @param academicDegree: Grado académico del usuario
+  @param levelName: Nombre del nivel del usuario
+  @param levelNum: Número del nivel del usuario
+  @return message: Mensaje de éxito o error
+*/
+const updateUser = async (req, res) => {
+  const { userId } = req.params;
+  const {
+    fName,
+    lastName1,
+    lastName2,
+    email,
+    phone,
+    password,
+    institution,
+    positionWork,
+    researchNetwork,
+    researchNetworkName,
+    academicDegree,
+    levelName,
+    levelNum,
+  } = req.body;
+  const query =
+    "CALL updateUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const values = [
+    userId,
+    fName,
+    lastName1,
+    lastName2,
+    email,
+    phone,
+    password,
+    institution,
+    positionWork,
+    researchNetwork,
+    researchNetworkName,
+    academicDegree,
+    levelName,
+    levelNum,
+  ];
+  pool.query(query, values, (error, results) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Error updating user" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Resource does not exist" });
+    }
+    res.status(200).json({ message: "User updated successfully" });
   });
 };
 
@@ -309,6 +416,8 @@ const sendEvaluationResult = async (req, res) => {
 module.exports = {
   getUsersByRole,
   createUser,
+  getUser,
+  updateUser,
   getInactiveProjectsSub,
   getActiveProjectsSub,
   getAllCommittees,

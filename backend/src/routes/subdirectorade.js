@@ -3,6 +3,8 @@ const router = express.Router()
 const { 
     getUsersByRole,
     createUser, 
+    getUser,
+    updateUser,
     getActiveProjectsSub,
     getInactiveProjectsSub,
     getAllCommittees,
@@ -17,6 +19,8 @@ const {
 
 router.get('/users', getUsersByRole)
 router.post('/users', createUser)
+router.get('/users/:userId', getUser)
+router.patch('/users/:userId', updateUser)
 router.get('/projects/inactive', getInactiveProjectsSub)
 router.get('/projects/active', getActiveProjectsSub)
 router.get('/committees', getAllCommittees)

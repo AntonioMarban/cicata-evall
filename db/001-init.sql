@@ -732,6 +732,235 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Función para obtener todos los integrantes de un comité
+-- @param userId: Id del presidente o secretario
+-- @param committeeId: Id del comité
+-- @returns: Lista de integrantes del comité
+
+DELIMITER //
+CREATE PROCEDURE getAllCommitteeMembers(
+    IN p_committeeId INT,
+    IN p_userId INT
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    ELSE
+        SELECT
+            cu.userId,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName
+        FROM committeeUsers cu
+        JOIN users u ON cu.userId = u.userId
+        WHERE committeeId = p_committeeId AND u.userType_id = 5;
+    END IF;
+END //
+DELIMITER ;
+
+-- Función para obtener todos los datos de un integrante de comité
+-- @param userId: Id del presidente o secretario
+-- @param committeeId: Id del comité
+-- @returns: Todos los datos de ese usuario
+DELIMITER //
+CREATE PROCEDURE getCommitteeMember(
+    IN p_committeeId INT,
+    IN p_userId INT, -- Del presidente o secretario
+    IN p_memberId INT -- Del miembro del comité a obtener
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    ELSE
+        SELECT
+            u.userId,
+            u.userType_id,
+            u.fName,
+            u.lastName1,
+            u.lastName2,
+            u.email,
+            u.phone,
+            u.institution,
+            u.positionWork,
+            u.researchNetwork,
+            u.researchNetworkName,
+            u.academicDegree,
+            u.levelName,
+            u.levelNum
+        FROM users u
+        JOIN committeeUsers cu ON u.userId = cu.userId
+        WHERE cu.committeeId = p_committeeId AND u.userId = p_memberId AND u.userType_id = 5;
+    END IF;
+END //
+DELIMITER ;
+
+-- Función para crear un nuevo integrante de comité
+-- @param userId: Id del presidente o secretario
+-- @param committeeId: Id del comité
+-- @param ...
+-- @returns: Mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE createCommitteeMember(
+    IN p_userId INT, -- Del presidente o secretario
+    IN p_committeeId INT,
+
+    IN p_fName varchar(50),
+    IN p_lastName1 varchar(50),
+    IN p_lastName2 varchar(50),
+    IN p_email varchar(255),
+    IN p_phone varchar(255),
+    IN p_password varchar(255),
+    IN p_institution varchar(50),
+    IN p_positionWork varchar(50),
+    IN p_researchNetwork BOOLEAN,
+    IN p_researchNetworkName varchar(50),
+    IN p_academicDegree varchar(50),
+    IN p_levelName varchar(50),
+    IN p_levelNum INT
+)
+BEGIN
+    DECLARE newUserId INT;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    ELSE
+        INSERT INTO users (
+            fName,
+            lastName1,
+            lastName2,
+            email,
+            phone,
+            password,
+            institution,
+            positionWork,
+            researchNetwork,
+            researchNetworkName,
+            academicDegree,
+            levelName,
+            levelNum,
+            userType_id
+        ) VALUES (
+            p_fName,
+            p_lastName1,
+            p_lastName2,
+            p_email,
+            p_phone,
+            SHA2(p_password, 256),
+            p_institution,
+            p_positionWork,
+            p_researchNetwork,
+            p_researchNetworkName,
+            p_academicDegree,
+            p_levelName,
+            p_levelNum,
+            5
+        );
+
+        SET newUserId = LAST_INSERT_ID();
+
+        INSERT INTO committeeUsers (userId, committeeId)
+        VALUES (newUserId, p_committeeId);
+    END IF;
+
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE updateCommitteeMember(
+    IN p_userId INT, -- Del presidente o secretario
+    IN p_committeeId INT,
+
+    IN p_memberId INT, -- Del miembro del comité a actualizar
+    IN p_fName VARCHAR(50),
+    IN p_lastName1 VARCHAR(50),
+    IN p_lastName2 VARCHAR(50),
+    IN p_email VARCHAR(255),
+    IN p_phone VARCHAR(255),
+    IN p_password VARCHAR(255),
+    IN p_institution VARCHAR(50),
+    IN p_positionWork VARCHAR(50),
+    IN p_researchNetwork BOOLEAN,
+    IN p_researchNetworkName VARCHAR(50),
+    IN p_academicDegree VARCHAR(50),
+    IN p_levelName VARCHAR(50),
+    IN p_levelNum INT
+)
+BEGIN
+    -- Validar que el usuario pertenece al comité
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    END IF;
+
+    -- Actualizar campos individualmente si no son NULL
+    IF p_fName IS NOT NULL THEN
+        UPDATE users SET fName = p_fName WHERE userId = p_memberId;
+    END IF;
+
+    IF p_lastName1 IS NOT NULL THEN
+        UPDATE users SET lastName1 = p_lastName1 WHERE userId = p_memberId;
+    END IF;
+
+    IF p_lastName2 IS NOT NULL THEN
+        UPDATE users SET lastName2 = p_lastName2 WHERE userId = p_memberId;
+    END IF;
+
+    IF p_email IS NOT NULL THEN
+        UPDATE users SET email = p_email WHERE userId = p_memberId;
+    END IF;
+
+    IF p_phone IS NOT NULL THEN
+        UPDATE users SET phone = p_phone WHERE userId = p_memberId;
+    END IF;
+
+    IF p_password IS NOT NULL THEN
+        UPDATE users SET password = SHA2(p_password, 256) WHERE userId = p_memberId;
+    END IF;
+
+    IF p_institution IS NOT NULL THEN
+        UPDATE users SET institution = p_institution WHERE userId = p_memberId;
+    END IF;
+
+    IF p_positionWork IS NOT NULL THEN
+        UPDATE users SET positionWork = p_positionWork WHERE userId = p_memberId;
+    END IF;
+
+    IF p_researchNetwork IS NOT NULL THEN
+        UPDATE users SET researchNetwork = p_researchNetwork WHERE userId = p_memberId;
+    END IF;
+
+    IF p_researchNetworkName IS NOT NULL THEN
+        UPDATE users SET researchNetworkName = p_researchNetworkName WHERE userId = p_memberId;
+    END IF;
+
+    IF p_academicDegree IS NOT NULL THEN
+        UPDATE users SET academicDegree = p_academicDegree WHERE userId = p_memberId;
+    END IF;
+
+    IF p_levelName IS NOT NULL THEN
+        UPDATE users SET levelName = p_levelName WHERE userId = p_memberId;
+    END IF;
+
+    IF p_levelNum IS NOT NULL THEN
+        UPDATE users SET levelNum = p_levelNum WHERE userId = p_memberId;
+    END IF;
+END //
+DELIMITER ;
+
 -- --------------------------- Subdireccion ----------------------------
 -- Función auxiliar para obtener id de presidente de un comité
 -- @param committeeId: id del comité
@@ -769,13 +998,28 @@ BEGIN
 END //
     DELIMITER ;
 
--- crear usuario
+-- Función para crear un nuevo usuario
+-- @param fName: Nombre del usuario
+-- @param lastName1: Primer apellido del usuario
+-- @param lastName2: Segundo apellido del usuario
+-- @param email: Correo electrónico del usuario
+-- @param phone: Teléfono del usuario
+-- @param password: Contraseña del usuario
+-- @param institution: Institución del usuario
+-- @param positionWork: Puesto de trabajo del usuario
+-- @param researchNetwork: Red de investigación del usuario
+-- @param researchNetworkName: Nombre de la red de investigación del usuario
+-- @param academicDegree: Grado académico del usuario
+-- @param levelName: Nombre del nivel académico del usuario
+-- @param userType_id: Tipo de usuario (1: Investigador, 2: Evaluador, 3: Presidente, 4: Secretario, 5: Miembro de comité)
+-- @returns: Lista de proyectos activos
 DELIMITER //
 CREATE PROCEDURE createUser (
   IN p_fName VARCHAR(50),
   IN p_lastName1 VARCHAR(50),
   IN p_lastName2 VARCHAR(50),
   IN p_email VARCHAR(255),
+  IN p_phone VARCHAR(255),
   IN p_password VARCHAR(255),
   IN p_institution VARCHAR(50),
   IN p_positionWork VARCHAR(50),
@@ -792,6 +1036,7 @@ BEGIN
     lastName1,
     lastName2,
     email,
+    phone,
     password,
     institution,
     positionWork,
@@ -806,6 +1051,7 @@ BEGIN
     p_lastName1,
     p_lastName2,
     p_email,
+    p_phone,
     SHA2(p_password, 256),
     p_institution,
     p_positionWork,
@@ -818,6 +1064,120 @@ BEGIN
   );
 END //
 DELIMITER ;
+
+-- Función para obtener todos los datos de un usuario
+-- @param userId: Id del usuario
+-- @returns: Todos los datos de ese usuario
+DELIMITER //
+CREATE PROCEDURE getUser(IN p_userId INT)
+BEGIN
+    SELECT
+        u.userId,
+        u.userType_id,
+        u.fName,
+        u.lastName1,
+        u.lastName2,
+        u.email,
+        u.phone,
+        u.institution,
+        u.positionWork,
+        u.researchNetwork,
+        u.researchNetworkName,
+        u.academicDegree,
+        u.levelName,
+        u.levelNum
+    FROM users u
+    WHERE userId = p_userId;
+END //
+DELIMITER ;
+
+-- Función para actualizar los datos de un usuario
+-- @param userId: Id del usuario
+-- @param fName: Nombre del usuario
+-- @param lastName1: Primer apellido del usuario
+-- @param lastName2: Segundo apellido del usuario
+-- @param email: Correo electrónico del usuario
+-- @param phone: Teléfono del usuario
+-- @param password: Contraseña del usuario
+-- @param institution: Institución del usuario
+-- @param positionWork: Puesto de trabajo del usuario
+-- @param researchNetwork: Red de investigación del usuario
+-- @param researchNetworkName: Nombre de la red de investigación del usuario
+-- @param academicDegree: Grado académico del usuario
+-- @param levelName: Nombre del nivel académico del usuario
+-- @param levelNum: Número del nivel académico del usuario
+-- @returns: Mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE updateUser (
+  IN p_userId INT,
+  IN p_fName VARCHAR(50),
+  IN p_lastName1 VARCHAR(50),
+  IN p_lastName2 VARCHAR(50),
+  IN p_email VARCHAR(255),
+  IN p_phone VARCHAR(255),
+  IN p_password VARCHAR(255),
+  IN p_institution VARCHAR(50),
+  IN p_positionWork VARCHAR(50),
+  IN p_researchNetwork BOOLEAN,
+  IN p_researchNetworkName VARCHAR(50),
+  IN p_academicDegree VARCHAR(50),
+  IN p_levelName VARCHAR(50),
+  IN p_levelNum INT
+)
+BEGIN
+    -- Actualizar campos individualmente si no son NULL
+    IF p_fName IS NOT NULL THEN
+        UPDATE users SET fName = p_fName WHERE userId = p_userId;
+    END IF;
+
+    IF p_lastName1 IS NOT NULL THEN
+        UPDATE users SET lastName1 = p_lastName1 WHERE userId = p_userId;
+    END IF;
+
+    IF p_lastName2 IS NOT NULL THEN
+        UPDATE users SET lastName2 = p_lastName2 WHERE userId = p_userId;
+    END IF;
+
+    IF p_email IS NOT NULL THEN
+        UPDATE users SET email = p_email WHERE userId = p_userId;
+    END IF;
+
+    IF p_phone IS NOT NULL THEN
+        UPDATE users SET phone = p_phone WHERE userId = p_userId;
+    END IF;
+
+    IF p_password IS NOT NULL THEN
+        UPDATE users SET password = SHA2(p_password, 256) WHERE userId = p_userId;
+    END IF;
+
+    IF p_institution IS NOT NULL THEN
+        UPDATE users SET institution = p_institution WHERE userId = p_userId;
+    END IF;
+
+    IF p_positionWork IS NOT NULL THEN
+        UPDATE users SET positionWork = p_positionWork WHERE userId = p_userId;
+    END IF;
+
+    IF p_researchNetwork IS NOT NULL THEN
+        UPDATE users SET researchNetwork = p_researchNetwork WHERE userId = p_userId;
+    END IF;
+
+    IF p_researchNetworkName IS NOT NULL THEN
+        UPDATE users SET researchNetworkName = p_researchNetworkName WHERE userId = p_userId;
+    END IF;
+
+    IF p_academicDegree IS NOT NULL THEN
+        UPDATE users SET academicDegree = p_academicDegree WHERE userId = p_userId;
+    END IF;
+
+    IF p_levelName IS NOT NULL THEN
+        UPDATE users SET levelName = p_levelName WHERE userId = p_userId;
+    END IF;
+
+    IF p_levelNum IS NOT NULL THEN
+        UPDATE users SET levelNum = p_levelNum WHERE userId = p_userId;
+    END IF;
+END //
 
 -- Función para obtener todos los proyectos activos existentes, es decir,
 -- en status "En revisión" o "Pendiente de correcciones"
@@ -1476,7 +1836,6 @@ DELIMITER ;
 -- actualizando el status de este de acuerdo al resultado global dado por los comités
 -- @param projectId: Id del proyecto
 -- @returns: mensaje de éxito o error
-
 
 DELIMITER //
 CREATE PROCEDURE sendEvaluationResult(
