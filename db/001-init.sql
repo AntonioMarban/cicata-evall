@@ -1488,26 +1488,3 @@ BEGIN
 END //
 DELIMITER ;
 
--- Función para eliminar a un integrante de un comité
--- @param committeeId: Id del comité
--- @param userId: Id del presidente o secretario
--- @param memberId: Id del miembro del comité
--- @returns: Mensaje de éxito o error
-DELIMITER //
-CREATE PROCEDURE deleteCommitteeMember(
-    IN p_committeeId INT,
-    IN p_userId INT,
-    IN p_memberId INT
-)
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM committeeUsers
-        WHERE userId = p_userId AND committeeId = p_committeeId
-    ) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'The user does not belong to this committee';
-    ELSE
-        DELETE FROM elacommitteeUsers WHERE userId = p_memberId AND committeeId = p_committeeId;
-        DELETE FROM users WHERE userId = p_memberId;
-    END IF;
-END //
