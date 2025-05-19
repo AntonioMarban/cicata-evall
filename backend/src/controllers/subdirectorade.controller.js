@@ -175,6 +175,28 @@ const updateUser = async (req, res) => {
   });
 };
 
+/*
+    Función para inactivar un usuario
+    Se hace uso de un procedimiento almacena setUserInactive
+    @param userId: id del usuario
+    @return message: Mensaje de éxito o error
+*/
+const setUserInactive = async (req, res) => {
+  const { userId } = req.params;
+  const query = "CALL setUserInactive(?)";
+  const values = [userId];
+  pool.query(query, values, (error, results) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Error inactivating user" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Resource does not exist" });
+    }
+    res.status(200).json({ message: "User inactivated successfully" });
+  });
+};
+
 const getActiveProjectsSub = async (req, res) => {
   const query = "CALL getActiveProjectsSub()";
   pool.query(query, (error, results) => {
@@ -418,6 +440,7 @@ module.exports = {
   createUser,
   getUser,
   updateUser,
+  setUserInactive,
   getInactiveProjectsSub,
   getActiveProjectsSub,
   getAllCommittees,

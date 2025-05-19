@@ -26,7 +26,8 @@ CREATE TABLE `users` (
   `academicDegree` varchar(50),
   `levelName` varchar(50),
   `levelNum` integer,
-  `userType_id` integer
+  `userType_id` integer,
+  `active` bool default true
 );
 
 CREATE TABLE `committees` (

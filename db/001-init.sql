@@ -11,7 +11,7 @@ BEGIN
     DECLARE _userId INT;
     DECLARE _committeeId INT DEFAULT NULL;
 
-    SET _userId = (SELECT userId FROM users WHERE email = user_email AND password = SHA2(user_password,256));
+    SET _userId = (SELECT userId FROM users WHERE email = user_email AND password = SHA2(user_password,256) AND active = true );
 
     SET _committeeId = (SELECT committeeId
                         FROM committeeUsers
@@ -525,20 +525,19 @@ BEGIN
     ) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user is not an evaluator for this project';
-    ELSE
-        SELECT
-            DATE_FORMAT(a.date, '%Y-%m-%d') AS date,
-            a.agreed,
-            p.title,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher
-        FROM
-            agreements a
-        JOIN users u ON a.user_id = u.userId
-        JOIN projects p ON a.project_id = p.projectId
-        WHERE
-            a.user_id = p_userId
-            AND a.project_id = p_projectId;
     END IF;
+    SELECT
+        DATE_FORMAT(a.date, '%Y-%m-%d') AS date,
+        a.agreed,
+        p.title,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher
+    FROM
+        agreements a
+    JOIN users u ON a.user_id = u.userId
+    JOIN projects p ON a.project_id = p.projectId
+    WHERE
+        a.user_id = p_userId
+        AND a.project_id = p_projectId;
 END //
 DELIMITER ;
 
@@ -667,28 +666,27 @@ BEGIN
     ) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user does not belong to this committee';
-    ELSE
-        SELECT u.userId INTO presidentId
-        FROM committeeUsers cu
-        JOIN users u ON cu.userId = u.userId
-        WHERE cu.committeeId = p_committeeId AND u.userType_id = 3
-        LIMIT 1;
-
-        SELECT
-            p.projectId,
-            p.title,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
-            p.startDate,
-            p.endDate,
-            p.folio,
-            p.status
-        FROM
-            projects p
-        JOIN evaluations e ON p.projectId = e.project_id
-        JOIN users u ON e.user_id = u.userId
-        WHERE
-            e.user_id = presidentId AND e.evaluation_type_id = 2 AND e.result IS NULL;
     END IF;
+    SELECT u.userId INTO presidentId
+    FROM committeeUsers cu
+    JOIN users u ON cu.userId = u.userId
+    WHERE cu.committeeId = p_committeeId AND u.userType_id = 3
+    LIMIT 1;
+
+    SELECT
+        p.projectId,
+        p.title,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        p.startDate,
+        p.endDate,
+        p.folio,
+        p.status
+    FROM
+        projects p
+    JOIN evaluations e ON p.projectId = e.project_id
+    JOIN users u ON e.user_id = u.userId
+    WHERE
+        e.user_id = presidentId AND e.evaluation_type_id = 2 AND e.result IS NULL;
 END //
 DELIMITER ;
 
@@ -755,7 +753,7 @@ BEGIN
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName
         FROM committeeUsers cu
         JOIN users u ON cu.userId = u.userId
-        WHERE committeeId = p_committeeId AND u.userType_id = 5;
+        WHERE committeeId = p_committeeId AND u.userType_id = 5 and active = true;
     END IF;
 END //
 DELIMITER ;
@@ -777,26 +775,25 @@ BEGIN
     ) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user does not belong to this committee';
-    ELSE
-        SELECT
-            u.userId,
-            u.userType_id,
-            u.fName,
-            u.lastName1,
-            u.lastName2,
-            u.email,
-            u.phone,
-            u.institution,
-            u.positionWork,
-            u.researchNetwork,
-            u.researchNetworkName,
-            u.academicDegree,
-            u.levelName,
-            u.levelNum
-        FROM users u
-        JOIN committeeUsers cu ON u.userId = cu.userId
-        WHERE cu.committeeId = p_committeeId AND u.userId = p_memberId AND u.userType_id = 5;
     END IF;
+    SELECT
+        u.userId,
+        u.userType_id,
+        u.fName,
+        u.lastName1,
+        u.lastName2,
+        u.email,
+        u.phone,
+        u.institution,
+        u.positionWork,
+        u.researchNetwork,
+        u.researchNetworkName,
+        u.academicDegree,
+        u.levelName,
+        u.levelNum
+    FROM users u
+    JOIN committeeUsers cu ON u.userId = cu.userId
+    WHERE cu.committeeId = p_committeeId AND u.userId = p_memberId AND u.userType_id = 5;
 END //
 DELIMITER ;
 
@@ -906,6 +903,14 @@ BEGIN
         SET MESSAGE_TEXT = 'The user does not belong to this committee';
     END IF;
 
+    IF NOT EXISTS (
+        SELECT 1 FROM users
+        WHERE userId = p_memberId AND userType_id = 5 AND active = true
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user is not a committee member or is inactive';
+    END IF;
+
     -- Actualizar campos individualmente si no son NULL
     IF p_fName IS NOT NULL THEN
         UPDATE users SET fName = p_fName WHERE userId = p_memberId;
@@ -958,6 +963,33 @@ BEGIN
     IF p_levelNum IS NOT NULL THEN
         UPDATE users SET levelNum = p_levelNum WHERE userId = p_memberId;
     END IF;
+END //
+DELIMITER ;
+
+-- Función para eliminar un integrante de comité
+-- modificando el atributo active a false
+-- @param userId: Id del presidente o secretario
+-- @param committeeId: Id del comité
+-- @param memberId: Id del miembro del comité a eliminar
+-- @returns: Mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE setCommitteeMemberInactive(
+    IN p_userId INT, -- Del presidente o secretario
+    IN p_committeeId INT,
+    IN p_memberId INT -- Del miembro del comité a eliminar
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    END IF;
+
+    UPDATE users
+    SET active = false
+    WHERE userId = p_memberId AND userType_id = 5;
 END //
 DELIMITER ;
 
@@ -1125,7 +1157,14 @@ CREATE PROCEDURE updateUser (
   IN p_levelNum INT
 )
 BEGIN
-    -- Actualizar campos individualmente si no son NULL
+    IF NOT EXISTS (
+        SELECT 1 FROM users
+        WHERE userId = p_userId and active = true
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user does not exist or is inactive';
+    END IF;
+
     IF p_fName IS NOT NULL THEN
         UPDATE users SET fName = p_fName WHERE userId = p_userId;
     END IF;
@@ -1178,6 +1217,25 @@ BEGIN
         UPDATE users SET levelNum = p_levelNum WHERE userId = p_userId;
     END IF;
 END //
+
+-- Función para simular la eliminación de un usuario
+-- modificando su estado a inactivo
+-- @param userId: Id del usuario
+-- @returns: Mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE setUserInactive(IN p_userId INT)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM users
+        WHERE userId = p_userId AND active = true
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user does not exist or is already inactive';
+    ELSE
+        UPDATE users SET active = false WHERE userId = p_userId;
+    END IF;
+END //
+DELIMITER ;
 
 -- Función para obtener todos los proyectos activos existentes, es decir,
 -- en status "En revisión" o "Pendiente de correcciones"
@@ -1264,7 +1322,7 @@ BEGIN
     FROM
         users u
     WHERE
-        u.userType_id = p_userType_id;
+        u.userType_id = p_userType_id AND u.active = true;
 END //
 DELIMITER ;
 
@@ -1354,7 +1412,7 @@ BEGIN
         WHERE
             cu.committeeId = p_committeeId AND u.userType_id = 4 AND u.userId NOT IN (
                 SELECT user_id FROM evaluations WHERE project_id = p_projectId
-            );
+            ) AND u.active = true;
     END IF;
 END //
 
@@ -1381,16 +1439,22 @@ BEGIN
     ) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user does not belong to this committee';
-    ELSE
-        INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
-        VALUES (p_evaluatorId, p_projectId, 1);
-        IF NOT EXISTS (
-            SELECT 1 FROM agreements WHERE user_id = p_evaluatorId AND project_id = p_projectId
-        ) THEN
-            INSERT INTO agreements (agreed, user_id, project_id)
-            VALUES (false, p_evaluatorId, p_projectId);
-        END IF;     
     END IF;
+    IF NOT EXISTS (
+        SELECT 1 FROM users
+        WHERE userId = p_evaluatorId AND active = true
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The evaluator does not exist or is inactive';
+    END IF;
+    INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
+    VALUES (p_evaluatorId, p_projectId, 1);
+    IF NOT EXISTS (
+        SELECT 1 FROM agreements WHERE user_id = p_evaluatorId AND project_id = p_projectId
+    ) THEN
+        INSERT INTO agreements (agreed, user_id, project_id)
+        VALUES (false, p_evaluatorId, p_projectId);
+    END IF;     
 END //
 DELIMITER ;
 

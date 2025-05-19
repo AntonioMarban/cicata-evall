@@ -221,7 +221,7 @@ const getCommitteeMember = (req, res) => {
       console.error("Error getting committee member:", err);
       return res.status(400).json({ error: "Invalid query parameters" });
     }
-    if (results.length === 0) {
+    if (results[0].length === 0) {
       return res.status(404).json({ message: "Resource does not exist" });
     }
     return res.status(200).json(results[0]);
@@ -290,11 +290,8 @@ const createCommitteeMember = (req, res) => {
       console.error("Error creating committee member:", err);
       return res.status(400).json({ error: "Invalid query parameters" });
     }
-    if (results.length === 0) {
-      return res.status(404).json({ message: "Resource does not exist" });
-    }
     return res
-      .status(200)
+      .status(201)
       .json({ message: "Committee member created successfully" });
   });
 }
@@ -372,6 +369,34 @@ const updateCommitteeMember = (req, res) => {
   });
 }
 
+/*
+  Función para eliminar un integrante de un comité
+  Se hace uso de un procedimiento almacenado setCommitteeMemberInactive
+  @param committeeId: Id del comité
+  @param userId: Id del miembro del comité, en este caso el presidente o secretario
+
+  @param memberId: Id del miembro del comité
+  @returns: Mensaje de éxito o error
+*/
+const setCommitteeMemberInactive = (req, res) => {
+  const { committeeId, userId, memberId } = req.params;
+
+  const sql = `CALL setCommitteeMemberInactive(?, ?, ?)`;
+  const values = [userId, committeeId, memberId];
+
+  pool.query(sql, values, (err, results) => {
+    if (err) {
+      console.error("Error deleting committee member:", err);
+      return res.status(400).json({ error: "Invalid query parameters" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ message: "Resource does not exist" });
+    }
+    return res
+      .status(200)
+      .json({ message: "Committee member deleted successfully" });
+  });
+}
 
 module.exports = {
   getPendingCommitteeEvaluations,
@@ -383,5 +408,6 @@ module.exports = {
   getAllCommitteeMembers,
   getCommitteeMember,
   createCommitteeMember,
-  updateCommitteeMember
+  updateCommitteeMember,
+  setCommitteeMemberInactive
 };

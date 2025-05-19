@@ -5,6 +5,7 @@ const {
     createUser, 
     getUser,
     updateUser,
+    setUserInactive,
     getActiveProjectsSub,
     getInactiveProjectsSub,
     getAllCommittees,
@@ -21,6 +22,7 @@ router.get('/users', getUsersByRole)
 router.post('/users', createUser)
 router.get('/users/:userId', getUser)
 router.patch('/users/:userId', updateUser)
+router.patch('/users/:userId/inactive', setUserInactive)
 router.get('/projects/inactive', getInactiveProjectsSub)
 router.get('/projects/active', getActiveProjectsSub)
 router.get('/committees', getAllCommittees)

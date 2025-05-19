@@ -56,6 +56,11 @@ VALUES
 -- Usuario de tipo integrante de comité con Id 18
 ('Lucía', 'Ramírez', 'Díaz', 'integranteCICUAL@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5);
 
+INSERT INTO users (fName, lastName1, lastName2, email, password, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelName, levelNum, userType_id, active)
+-- Usuario de tipo integrante de comité con Id 19, usuario inactivo
+VALUES
+('Rodolfo', 'Chávez', 'Pérez', 'integrante2CIQUAL@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5, FALSE);
+
 
 -- =============== INSERTS PROJECTS ===============
 INSERT INTO projects (title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary, introduction, background, statementOfProblem, justification, hypothesis, generalObjective, ethicalAspects, workWithHumans, workWithAnimals, biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status)
@@ -132,7 +137,8 @@ INSERT INTO committeeUsers (committeeId, userId) VALUES
 -- Integrantes del comité 5 (Comité Interno para el Cuidado y Uso de los Animales de Laboratorio)
 (5, 16),
 (5, 17),
-(5, 18);
+(5, 18),
+(5, 19);
 
 -- ==========================================================
 -- ================ INSERTS DE EVALUATION TYPES =============
