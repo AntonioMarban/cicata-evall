@@ -181,7 +181,7 @@ export default function ProjectStatus({ projectId }) {
       const response = await fetch(
         `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage3`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
@@ -193,7 +193,7 @@ export default function ProjectStatus({ projectId }) {
         console.error("Error en el envío de evaluación etapa 3.");
       }
     } catch (error) {
-      console.error("Error en el POST de etapa 3:", error);
+      console.error("Error en el PATCH de etapa 3:", error);
     } finally {
       setSendingStage2(false);
     }
