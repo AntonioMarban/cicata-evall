@@ -258,9 +258,7 @@ export default function ProjectStatus({ projectId }) {
           <h3>Etapa 2</h3>
           {stage2Evaluations.length === 0 ? (
             <>
-              <p>
-                Este proyecto aún no ha sido enviado al CEI, CB y CI.
-              </p>
+              <p>Este proyecto aún no ha sido enviado al CEI, CB y CI.</p>
               <button
                 className={`stage-button ${
                   stage1Completed === 1 && !sendingStage2
@@ -298,7 +296,9 @@ export default function ProjectStatus({ projectId }) {
                         className={
                           evaluation.result === "Aprobado"
                             ? "approved"
-                            : evaluation.result === "Pendiente de correcciones"
+                            : evaluation.result ===
+                                "Pendiente de correcciones" ||
+                              evaluation.result === "No aprobado"
                             ? "not-approved"
                             : "pending"
                         }
@@ -333,8 +333,9 @@ export default function ProjectStatus({ projectId }) {
         <div className="stage">
           <h3>Etapa 3</h3>
           <p>
-            El resultado de este proyecto aún no ha sido enviado al
-            investigador.
+            {sendingPendingResearcher === 1 && jumpThirdStage === 1
+              ? "El resultado de este proyecto aún no ha sido enviado al investigador."
+              : ""}
           </p>
           <button
             className={`stage-button ${
