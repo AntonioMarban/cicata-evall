@@ -3,17 +3,19 @@ import { useFormAddHandler } from "../hooks/useFormAddHandler";
 
 import { useEffect, useState } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
+import { prevOption } from "../hooks/optionUtils";
 
 const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => {
     const initialFormValues = {
         investmentExpenditure: "",
         name: "",
-        expenditure: ""
+        expenditure: "",
+        otherName: "",
+        convDate: ""
     };
     const [typeToShow, setTypeToShow] = useState([]);
     const [budgetForm, setBudgetForm] = useState(initialFormValues)
     const [newErrors,setNewErrors] = useState(initialFormValues);
-
     const [isOpen, setIsOpen] = useState(false)
     const budgetsTypes = 
     [
@@ -55,6 +57,12 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
               newErrorsF[key] = `El campo  es requerido`;
             }
         });
+        if (budgetForm.name.idName != 4){
+            delete newErrorsF['otherName']
+        }
+        if (budgetForm.name.idName != 23){
+            delete newErrorsF['convDate']
+        }
         setNewErrors(newErrorsF)
         function flattenObject(obj, parentKey = '', result = {}) {
         for (let key in obj) {
@@ -87,7 +95,8 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                         nameType: budgetToEdit.nameType || ""},
                 name:  {idName: budgetToEdit.idName || "", 
                         name: budgetToEdit.name || ""},
-                expenditure: budgetToEdit.expenditure || 0
+                expenditure: budgetToEdit.expenditure || 0,
+                otherName: budgetToEdit.otherName
             });
             setIsOpen(true);
         }
@@ -114,7 +123,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                 {idName: 13, name: "Registro de patentes y propiedad intelectual"},
                 {idName: 14, name: "Validación de concepto tecnológico"},
                 {idName: 15, name: "Animales para el desarrollo de protocolos de investigación"},
-                {idName: 16, name: "Otros (especifique)"}
+                {idName: 4,  name: "Otros (especifique)"}
               ])
         }
         else if(budgetForm.investmentExpenditure.nameType === "Obtención presupuesto interno"){
@@ -146,31 +155,35 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                     <DialogPanel className="dialog-panel">
                         <p className="dialog-title">{budgetToEdit ? "Editar Presupuesto" : "Agregar Presupuesto"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
-                            <div className="form-complete-row">
-                                <p>Gasto
-                                    <br/>{newErrors.investmentExpenditure && <span className="text-red-600">*{newErrors.investmentExpenditure}</span>}
-                                </p>
-                                <select
-                                    name="investmentExpenditure"
-                                    value={JSON.stringify(budgetForm.investmentExpenditure)}
-                                    onChange={(e) =>
-                                        setBudgetForm({
-                                        ...budgetForm,
-                                        investmentExpenditure: JSON.parse(e.target.value),
-                                        })
-                                    }
-                                    >
-                                    <option value="">Selecciona una opción</option>
-                                    {budgetsTypes.map((object, index) => (
-                                        <option key={index} value={JSON.stringify(object)}>{object.nameType}</option>
-                                    ))}
-                                </select>
+                            <div className="form-complete-row-div">
+                                <div>
+                                    <p>Gasto
+                                        <br/>{newErrors.investmentExpenditure && <span className="text-red-600">*{newErrors.investmentExpenditure}</span>}
+                                    </p>
+                                    <select
+                                        className="modal-select"
+                                        name="investmentExpenditure"
+                                        value={JSON.stringify(budgetForm.investmentExpenditure)}
+                                        onChange={(e) =>
+                                            setBudgetForm({
+                                            ...budgetForm,
+                                            investmentExpenditure: JSON.parse(e.target.value),
+                                            })
+                                        }
+                                        >
+                                        <option value="">Selecciona una opción</option>
+                                        {budgetsTypes.map((object, index) => (
+                                            <option key={index} value={JSON.stringify(object)}>{object.nameType}</option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
                             <div className="form-complete-row">
                                 <p>Nombre
                                     <br/>{newErrors.name && <span className="text-red-600">*{newErrors.name}</span>}
                                 </p>
                                 <select 
+                                    className="modal-select"
                                     name="name" 
                                     value={JSON.stringify(budgetForm.name)}
                                     onChange={(e)=>{setBudgetForm({
@@ -183,20 +196,52 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                     ))}
                                 </select>
                             </div>
-                            <div className="form-complete-row">
-                                <p>Gasto $0.00
-                                    <br/>{newErrors.expenditure && <span className="text-red-600">*{newErrors.expenditure}</span>}
-                                </p>
-                                <input 
-                                    name="expenditure" 
-                                    type="number" 
-                                    min={0}
-                                    step="0.01"
-                                    className="form-pieza-input" 
-                                    placeholder="Escribe la cantidad del gasto..."
-                                    value={budgetForm.expenditure}
-                                    onChange={handleInputChange}
-                                ></input>
+                            <div className="form-complete-row-div">
+                                <div>
+                                    <p>Gasto $0.00
+                                        <br/>{newErrors.expenditure && <span className="text-red-600">*{newErrors.expenditure}</span>}
+                                    </p>
+                                    <input 
+                                        name="expenditure" 
+                                        type="number" 
+                                        min={0}
+                                        step="0.01"
+                                        className="form-pieza-input" 
+                                        placeholder="Escribe la cantidad del gasto..."
+                                        value={budgetForm.expenditure}
+                                        onChange={handleInputChange}
+                                    ></input>
+                                </div>
+                                <div>
+                                    {budgetForm.name.idName === 4 || budgetForm.name.idName === 23 && (
+                                        <div>
+                                            <p>Nombre del presupuesto
+                                                <br/>{newErrors.otherName && <span className="text-red-600">*{newErrors.otherName}</span>}
+                                            </p>
+                                            <input 
+                                                placeholder="Escribe el nombre del presupuesto..." 
+                                                name="otherName"
+                                                value={budgetForm.otherName}
+                                                onChange={handleInputChange}
+                                            ></input>
+                                        </div>
+                                    )}
+                                </div>
+                                <div>
+                                    {budgetForm.name.idName === 23 && (
+                                        <div>
+                                            <p>Fecha de convocatoria
+                                                <br/>{newErrors.convDate && <span className="text-red-600">*{newErrors.convDate}</span>}
+                                            </p>
+                                            <input 
+                                                type="date"
+                                                name="convDate"
+                                                value={budgetForm.convDate}
+                                                onChange={handleInputChange}
+                                            ></input>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                             <div className="dialog-actions">
                                 <button className="button-confirm">

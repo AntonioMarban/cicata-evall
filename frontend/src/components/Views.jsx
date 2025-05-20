@@ -24,7 +24,7 @@ const Views = () => {
     <Route path = "/EvaluarProyecto" element={<EvaluateProject/>}></Route>
     <Route path = "/VerFormulario/:id" element={<ViewCompleteForm/>}></Route>
     <Route path = "/Proyecto" element={<Project/>}></Route>
-    <Route path = "/comentarios" element={<CommentsCommittee/>}></Route>
+    <Route path = "/comentarios/:id" element={<CommentsCommittee/>}></Route>
     <Route path = "/ProyectosFinalizados" element={<FinishedProjects/>}></Route>
     <Route
         path = "*"

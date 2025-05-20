@@ -76,5 +76,35 @@ export function getAllData() {
     };
     })
   };
+/**
+ * Guarda un array de formularios en IndexedDB
+ * @param {Array} formsArray - Array de objetos de formulario (cada uno debe tener idF)
+ * @returns {Promise} - Promesa que resuelve cuando todos se han guardado
+ */
+export async function saveMultipleForms(formsData) {
+    const db = await openDB();
+    const transaction = db.transaction("Forms", "readwrite");
+    const store = transaction.objectStore("Forms");
 
-  
+    // Convertir el objeto formsData en un array de promesas
+    const savePromises = Object.entries(formsData).map(([id, formData]) => {
+        return new Promise((resolve, reject) => {
+            // Asegurarnos de que el idF está correctamente asignado
+            const formToSave = { ...formData, idF: parseInt(id.replace('idf', '')) };
+            const request = store.put(formToSave);
+            
+            request.onsuccess = () => resolve(`Formulario ${id} guardado`);
+            request.onerror = (event) => reject(`Error al guardar ${id}: ${event.target.error}`);
+        });
+    });
+
+    return Promise.all(savePromises)
+        .then(results => {
+            db.close();
+            return { success: true, results };
+        })
+        .catch(error => {
+            db.close();
+            return { success: false, error };
+        });
+}

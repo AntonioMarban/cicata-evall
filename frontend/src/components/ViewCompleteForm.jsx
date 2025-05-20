@@ -35,7 +35,7 @@ const ViewCompleteForms = () => {
     };
 
     const handlePrint = () => {
-        alert("Por favor, marca 'Headers and footers' y 'background graphics' en las opciones de impresión para una mejor visualización.");
+        alert("Por favor, marca 'Encabezados y pies de página y gráficos de fondo' en las opciones de impresión para una mejor visualización.");
         window.print();
     };
     const handlePrint2 = () => {

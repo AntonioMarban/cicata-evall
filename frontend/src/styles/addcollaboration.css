@@ -135,16 +135,6 @@
 .modalAddColaboration:hover{
   background-color: #8ABFD6; 
 }
-.modal-select{
-  background-color: #F8F6F6;
-  border: None;
-  border-radius: 3px;
-  width: 100%;
-  font-size: 1rem;
-  color: black;
-  box-sizing: border-box;
-  padding: 2%;
-}
 .modal-delete{
   background-color: #B3DBEB;
   border-radius: 10px;

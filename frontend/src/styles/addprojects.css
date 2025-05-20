@@ -91,6 +91,24 @@
   width: 100%;
   margin-top: 20px;
 }
+.form-complete-row-div{
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.form-complete-row-div div{
+  flex: 1;
+}
+.form-complete-row-div input{
+  border-radius: 10px;
+  width: 50%;
+  border: 2px solid #E1E1E1;
+  font-size: 13px;
+  color: #6D7580;
+  margin-top: 12px;
+  padding: 10px;
+}
 .form-complete-row input{
   border-radius: 10px;
   width: 40%;
@@ -149,14 +167,8 @@
   background-color: #8ABFD6; 
 }
 .modal-select{
-  background-color: #F8F6F6;
-  border: None;
-  border-radius: 3px;
-  width: 100%;
-  font-size: 1rem;
-  color: black;
-  box-sizing: border-box;
-  padding: 2%;
+  width: 60%;
+  margin-top: 12px;
 }
 .modal-delete{
   background-color: #B3DBEB;

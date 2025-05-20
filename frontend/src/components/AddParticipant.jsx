@@ -97,7 +97,15 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             setLevelToShow(["Candidato","I","II","III","Emerito"])
         }
     },[participant.levelName])
-
+    useEffect(()=>{
+        if(participant.researchNetwork===0){
+            setParticipant(prev=>({
+                ...prev,
+                researchNetworkName: ""
+            })
+            )
+        }
+    },[participant.researchNetwork])
     return (
         <>
             {!participantToEdit && (

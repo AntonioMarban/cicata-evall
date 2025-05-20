@@ -3,38 +3,39 @@ import { useFormHandler } from "../hooks/useFormHandler";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import "../styles/deliverables.css";
-
+import TRASH from "../assets/trash.svg"
 const DeliverablesView = ({ option, setOption }) => {
-  const [deliverables, setDeliverables] = useState({
-    idF: 10,
-  });
-
-
-  const [deliverables1, setDeliverables1] = useState([
-    "Tesis (Alumnos titulados)",
-    "Practicantes profesionales",
-    "Alumnos PIFI",
-    "Prestante del servicio social",
-  ]);
-    const [deliverables3, setDeliverables3] = useState([
-        "Proceso",
-        "Patente",
-        "Hardware",
-        "Prototipo",
-        "Certificado de inversión",
-        "Software",
-      ]);
-    const [deliverables2, setDeliverables2] = useState([
-        "Artículo de divulgación",
-        "Congresos",
-        "Cursos",
-        "Libros",
-        "Conferencias o ponencias",
-        "Articulos cientifico",
-        "Seminarios",
-        "Manuales",
-        "Programas de Radio y/o TV",
-    ]);
+    const [deliverables, setDeliverables] = useState({
+        idF: 10,
+        deliverables1: [
+        {id:1, name:"Tesis (Alumnos titulados)"},
+        {id:2, name:"Practicantes profesionales"},
+        {id:3, name:"Alumnos PIFI"},
+        {id:4, name:"Prestante del servicio social"},
+        ],
+        deliverables2: [
+        {id:5, name:"Artículo de divulgación"},
+        {id:6, name:"Congresos"},
+        {id:7, name:"Cursos"},
+        {id:8, name:"Libros"},
+        {id:9, name:"Conferencias o ponencias"},
+        {id:10, name:"Articulos cientifico"},
+        {id:11, name:"Seminarios"},
+        {id:12, name:"Manuales"},
+        {id:13, name:"Programas de Radio y/o TV"},
+        ],
+        deliverables3: [
+        {id:14, name:"Proceso"},
+        {id:15, name:"Patente"},
+        {id:16, name:"Hardware"},
+        {id:17, name:"Prototipo"},
+        {id:18, name:"Certificado de inversión"},
+        {id:19,name:"Software"},
+        ],
+        extras1:[],
+        extras2:[],
+        extras3:[]
+    });
   
     const [extras1, setExtras1] = useState([]);
     const [extras2, setExtras2] = useState([]);
@@ -42,67 +43,74 @@ const DeliverablesView = ({ option, setOption }) => {
     const categories2 = ["Medio", "Superior", "Posgrado"];
 
     const categories = ["Nacional", "Internacional"];
-    useLoadFormData(deliverables.idF, setDeliverables);
 
-
-    const handleChange = (section, deliverable, category, value) => {
-        setDeliverables((prev) => ({
+    const handleDelete = (arrayKey, index) => {
+    setDeliverables(prev => ({
         ...prev,
-        [section]: {
-            ...prev[section],
-            [deliverable]: {
-            ...((prev[section] && prev[section][deliverable]) || {}),
-            [category]: value,
-            },
-        },
+        [arrayKey]: (prev[arrayKey] || []).filter((_, i) => i !== index)
+    }));
+    };
+    const createNewItem = (extraKey) => {
+    const baseItems = deliverables[extraKey] || [];
+    const newId = baseItems.length > 0 
+        ? Math.max(...baseItems.map(item => item.id)) + 1 
+        : 1;
+    
+    return {
+        id: newId,
+        name: "",
+        values: { }
+    };
+    };
+    const handleOnClickAdd = (extraKey) => {
+        setDeliverables(prev => ({
+            ...prev,
+            [extraKey]: [...(prev[extraKey] || []), createNewItem(extraKey)]
+        }));
+    };
+    console.log(deliverables)
+   const handleInputChange = (e, deliverableKey, field = 'name') => {
+        const { value, dataset } = e.target;
+        const id = Number(dataset.id);
+        setDeliverables(prev => ({
+            ...prev,
+            [deliverableKey]: prev[deliverableKey].map(item => {
+            if (item.id === id) {
+                return { ...item, [field]: value };
+            }
+            return item;
+            })
         }));
     };
 
-    const handleOnClick2 = (setData, extra, deliverable) => {
-    const nuevo = `Entregable ${deliverable.length + extra.length + 1}`;
-    setData([...extra, nuevo]);
-};
-    const handleDelete1 = (entregable) => {
-        setExtras1(extras1.filter((e) => e !== entregable));
-        setDeliverables((prev) => {
-        const updated = { ...prev };
-        if (updated["educational"]) {
-            delete updated["educational"][entregable];
-        }
-        return updated;
-        });
-    };
-    const handleDelete2 = (entregable) => {
-        setExtras2(extras2.filter((e) => e !== entregable));
-        setDeliverables((prev) => {
-        const updated = { ...prev };
-        if (updated["difusion"]) {
-            delete updated["difusion"][entregable];
-        }
-        return updated;
-        });
-    };
-    const handleDelete3 = (entregable) => {
-        setExtras3(extras3.filter((e) => e !== entregable));
-        setDeliverables((prev) => {
-        const updated = { ...prev };
-        if (updated["technology"]) {
-            delete updated["technology"][entregable];
-        }
-        return updated;
-        });
-    };
-    const allDeliverables = [...deliverables1, ...extras1];
+    const handleInputNumberChange = (e,deliverableKey) => {
+        const { value, dataset } = e.target;
+        const id = Number(dataset.id);
+        const index = Number(dataset.index);
 
-    const allDeliverables2 = [...deliverables2, ...extras2];
-
-    const allDeliverables3 = [...deliverables3, ...extras3];
+        setDeliverables(prev => ({
+            ...prev,
+            [deliverableKey]: prev[deliverableKey].map(item => {
+            if (item.id === id) {
+                return {
+                ...item,
+                values: {
+                    ...item.values,
+                    [index]: Number(value)
+                }
+                };
+            }
+            return item;
+            })
+        }));
+    };
+    
     const handleOnSubmitForm = useFormHandler({
         form: deliverables,
         onSuccess: () => setOption((prev) => prev + 1),
     });
-
-  return (
+    useLoadFormData(deliverables.idF, setDeliverables);
+    return (
     <div>
         <table className="table">
             <caption>
@@ -120,37 +128,54 @@ const DeliverablesView = ({ option, setOption }) => {
             </tr>
             </thead>
             <tbody>
-            {allDeliverables.map((deliverable) => (
-                <tr key={deliverable}>
+            {deliverables.deliverables1.map((deliverable,index) => (
+                <tr key={index}>
                 <td data-label="Entregable">
-                    {deliverable}
-                    {extras1.includes(deliverable) && (
-                    <div>
-                        <input placeholder="Agrega el nombre del entregable"></input>
-                        <button onClick={() => handleDelete1(deliverable)} style={{ marginLeft: 8 }}>
-                            Eliminar Funciona
-                        </button>
-                    </div>
-                    )}
+                    {deliverable.name}
                 </td>
-                {categories2.map((category) => (
+                {categories2.map((category,index) => (
                     <td key={category} data-label={category}>
                     <input
                         type="number"
                         min={0}
-                        value={deliverables["educational"]?.[deliverable]?.[category] || ""}
-                        onChange={(e) =>
-                        handleChange("educational", deliverable, category, e.target.value)
-                        }
+                        data-id={deliverable.id}
+                        data-index={index+1}
+                        value={deliverable.values?.[index+1] ?? ""}
+                        onChange={(e) => handleInputNumberChange(e, 'deliverables1', index)}
                     />
                     </td>
                 ))}
                 </tr>
             ))}
+            {deliverables.extras1 && (deliverables.extras1.map((deliverable,index) => (
+                <tr key={index}>
+                <td className="other-row" data-label="Entregable">
+                    <input
+                        placeholder="Nombre del entregable"
+                        onChange={(e) => handleInputChange(e, 'extras1', 'name')}
+                        value={deliverable.name}
+                        data-id={index+1}
+                    ></input>
+                    <button onClick={()=>{handleDelete('extras1',index)}}><img src={TRASH}></img></button>
+                </td>
+                {categories2.map((category, index) => (
+                    <td key={category} data-label={category}>
+                    <input 
+                       type="number"
+                        min={0}
+                        data-id={deliverable.id}
+                        data-index={index+1}
+                        value={deliverable.values?.[index+1] ?? ""}
+                        onChange={(e) => handleInputNumberChange(e, 'extras1', index)}
+                    />
+                    </td>
+                ))}
+                </tr>
+            )))}
             <tr>
                 <td>
-                <button className="button-other" onClick={()=>{handleOnClick2(setExtras1,extras1,deliverables1)}}>
-                    Otro
+                <button className="button-other" onClick={()=>{handleOnClickAdd('extras1')}}>
+                   Agregar entregable
                 </button>
                 </td>
             </tr> 
@@ -168,39 +193,58 @@ const DeliverablesView = ({ option, setOption }) => {
             </tr>
             </thead>
             <tbody>
-            {allDeliverables2.map((deliverable) => (
-                <tr key={deliverable}>
+            {deliverables.deliverables2.map((deliverable,index) => (
+                <tr key={index}>
                 <td data-label="Entregable">
-                    {deliverable}
-                    {extras2.includes(deliverable) && (
-                    <div>
-                        <button onClick={() => handleDelete2(deliverable)} style={{ marginLeft: 8 }}>
-                            Eliminar Funciona
-                        </button>
-                    </div>
-                    )}
+                    {deliverable.name}
                 </td>
-                {categories.map((category) => (
+                {categories.map((category,index) => (
                     <td key={category} data-label={category}>
                     <input
                         type="number"
                         min={0}
-                        value={deliverables["technology"]?.[deliverable]?.[category] || ""}
-                        onChange={(e) =>
-                        handleChange("technology", deliverable, category, e.target.value)
-                        }
+                        data-id={deliverable.id}
+                        data-index={index+1}
+                        value={deliverable.values?.[index+1] ?? ""}
+                        onChange={(e) => handleInputNumberChange(e, 'deliverables2', index)}
                     />
                     </td>
                 ))}
                 </tr>
             ))}
-            {/* <tr>
+            {deliverables.extras2 && (deliverables.extras2.map((deliverable,index) => (
+                <tr key={index}>
+                <td className="other-row" data-label="Entregable">
+                    <input
+                        placeholder="Nombre del entregable"
+                        onChange={(e) => handleInputChange(e, 'extras2', 'name')}
+                        name="name" 
+                        value={deliverable.name}
+                        data-id={index+1}
+                    ></input>
+                   <button onClick={()=>{handleDelete('extras2',index)}}><img src={TRASH}></img></button>
+                </td>
+                {categories.map((category, index) => (
+                    <td key={category} data-label={category}>
+                    <input 
+                        type="number"
+                        min={0}
+                        data-id={deliverable.id}
+                        data-index={index+1}
+                        value={deliverable.values?.[index+1] ?? ""}
+                        onChange={(e) => handleInputNumberChange(e, 'extras2', index)}
+                    />
+                    </td>
+                ))}
+                </tr>
+            )))}
+            <tr>
                 <td>
-                <button className="button-other" onClick={()=>{handleOnClick2(setExtras2,extras2,deliverables2)}}>
-                    Otro
+                <button className="button-other" onClick={()=>{handleOnClickAdd('extras2')}}>
+                   Agregar entregable
                 </button>
                 </td>
-            </tr> */}
+            </tr>
             </tbody>
         </table>
 
@@ -214,39 +258,58 @@ const DeliverablesView = ({ option, setOption }) => {
             </tr>
             </thead>
             <tbody>
-            {allDeliverables3.map((deliverable) => (
-                <tr key={deliverable}>
+            {deliverables.deliverables3.map((deliverable,index) => (
+                <tr key={index}>
                 <td data-label="Entregable">
-                    {deliverable}
-                    {extras3.includes(deliverable) && (
-                    <div>
-                        <button onClick={() => handleDelete3(deliverable)} style={{ marginLeft: 8 }}>
-                            Eliminar Funciona
-                        </button>
-                    </div>
-                    )}
+                    {deliverable.name}
                 </td>
-                {categories.map((category) => (
+                {categories.map((category,index) => (
                     <td key={category} data-label={category}>
                     <input
                         type="number"
                         min={0}
-                        value={deliverables["technology"]?.[deliverable]?.[category] || ""}
-                        onChange={(e) =>
-                        handleChange("technology", deliverable, category, e.target.value)
-                        }
+                        data-id={deliverable.id}
+                        data-index={index+1}
+                        value={deliverable.values?.[index+1] ?? ""}
+                        onChange={(e) => handleInputNumberChange(e, 'deliverables3', index)}
                     />
                     </td>
                 ))}
                 </tr>
             ))}
-            {/* <tr>
+            {deliverables.extras3 && (deliverables.extras3.map((deliverable,index) => (
+                <tr key={index}>
+                <td className="other-row" data-label="Entregable">
+                    <input
+                        placeholder="Nombre del entregable"
+                        onChange={(e) => handleInputChange(e, 'extras3', 'name')}
+                        name="name" 
+                        value={deliverable.name}
+                        data-id={index+1}
+                    ></input>
+                    <button onClick={()=>{handleDelete('extras3',index)}}><img src={TRASH}></img></button>
+                </td>
+                {categories.map((category, index) => (
+                    <td key={category} data-label={category}>
+                    <input 
+                        type="number"
+                        min={0}
+                        data-id={deliverable.id}
+                        data-index={index+1}
+                        value={deliverable.values?.[index+1] ?? ""}
+                        onChange={(e) => handleInputNumberChange(e, 'extras3', index)}
+                    />
+                    </td>
+                ))}
+                </tr>
+            )))}
+            <tr>
                 <td>
-                <button className="button-other" onClick={()=>{handleOnClick2(setExtras3,extras3,deliverables3)}}>
-                    Otro
+                <button className="button-other" onClick={()=>{handleOnClickAdd('extras3')}}>
+                   Agregar entregable
                 </button>
                 </td>
-            </tr> */}
+            </tr>
             </tbody>
         </table>
 

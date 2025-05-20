@@ -5,12 +5,13 @@ import { prevOption } from "../hooks/optionUtils";
 import CardAdd from "../components/CardAdd";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 const  Collaboration = ({option,setOption}) => {
-    const [hasCollaboration, sethasCollaboration] = useState(1);
-    const [collaborations, setCollaborations] = useState({ idF: 4, 
+    const [hasCollaboration, setHasCollaboration] = useState(1);
+    const [collaborations, setCollaborations] = useState({ 
+        idF: 4, 
         hasCollaboration,
         collaborationJustification:"", 
         collaborativeInstitutions: [] });
@@ -48,7 +49,22 @@ const  Collaboration = ({option,setOption}) => {
         setCollaborations({ ...collaborations, [name]: value });
     };
     useLoadFormData(collaborations.idF,setCollaborations);
-    
+    useEffect(()=>{
+        if(collaborations.hasCollaboration===0){
+            setCollaborations(prev=>({
+                ...prev,
+                collaborativeInstitutions: []
+            })
+            )
+        }
+        if(collaborations.hasCollaboration===1){
+            setCollaborations(prev=>({
+                ...prev,
+                collaborationJustification:""
+            })
+            )
+        }
+    },[collaborations.hasCollaboration])
     return (
         <div>
             <div className="flex flex-col justify-between">

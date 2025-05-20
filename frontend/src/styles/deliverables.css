@@ -37,6 +37,12 @@ body {
     padding: 8px;
     text-align: center;
 }
+.other-row{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .button-other{
     background-color: #5CB7E6;
     color: white;
