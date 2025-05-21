@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useFormHandler } from "../hooks/useFormHandler";
 import useLoadFormData from "../hooks/useLoadFormData";
-import { prevOption } from "../hooks/optionUtils";
 import "../styles/deliverables.css";
 import TRASH from "../assets/trash.svg"
+import useSubmitFormBack from "../hooks/useSubmitFormBack";
+import useSubmitFormNext from "../hooks/useSubmitFormNext";
+
 const DeliverablesView = ({ option, setOption }) => {
     const [deliverables, setDeliverables] = useState({
         idF: 10,
@@ -68,7 +69,6 @@ const DeliverablesView = ({ option, setOption }) => {
             [extraKey]: [...(prev[extraKey] || []), createNewItem(extraKey)]
         }));
     };
-    console.log(deliverables)
    const handleInputChange = (e, deliverableKey, field = 'name') => {
         const { value, dataset } = e.target;
         const id = Number(dataset.id);
@@ -105,10 +105,8 @@ const DeliverablesView = ({ option, setOption }) => {
         }));
     };
     
-    const handleOnSubmitForm = useFormHandler({
-        form: deliverables,
-        onSuccess: () => setOption((prev) => prev + 1),
-    });
+    const handleOnSubmitFormBack = useSubmitFormBack(deliverables, setOption);
+    const handleOnSubmitFormNext = useSubmitFormNext(deliverables, setOption);
     useLoadFormData(deliverables.idF, setDeliverables);
     return (
     <div>
@@ -317,13 +315,13 @@ const DeliverablesView = ({ option, setOption }) => {
         <button
           className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md"
           type="button"
-          onClick={() => prevOption(setOption)}
+          onClick={handleOnSubmitFormBack}
         >
           Regresar
         </button>
         <button
           className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md"
-          onClick={handleOnSubmitForm}
+          onClick={handleOnSubmitFormNext}
         >
           Siguiente
         </button>

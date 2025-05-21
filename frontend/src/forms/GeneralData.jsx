@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useLoadFormData from "../hooks/useLoadFormData";
-import { useFormHandler } from "../hooks/useFormHandler";
+import useSubmitFormNext from "../hooks/useSubmitFormNext";
 
 const  GeneralData = ({option,setOption}) => {
     const [alignsWithPNIorODS, setalignsWithPNIorODS] = useState(1);
@@ -42,10 +42,7 @@ const  GeneralData = ({option,setOption}) => {
         setGeneralData({ ...generalData, [name]: value });
     };
     
-    const handleOnSubmitForm = useFormHandler({
-        form: generalData,
-        onSuccess: ()=> setOption(prevOption => prevOption + 1),
-    });
+    const handleOnSubmitFormNext = useSubmitFormNext(generalData, setOption);
 
     const validateDates = () => {
         if (generalData.startDate > generalData.endDate) {
@@ -71,7 +68,7 @@ const  GeneralData = ({option,setOption}) => {
         });
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
-            handleOnSubmitForm(event); 
+            handleOnSubmitFormNext(event); 
         }
     };
 

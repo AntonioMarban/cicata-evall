@@ -5,7 +5,6 @@ const ShowCardsBudget = ({cards, slice,handleDeleteFile,handleEditModal,nameArra
     const onClick = (index, card,setData) =>{
         handleEditModal(index, card,setData);
     }
-    console.log("cards",cards)
     return (
     <div className="rounded-lg !p-0 w-full">
         <div  className="rounded-lg !p-0 w-full border-2 border-gray-300">

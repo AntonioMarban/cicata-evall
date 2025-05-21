@@ -3,7 +3,6 @@ import { useFormAddHandler } from "../hooks/useFormAddHandler";
 
 import { useEffect, useState } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
-import { prevOption } from "../hooks/optionUtils";
 
 const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => {
     const initialFormValues = {
@@ -80,7 +79,6 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
         return result;
         }
         const FormatBudget = flattenObject(budgetForm);
-        console.log(budgetForm)
         if(!Object.keys(newErrorsF).length>0){
             handleBudgetSubmit(e, FormatBudget, budgetToEdit ? budgetToEdit.index : undefined);
         }
@@ -89,7 +87,6 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
 
     useEffect(()=>{
         if(budgetToEdit){
-            console.log("toedit",budgetToEdit)
             setBudgetForm({
                 investmentExpenditure: {
                     idType: budgetToEdit.idType || "", 

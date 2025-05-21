@@ -1,11 +1,11 @@
 import useLoadFormData from "../hooks/useLoadFormData";
-import { prevOption } from "../hooks/optionUtils";
 import AddObjectivesSpe from "../components/AddObjectivesSpe";
-import { useFormHandler } from "../hooks/useFormHandler";
 import ShowCards from "../components/ShowCards";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
-
+import useSubmitFormBack from "../hooks/useSubmitFormBack";
+import useSubmitFormNext from "../hooks/useSubmitFormNext";
 import { useState } from "react";
+
 const  Desglose = ({option,setOption}) => {
     const [desglose, setDesglose] = useState(
         {   idF: 5,
@@ -33,10 +33,8 @@ const  Desglose = ({option,setOption}) => {
         setDesglose({ ...desglose, [name]: value });
     };
 
-    const handleOnSubmitForm = useFormHandler({
-        form: desglose,
-        onSuccess: ()=> setOption(prevOption => prevOption + 1),
-    });
+    const handleOnSubmitFormBack = useSubmitFormBack(desglose, setOption);
+    const handleOnSubmitFormNext = useSubmitFormNext(desglose, setOption);
 
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
@@ -48,7 +46,7 @@ const  Desglose = ({option,setOption}) => {
         });
         setNewErrorsD(newErrorsDF)
         if(!Object.keys(newErrorsDF).length>0){
-            handleOnSubmitForm(event); 
+            handleOnSubmitFormNext(event); 
         }
     }
 
@@ -68,6 +66,7 @@ const  Desglose = ({option,setOption}) => {
     };
 
     useLoadFormData(desglose.idF,setDesglose);
+
     return (
         <div>
             <div className="flex flex-col justify-between">
@@ -153,7 +152,7 @@ const  Desglose = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
-                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
+                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
                 <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>

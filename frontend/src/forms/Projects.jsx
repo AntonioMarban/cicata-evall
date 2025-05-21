@@ -1,21 +1,18 @@
 import AddProjects from "../components/AddProjects";
 import useLoadFormData from "../hooks/useLoadFormData";
-import { prevOption } from "../hooks/optionUtils";
-import { useFormHandler } from "../hooks/useFormHandler";
 import ShowCards from "../components/ShowCards";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
-
+import useSubmitFormBack from "../hooks/useSubmitFormBack";
+import useSubmitFormNext from "../hooks/useSubmitFormNext";
 import { useState } from "react";
 
 
 const  Projects = ({option,setOption}) => {
     const [projects, setProjects] = useState({ idF: 2, associatedProjects: [] });
     const [projectToEdit, setProjectToEdit] = useState(null);
-
-    const handleOnSubmitForm = useFormHandler({
-        form: projects,
-        onSuccess: ()=> setOption(prevOption => prevOption + 1),
-    });
+    
+    const handleOnSubmitFormBack = useSubmitFormBack(projects, setOption);
+    const handleOnSubmitFormNext = useSubmitFormNext(projects, setOption);
 
     const handleDeleteArray = (index) => {
         setProjects({
@@ -67,9 +64,9 @@ const  Projects = ({option,setOption}) => {
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
                 <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
-                    type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
+                    type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
                 <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
-                    onClick={handleOnSubmitForm}>Siguiente</button>
+                    onClick={handleOnSubmitFormNext}>Siguiente</button>
             </div>
         </div>
     )

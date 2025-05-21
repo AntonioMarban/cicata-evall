@@ -1,8 +1,8 @@
-import { useFormHandler } from "../hooks/useFormHandler";
 import useLoadFormData from "../hooks/useLoadFormData";
-import { prevOption } from "../hooks/optionUtils";
 import DragDrop from "../components/DragDrop";
 import { useEffect, useState } from "react";
+import useSubmitFormBack from "../hooks/useSubmitFormBack";
+import useSubmitFormNext from "../hooks/useSubmitFormNext";
 
 const  EthicalAsp = ({option,setOption}) => {
     const [workWithHumans, setWorkWithHumans] = useState(1);
@@ -29,11 +29,11 @@ const  EthicalAsp = ({option,setOption}) => {
         setEthicalAsp({ ...ethicalAsp, [name]: value });
     };
 
-    const handleOnSubmitForm = useFormHandler({
-        form: ethicalAsp,
-        onSuccess: ()=> setOption(prevOption => prevOption + 1),
-    });
     
+
+    const handleOnSubmitFormBack = useSubmitFormBack(ethicalAsp, setOption);
+    const handleOnSubmitFormNext = useSubmitFormNext(ethicalAsp, setOption);
+
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
 
@@ -51,7 +51,7 @@ const  EthicalAsp = ({option,setOption}) => {
           }
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
-            handleOnSubmitForm(event); 
+            handleOnSubmitFormNext(event); 
         }
     };
 
@@ -168,7 +168,7 @@ const  EthicalAsp = ({option,setOption}) => {
             </div>
             <div className="flex justify-end items-center !mt-5 mb-5">
                 <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  
-                    onClick={() => prevOption(setOption)}>Regresar</button>
+                    onClick={handleOnSubmitFormBack}>Regresar</button>
                 <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
                     onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>

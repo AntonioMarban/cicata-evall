@@ -1,17 +1,14 @@
 import { useState, useEffect } from "react";
 import { updateForm,getAllData } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
-import { prevOption } from "../hooks/optionUtils";
 import DragDrop from "../components/DragDrop";
 import { useNavigate  } from 'react-router-dom'
+import useSubmitFormBack from "../hooks/useSubmitFormBack";
 
 const  Anexos = ({option,setOption}) => {
     const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
     
-    const [filesForms, setFilesForms] = useState([]);
-
-
     const [filesSend,setFilesSend] = useState([]);
     const [anexos, setAnexos] = useState({   
         idF: 14,
@@ -21,6 +18,8 @@ const  Anexos = ({option,setOption}) => {
     const [newErrors,setNewErrors] = useState({
         aditionalComments:""
     });
+    const handleOnSubmitFormBack = useSubmitFormBack(anexos, setOption);
+
     const handleOnSubmit = async (event) => {
         event.preventDefault();
         
@@ -197,7 +196,7 @@ const  Anexos = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center !mt-5 !mb-5">
-                <button className="!p-2 !mr-5 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
+                <button className="!p-2 !mr-5 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
                 <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleSubmitWithValidation}>Enviar formulario</button>
             </div>
         </form>
