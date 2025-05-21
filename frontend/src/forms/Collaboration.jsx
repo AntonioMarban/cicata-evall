@@ -2,7 +2,7 @@ import AddCollaboration from "../components/AddCollaboration";
 import { useFormHandler } from "../hooks/useFormHandler";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
-import CardAdd from "../components/CardAdd";
+import ShowCards from "../components/ShowCards";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
 import { useEffect, useState } from "react";
@@ -99,7 +99,7 @@ const  Collaboration = ({option,setOption}) => {
                             <p className="flex-1"></p>
                         </div>
                     </div>
-                    <CardAdd cards={collaborations.collaborativeInstitutions} 
+                    <ShowCards cards={collaborations.collaborativeInstitutions} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}
                     slice={4} />

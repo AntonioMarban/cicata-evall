@@ -2,7 +2,7 @@ import AddProjects from "../components/AddProjects";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import { useFormHandler } from "../hooks/useFormHandler";
-import CardAdd from "../components/CardAdd";
+import ShowCards from "../components/ShowCards";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
 import { useState } from "react";
@@ -51,7 +51,7 @@ const  Projects = ({option,setOption}) => {
                     <p className="flex-1"></p>
                     </div>
                 </div>
-                <CardAdd cards={projects.associatedProjects} 
+                <ShowCards cards={projects.associatedProjects} 
                     handleDeleteFile={handleDeleteArray}
                     handleEditModal={handleEditModal}
                     slice={5}/>

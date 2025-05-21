@@ -3,7 +3,7 @@ import useLoadFormData from "../hooks/useLoadFormData";
 import { prevOption } from "../hooks/optionUtils";
 import { useFormHandler } from "../hooks/useFormHandler";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
-import CardAdd from "../components/CardAdd";
+import ShowCards from "../components/ShowCards";
 
 import { useState } from "react";
 
@@ -48,7 +48,7 @@ const  Participants = ({option,setOption}) => {
                     <p className="flex-1"></p>
                     </div>
                 </div>
-                <CardAdd 
+                <ShowCards 
                     cards={participants.members} 
                     handleDeleteFile={handleDeleteArray}
                     handleEditModal={handleEditModal}

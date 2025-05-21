@@ -3,7 +3,7 @@ import { prevOption } from "../hooks/optionUtils";
 import { useFormHandler } from "../hooks/useFormHandler";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
-import CardAdd from "../components/CardAdd";
+import ShowCards from "../components/ShowCards";
 import AddGoals from "../components/AddGoals";
 import AddReferences from "../components/AddReferences";
 import AddMethodology from "../components/AddMethodology";
@@ -62,7 +62,7 @@ const  Goals = ({option,setOption}) => {
                                     <p className="flex-1">Nombre de la meta</p>
                                 </div>
                             </div>
-                            <CardAdd cards={desglose.goals} 
+                            <ShowCards cards={desglose.goals} 
                                 handleDeleteFile={handleDeleteArray}
                                 handleEditModal={handleEditModal}
                                 setData = {setGoalsToEdit}
@@ -85,7 +85,7 @@ const  Goals = ({option,setOption}) => {
                                     <p className="flex-1">Nombre de la referencia</p>
                                 </div>
                             </div>
-                            <CardAdd cards={desglose.references} 
+                            <ShowCards cards={desglose.references} 
                                 handleDeleteFile={handleDeleteArray}
                                 handleEditModal={handleEditModal}
                                 setData = {setReferencesToEdit}
@@ -108,7 +108,7 @@ const  Goals = ({option,setOption}) => {
                                     <p className="flex-1">Nombre de la Metodología</p>
                                 </div>
                             </div>
-                            <CardAdd cards={desglose.methodologies} 
+                            <ShowCards cards={desglose.methodologies} 
                                 handleDeleteFile={handleDeleteArray}
                                 handleEditModal={handleEditModal}
                                 setData = {setMethodologiesToEdit}

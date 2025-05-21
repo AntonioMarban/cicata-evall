@@ -21,7 +21,8 @@ const FormsNavigation = () => {
     backgroundColor: "#5CB7E6",
     padding: "10px",
     borderRadius:"20px",
-    width:`${(option*100)/13}%`
+    width:`${(option*100)/13}%`,
+    marginBottom: "20px"
   };
   return (
     <>
@@ -29,7 +30,7 @@ const FormsNavigation = () => {
         <p className='text-right text-white font-semibold'>{option === 0 ? '\u00A0' : `${Math.round((option * 100) / 13)} %`}</p>
       </div>
       <Buttons option={option} setOption={setOption}/>
-      <div>
+      <div style={{marginBottom:"50px"}}>
         {option === 0  &&  <GeneralData  option={option} setOption={setOption}/>}
         {option === 1  &&  <Projects  option={option} setOption={setOption}/>}
         {option === 2  &&  <Participants  option={option} setOption={setOption}/>}

@@ -2,7 +2,7 @@ import { useFormHandler } from "../hooks/useFormHandler";
 import AddActividades from "../components/AddActivities";
 import { prevOption } from "../hooks/optionUtils";
 import useLoadFormData from "../hooks/useLoadFormData";
-import CardAdd from "../components/CardAdd";
+import ShowCards from "../components/ShowCards";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
 import { useState } from "react";
@@ -49,7 +49,7 @@ const  Activities = ({option,setOption}) => {
                     <p className="flex-1"></p>
                     </div>
                 </div>
-                <CardAdd cards={activities.scheduleActivities} 
+                <ShowCards cards={activities.scheduleActivities} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}
                     slice={5}/>

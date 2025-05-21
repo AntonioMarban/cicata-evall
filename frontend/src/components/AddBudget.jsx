@@ -91,12 +91,17 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
         if(budgetToEdit){
             console.log("toedit",budgetToEdit)
             setBudgetForm({
-                investmentExpenditure: {idType: budgetToEdit.idType || "", 
-                                        nameType: budgetToEdit.nameType || ""},
-                name:  {idName: budgetToEdit.idName || "", 
-                        name: budgetToEdit.name || ""},
+                investmentExpenditure: {
+                    idType: budgetToEdit.idType || "", 
+                    nameType: budgetToEdit.nameType || ""
+                },
+                name:  {
+                    idName: budgetToEdit.idName || "", 
+                    name: budgetToEdit.name || ""
+                },
                 expenditure: budgetToEdit.expenditure || 0,
-                otherName: budgetToEdit.otherName
+                otherName: budgetToEdit.otherName || "",
+                convDate: budgetToEdit.convDate
             });
             setIsOpen(true);
         }

@@ -5,7 +5,7 @@ import { useFormHandler } from "../hooks/useFormHandler";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
 
 import { useState } from "react";
-import CardAdd from "../components/CardAddBudget";
+import ShowCards from "../components/ShowCardsBudget";
 
 const  Budget = ({option,setOption}) => {
     const [budget, setBudget] = useState({
@@ -49,7 +49,7 @@ const  Budget = ({option,setOption}) => {
                     <p className="flex-1 text-start"></p>
                     </div>
                 </div>
-                <CardAdd cards={budget.budgets} 
+                <ShowCards cards={budget.budgets} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}
                     slice={3}

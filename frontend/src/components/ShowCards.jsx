@@ -3,7 +3,7 @@ import Trash from '../assets/trash.svg'
 import DeletePopUp from './DeletePopUp';
 
 
-const CardAdd = ({cards, slice,handleDeleteFile,handleEditModal,nameArray,setData}) => {  
+const ShowCards = ({cards, slice,handleDeleteFile,handleEditModal,nameArray,setData}) => {  
     const onClick = (index, card,setData) =>{
         handleEditModal(index, card,setData);
     }
@@ -30,4 +30,4 @@ const CardAdd = ({cards, slice,handleDeleteFile,handleEditModal,nameArray,setDat
   );
 };
 
-export default CardAdd;
+export default ShowCards;
