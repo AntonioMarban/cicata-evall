@@ -7,10 +7,10 @@ const ShowCardsBudget = ({cards, slice,handleDeleteFile,handleEditModal,nameArra
     }
     console.log("cards",cards)
     return (
-    <div className="rounded-lg w-full">
-        <div  className="rounded-lg w-full border-2 border-gray-300">
+    <div className="rounded-lg !p-0 w-full">
+        <div  className="rounded-lg !p-0 w-full border-2 border-gray-300">
         {Array.isArray(cards) && cards.map((card, index) => (
-            <div className="m-5 flex justify-between items-center w-full" key={index}>
+            <div className="!p-2 m-5 flex justify-between items-center w-full" key={index}>
                 <p className="flex-1">{card.nameType}</p>
 
                 <p className="flex-1 overflow-auto whitespace-nowrap px-2 rounded">
