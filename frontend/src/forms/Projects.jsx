@@ -29,9 +29,7 @@ const  Projects = ({option,setOption}) => {
         setProjectToEdit(null);
     };
 
-
     useLoadFormData(projects.idF,setProjects);
-    
     return (
         <div>
             <div className="flex flex-col justify-between">
@@ -63,9 +61,13 @@ const  Projects = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
-                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
+                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] 
+                text-white font-medium cursor-pointer shadow-md
+                hover:bg-[#4CA6D5] transition-colors duration-300" 
                     type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
-                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
+                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                hover:bg-[#4CA6D5] transition-colors duration-300" 
                     onClick={handleOnSubmitFormNext}>Siguiente</button>
             </div>
         </div>

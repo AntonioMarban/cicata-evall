@@ -38,9 +38,6 @@ const DeliverablesView = ({ option, setOption }) => {
         extras3:[]
     });
   
-    const [extras1, setExtras1] = useState([]);
-    const [extras2, setExtras2] = useState([]);
-    const [extras3, setExtras3] = useState([]);
     const categories2 = ["Medio", "Superior", "Posgrado"];
 
     const categories = ["Nacional", "Internacional"];
@@ -108,6 +105,7 @@ const DeliverablesView = ({ option, setOption }) => {
     const handleOnSubmitFormBack = useSubmitFormBack(deliverables, setOption);
     const handleOnSubmitFormNext = useSubmitFormNext(deliverables, setOption);
     useLoadFormData(deliverables.idF, setDeliverables);
+    
     return (
     <div>
         <table className="table">
@@ -154,7 +152,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         value={deliverable.name}
                         data-id={index+1}
                     ></input>
-                    <button onClick={()=>{handleDelete('extras1',index)}}><img src={TRASH}></img></button>
+                    <button className="cursor-pointer" onClick={()=>{handleDelete('extras1',index)}}><img src={TRASH}></img></button>
                 </td>
                 {categories2.map((category, index) => (
                     <td key={category} data-label={category}>
@@ -220,7 +218,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         value={deliverable.name}
                         data-id={index+1}
                     ></input>
-                   <button onClick={()=>{handleDelete('extras2',index)}}><img src={TRASH}></img></button>
+                    <button className="cursor-pointer" onClick={()=>{handleDelete('extras2',index)}}><img src={TRASH}></img></button>
                 </td>
                 {categories.map((category, index) => (
                     <td key={category} data-label={category}>
@@ -285,7 +283,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         value={deliverable.name}
                         data-id={index+1}
                     ></input>
-                    <button onClick={()=>{handleDelete('extras3',index)}}><img src={TRASH}></img></button>
+                     <button className="cursor-pointer" onClick={()=>{handleDelete('extras3',index)}}><img src={TRASH}></img></button>
                 </td>
                 {categories.map((category, index) => (
                     <td key={category} data-label={category}>
@@ -313,14 +311,18 @@ const DeliverablesView = ({ option, setOption }) => {
 
       <div className="flex justify-end items-center !mt-5 mb-5">
         <button
-          className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md"
+          className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300"
           type="button"
           onClick={handleOnSubmitFormBack}
         >
           Regresar
         </button>
         <button
-          className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md"
+          className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300"
           onClick={handleOnSubmitFormNext}
         >
           Siguiente

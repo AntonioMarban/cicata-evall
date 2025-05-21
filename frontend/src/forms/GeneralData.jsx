@@ -2,7 +2,7 @@ import { useState } from "react";
 import useLoadFormData from "../hooks/useLoadFormData";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
 
-const  GeneralData = ({option,setOption}) => {
+const GeneralData = ({option,setOption}) => {
     const [alignsWithPNIorODS, setalignsWithPNIorODS] = useState(1);
     const [typeResearch, setTypeResearch] = useState(1);
     const [generalData, setGeneralData] = useState(
@@ -30,6 +30,7 @@ const  GeneralData = ({option,setOption}) => {
             alignmentPNIorODS: "",
             summary:""
     });
+    const handleOnSubmitFormNext = useSubmitFormNext(generalData, setOption);
 
     const handleChangeButton = (key, value) => {
         setGeneralData((prevState) => ({
@@ -41,8 +42,6 @@ const  GeneralData = ({option,setOption}) => {
         const { name, value } = e.target;
         setGeneralData({ ...generalData, [name]: value });
     };
-    
-    const handleOnSubmitFormNext = useSubmitFormNext(generalData, setOption);
 
     const validateDates = () => {
         if (generalData.startDate > generalData.endDate) {
@@ -83,7 +82,7 @@ const  GeneralData = ({option,setOption}) => {
                     <input 
                         type="text"
                         name="title"
-                        className="!p-2 w-2/5 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3" 
+                        className="!p-2 w-2/5 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 hover:border-[#5CB7E6] transition-colors duration-300" 
                         value={generalData.title}
                         onChange={handleChange}
                         placeholder="Escribe el titulo del proyecto..."></input>
@@ -94,7 +93,7 @@ const  GeneralData = ({option,setOption}) => {
                         <div className="flex-1">
                             <p>Fecha de Inicio {newErrors.startDate && <span className="text-red-600">*{newErrors.startDate}</span>}</p>
                             <input 
-                                    className="!p-2 w-4/5 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end"
+                                    className="!p-2 w-4/5 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end hover:border-[#5CB7E6] transition-colors duration-300"
                                     name="startDate" 
                                     type="date"
                                     value={generalData.startDate}
@@ -104,7 +103,7 @@ const  GeneralData = ({option,setOption}) => {
                         <div className="flex-1">
                             <p>Fecha de Fin {newErrors.endDate && <span className="text-red-600">*{newErrors.endDate}</span>}</p>
                             <input  
-                                    className="!p-2 w-4/5 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end"
+                                    className="!p-2 w-4/5 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end hover:border-[#5CB7E6] transition-colors duration-300"
                                     name="endDate" 
                                     type="date"
                                     value={generalData.endDate}
@@ -117,36 +116,36 @@ const  GeneralData = ({option,setOption}) => {
                     <p className="text-lg">Tipo de investigación</p>
                     <div className="flex flex-wrap justify-between w-full mt-2.5">
                             <button
-                                className={generalData.typeResearch === 1  ? 
-                                '!mt-2 bg-[#5CB7E6] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer mt-5' 
+                                className={generalData.typeResearch === 1 ? 
+                                '!mt-2 bg-[#5CB7E6] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer mt-5 hover:bg-[#4CA6D5] transition-colors duration-300' 
                                 : 
-                                '!mt-2 bg-[#E1E1E1] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer mt-5'} 
+                                '!mt-2 bg-[#E1E1E1] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer mt-5 hover:bg-[#D1D1D1] transition-colors duration-300'} 
                                 onClick={() => handleChangeButton('typeResearch', 1)}
                                 type="button">Básica
                             </button>
 
                             <button
-                                className={generalData.typeResearch  === 2  ? 
-                                '!mt-2 bg-[#5CB7E6] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer mt-5' 
+                                className={generalData.typeResearch === 2 ? 
+                                '!mt-2 bg-[#5CB7E6] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer mt-5 hover:bg-[#4CA6D5] transition-colors duration-300' 
                                 : 
-                                '!mt-2 bg-[#E1E1E1] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer mt-5'} 
+                                '!mt-2 bg-[#E1E1E1] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer mt-5 hover:bg-[#D1D1D1] transition-colors duration-300'} 
                                 onClick={() => handleChangeButton('typeResearch', 2)}
                                 type="button">Aplicada-clínica
                             </button>
 
                             <button
-                                className={generalData.typeResearch  === 3  ? 
-                                '!mt-2 bg-[#5CB7E6] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer mt-5' 
+                                className={generalData.typeResearch === 3 ? 
+                                '!mt-2 bg-[#5CB7E6] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer mt-5 hover:bg-[#4CA6D5] transition-colors duration-300' 
                                 : 
-                                '!mt-2 bg-[#E1E1E1] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer mt-5'} 
+                                '!mt-2 bg-[#E1E1E1] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer mt-5 hover:bg-[#D1D1D1] transition-colors duration-300'} 
                                 onClick={() => handleChangeButton('typeResearch', 3)}
                                 type="button">Desarrollo tecnológico
                             </button>
                             <button
-                                className={generalData.typeResearch  === 4  ? 
-                                '!mt-2 bg-[#5CB7E6] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer mt-5' 
+                                className={generalData.typeResearch === 4 ? 
+                                '!mt-2 bg-[#5CB7E6] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer mt-5 hover:bg-[#4CA6D5] transition-colors duration-300' 
                                 : 
-                                '!mt-2 bg-[#E1E1E1] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer mt-5'} 
+                                '!mt-2 bg-[#E1E1E1] w-1/5 min-w-[150px] p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer mt-5 hover:bg-[#D1D1D1] transition-colors duration-300'} 
                                 onClick={() => handleChangeButton('typeResearch', 4)}
                                 type="button">Otro
                             </button>
@@ -155,7 +154,7 @@ const  GeneralData = ({option,setOption}) => {
                         <div className="!mt-5 w-100% flex-1">
                             <p>¿Cuál? {newErrors.otherTypeResearch && <span className="text-red-600">*{newErrors.otherTypeResearch}</span>}</p>
                             <input  
-                                    className="!p-2 w-4/10 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3" 
+                                    className="!p-2 w-4/10 min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 hover:border-[#5CB7E6] transition-colors duration-300" 
                                     name="otherTypeResearch" 
                                     type="text"
                                     value={generalData.otherTypeResearch}
@@ -169,7 +168,7 @@ const  GeneralData = ({option,setOption}) => {
                         <div className="flex-1">
                             <p className="!mb-5">Tema especialidad {newErrors.topic && <span className="text-red-600">*{newErrors.topic}</span>}</p>
                             <input  
-                                    className="!p-2 w-4/5 min-w-[250px] rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end"
+                                    className="!p-2 w-4/5 min-w-[250px] rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end hover:border-[#5CB7E6] transition-colors duration-300"
                                     name="topic" 
                                     value={generalData.topic}
                                     onChange={handleChange}
@@ -178,7 +177,7 @@ const  GeneralData = ({option,setOption}) => {
                         <div className="flex-1">
                             <p className="!mb-5">Subtema especialidad {newErrors.subtopic && <span className="text-red-600">*{newErrors.subtopic}</span>}</p>
                             <input  
-                                    className="!p-2 w-4/5 min-w-[250px] rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end"
+                                    className="!p-2 w-4/5 min-w-[250px] rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end hover:border-[#5CB7E6] transition-colors duration-300"
                                     name="subtopic" 
                                     value={generalData.subtopic}
                                     onChange={handleChange}
@@ -191,16 +190,16 @@ const  GeneralData = ({option,setOption}) => {
                     <p className="w-3/4">¿El proyecto se alinea con las Prioridades Nacionales de Investigación y/o con los objetivos de la Agenda de desarrollo sostenible?</p>
                     <div className="ml-2 w-1/4 min-w-[200px] flex justify-between">
                         <button type="button"
-                            className={generalData.alignsWithPNIorODS === 1  ? 
-                            '!ml-2 bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px]' 
+                            className={generalData.alignsWithPNIorODS === 1 ? 
+                            '!ml-2 bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px] hover:bg-[#4CA6D5] transition-colors duration-300' 
                             : 
-                            '!ml-2 bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px]'} 
+                            '!ml-2 bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px] hover:bg-[#D1D1D1] transition-colors duration-300'} 
                             onClick={() => handleChangeButton('alignsWithPNIorODS', 1)} >Si</button>
                         <button type="button"
-                            className={generalData.alignsWithPNIorODS === 0  ? 
-                            'bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px]'
+                            className={generalData.alignsWithPNIorODS === 0 ? 
+                            'bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px] hover:bg-[#4CA6D5] transition-colors duration-300'
                             : 
-                            'bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px]'} 
+                            'bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px] hover:bg-[#D1D1D1] transition-colors duration-300'} 
                             onClick={() => handleChangeButton('alignsWithPNIorODS', 0)} >No</button>
                     </div>
                 </div>
@@ -208,7 +207,7 @@ const  GeneralData = ({option,setOption}) => {
                 <div className="!mt-5 flex-1">
                     <p className="text-lg mt-3">En caso afirmativo ¿Con cuál? / No se considera ¿Por qué? {newErrors.alignmentPNIorODS && <span className="text-red-600">*{newErrors.alignmentPNIorODS}</span>}</p>
                     <input  
-                            className="!p-2 w-2/5 min-w-[250px] !p-2 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] !mt-3" 
+                            className="!p-2 w-2/5 min-w-[250px] !p-2 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] !mt-3 hover:border-[#5CB7E6] transition-colors duration-300" 
                             name="alignmentPNIorODS"  
                             value={generalData.alignmentPNIorODS}
                             onChange={handleChange}
@@ -219,7 +218,7 @@ const  GeneralData = ({option,setOption}) => {
                     <p className="text-lg mt-3">(Máximo de 1500 caracteres con espacios)</p>
                     <textarea 
                         name="summary" 
-                        className="w-full !p-2 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] !mt-2 min-w-[250px] !mb-2"
+                        className="w-full !p-2 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] !mt-2 min-w-[250px] !mb-2 hover:border-[#5CB7E6] transition-colors duration-300"
                         value={generalData.summary}
                         onChange={handleChange}
                         placeholder="Escribe el resumen del proyecto..."
@@ -231,7 +230,7 @@ const  GeneralData = ({option,setOption}) => {
             </div>
             <div className="w-[90%] flex justify-end items-center">
                 <button 
-                className="!p-2 !mt-5 !mb-5 text-xl rounded-lg border-none bg-[#5CB7E6] text-white font-normal cursor-pointer shadow-md"
+                className="!p-2 !mt-5 !mb-5 text-xl rounded-lg border-none bg-[#5CB7E6] text-white font-normal cursor-pointer shadow-md hover:bg-[#4CA6D5] transition-colors duration-300"
                 type="submit">Siguiente</button>
             </div>
         </form>

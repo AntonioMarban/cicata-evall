@@ -15,9 +15,11 @@ const  EthicalAsp = ({option,setOption}) => {
         workWithAnimals,
         efilesSend: filesSend
     });
+    
     const [newErrors,setNewErrors] = useState({
         ethicalAspects:""
     });
+
     const handleChangeButton = (key, value) => {
         setEthicalAsp((prevState) => ({
             ...prevState,
@@ -28,8 +30,6 @@ const  EthicalAsp = ({option,setOption}) => {
         const { name, value } = e.target;
         setEthicalAsp({ ...ethicalAsp, [name]: value });
     };
-
-    
 
     const handleOnSubmitFormBack = useSubmitFormBack(ethicalAsp, setOption);
     const handleOnSubmitFormNext = useSubmitFormNext(ethicalAsp, setOption);
@@ -54,8 +54,6 @@ const  EthicalAsp = ({option,setOption}) => {
             handleOnSubmitFormNext(event); 
         }
     };
-
-    useLoadFormData(ethicalAsp.idF,setEthicalAsp);
 
     useEffect(()=>{
         if (ethicalAsp.efilesSend && 
@@ -83,8 +81,9 @@ const  EthicalAsp = ({option,setOption}) => {
         newFiles.splice(index, 1);
       
         setFilesSend(newFiles);
-      };
+    };
 
+    useLoadFormData(ethicalAsp.idF,setEthicalAsp);
     return (
         <div>
             <div className="flex flex-wrap">
@@ -97,7 +96,8 @@ const  EthicalAsp = ({option,setOption}) => {
                         <div className="flex flex-wrap">
                             <div className="flex-1">
                                 <textarea 
-                                className="w-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-end text-[#6D7580] !mt-3 min-w-[250px]"
+                                className="w-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex justify-end
+                                hover:border-[#5CB7E6] transition-colors duration-300 text-[#6D7580] !mt-3 min-w-[250px]"
                                 name="ethicalAspects"
                                 value={ethicalAsp.ethicalAspects}
                                 onChange={handleChange}
@@ -147,7 +147,11 @@ const  EthicalAsp = ({option,setOption}) => {
                     <>
                         <p className="text-2xl">Subir archivos</p>
                         <p className="!mb-4">En caso de trabajar con humanos y/o animales o muestras de humanos y/o animales, (adjuntar el consentimiento informado y el aviso de privacidad)</p>
-                        <DragDrop setFilesSend={setFilesSend} filesSend={filesSend} />
+                        <DragDrop 
+                            setFilesSend={setFilesSend} 
+                            filesSend={filesSend} 
+                            text="Etico"
+                        />
                         {ethicalAsp.efilesSend.length > 0 && (
                             <div className="!p-0 w-full  h-1/3 overflow-y-auto flex flex-col justify-center items-center rounded-[30px]">
                             <ul className="!p-2 text-sm text-gray-800  w-[80%]">
@@ -167,9 +171,13 @@ const  EthicalAsp = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center !mt-5 mb-5">
-                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  
                     onClick={handleOnSubmitFormBack}>Regresar</button>
-                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" 
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" 
                     onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>

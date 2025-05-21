@@ -17,8 +17,6 @@ const  ConflictoInt = ({option,setOption}) => {
         setConflict({ ...conflict, [name]: value });
     };
     
-    useLoadFormData(conflict.idF,setConflict);
-
     const handleOnSubmitFormBack = useSubmitFormBack(conflict, setOption);
     const handleOnSubmitForm = useSubmitFormNext(conflict, setOption);
 
@@ -34,6 +32,8 @@ const  ConflictoInt = ({option,setOption}) => {
             handleOnSubmitForm(event)
         }
     }
+    
+    useLoadFormData(conflict.idF,setConflict);
     return (
         <div>
             <div className="flex flex-col justify-between">
@@ -48,7 +48,9 @@ const  ConflictoInt = ({option,setOption}) => {
                             imparcial de alguno de los participantes)
                             <br/> {newErrorsD.conflictOfInterest && <span className="text-red-600">*{newErrorsD.conflictOfInterest}</span>}</p>
                             <textarea  
-                            className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
+                            className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px]
+                            hover:border-[#5CB7E6] transition-colors duration-300
+                             flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
                             name="conflictOfInterest" 
                             value={conflict.conflictOfInterest}
                             onChange={handleChange}
@@ -58,8 +60,12 @@ const  ConflictoInt = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center !mt-20 !mb-5">
-                <button className="!p-2 !mr-5 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
-                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleSubmitWithValidation}>Siguiente</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>
     )

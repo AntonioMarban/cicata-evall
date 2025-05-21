@@ -1,7 +1,7 @@
 import AddParticipant from "../components/AddParticipant";
 import useLoadFormData from "../hooks/useLoadFormData";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
-import ShowCards from "../components/ShowCards";
+import ShowCards from "../components/ShowCards.jsx";
 import useSubmitFormBack from "../hooks/useSubmitFormBack";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
 import { useState } from "react";
@@ -61,8 +61,14 @@ const  Participants = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
-                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
-                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmitFormNext}>Siguiente</button>
+                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" 
+                type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" 
+                onClick={handleOnSubmitFormNext}>Siguiente</button>
             </div>
         </div>
     )

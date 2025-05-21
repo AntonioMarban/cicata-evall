@@ -1,12 +1,12 @@
 import useLoadFormData from "../hooks/useLoadFormData";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
-
-import ShowCards from "../components/ShowCards";
+import useSubmitFormBack from "../hooks/useSubmitFormBack";
+import useSubmitFormNext from "../hooks/useSubmitFormNext";
+import ShowCards from "../components/ShowCards.jsx";
 import AddGoals from "../components/AddGoals";
 import AddReferences from "../components/AddReferences";
 import AddMethodology from "../components/AddMethodology";
-import useSubmitFormBack from "../hooks/useSubmitFormBack";
-import useSubmitFormNext from "../hooks/useSubmitFormNext";
+
 import { useState } from "react";
 const  Goals = ({option,setOption}) => {
     const [desglose, setDesglose] = useState(
@@ -19,12 +19,12 @@ const  Goals = ({option,setOption}) => {
     const [referencesToEdit, setReferencesToEdit] = useState(null);
     const [methodologiesToEdit, setMethodologiesToEdit] = useState(null);
 
+    const handleOnSubmitForm = useSubmitFormNext(desglose, setOption);
     const handleOnSubmitFormBack = useSubmitFormBack(desglose, setOption);
-    const handleOnSubmitFormNext = useSubmitFormNext(desglose, setOption);
 
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
-        handleOnSubmitFormNext(event); 
+        handleOnSubmitForm(event); 
     }
 
     const handleDeleteArray = (index,arrayToEdit) => {
@@ -124,8 +124,12 @@ const  Goals = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
-                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
-                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleSubmitWithValidation}>Siguiente</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>
     )

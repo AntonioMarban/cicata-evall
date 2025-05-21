@@ -20,7 +20,6 @@ const  Contributions = ({option,setOption}) => {
         setContributions({ ...contributions, [name]: value });
     };
 
-    useLoadFormData(contributions.idF,setContributions);
     
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
@@ -35,6 +34,8 @@ const  Contributions = ({option,setOption}) => {
         }
     }
 
+
+    useLoadFormData(contributions.idF,setContributions);
     return (
         <div>
             <div className="flex flex-col justify-between">
@@ -47,7 +48,9 @@ const  Contributions = ({option,setOption}) => {
                     <div className="flex flex-wrap">
                         <div className="flex-1">
                             <textarea  
-                            className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
+                            className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex 
+                            hover:border-[#5CB7E6] transition-colors duration-300
+                            justify-start items-start text-gray-600 mt-3 min-w-[250px]"
                             name="contributionsToIPNandCICATA" 
                             value={contributions.contributionsToIPNandCICATA}
                             onChange={handleChange}
@@ -57,8 +60,12 @@ const  Contributions = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center !mt-5 !mb-5">
-                <button className="!p-2 !mr-5 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
-                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleSubmitWithValidation}>Siguiente</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>
     )

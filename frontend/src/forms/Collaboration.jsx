@@ -85,7 +85,7 @@ const  Collaboration = ({option,setOption}) => {
                             onClick={() => handleChangeButton('hasCollaboration', 1)} >Si</button>
                         <button type="button"
                             className={collaborations.hasCollaboration === 0  ? 
-                            'bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[45%] min-w-[100px]'
+                            'bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[45%] min-w-[100px] '
                             : 
                             'bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[45%] min-w-[100px]'} 
                             onClick={() => handleChangeButton('hasCollaboration', 0)} >No</button>
@@ -128,8 +128,12 @@ const  Collaboration = ({option,setOption}) => {
                 )}
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
-                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
-                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmitForm}>Siguiente</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleOnSubmitForm}>Siguiente</button>
             </div>
         </div>
     )
