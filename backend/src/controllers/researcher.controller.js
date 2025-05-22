@@ -265,10 +265,10 @@ const updateProject = (req, res) => {
 
   pool.query(sql, values, (err, results) => {
     if (err) {
-      console.error('❌ Error al actualizar el proyecto:', err);
+      console.error('Error al actualizar el proyecto:', err);
       return res.status(500).json({ error: 'Error al actualizar el proyecto' });
     }
-    return res.status(200).json({ message: '✅ Proyecto actualizado correctamente' });
+    return res.status(200).json({ message: 'Proyecto actualizado correctamente' });
   });
 };
 
