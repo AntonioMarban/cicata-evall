@@ -435,6 +435,31 @@ const sendEvaluationResult = async (req, res) => {
   })
 };
 
+/*
+  Función para crear dictum de un proyecto
+  Se hace uso de un procedimiento almacenado createDictum
+  @param projectId: Id del proyecto
+  @param folio: Folio del dictum
+  @param authorizingAdminId: Id del administrador que autoriza el dictum
+  @returns: mensaje de éxito o error
+*/
+const createDictum = async (req, res) => {
+  const { projectId } = req.params;
+  const { folio, authorizingAdminId } = req.body;
+  const query = "CALL createDictum(?, ?, ?)";
+  const values = [projectId, folio, authorizingAdminId];
+  pool.query(query, values, (error, results) => {
+    if (error) {
+      console.error(error);
+      return res.status(400).json({ error: "Invalid query parameters" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Resource does not exist" });
+    }
+    res.status(200).json({ message: "Dictum created successfully" });
+  })
+}
+
 module.exports = {
   getUsersByRole,
   createUser,
@@ -450,5 +475,6 @@ module.exports = {
   getSecondStageEvaluations,
   createSecondStageEvaluations,
   getResultThirdStage,
-  sendEvaluationResult
+  sendEvaluationResult,
+  createDictum
 };

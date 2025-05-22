@@ -179,10 +179,11 @@ CREATE TABLE `evaluations` (
 );
 
 CREATE TABLE `dictums` (
-  `dictum_id` integer PRIMARY KEY AUTO_INCREMENT,
+  `dictumId` integer PRIMARY KEY AUTO_INCREMENT,
+  `folio` varchar(100),
   `decision` varchar(50),
-  `comments` varchar(255),
-  `document` blob,
+  `date` date,
+  `authorizerId` integer,
   `project_id` integer
 );
 

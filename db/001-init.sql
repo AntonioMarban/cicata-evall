@@ -63,6 +63,47 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Función para obtener el dictum de un proyecto
+-- y datos extras para la generación del PDF del dictum
+-- @param projectId: Id del proyecto
+-- @returns: Datos del dictum y del proyecto
+DELIMITER //
+CREATE PROCEDURE getDictum(
+    IN p_projectId INT
+)
+BEGIN
+    -- Verificar si el proyecto tiene un dictum creado
+    IF NOT EXISTS (
+        SELECT 1 FROM dictums
+        WHERE project_id = p_projectId
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The project does not have a dictum';
+    END IF;
+
+    SELECT 
+        d.folio as dictumFolio,
+        d.decision,
+        d.date as authorizationDate,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS authorizerName,
+        u.academicDegree as authorizerAcademicDegree
+    FROM dictums d
+    JOIN projects p ON d.project_id = p.projectId
+    JOIN users u ON d.authorizerId = u.userId
+    WHERE d.project_id = p_projectId;
+
+    SELECT
+        p.title AS projectTitle,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS projectOwner,
+        u.academicDegree AS projectOwnerAcademicDegree,
+        p.folio AS projectFolio
+    FROM projects p
+    JOIN usersProjects up ON p.projectId = up.project_id
+    JOIN users u ON up.user_id = u.userId
+    WHERE p.projectId = p_projectId;
+END //
+DELIMITER ;
+
 -- obtener proyectos activos
 DELIMITER //
 CREATE PROCEDURE getActiveProjects(IN userId INT)
@@ -2294,6 +2335,52 @@ CREATE PROCEDURE sendEvaluationResult(
 BEGIN
     CALL getResultThirdStage(p_projectId);
     UPDATE projects SET status = @finalResult WHERE projectId = p_projectId;
+END //
+DELIMITER ;
+
+
+-- Función para crear dictum de un proyecto
+-- @param projectId: Id del proyecto
+-- @returns: Mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE createDictum(
+    IN p_projectId INT,
+    IN p_folio VARCHAR(100),
+    IN p_authorizerId INT
+)
+BEGIN
+    -- Verificar si el proyecto ya tiene un dictum creado
+    IF EXISTS (
+        SELECT 1 FROM dictums
+        WHERE project_id = p_projectId
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The project already has a dictum';
+    END IF;
+    -- Verificar si el proyecto tiene un resultado de evaluación válido para crear un dictum
+    -- (Aprobado o No aprobado)
+    IF NOT EXISTS (
+        SELECT 1 FROM projects
+        WHERE projectId = p_projectId AND ( status = 'Aprobado' OR status = 'No aprobado' )
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The project is not in a status to create a dictum';
+    END IF;
+    CALL getResultThirdStage(p_projectId);
+    -- Insertar el dictum
+    INSERT INTO dictums (
+        project_id,
+        folio,
+        decision,
+        date,
+        authorizerId
+    ) VALUES (
+        p_projectId,
+        p_folio,
+        @finalResult,
+        NOW(),
+        p_authorizerId
+    );
 END //
 DELIMITER ;
 

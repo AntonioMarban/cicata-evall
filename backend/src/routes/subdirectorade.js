@@ -15,7 +15,8 @@ const {
     getSecondStageEvaluations,
     createSecondStageEvaluations,
     getResultThirdStage,
-    sendEvaluationResult
+    sendEvaluationResult,
+    createDictum
 } = require('../controllers/subdirectorade.controller')
 
 router.get('/users', getUsersByRole)
@@ -33,5 +34,6 @@ router.get('/projects/:projectId/evaluations/stage2', getSecondStageEvaluations)
 router.post('/projects/:projectId/evaluations/stage2', createSecondStageEvaluations)
 router.get('/projects/:projectId/evaluations/stage3', getResultThirdStage)
 router.patch('/projects/:projectId/evaluations/stage3', sendEvaluationResult)
+router.post('/projects/:projectId/dictum', createDictum)
 
 module.exports = router

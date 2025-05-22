@@ -16,8 +16,8 @@ VALUES
 INSERT INTO users (fName, lastName1, lastName2, email, password, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelName, levelNum, userType_id)
 VALUES 
 -- Usuarios de tipo investigador con Id 1 y 2
-('Luis', 'Navarro', 'Vivas','investigador1@gmail.com', SHA2('investigador', 256), 'IPN', 'Blood Spatter', TRUE, 'Forensics', 'Advanced Jiu-Jitsu', 'The bullet', 1, 1),
-('Carolina', 'Figueroa', 'Orihuela','investigador2@gmail.com', SHA2('investigador', 256), 'IPN', 'Blood Spatter', TRUE, 'Forensics', 'Advanced Jiu-Jitsu', 'The bullet', 1, 1),
+('Luis', 'Navarro', 'Vivas','investigador1@gmail.com', SHA2('investigador', 256), 'IPN', 'Blood Spatter', TRUE, 'Forensics', 'Licenciatura', 'The bullet', 1, 1),
+('Carolina', 'Figueroa', 'Orihuela','investigador2@gmail.com', SHA2('investigador', 256), 'IPN', 'Blood Spatter', TRUE, 'Forensics', 'Licenciatura', 'The bullet', 1, 1),
 -- Usuario de tipo administrador con Id 3
 ('Ana', 'Pérez', 'López', 'admin@gmail.com', SHA2('admin123', 256), 'IPN', 'Profesor', TRUE, 'RedBio', 'Doctorado', 'SNI I', 1, 2),
 -- --------------
@@ -556,16 +556,16 @@ INSERT INTO annexes (document, projectId) VALUES
 
 
 -- =============== INSERTS DE DICTUMS ===============
-INSERT INTO dictums (decision, comments, document, project_id)
-VALUES 
+INSERT INTO dictums (folio, decision, date, authorizerId, project_id)
+VALUES
 -- Proyecto 3: Aprobado
-('Aprobado', 'El proyecto ha sido aprobado por el comité', NULL, 3),
+('SIP-DI-DDCyT-CICATAMOR-D-SICIT-MEMO-0030-2025', 'Aprobado', '2025-01-01', 3, 3),
 -- Proyecto 4: No aprobado
-('No aprobado', 'El proyecto ha sido rechazado por el comité', NULL, 4),
+('SIP-DI-DDCyT-CICATAMOR-D-SICIT-MEMO-0031-2025', 'No aprobado', '2025-01-01', 3, 4),
 -- Proyecto 7: Aprobado
-('Aprobado', 'El proyecto ha sido aprobado por el comité', NULL, 7),
+('SIP-DI-DDCyT-CICATAMOR-D-SICIT-MEMO-0032-2025', 'Aprobado', '2025-01-01',3, 7),
 -- Proyecto 8: No aprobado
-('No aprobado', 'El proyecto ha sido rechazado por el comité', NULL, 8);
+('SIP-DI-DDCyT-CICATAMOR-D-SICIT-MEMO-0033-2025', 'No aprobado', '2025-01-01', 3, 8);
 
 
 

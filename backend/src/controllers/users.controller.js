@@ -130,6 +130,45 @@ const getProjectSummary = (req, res) => {
     return grouped;
 };
 
+/*
+    Función para obtener dictum de un proyecto
+    Se hace uso de un procedimiento almacena getDictum
+    @param projectId: Id del proyecto
+    @returns: Dictum del proyecto
+*/
+const getDictum = (req, res) => {
+    const { projectId } = req.params;
+    const sql = `CALL getDictum(?)`;
+    const values = [ projectId];
+    pool.query(sql, values, (err, results) => {
+        if (err) {
+            console.error("Error obtaining project dictum:", err);
+            return res
+                .status(400)
+                .json({ error: "Invalid query parameters" });
+        }
+        if (results.length === 0) {
+            return res
+                .status(404)
+                .json({
+                    error: "Resource does not exist",
+                });
+        }
+        const response = {
+            dictumFolio: results[0][0].dictumFolio,
+            decision: results[0][0].decision,
+            authorizationDate: results[0][0].authorizationDate,
+            authorizerAcademicDegree: results[0][0].authorizerAcademicDegree,
+            authorizerName: results[0][0].authorizerName,
+            projectFolio: results[1][0].projectFolio,
+            projectTitle: results[1][0].projectTitle,
+            projectOwnerAcademicDegree: results[1][0].projectOwnerAcademicDegree,
+            projectOwner: results[1][0].projectOwner
+        };
+        return res.status(200).json(response);
+    });
+};
+
 const groupExtras = (extras) => {
     const map = new Map();
 
@@ -269,5 +308,6 @@ module.exports = {
     updateAgreementSignature,
     getAgreementSignature,
     getProjectSummary,
+    getDictum,
     getProjectDetails
 };
