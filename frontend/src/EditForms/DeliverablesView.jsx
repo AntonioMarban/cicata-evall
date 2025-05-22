@@ -8,7 +8,7 @@ import useSubmitFormNext from "../hooks/useSubmitFormNext";
 const DeliverablesView = ({ option, setOption }) => {
     
     const [deliverables, setDeliverables] = useState({
-        idF: 10,
+        idF: 29,
         deliverables1: [
         {id:1, name:"Tesis (Alumnos titulados)"},
         {id:2, name:"Practicantes profesionales"},
@@ -32,13 +32,13 @@ const DeliverablesView = ({ option, setOption }) => {
         {id:16, name:"Hardware"},
         {id:17, name:"Prototipo"},
         {id:18, name:"Certificado de inversión"},
-        {id:19, name:"Software"},
+        {id:19,name:"Software"},
         ],
         extras1:[],
         extras2:[],
         extras3:[]
     });
-    const categories3 = ["Piloto", "Laboratorio"];
+  
     const categories2 = ["Medio", "Superior", "Posgrado"];
 
     const categories = ["Nacional", "Internacional"];
@@ -201,8 +201,8 @@ const DeliverablesView = ({ option, setOption }) => {
                         type="number"
                         min={0}
                         data-id={deliverable.id}
-                        data-index={index+3}
-                        value={deliverable.values?.[index+3] ?? ""}
+                        data-index={index+1}
+                        value={deliverable.values?.[index+1] ?? ""}
                         onChange={(e) => handleInputNumberChange(e, 'deliverables2', index)}
                     />
                     </td>
@@ -227,8 +227,8 @@ const DeliverablesView = ({ option, setOption }) => {
                         type="number"
                         min={0}
                         data-id={deliverable.id}
-                        data-index={index+3}
-                        value={deliverable.values?.[index+3] ?? ""}
+                        data-index={index+1}
+                        value={deliverable.values?.[index+1] ?? ""}
                         onChange={(e) => handleInputNumberChange(e, 'extras2', index)}
                     />
                     </td>
@@ -249,7 +249,7 @@ const DeliverablesView = ({ option, setOption }) => {
             <thead>
             <tr className="header-table">
                 <td></td>
-                {categories3.map((category) => (
+                {categories.map((category) => (
                 <td key={category}>{category}</td>
                 ))}
             </tr>
@@ -260,14 +260,14 @@ const DeliverablesView = ({ option, setOption }) => {
                 <td data-label="Entregable">
                     {deliverable.name}
                 </td>
-                {categories3.map((category,index) => (
+                {categories.map((category,index) => (
                     <td key={category} data-label={category}>
                     <input
                         type="number"
                         min={0}
                         data-id={deliverable.id}
-                        data-index={index+6}
-                        value={deliverable.values?.[index+6] ?? ""}
+                        data-index={index+1}
+                        value={deliverable.values?.[index+1] ?? ""}
                         onChange={(e) => handleInputNumberChange(e, 'deliverables3', index)}
                     />
                     </td>
@@ -286,14 +286,14 @@ const DeliverablesView = ({ option, setOption }) => {
                     ></input>
                      <button className="cursor-pointer" onClick={()=>{handleDelete('extras3',index)}}><img src={TRASH}></img></button>
                 </td>
-                {categories3.map((category, index) => (
+                {categories.map((category, index) => (
                     <td key={category} data-label={category}>
                     <input 
                         type="number"
                         min={0}
                         data-id={deliverable.id}
-                        data-index={index+7}
-                        value={deliverable.values?.[index+7] ?? ""}
+                        data-index={index+1}
+                        value={deliverable.values?.[index+1] ?? ""}
                         onChange={(e) => handleInputNumberChange(e, 'extras3', index)}
                     />
                     </td>

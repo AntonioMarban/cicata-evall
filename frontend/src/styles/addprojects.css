@@ -122,7 +122,7 @@
   font-size: 15px;
   color: #6D7580;
 }
-.form-pieza-input{
+.form-pieza-input {
   border-radius: 10px;
   width: 100%;
   border: 2px solid #E1E1E1;
@@ -130,6 +130,11 @@
   color: #6D7580;
   margin-top: 12px;
   padding: 10px;
+  transition: border-color 0.3s ease; /* Añade la transición para el cambio de color del borde */
+}
+
+.form-pieza-input:hover {
+  border-color: #5CB7E6; /* Cambia el color del borde al hacer hover */
 }
 .modal-foot-pieza{
     display: flex;

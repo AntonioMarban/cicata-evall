@@ -1,67 +1,67 @@
-import "../styles/addprojects.css"
-import { useFormAddHandler } from "../hooks/useFormAddHandler";
+import "../../styles/addprojects.css"
+import { useFormAddHandler } from "../../hooks/useFormAddHandler";
 
 import { useState, useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
-const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setData}) => {
+const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete = null}) => {
     const [isOpen, setIsOpen] = useState(false)
     const initialValues = {
-        goalName: "",
+        objectiveName: "",
     }
-    const [goals, setGoals] = useState(initialValues)
+    const [objectiveSpe, setObjectiveSpe] = useState(initialValues)
     const [newErrors,setNewErrors] =  useState(initialValues);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setGoals(prev => ({
+        setObjectiveSpe(prev => ({
             ...prev,
             [name]: value
         }));
     };
 
     useEffect(()=>{
-        if (goalsToEdit){
-            setGoals({
-                goalName: goalsToEdit.goalName || ""
+        if (desgloseToEdit){
+            setObjectiveSpe({
+                objectiveName: desgloseToEdit.objectiveName || ""
             });
             setIsOpen(true);
         }
-    }, [goalsToEdit])
+    }, [desgloseToEdit])
  
     const handleObjectiveSubmit = useFormAddHandler({
         setState: setDesglose,
-        key: 'goals',
+        key: 'sObjectives',
         onSuccess: () => {
             setIsOpen(false);
-            if (onEditComplete && goalsToEdit){
-                onEditComplete(setData);
+            if (onEditComplete && desgloseToEdit){
+                onEditComplete();
             }
             //reset
-            setGoals(initialValues);
+            setObjectiveSpe(initialValues);
         },
-        initialData: goalsToEdit,
-        isEditMode: !!goalsToEdit
-      }
-    );
+        initialData: desgloseToEdit,
+        isEditMode: !!desgloseToEdit
+      });
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const newErrorsF = {}
-        Object.entries(goals).forEach(([key, value]) => {
+        Object.entries(objectiveSpe).forEach(([key, value]) => {
           if (!value || (typeof value === 'string' && value.trim() === '')) {
             newErrorsF[key] = `El campo  es requerido`;
           }
         });
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
-            handleObjectiveSubmit(e, goals, goalsToEdit ? goalsToEdit.index : undefined);
+            handleObjectiveSubmit(e, objectiveSpe, desgloseToEdit ? desgloseToEdit.index : undefined);
         }
     };
+
     return (
         <>
-            {!goalsToEdit && (
+            {!desgloseToEdit && (
                 <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
-                    Agregar Meta
+                    Agregar Objetivo
                 </button>
             )
             }
@@ -69,28 +69,28 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
             <Dialog open={isOpen} onClose={() => {}} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p className="dialog-title">{goalsToEdit ? "Editar meta" : "Agregar meta"}</p>
+                        <p className="dialog-title">{desgloseToEdit ? "Editar Objetivo Específico" : "Agregar Objetivo Específico"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
-                                <p>Nombre de la Meta
-                                <br/>{newErrors.goalName && <span className="text-red-600">*{newErrors.goalName}</span>}
+                                <p>Nombre del Objetivo específico
+                                <br/>{newErrors.objectiveName && <span className="text-red-600">*{newErrors.objectiveName}</span>}
                                 </p>
-                                <input name="goalName" 
+                                <input name="objectiveName" 
                                        className="form-pieza-input" 
-                                       placeholder="Escribe el nombre de la meta..."
-                                       value={goals.goalName}
+                                       placeholder="Escribe el nombre del objetivo..."
+                                       value={objectiveSpe.objectiveName}
                                        onChange={handleInputChange}></input>
                             </div>
                             <div className="dialog-actions">
                                 <button className="button-confirm">
-                                    {goalsToEdit ? "Guardar cambios" : "Guardar Meta"}
+                                    {desgloseToEdit ? "Guardar cambios" : "Guardar objetivo"}
                                 </button>
-                                {!goalsToEdit && (
+                                {!desgloseToEdit && (
                                     <button 
                                     type="button" 
                                     onClick={(e) => {
                                         setIsOpen(false)
-                                        setGoals(initialValues)
+                                        setObjectiveSpe(initialValues)
                                         setNewErrors(initialValues)
                                     }} 
                                     className="button-cancel"
@@ -107,4 +107,4 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
     )
 }
 
-export default AddGoals;
+export default AddObjectivesSpe;

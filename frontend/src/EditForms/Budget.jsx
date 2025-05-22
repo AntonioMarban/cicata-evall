@@ -1,15 +1,15 @@
-import AddBudget from "../components/Modals/AddBudget";
-import useLoadFormData from "../hooks/useLoadFormData";
-import { removeItemByIndex } from "../hooks/removeItemByIndex";
-import useSubmitFormBack from "../hooks/useSubmitFormBack";
-import useSubmitFormNext from "../hooks/useSubmitFormNext";
+import AddBudget from "../components/Modals/AddBudget.jsx";
+import useLoadFormData from "../hooks/useLoadFormData.js";
+import { removeItemByIndex } from "../hooks/removeItemByIndex.js";
+import useSubmitFormBack from "../hooks/useSubmitFormBack.js";
+import useSubmitFormNext from "../hooks/useSubmitFormNext.js";
 import { useState } from "react";
 import ShowCards from "../components/ShowCardsBudget.jsx";
 
 const  Budget = ({option,setOption}) => {
     
     const [budget, setBudget] = useState({
-        idF:12,
+        idF: 31,
         budgets:[]
     });
     const [budgetToEdit, setBudgetToEdit] = useState(null);

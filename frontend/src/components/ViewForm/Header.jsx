@@ -1,7 +1,8 @@
 import "../../styles/viewcompleteforms.css"
 import logoCICATA from "../../assets/logoCICATA.svg"
 import LOGOIPN from "../../assets/logoIPN.svg"
-const Contributions = ({generalData}) => {  
+const Header = ({generalData}) => {  
+    console.log(generalData)
     return (
     <>
     <main className="background-header">
@@ -15,8 +16,8 @@ const Contributions = ({generalData}) => {
                     <p>Solicitud para el registro y Evaluación de proyectos de investigación</p>
                 </div>
                 <div className="folio-version">
-                    <p className="folio-version-first">Folio: {generalData.folio}</p>
-                    <p className="folio-version-second">Versión: 03</p>
+                    <p className="folio-version-first">Folio: {generalData.formVersion}</p>
+                    <p className="folio-version-second">Versión: {generalData.formVersion}</p>
                 </div>
                 <div>
                     <p>Proxima revisión: {generalData.nextReview}</p>
@@ -57,4 +58,4 @@ const Contributions = ({generalData}) => {
   );
 };
 
-export default Contributions;
+export default Header;

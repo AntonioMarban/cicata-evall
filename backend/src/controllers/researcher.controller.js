@@ -55,13 +55,28 @@ const createProject = async (req, res) => {
         userId 
     } = req.body;
 
+    // Transformar deliverables en formato por tipo
+    const transformedDeliverables = [];
+    deliverables.forEach(deliv => {
+        const { deliverableId, values } = deliv;
+        if (values && typeof values === 'object') {
+            Object.entries(values).forEach(([typeId, qty]) => {
+                transformedDeliverables.push({
+                    deliverableId,
+                    deliverableTypeId: Number(typeId),
+                    quantity: qty
+                });
+            });
+        }
+    });
+
     // Convertir arreglos a JSON string
     const associatedProjectsJSON = JSON.stringify(associatedProjects);
     const membersJSON = JSON.stringify(members);
     const collaborativeInstitutionsJSON = JSON.stringify(collaborativeInstitutions);
     const specificObjectivesJSON = JSON.stringify(specificObjectives);
     const scheduleActivitiesJSON = JSON.stringify(scheduleActivities);
-    const deliverablesJSON = JSON.stringify(deliverables);
+    const deliverablesJSON = JSON.stringify(transformedDeliverables);
     const budgetsJSON = JSON.stringify(budgets); 
     const goalsJSON = JSON.stringify(goals);
     const methodologiesJSON = JSON.stringify(methodologies);
@@ -73,7 +88,7 @@ const createProject = async (req, res) => {
 
     const projectStartDate = new Date(startDate);
     const year = projectStartDate.getFullYear();
-    const month = String(projectStartDate.getMonth()).padStart(2, '0');    
+    const month = String(projectStartDate.getMonth() + 1).padStart(2, '0');
 
     const countQuery = `SELECT COUNT(*) AS count FROM projects WHERE YEAR(startDate) = ? AND MONTH(startDate) = ?`;
 
@@ -132,16 +147,17 @@ const createProject = async (req, res) => {
 
 const uploadDocuments = (req, res) => {
     const projectId = req.body.projectId;
+    const tag = req.body.tag;
     const documents = req.files; //se obtienen del multer.array()
 
     if (!documents || documents.length === 0) {
         return res.status(400).json({ error: 'No documents were uploaded' });
     }
 
-    const query = 'CALL uploadDocument(?, ?)';
+    const query = 'CALL uploadDocument(?, ?, ?)';
 
     documents.forEach((doc) => {
-        pool.query(query, [doc.buffer, projectId], (err, result) => {
+        pool.query(query, [doc.buffer, projectId, tag], (err, result) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: 'Error uploading documents' });
@@ -165,6 +181,7 @@ const getProjectDocuments = (req, res) => {
       const documents = results[0].map(row => ({
         annexeId: row.annexeId,
         projectId: row.projectId,
+        tag: row.tag,
         document: row.document ? Buffer.from(row.document).toString('base64') : null
       }));
   
@@ -213,10 +230,14 @@ const updateProject = (req, res) => {
     budgets = null,
     goals = null,
     methodologies = null,
-    references = null
+    references = null,
+    specificObjectives = null,
+    extras1 = null,
+    extras2 = null,
+    extras3 = null,
   } = req.body;
 
-  const sql = `CALL updateFullProject(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `CALL updateProject(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
     projectId,
@@ -260,7 +281,11 @@ const updateProject = (req, res) => {
     budgets ? JSON.stringify(budgets) : null,
     goals ? JSON.stringify(goals) : null,
     methodologies ? JSON.stringify(methodologies) : null,
-    references ? JSON.stringify(references) : null
+    references ? JSON.stringify(references) : null,
+    specificObjectives ? JSON.stringify(specificObjectives) : null,
+    extras1 ? JSON.stringify(extras1) : null,
+    extras2 ? JSON.stringify(extras2) : null,
+    extras3 ? JSON.stringify(extras3) : null
   ];
 
   pool.query(sql, values, (err, results) => {

@@ -51,7 +51,7 @@ const CommentsCommittee = () => {
         return <div className="background-comments">Cargando...</div>;
     }
     const formsToSave = {
-        idf1: {
+    idf1: {
         idF: 1,
         title: '543543',
         startDate: '2025-05-13',

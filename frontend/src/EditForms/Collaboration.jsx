@@ -11,7 +11,7 @@ const  Collaboration = ({option,setOption}) => {
     
     const [hasCollaboration, setHasCollaboration] = useState(1);
     const [collaborations, setCollaborations] = useState({ 
-        idF: 4, 
+        idF: 23, 
         hasCollaboration,
         collaborationJustification:"", 
         collaborativeInstitutions: [] });

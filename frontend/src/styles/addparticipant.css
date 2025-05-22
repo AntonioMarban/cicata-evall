@@ -51,6 +51,10 @@
   color: #6D7580;
   margin-top: 12px;
   padding: 10px;
+   transition: border-color 0.3s ease; /* Añade la transición para el cambio de color del borde */
+}
+.participant-form-pieza-input:hover {
+  border-color: #5CB7E6; /* Cambia el color del borde al hacer hover */
 }
 .participant-form-rows{
   margin-top: 10px;

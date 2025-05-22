@@ -4,6 +4,7 @@ import useSubmitFormBack from "../hooks/useSubmitFormBack";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
 
 const  ConflictoInt = ({option,setOption}) => {
+    
     const [conflict, setConflict] = useState({   
         idF: 13,
         conflictOfInterest:"" 

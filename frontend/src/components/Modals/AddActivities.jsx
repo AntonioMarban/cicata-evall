@@ -1,6 +1,6 @@
-import "../styles/addprojects.css"
-import { useFormAddHandler } from "../hooks/useFormAddHandler";
-import useLoadFormData from "../hooks/useLoadFormData";
+import "../../styles/addprojects.css"
+import { useFormAddHandler } from "../../hooks/useFormAddHandler";
+import useLoadFormData from "../../hooks/useLoadFormData";
 
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'

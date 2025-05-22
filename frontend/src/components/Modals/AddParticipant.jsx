@@ -1,5 +1,5 @@
-import "../styles/addparticipant.css"
-import { useFormAddHandler } from "../hooks/useFormAddHandler";
+import "../../styles/addparticipant.css"
+import { useFormAddHandler } from "../../hooks/useFormAddHandler";
 
 import { useState, useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
@@ -257,7 +257,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             </div>
                             <div className="participant-dialog-actions">
                                 <button  className="participant-button-confirm">
-                                    {participantToEdit ? "Guardar cambios" : "Guardar proyecto"}
+                                    {participantToEdit ? "Guardar cambios" : "Guardar estudiante"}
                                 </button>
                                 {!participantToEdit &&(
                                     <button

@@ -19,7 +19,7 @@ const Buttons =({option,setOption}) => {
             : "bg-white text-black hover:bg-[rgba(82,190,218,0.1)] hover:text-[#0053B1]"
           }`
         }
-        onClick={() => setOption(index)}
+        onClick={() => setOption(index+20)} //cambiar aqui
       >
         {label}
       </button>

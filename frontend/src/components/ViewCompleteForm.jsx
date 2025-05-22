@@ -51,12 +51,11 @@ const ViewCompleteForms = () => {
     };
 
     useEffect(()=>{
-        fetchData(`${apiUrl}/researchers/projects/${id}`,setCompleteForm);
+        fetchData(`${apiUrl}/users/projects/${id}`,setCompleteForm);
         fetchData(`${apiUrl}/researchers/projects/${id}/documents`,setFiles);
     },[]);
 
-
-
+    console.log(completeForm)
     return (
     <div className='fullTable-background'>
         <div className='div-button'>
@@ -66,54 +65,50 @@ const ViewCompleteForms = () => {
         {completeForm && (
         <div className='fullTable-body'>
 
-            <Header generalData={completeForm.project[0]}/>
+            <Header generalData={completeForm.idf34}/>
 
             <h1>1. DATOS GENERALES DEL PROYECTO</h1>
             
-            <ViewGeneralData generalData={completeForm.project[0]} associatedProjects={completeForm.associatedProjects} />
+            <ViewGeneralData generalData={completeForm.idf20} associatedProjects={completeForm.idf21} />
 
             <h1>2. DATOS DE LOS PARTICIPANTES</h1>
             
-            <Members investigator={completeForm.investigator} members={completeForm.members}/>
-            
+            <Members investigator={completeForm.investigator} members={completeForm.idf22}/>
             <h1>3. COLABORACIÓN CON OTRAS INSTITUCIONES</h1>
 
-            <CollaborativeInstitutions collaborativeInstitutions={completeForm.collaborativeInstitutions}/>
-
+            <CollaborativeInstitutions collaborativeInstitutions={completeForm.idf23}/>
             <h1>4. DESGLOSE</h1>
 
-            <Desglose references={completeForm.references} methodologies={completeForm.methodologies} goals={completeForm.goals} desglose={completeForm.project[0]}/>
-
-
+            <Desglose references={completeForm.idf25.references} methodologies={completeForm.idf25.methodologies} goals={completeForm.idf25.goals} desglose={completeForm.idf24}/>
             <h1>5. ASPECTOS ÉTICOS</h1>
 
-            <EthicalAspects EthicalAspects={completeForm.project[0].ethicalAspects}/>
-
+            <EthicalAspects EthicalAspects={completeForm.idf26}/>
             <h1>6. CONSIDERACIONES DE BIOSEGURIDAD</h1>
 
-            <Biosecurity biosecurityConsiderations={completeForm.project[0].biosecurityConsiderations}/>
-
+            <Biosecurity biosecurityConsiderations={completeForm.idf27}/>
+            
             <h1>7. CRONOGRAMA DE ACTIVIDADES</h1>
 
-            <Activities scheduleActivities={completeForm.scheduleActivities}/>
+            <Activities scheduleActivities={completeForm.idf28}/>
 
             <h1>8. ENTREGABLES</h1>
 
-            <Deliverables Deliverables={completeForm.deliverables}/>
+            <Deliverables Deliverables={completeForm.idf29}/>
 
             <h1>9. APORTACIONES</h1>
 
-            <Contributions contributions={completeForm.project[0].contributionsToIPNandCICATA}/>
+            <Contributions contributions={completeForm.idf30.contributionsToIPNandCICATA}/>
 
             <h1>10. DESCRIPCIÓN DE PRESUPUESTO REQUERIDO Y POSIBLES FUENTES DE OBTENCIÓN</h1>
 
-            <Budget Budget={completeForm.budget}/>
-
+            <Budget Budget={completeForm.idf31}/>
+            
             <h1>11. CONFLICTO DE INTERÉS</h1>
-            <ConflictInterest conflictOfInterest={completeForm.project[0].conflictOfInterest}/>
+            
+            <ConflictInterest conflictOfInterest={completeForm.idf32.conflictOfInterest}/>
 
             <h1>12. ANEXOS</h1>
-            <Files files={files}/>
+            <Files files={files}/> 
         </div>
         )}
     </div>

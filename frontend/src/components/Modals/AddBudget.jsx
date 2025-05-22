@@ -1,5 +1,5 @@
-import "../styles/addprojects.css"
-import { useFormAddHandler } from "../hooks/useFormAddHandler";
+import "../../styles/addprojects.css"
+import { useFormAddHandler } from "../../hooks/useFormAddHandler";
 
 import { useEffect, useState } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
@@ -215,7 +215,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                     ></input>
                                 </div>
                                 <div>
-                                    {budgetForm.name.idName === 4 || budgetForm.name.idName === 23 && (
+                                    {(budgetForm.name.idName === 4 || budgetForm.name.idName === 23) && (
                                         <div>
                                             <p>Nombre del presupuesto
                                                 <br/>{newErrors.otherName && <span className="text-red-600">*{newErrors.otherName}</span>}

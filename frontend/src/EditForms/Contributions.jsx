@@ -6,7 +6,7 @@ import useSubmitFormNext from "../hooks/useSubmitFormNext";
 const  Contributions = ({option,setOption}) => {
     
     const [contributions, setContributions] = useState({  
-        idF: 11,
+        idF: 30,
         contributionsToIPNandCICATA:"" 
     })
     const [newErrorsD,setNewErrorsD] = useState({

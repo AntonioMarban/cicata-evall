@@ -1,68 +1,67 @@
-import "../styles/addprojects.css"
-import { useFormAddHandler } from "../hooks/useFormAddHandler";
+import "../../styles/addprojects.css"
+import { useFormAddHandler } from "../../hooks/useFormAddHandler";
 
 import { useState, useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
-const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = null, setData}) => {
+const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplete = null,setData}) => {
     const [isOpen, setIsOpen] = useState(false)
     const initialValues = {
-        referenceName: "",
+        methodologyName: "",
     }
-    const [references, setReferences] = useState(initialValues)
+    const [methodologies, setMethodologies] = useState(initialValues)
     const [newErrors,setNewErrors] =  useState(initialValues);
-    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setReferences(prev => ({
+        setMethodologies(prev => ({
             ...prev,
             [name]: value
         }));
     };
 
     useEffect(()=>{
-        if (referencesToEdit){
-            setReferences({
-                referenceName: referencesToEdit.referenceName || ""
+        if (methodologiesToEdit){
+            setMethodologies({
+                methodologyName: methodologiesToEdit.methodologyName || ""
             });
             setIsOpen(true);
         }
-    }, [referencesToEdit])
+    }, [methodologiesToEdit])
  
     const handleObjectiveSubmit = useFormAddHandler({
         setState: setDesglose,
-        key: 'references',
+        key: 'methodologies',
         onSuccess: () => {
             setIsOpen(false);
-            if (onEditComplete && referencesToEdit){
+            if (onEditComplete && methodologiesToEdit){
                 onEditComplete(setData);
             }
             //reset
-            setReferences(initialValues);
+            setMethodologies(initialValues);
         },
-        initialData: referencesToEdit,
-        isEditMode: !!referencesToEdit
+        initialData: methodologiesToEdit,
+        isEditMode: !!methodologiesToEdit
       }
     );
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const newErrorsF = {}
-        Object.entries(references).forEach(([key, value]) => {
+        Object.entries(methodologies).forEach(([key, value]) => {
           if (!value || (typeof value === 'string' && value.trim() === '')) {
             newErrorsF[key] = `El campo  es requerido`;
           }
         });
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
-            handleObjectiveSubmit(e, references, referencesToEdit ? referencesToEdit.index : undefined);
+            handleObjectiveSubmit(e, methodologies, methodologiesToEdit ? methodologiesToEdit.index : undefined);
         }
     };
     return (
         <>
-            {!referencesToEdit && (
+            {!methodologiesToEdit && (
                 <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
-                    Agregar Referencia
+                    Agregar Metodología
                 </button>
             )
             }
@@ -70,28 +69,28 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
             <Dialog open={isOpen} onClose={() => {}} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p className="dialog-title">{referencesToEdit ? "Editar Referencia" : "Agregar Referencia"}</p>
+                        <p className="dialog-title">{methodologiesToEdit ? "Editar meta" : "Agregar meta"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
-                                <p>Nombre de la Referencia
-                                <br/>{newErrors.referenceName && <span className="text-red-600">*{newErrors.referenceName}</span>}
+                                <p>Nombre de la Metodología
+                                <br/>{newErrors.methodologyName && <span className="text-red-600">*{newErrors.methodologyName}</span>}
                                 </p>
-                                <input name="referenceName" 
+                                <input name="methodologyName" 
                                        className="form-pieza-input" 
-                                       placeholder="Escribe el nombre de la Referencia..."
-                                       value={references.referenceName}
+                                       placeholder="Escribe el nombre de la metodología..."
+                                       value={methodologies.methodologyName}
                                        onChange={handleInputChange}></input>
                             </div>
                             <div className="dialog-actions">
                                 <button className="button-confirm">
-                                    {referencesToEdit ? "Guardar cambios" : "Guardar Referencia"}
+                                    {methodologiesToEdit ? "Guardar cambios" : "Guardar Meta"}
                                 </button>
-                                {!referencesToEdit && (
+                                {!methodologiesToEdit && (
                                     <button 
                                     type="button" 
                                     onClick={(e) => {
                                         setIsOpen(false)
-                                        setReferences(initialValues)
+                                        setMethodologies(initialValues)
                                         setNewErrors(initialValues)
                                     }} 
                                     className="button-cancel"
@@ -108,4 +107,4 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
     )
 }
 
-export default AddReferences;
+export default AddMethodology;

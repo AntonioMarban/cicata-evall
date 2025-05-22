@@ -9,7 +9,7 @@ import { useState } from "react";
 const  Desglose = ({option,setOption}) => {
     
     const [desglose, setDesglose] = useState(
-        {   idF: 5,
+        {   idF: 24,
             introduction: "",
             background:"",
             statementOfProblem:"",

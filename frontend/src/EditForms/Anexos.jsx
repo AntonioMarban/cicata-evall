@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { updateForm,getAllData,getFormsInRange } from "../db/index";
+import { updateForm,getAllData } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
 import DragDrop from "../components/DragDrop";
 import { useNavigate  } from 'react-router-dom'
@@ -12,7 +12,7 @@ const  Anexos = ({option,setOption}) => {
     
     const [filesSend,setFilesSend] = useState([]);
     const [anexos, setAnexos] = useState({   
-        idF: 14,
+        idF: 33,
         aditionalComments:"",
         afilesSend: filesSend 
     });
@@ -33,8 +33,7 @@ const  Anexos = ({option,setOption}) => {
         }
 
         try {
-            const formData = await getFormsInRange(1, 14);
-            console.log(formData)
+            const formData = await getFormsInRange(20, 33);
             if (!formData) {
                 throw new Error("No se encontraron datos del formulario.");
             }
@@ -59,11 +58,11 @@ const  Anexos = ({option,setOption}) => {
             const data = await response.json();
     
             if (data.projectId) {
-                console.log("Project created successfully, ID:", data.projectId);
+                //console.log("Project created successfully, ID:", data.projectId);
                 
                 if ((afilesSend && afilesSend.length > 0) || (efilesSend && efilesSend.length > 0)) {
                     try {
-                        console.log("Uploading document:", afilesSend[0].name);
+                        //console.log("Uploading document:", afilesSend[0].name);
                         
                         const formDataFiles = new FormData();
                         formDataFiles.append('projectId', data.projectId);
@@ -91,8 +90,8 @@ const  Anexos = ({option,setOption}) => {
                         
                         if (uploadData.message == 'Documents uploaded successfully') {
                             console.log("File uploaded successfully:", uploadData.message);
-                            //navigate(`/VerFormulario/${data.projectId}`);
-                            //indexedDB.deleteDatabase('Cicata');
+                            navigate(`/VerFormulario/${data.projectId}`);
+                            indexedDB.deleteDatabase('Cicata');
                         } else {
                             console.warn("Upload succeeded but no confirmation message:", uploadData);
                         }
@@ -101,8 +100,8 @@ const  Anexos = ({option,setOption}) => {
                         alert("El proyecto se creó, pero hubo un error al subir el archivo.");
                     }
                 } else {
-                    //navigate(`/VerFormulario/${data.projectId}`);
-                    //indexedDB.deleteDatabase('Cicata');
+                    navigate(`/VerFormulario/${data.projectId}`);
+                    indexedDB.deleteDatabase('Cicata');
                 }
             } else {
                 throw new Error("Missing projectId in server response.");
@@ -186,7 +185,7 @@ const  Anexos = ({option,setOption}) => {
                                                             filesSend={filesSend} 
                                                             tagType="Anexos"
                                                         />
-                                {Array.isArray(anexos.afilesSend) && anexos.afilesSend.length > 0 && (
+                                {(Array.isArray(anexos) && anexos.afilesSend.length > 0) && (
                                     <div className="!p-0 w-full  h-1/3 overflow-y-auto flex flex-col justify-center items-center rounded-[30px]">
                                     <ul className="!p-2 text-sm text-gray-800  w-[80%]">
                                         {anexos.afilesSend.map((file, index) => (

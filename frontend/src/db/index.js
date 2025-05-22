@@ -108,3 +108,20 @@ export async function saveMultipleForms(formsData) {
             return { success: false, error };
         });
 }
+/**
+ * Obtiene formularios dentro de un rango de IDs
+ * @param {number} minId - ID mínimo (incluido)
+ * @param {number} maxId - ID máximo (incluido)
+ * @returns {Promise<Array>} - Promesa que resuelve con los formularios en el rango
+ */
+export async function getFormsInRange(minId, maxId) {
+    const db = await openDB();
+    const transaction = db.transaction("Forms", "readonly");
+    const store = transaction.objectStore("Forms");
+    
+    return new Promise((resolve, reject) => {
+        const request = store.getAll(IDBKeyRange.bound(minId, maxId));
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = (event) => reject(`Error al obtener formularios en rango: ${event.target.error}`);
+    }).finally(() => db.close());
+}

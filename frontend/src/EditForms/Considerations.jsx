@@ -6,7 +6,7 @@ import useSubmitFormNext from "../hooks/useSubmitFormNext";
 const  Considerations = ({option,setOption}) => {
     
     const [considerationsBio, setConsiderationsBio] = useState(
-        {   idF: 8,
+        {   idF: 27,
             biosecurityConsiderations:"" });
     const [newErrorsD,setNewErrorsD] = useState({
             biosecurityConsiderations:""

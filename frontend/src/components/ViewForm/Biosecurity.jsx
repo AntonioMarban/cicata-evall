@@ -13,7 +13,7 @@ const Biosecurity = ({biosecurityConsiderations}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>{biosecurityConsiderations}</td>
+                    <td>{biosecurityConsiderations.biosecurityConsiderations}</td>
                 </tr>
             </tbody>
         </table>
