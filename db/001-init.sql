@@ -583,7 +583,7 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE updateFullProject(
+CREATE PROCEDURE updateProject(
     IN p_projectId INT,
 
     -- Campos del proyecto
@@ -627,11 +627,21 @@ CREATE PROCEDURE updateFullProject(
     IN p_budgetsJSON JSON,
     IN p_goalsJSON JSON,
     IN p_methodologiesJSON JSON,
-    IN p_referencesJSON JSON
+    IN p_referencesJSON JSON,
+    IN p_specificObjectivesJSON JSON,
+    IN p_extras1JSON JSON,
+    IN p_extras2JSON JSON,
+    IN p_extras3JSON JSON
 )
 BEGIN
     DECLARE i INT DEFAULT 0;
+    DECLARE j INT DEFAULT 0;
     DECLARE total INT;
+    DECLARE totalKeys INT;
+    DECLARE keyName VARCHAR(50);
+    DECLARE keyValue VARCHAR(50);
+    DECLARE valuesJSON JSON;
+    DECLARE nameValue VARCHAR(255);
 
     -- Actualizar solo campos provistos
     UPDATE projects
@@ -834,10 +844,112 @@ BEGIN
             SET i = i + 1;
         END WHILE;
     END IF;
+    -- specificObjectives
+    IF p_specificObjectivesJSON IS NOT NULL THEN
+        DELETE FROM specificObjectives WHERE project_id = p_projectId;
+        SET i = 0;
+        SET total = JSON_LENGTH(p_specificObjectivesJSON);
+        WHILE i < total DO
+            INSERT INTO specificObjectives (objectiveName, objectiveDescription, project_id)
+            VALUES (
+                JSON_UNQUOTE(JSON_EXTRACT(p_specificObjectivesJSON, CONCAT('$[', i, '].objectiveName'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_specificObjectivesJSON, CONCAT('$[', i, '].objectiveDescription'))),
+                p_projectId
+            );
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+
+    -- EXTRAS 1
+    IF p_extras1JSON IS NOT NULL THEN
+        DELETE FROM customDeliverables WHERE project_id = p_projectId AND deliverableTypeId IN (1,2,3);
+        SET i = 0;
+        WHILE i < JSON_LENGTH(p_extras1JSON) DO
+            SET nameValue = JSON_UNQUOTE(JSON_EXTRACT(p_extras1JSON, CONCAT('$[', i, '].name')));
+            SET valuesJSON = JSON_EXTRACT(p_extras1JSON, CONCAT('$[', i, '].values'));
+            IF JSON_VALID(valuesJSON) THEN
+                SET totalKeys = JSON_LENGTH(JSON_KEYS(valuesJSON));
+                SET j = 0;
+                WHILE j < totalKeys DO
+                    SET keyName = JSON_UNQUOTE(JSON_EXTRACT(JSON_KEYS(valuesJSON), CONCAT('$[', j, ']')));
+                    SET keyValue = JSON_UNQUOTE(JSON_EXTRACT(valuesJSON, CONCAT('$."', keyName, '"')));
+                    INSERT INTO customDeliverables (name, quantity, deliverableTypeId, project_id)
+                    VALUES (nameValue, keyValue, keyName, p_projectId);
+                    SET j = j + 1;
+                END WHILE;
+            END IF;
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+
+    -- EXTRAS 2
+    IF p_extras2JSON IS NOT NULL THEN
+        DELETE FROM customDeliverables WHERE project_id = p_projectId AND deliverableTypeId IN (4,5);
+        SET i = 0;
+        WHILE i < JSON_LENGTH(p_extras2JSON) DO
+            SET nameValue = JSON_UNQUOTE(JSON_EXTRACT(p_extras2JSON, CONCAT('$[', i, '].name')));
+            SET valuesJSON = JSON_EXTRACT(p_extras2JSON, CONCAT('$[', i, '].values'));
+            IF JSON_VALID(valuesJSON) THEN
+                SET totalKeys = JSON_LENGTH(JSON_KEYS(valuesJSON));
+                SET j = 0;
+                WHILE j < totalKeys DO
+                    SET keyName = JSON_UNQUOTE(JSON_EXTRACT(JSON_KEYS(valuesJSON), CONCAT('$[', j, ']')));
+                    SET keyValue = JSON_UNQUOTE(JSON_EXTRACT(valuesJSON, CONCAT('$."', keyName, '"')));
+                    INSERT INTO customDeliverables (name, quantity, deliverableTypeId, project_id)
+                    VALUES (nameValue, keyValue, keyName, p_projectId);
+                    SET j = j + 1;
+                END WHILE;
+            END IF;
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+
+    -- EXTRAS 3
+    IF p_extras3JSON IS NOT NULL THEN
+        DELETE FROM customDeliverables WHERE project_id = p_projectId AND deliverableTypeId IN (6,7);
+        SET i = 0;
+        WHILE i < JSON_LENGTH(p_extras3JSON) DO
+            SET nameValue = JSON_UNQUOTE(JSON_EXTRACT(p_extras3JSON, CONCAT('$[', i, '].name')));
+            SET valuesJSON = JSON_EXTRACT(p_extras3JSON, CONCAT('$[', i, '].values'));
+            IF JSON_VALID(valuesJSON) THEN
+                SET totalKeys = JSON_LENGTH(JSON_KEYS(valuesJSON));
+                SET j = 0;
+                WHILE j < totalKeys DO
+                    SET keyName = JSON_UNQUOTE(JSON_EXTRACT(JSON_KEYS(valuesJSON), CONCAT('$[', j, ']')));
+                    SET keyValue = JSON_UNQUOTE(JSON_EXTRACT(valuesJSON, CONCAT('$."', keyName, '"')));
+                    INSERT INTO customDeliverables (name, quantity, deliverableTypeId, project_id)
+                    VALUES (nameValue, keyValue, keyName, p_projectId);
+                    SET j = j + 1;
+                END WHILE;
+            END IF;
+            SET i = i + 1;
+        END WHILE;
+    END IF;
 
     SELECT 'Proyecto actualizado correctamente' AS message;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE getProjectForm(
+  IN p_projectId INT
+)
+BEGIN
+  SELECT 
+    projectId,
+    formVersion,
+    nextReview,
+    preparedBy,
+    reviewedBy,
+    approvedBy,
+    DATE_FORMAT(preparedDate, '%Y-%m-%d') AS preparedDate,
+    DATE_FORMAT(reviewedDate, '%Y-%m-%d') AS reviewedDate,
+    DATE_FORMAT(approvedDate, '%Y-%m-%d') AS approvedDate
+  FROM project_form
+  WHERE projectId = p_projectId;
+END //
+DELIMITER ;
+
 
 -- Miembro de comité -> Pantalla de inicio de proyectos pendientes
 -- Procedimiento almacenado para obtener los proyectos pendientes de evaluación

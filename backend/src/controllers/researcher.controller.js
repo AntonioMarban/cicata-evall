@@ -215,10 +215,14 @@ const updateProject = (req, res) => {
     budgets = null,
     goals = null,
     methodologies = null,
-    references = null
+    references = null,
+    specificObjectives = null,
+    extras1 = null,
+    extras2 = null,
+    extras3 = null,
   } = req.body;
 
-  const sql = `CALL updateFullProject(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `CALL updateProject(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
     projectId,
@@ -262,7 +266,11 @@ const updateProject = (req, res) => {
     budgets ? JSON.stringify(budgets) : null,
     goals ? JSON.stringify(goals) : null,
     methodologies ? JSON.stringify(methodologies) : null,
-    references ? JSON.stringify(references) : null
+    references ? JSON.stringify(references) : null,
+    specificObjectives ? JSON.stringify(specificObjectives) : null,
+    extras1 ? JSON.stringify(extras1) : null,
+    extras2 ? JSON.stringify(extras2) : null,
+    extras3 ? JSON.stringify(extras3) : null
   ];
 
   pool.query(sql, values, (err, results) => {

@@ -249,13 +249,24 @@ const getProjectDetails = (req, res) => {
                 id: 12,
                 budgets: budgets || []
             },
-            idf13: {
+            id13: {
                 idF: 13,
                 conflictOfInterest: projectInfo[0]?.conflictOfInterest || ''
             },
-            idf14: {
+            id14: {
                 idF: 14,
                 aditionalComments: projectInfo[0]?.aditionalComments || ''
+            },
+            id15: {
+                id: 15,
+                formVersion: projectInfo[0]?.formVersion || '',
+                nextReview: projectInfo[0]?.nextReview || '',
+                preparedBy: projectInfo[0]?.preparedBy || '',
+                reviewedBy: projectInfo[0]?.reviewedBy || '',
+                approvedBy: projectInfo[0]?.approvedBy || '',
+                preparedDate: projectInfo[0]?.preparedDate || '',
+                reviewedDate: projectInfo[0]?.reviewedDate || '',
+                approvedDate: projectInfo[0]?.approvedDate || ''
             },
             investigator: investigator.length > 0 ? investigator[0] : null
         };
