@@ -94,40 +94,53 @@ const getProjectSummary = (req, res) => {
   }
 
 
-  const groupDeliverables = (deliverables) => {
+const groupDeliverables = (deliverables) => {
     const educativos = [
         'Tesis (Alumnos titulados)', 'Practicantes profesionales', 'Alumnos PIFI',
         'Prestante de servicio social', 'Otro (especificar)'
     ];
-
     const difusion = [
         'Artículo de divulgación', 'Congresos', 'Cursos', 'Libros',
         'Conferencias o ponencias', 'Artículo científico', 'Seminarios',
         'Manuales', 'Programas de Radio y/o TV', 'Otro, especificar'
     ];
-
     const tecnologicos = [
         'Patente', 'Hardware', 'Prototipo', 'Certificado de invención',
         'Software', 'Otro (especificar)'
     ];
 
     const grouped = {
-        educativos: [],
-        difusion: [],
-        tecnologicos: []
+        educativos: new Map(),
+        difusion: new Map(),
+        tecnologicos: new Map()
     };
 
     deliverables.forEach(item => {
-        if (educativos.includes(item.name)) {
-        grouped.educativos.push(item);
-        } else if (difusion.includes(item.name)) {
-        grouped.difusion.push(item);
-        } else if (tecnologicos.includes(item.name)) {
-        grouped.tecnologicos.push(item);
+        const group =
+            educativos.includes(item.name) ? 'educativos' :
+            difusion.includes(item.name) ? 'difusion' :
+            tecnologicos.includes(item.name) ? 'tecnologicos' : null;
+
+        if (!group) return;
+
+        const key = item.deliverableId;
+
+        if (!grouped[group].has(key)) {
+            grouped[group].set(key, {
+                deliverableId: item.deliverableId,
+                name: item.name,
+                values: {}
+            });
         }
+
+        grouped[group].get(key).values[item.deliverableTypeId] = item.quantity;
     });
 
-    return grouped;
+    return {
+        educativos: Array.from(grouped.educativos.values()),
+        difusion: Array.from(grouped.difusion.values()),
+        tecnologicos: Array.from(grouped.tecnologicos.values())
+    };
 };
 
 const groupExtras = (extras) => {
@@ -179,16 +192,17 @@ const getProjectDetails = (req, res) => {
         const response = {
             idf20: {
                 idF: 20,
-                    title: projectInfo[0]?.title || '',
-                    startDate: projectInfo[0]?.startDate || '',
-                    endDate: projectInfo[0]?.endDate || '',
-                    typeResearch: projectInfo[0]?.typeResearch || '',
-                    alignmentPNIorODS: projectInfo[0]?.alignmentPNIorODS || '',
-                    alignsWithPNIorODS: projectInfo[0]?.alignsWithPNIorODS || '',
-                    otherTypeResearch: projectInfo[0]?.otherTypeResearch || '',
-                    subtopic: projectInfo[0]?.subtopic || '',
-                    summary: projectInfo[0]?.summary || '',
-                    topic: projectInfo[0]?.topic || ''
+                title: projectInfo[0]?.title || '',
+                startDate: projectInfo[0]?.startDate || '',
+                endDate: projectInfo[0]?.endDate || '',
+                folio: projectInfo[0]?.folio || '',
+                typeResearch: projectInfo[0]?.typeResearch || '',
+                alignmentPNIorODS: projectInfo[0]?.alignmentPNIorODS || '',
+                alignsWithPNIorODS: projectInfo[0]?.alignsWithPNIorODS || '',
+                otherTypeResearch: projectInfo[0]?.otherTypeResearch || '',
+                subtopic: projectInfo[0]?.subtopic || '',
+                summary: projectInfo[0]?.summary || '',
+                topic: projectInfo[0]?.topic || ''
             },
             idf21: {
                 idF: 21,

@@ -55,13 +55,28 @@ const createProject = async (req, res) => {
         userId 
     } = req.body;
 
+    // Transformar deliverables en formato por tipo
+    const transformedDeliverables = [];
+    deliverables.forEach(deliv => {
+        const { deliverableId, values } = deliv;
+        if (values && typeof values === 'object') {
+            Object.entries(values).forEach(([typeId, qty]) => {
+                transformedDeliverables.push({
+                    deliverableId,
+                    deliverableTypeId: Number(typeId),
+                    quantity: qty
+                });
+            });
+        }
+    });
+
     // Convertir arreglos a JSON string
     const associatedProjectsJSON = JSON.stringify(associatedProjects);
     const membersJSON = JSON.stringify(members);
     const collaborativeInstitutionsJSON = JSON.stringify(collaborativeInstitutions);
     const specificObjectivesJSON = JSON.stringify(specificObjectives);
     const scheduleActivitiesJSON = JSON.stringify(scheduleActivities);
-    const deliverablesJSON = JSON.stringify(deliverables);
+    const deliverablesJSON = JSON.stringify(transformedDeliverables);
     const budgetsJSON = JSON.stringify(budgets); 
     const goalsJSON = JSON.stringify(goals);
     const methodologiesJSON = JSON.stringify(methodologies);
