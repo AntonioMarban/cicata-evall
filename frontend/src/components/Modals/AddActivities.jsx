@@ -5,7 +5,7 @@ import useLoadFormData from "../../hooks/useLoadFormData";
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
-const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete = null }) => {
+const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete = null,Number }) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const initialFormValues = {
@@ -19,7 +19,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
     const [newErrors,setNewErrors] = useState(initialFormValues);
     const [responsable,setResponsable] = useState([]);
 
-    useLoadFormData(3,setResponsable);
+    useLoadFormData(Number,setResponsable);
 
     useEffect(() => {
             if (activitesToEdit) {

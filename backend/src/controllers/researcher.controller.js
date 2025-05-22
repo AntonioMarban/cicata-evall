@@ -41,7 +41,9 @@ const createProject = async (req, res) => {
         collaborativeInstitutions,
         specificObjectives,
         scheduleActivities,
-        deliverables,
+        deliverables1,
+        deliverables2,
+        deliverables3,
         budgets, 
         goals,
         methodologies,
@@ -54,21 +56,32 @@ const createProject = async (req, res) => {
         // Usuario
         userId 
     } = req.body;
-
-    // Transformar deliverables en formato por tipo
-    const transformedDeliverables = [];
-    deliverables.forEach(deliv => {
-        const { deliverableId, values } = deliv;
-        if (values && typeof values === 'object') {
-            Object.entries(values).forEach(([typeId, qty]) => {
-                transformedDeliverables.push({
+    const transformDeliverables = (deliverablesArray) => {
+        return deliverablesArray.map(deliv => {
+            const { id: deliverableId, values } = deliv;
+            if (values && typeof values === 'object') {
+                return Object.entries(values).map(([deliverableTypeId, quantity]) => ({
                     deliverableId,
-                    deliverableTypeId: Number(typeId),
-                    quantity: qty
-                });
-            });
-        }
-    });
+                    deliverableTypeId: Number(deliverableTypeId),
+                    quantity
+                }));
+            }
+            return [];
+        }).flat();
+    };
+
+    // Combinar y transformar todos los deliverables
+    const transformedDeliverables = [
+        ...transformDeliverables(deliverables1 || []),
+        ...transformDeliverables(deliverables2 || []),
+        ...transformDeliverables(deliverables3 || [])
+    ];
+
+
+     console.log("Deliverables1 original:", deliverables1);
+    console.log("Deliverables2 original:", deliverables2);
+    console.log("Deliverables3 original:", deliverables3);
+    console.log("Deliverables transformados:", transformedDeliverables);
 
     // Convertir arreglos a JSON string
     const associatedProjectsJSON = JSON.stringify(associatedProjects);

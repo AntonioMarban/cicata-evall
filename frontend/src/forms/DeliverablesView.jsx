@@ -16,23 +16,23 @@ const DeliverablesView = ({ option, setOption }) => {
         {id:4, name:"Prestante del servicio social"},
         ],
         deliverables2: [
-        {id:5, name:"Artículo de divulgación"},
-        {id:6, name:"Congresos"},
-        {id:7, name:"Cursos"},
-        {id:8, name:"Libros"},
-        {id:9, name:"Conferencias o ponencias"},
-        {id:10, name:"Articulos cientifico"},
-        {id:11, name:"Seminarios"},
-        {id:12, name:"Manuales"},
-        {id:13, name:"Programas de Radio y/o TV"},
+        {id:6, name:"Artículo de divulgación"},
+        {id:7, name:"Congresos"},
+        {id:8, name:"Cursos"},
+        {id:9, name:"Libros"},
+        {id:10, name:"Conferencias o ponencias"},
+        {id:11, name:"Articulos cientifico"},
+        {id:12, name:"Seminarios"},
+        {id:13, name:"Manuales"},
+        {id:14, name:"Programas de Radio y/o TV"},
         ],
         deliverables3: [
-        {id:14, name:"Proceso"},
-        {id:15, name:"Patente"},
-        {id:16, name:"Hardware"},
-        {id:17, name:"Prototipo"},
-        {id:18, name:"Certificado de inversión"},
-        {id:19, name:"Software"},
+        {id:16, name:"Proceso"},
+        {id:17, name:"Patente"},
+        {id:18, name:"Hardware"},
+        {id:19, name:"Prototipo"},
+        {id:20, name:"Certificado de inversión"},
+        {id:21, name:"Software"},
         ],
         extras1:[],
         extras2:[],
@@ -201,8 +201,8 @@ const DeliverablesView = ({ option, setOption }) => {
                         type="number"
                         min={0}
                         data-id={deliverable.id}
-                        data-index={index+3}
-                        value={deliverable.values?.[index+3] ?? ""}
+                        data-index={index+4}
+                        value={deliverable.values?.[index+4] ?? ""}
                         onChange={(e) => handleInputNumberChange(e, 'deliverables2', index)}
                     />
                     </td>
@@ -227,8 +227,8 @@ const DeliverablesView = ({ option, setOption }) => {
                         type="number"
                         min={0}
                         data-id={deliverable.id}
-                        data-index={index+3}
-                        value={deliverable.values?.[index+3] ?? ""}
+                        data-index={index+4}
+                        value={deliverable.values?.[index+4] ?? ""}
                         onChange={(e) => handleInputNumberChange(e, 'extras2', index)}
                     />
                     </td>

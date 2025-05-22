@@ -34,7 +34,6 @@ const  Anexos = ({option,setOption}) => {
 
         try {
             const formData = await getFormsInRange(1, 14);
-            console.log(formData)
             if (!formData) {
                 throw new Error("No se encontraron datos del formulario.");
             }
@@ -42,7 +41,6 @@ const  Anexos = ({option,setOption}) => {
             const { afilesSend, efilesSend, idF, ...cleanFormData } = formData;
             const userId = localStorage.getItem('userId');
             cleanFormData.userId = userId;
-    
             //console.log("Submitting project data:", cleanFormData);
             //console.log("Files to upload (afilesSend):", afilesSend);
     
@@ -91,8 +89,8 @@ const  Anexos = ({option,setOption}) => {
                         
                         if (uploadData.message == 'Documents uploaded successfully') {
                             console.log("File uploaded successfully:", uploadData.message);
-                            //navigate(`/VerFormulario/${data.projectId}`);
-                            //indexedDB.deleteDatabase('Cicata');
+                            // navigate(`/VerFormulario/${data.projectId}`);
+                            // indexedDB.deleteDatabase('Cicata');
                         } else {
                             console.warn("Upload succeeded but no confirmation message:", uploadData);
                         }
@@ -101,8 +99,8 @@ const  Anexos = ({option,setOption}) => {
                         alert("El proyecto se creó, pero hubo un error al subir el archivo.");
                     }
                 } else {
-                    //navigate(`/VerFormulario/${data.projectId}`);
-                    //indexedDB.deleteDatabase('Cicata');
+                    // navigate(`/VerFormulario/${data.projectId}`);
+                    // indexedDB.deleteDatabase('Cicata');
                 }
             } else {
                 throw new Error("Missing projectId in server response.");

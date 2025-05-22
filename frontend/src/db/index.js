@@ -121,7 +121,14 @@ export async function getFormsInRange(minId, maxId) {
     
     return new Promise((resolve, reject) => {
         const request = store.getAll(IDBKeyRange.bound(minId, maxId));
-        request.onsuccess = () => resolve(request.result);
+               request.onsuccess = () => {
+            const forms = request.result;
+            const combined = forms.reduce((acc, curr) => {
+                return { ...acc, ...curr };
+            }, {});
+            resolve(combined);
+        };
+        
         request.onerror = (event) => reject(`Error al obtener formularios en rango: ${event.target.error}`);
     }).finally(() => db.close());
 }

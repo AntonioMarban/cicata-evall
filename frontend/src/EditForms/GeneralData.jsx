@@ -6,7 +6,7 @@ const GeneralData = ({option,setOption}) => {
     const [alignsWithPNIorODS, setalignsWithPNIorODS] = useState(1);
     const [typeResearch, setTypeResearch] = useState(1);
     const [generalData, setGeneralData] = useState(
-        {   idF: 1,
+        {   idF: 20,
             title: "",
             startDate:"",
             endDate:"",

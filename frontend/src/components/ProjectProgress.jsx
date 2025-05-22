@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import "../styles/commentscommittee.css";
 import ProjectHeader from "../components/ProjectHeader";
-import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { saveMultipleForms  } from "../db/index";
 

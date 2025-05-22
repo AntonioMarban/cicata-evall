@@ -4,8 +4,8 @@ import { useState } from "react";
 
 const Deliverables = ({Deliverables}) => {  
     const columns = [1, 2, 3];
-    const columns2 = [6, 7];
-    const columns3 = [4, 5];
+    const columns2 = [4, 5];
+    const columns3 = [6, 7];
     console.log(Deliverables)
     const categories3 = ["Piloto", "Laboratorio"];
 
@@ -24,7 +24,7 @@ const Deliverables = ({Deliverables}) => {
                 </tr>
             </thead>
             <tbody className='table-form-show-body'>
-                {Deliverables.difusion.map((deliverable) => (
+                {Deliverables.educativos.map((deliverable) => (
                   <tr key={deliverable.deliveryId}>
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns.map((col) => (
@@ -57,10 +57,10 @@ const Deliverables = ({Deliverables}) => {
                 </tr>
             </thead>
             <tbody className='table-form-show-body'>
-                {Deliverables.educativos.map((deliverable) => (
+                {Deliverables.difusion.map((deliverable) => (
                   <tr key={deliverable.deliveryId}>
                       <td data-label="Entregable">{deliverable.name}</td>
-                      {columns3.map((col) => (
+                      {columns2.map((col) => (
                         <td key={col}>
                           {deliverable.values[col] ?? ''} {/* Muestra el valor o vacío si no existe */}
                         </td>
@@ -70,7 +70,7 @@ const Deliverables = ({Deliverables}) => {
                 {Deliverables.extras2.map((deliverable) => (
                 <tr key={deliverable.deliveryId}>
                     <td data-label="Entregable">{deliverable.name}</td>
-                    {columns3.map((col) => (
+                    {columns2.map((col) => (
                       <td key={col}>
                         {deliverable.values[col] ?? ''} {/* Muestra el valor o vacío si no existe */}
                       </td>
@@ -94,7 +94,7 @@ const Deliverables = ({Deliverables}) => {
                 {Deliverables.tecnologicos.map((deliverable) => (
                   <tr key={deliverable.deliveryId}>
                       <td data-label="Entregable">{deliverable.name}</td>
-                      {columns2.map((col) => (
+                      {columns3.map((col) => (
                         <td key={col}>
                           {deliverable.values[col] ?? ''} {/* Muestra el valor o vacío si no existe */}
                         </td>
@@ -104,7 +104,7 @@ const Deliverables = ({Deliverables}) => {
                 {Deliverables.extras3.map((deliverable) => (
                 <tr key={deliverable.deliveryId}>
                     <td data-label="Entregable">{deliverable.name}</td>
-                    {columns2.map((col) => (
+                    {columns3.map((col) => (
                       <td key={col}>
                         {deliverable.values[col] ?? ''} {/* Muestra el valor o vacío si no existe */}
                       </td>
