@@ -1,14 +1,14 @@
-import AddActividades from "../components/Modals/AddActivities";
-import useLoadFormData from "../hooks/useLoadFormData";
+import AddActividades from "../components/Modals/AddActivities.jsx";
+import useLoadFormData from "../hooks/useLoadFormData.js";
 import ShowCards from "../components/ShowCards.jsx";
-import { removeItemByIndex } from "../hooks/removeItemByIndex";
+import { removeItemByIndex } from "../hooks/removeItemByIndex.js";
 import { useState } from "react";
-import useSubmitFormBack from "../hooks/useSubmitFormBack";
-import useSubmitFormNext from "../hooks/useSubmitFormNext";
+import useSubmitFormBack from "../hooks/useSubmitFormBack.js";
+import useSubmitFormNext from "../hooks/useSubmitFormNext.js";
 
 const  Activities = ({option,setOption}) => {
     
-    const [activities, setActivities] = useState({ idF: 9, scheduleActivities: [] });
+    const [activities, setActivities] = useState({ idF: 28, scheduleActivities: [] });
     const [activitiesToEdit, setActivitiesToEdit] = useState(null);
 
     const handleOnSubmitFormBack = useSubmitFormBack(activities, setOption);

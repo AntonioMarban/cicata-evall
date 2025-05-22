@@ -1,14 +1,14 @@
-import AddParticipant from "../components/Modals/AddParticipant";
-import useLoadFormData from "../hooks/useLoadFormData";
-import { removeItemByIndex } from "../hooks/removeItemByIndex";
+import AddParticipant from "../components/Modals/AddParticipant.jsx";
+import useLoadFormData from "../hooks/useLoadFormData.js";
+import { removeItemByIndex } from "../hooks/removeItemByIndex.js";
 import ShowCards from "../components/ShowCards.jsx";
-import useSubmitFormBack from "../hooks/useSubmitFormBack";
-import useSubmitFormNext from "../hooks/useSubmitFormNext";
+import useSubmitFormBack from "../hooks/useSubmitFormBack.js";
+import useSubmitFormNext from "../hooks/useSubmitFormNext.js";
 import { useState } from "react";
 
 const  Participants = ({option,setOption}) => {
     
-    const [participants, setParticipants] = useState({ idF: 3, members: [] });
+    const [participants, setParticipants] = useState({ idF: 22, members: [] });
     const [participantToEdit, setParticipantToEdit] = useState(null);
 
     const handleOnSubmitFormBack = useSubmitFormBack(participants, setOption);

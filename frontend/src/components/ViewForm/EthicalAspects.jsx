@@ -13,7 +13,7 @@ const EthicalAspects = ({EthicalAspects}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>{EthicalAspects}</td>
+                    <td>{EthicalAspects.ethicalAspects}</td>
                 </tr>
             </tbody>
         </table>

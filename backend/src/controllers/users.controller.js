@@ -177,88 +177,88 @@ const getProjectDetails = (req, res) => {
         // todo se obtiene como arreglos de objetos(esto de los arreglos le ahorraba tiempo a Gordinho)
         const grouped = groupDeliverables(deliverables || []);
         const response = {
-            id1: {
-                id: 1,
-                title: projectInfo[0]?.title || '',
-                startDate: projectInfo[0]?.startDate || '',
-                endDate: projectInfo[0]?.endDate || '',
-                typeResearch: projectInfo[0]?.typeResearch || '',
-                alignmentPNIorODS: projectInfo[0]?.alignmentPNIorODS || '',
-                alignsWithPNIorODS: projectInfo[0]?.alignsWithPNIorODS || '',
-                otherTypeResearch: projectInfo[0]?.otherTypeResearch || '',
-                subtopic: projectInfo[0]?.subtopic || '',
-                summary: projectInfo[0]?.summary || '',
-                topic: projectInfo[0]?.topic || ''
+            idf20: {
+                idF: 20,
+                    title: projectInfo[0]?.title || '',
+                    startDate: projectInfo[0]?.startDate || '',
+                    endDate: projectInfo[0]?.endDate || '',
+                    typeResearch: projectInfo[0]?.typeResearch || '',
+                    alignmentPNIorODS: projectInfo[0]?.alignmentPNIorODS || '',
+                    alignsWithPNIorODS: projectInfo[0]?.alignsWithPNIorODS || '',
+                    otherTypeResearch: projectInfo[0]?.otherTypeResearch || '',
+                    subtopic: projectInfo[0]?.subtopic || '',
+                    summary: projectInfo[0]?.summary || '',
+                    topic: projectInfo[0]?.topic || ''
             },
-            id2: {
-                id: 2,
+            idf21: {
+                idF: 21,
                 associatedProjects: associatedProjects || []
             },
-            id3: {
-                id: 3,
+            idf22: {
+                idF: 22,
                 members: members || []
             },
-            id4: {
-                id: 4,
+            idf23: {
+                idF: 23,
                 hasCollaboration: projectInfo[0]?.hasCollaboration || 0,
                 collaborationJustification: projectInfo[0]?.collaborationJustification || '',
                 collaborativeInstitutions: collaborativeInstitutions || []
             },
-            id5: {
-                id: 5,
+            idf24: {
+                idF: 24,
                 introduction: projectInfo[0]?.introduction || '',
                 background: projectInfo[0]?.background || '',
                 statementOfProblem: projectInfo[0]?.statementOfProblem || '',
                 justification: projectInfo[0]?.justification || '',
                 generalObjective: projectInfo[0]?.generalObjective || '',
                 hypothesis: projectInfo[0]?.hypothesis || '',
-                specificObjectives: specificObjectives || []
+                sObjectives: specificObjectives || []
             },
-            id6: {
-                id: 6,
+            idf25: {
+                idF: 25,
                 goals: goals || [],
                 references: references || [],
                 methodologies: methodologies || []
             },
-            id7: {
-                id: 7,
+            idf26: {
+                idF: 26,
                 ethicalAspects: projectInfo[0]?.ethicalAspects || '',
                 workWithHumans: projectInfo[0]?.workWithHumans || 0,
                 workWithAnimals: projectInfo[0]?.workWithAnimals || 0
             },
-            id8: {
-                id: 8,
+            idf27: {
+                idF: 27,
                 biosecurityConsiderations: projectInfo[0]?.biosecurityConsiderations || ''
             },
-            id9: {
-                id: 9,
+            idf28: {
+                idF: 28,
                 scheduleActivities: scheduleActivities || []
             },
-            id10: {
-                id: 10,
+            idf29: {
+                idF: 29,
                 ...grouped,
                 extras1: groupExtras(extras1 || []),
                 extras2: groupExtras(extras2 || []),
                 extras3: groupExtras(extras3 || [])
             },
-            id11: {
-                id: 11,
+            idf30: {
+                idF: 30,
                 contributionsToIPNandCICATA: projectInfo[0]?.contributionsToIPNandCICATA || ''
             },
-            id12: {
-                id: 12,
+            idf31: {
+                idF: 31,
                 budgets: budgets || []
             },
-            id13: {
-                idF: 13,
+            idf32: {
+                idF: 32,
                 conflictOfInterest: projectInfo[0]?.conflictOfInterest || ''
             },
-            id14: {
-                idF: 14,
+            idf33: {
+                idF: 33,
                 aditionalComments: projectInfo[0]?.aditionalComments || ''
             },
-            id15: {
-                id: 15,
+            idf34: {
+                idF: 34,
                 formVersion: projectInfo[0]?.formVersion || '',
                 nextReview: projectInfo[0]?.nextReview || '',
                 preparedBy: projectInfo[0]?.preparedBy || '',
