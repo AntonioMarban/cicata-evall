@@ -132,16 +132,17 @@ const createProject = async (req, res) => {
 
 const uploadDocuments = (req, res) => {
     const projectId = req.body.projectId;
+    const tag = req.body.tag;
     const documents = req.files; //se obtienen del multer.array()
 
     if (!documents || documents.length === 0) {
         return res.status(400).json({ error: 'No documents were uploaded' });
     }
 
-    const query = 'CALL uploadDocument(?, ?)';
+    const query = 'CALL uploadDocument(?, ?, ?)';
 
     documents.forEach((doc) => {
-        pool.query(query, [doc.buffer, projectId], (err, result) => {
+        pool.query(query, [doc.buffer, projectId, tag], (err, result) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: 'Error uploading documents' });
@@ -165,6 +166,7 @@ const getProjectDocuments = (req, res) => {
       const documents = results[0].map(row => ({
         annexeId: row.annexeId,
         projectId: row.projectId,
+        tag: row.tag,
         document: row.document ? Buffer.from(row.document).toString('base64') : null
       }));
   

@@ -416,11 +416,12 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE uploadDocument(
   IN p_document LONGBLOB,
-  IN p_projectId INT
+  IN p_projectId INT,
+  IN p_tag VARCHAR(100)
 )
 BEGIN
-  INSERT INTO annexes (document, projectId)
-  VALUES (p_document, p_projectId);
+  INSERT INTO annexes (document, projectId, tag)
+  VALUES (p_document, p_projectId, p_tag);
 END //
 DELIMITER ;
 
@@ -554,7 +555,8 @@ BEGIN
   SELECT
     annexeId,
     projectId,
-    document
+    document,
+    tag
   FROM annexes
   WHERE projectId = p_projectId;
 END //

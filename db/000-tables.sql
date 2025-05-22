@@ -307,6 +307,8 @@ ADD COLUMN quantity INT,
 ADD COLUMN deliverableTypeId INT,
 ADD COLUMN project_id INT;
 
+ALTER TABLE annexes ADD COLUMN tag VARCHAR(100);
+
 -- Datos estaticos para la parte superior del formulario
 ALTER TABLE projects
 ADD COLUMN formVersion VARCHAR(10) DEFAULT '03',
