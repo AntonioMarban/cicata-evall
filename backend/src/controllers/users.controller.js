@@ -63,9 +63,39 @@ const updateAgreementSignature = (req, res) => {
         .json({ message: "Agreement signed" });
     });
   };
+
+/* 
+  Función para obtener datos resumen de un proyecto
+  Se hace uso de un procedimiento almacena getProjectSummary
+  @param projectId: Id del proyecto
+  @returns: Datos resumen del proyecto
+*/
+const getProjectSummary = (req, res) => {
+    const { projectId } = req.params;
+  
+    const sql = `CALL getProjectSummary(?)`;
+    const values = [ projectId];
+    pool.query(sql, values, (err, results) => {
+      if (err) {
+        console.error("Error obtaining project summary:", err);
+        return res
+          .status(400)
+          .json({ error: "Invalid query parameters" });
+      }
+      if (results.length === 0) {
+        return res
+          .status(404)
+          .json({
+            error: "Resource does not exist",
+          });
+      }
+      return res.status(200).json(results[0]);
+    });
+  }
   
   
 module.exports = {
     updateAgreementSignature,
-    getAgreementSignature
+    getAgreementSignature,
+    getProjectSummary
 };

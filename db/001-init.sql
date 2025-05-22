@@ -40,6 +40,28 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Función para obtener datos resumen de un proyecto
+-- @oaram projectId: Id del proyecto
+-- @returns: Datos del proyecto
+DELIMITER //
+CREATE PROCEDURE getProjectSummary(
+    IN projectId INT
+)
+BEGIN
+    SELECT
+        p.projectId,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        p.title,
+        p.startDate,
+        p.endDate,
+        p.folio,
+        p.status
+    FROM projects p
+    JOIN usersProjects up ON p.projectId = up.project_id
+    JOIN users u ON up.user_id = u.userId
+    WHERE p.projectId = projectId;
+END //
+DELIMITER ;
 
 -- obtener proyectos activos
 DELIMITER //
