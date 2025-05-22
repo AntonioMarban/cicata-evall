@@ -1410,8 +1410,8 @@ BEGIN
             committeeUsers cu
         JOIN users u ON cu.userId = u.userId
         WHERE
-            cu.committeeId = p_committeeId AND u.userType_id = 4 AND u.userId NOT IN (
-                SELECT user_id FROM evaluations WHERE project_id = p_projectId
+            cu.committeeId = p_committeeId AND u.userId NOT IN (
+                SELECT user_id FROM evaluations WHERE project_id = p_projectId and evaluation_type_id = 1
             ) AND u.active = true;
     END IF;
 END //
