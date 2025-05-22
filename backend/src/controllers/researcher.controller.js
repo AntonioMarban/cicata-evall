@@ -88,7 +88,7 @@ const createProject = async (req, res) => {
 
     const projectStartDate = new Date(startDate);
     const year = projectStartDate.getFullYear();
-    const month = String(projectStartDate.getMonth()).padStart(2, '0');    
+    const month = String(projectStartDate.getMonth() + 1).padStart(2, '0');
 
     const countQuery = `SELECT COUNT(*) AS count FROM projects WHERE YEAR(startDate) = ? AND MONTH(startDate) = ?`;
 
