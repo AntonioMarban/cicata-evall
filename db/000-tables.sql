@@ -224,6 +224,11 @@ CREATE TABLE `budgetTypes` (
   `description` varchar(255)
 );
 
+CREATE TABLE `customDeliverables` (
+  `customDeliverables_id` integer PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(255)
+);
+
 ALTER TABLE `users` ADD FOREIGN KEY (`userType_id`) REFERENCES `userTypes` (`userTypeId`);
 
 ALTER TABLE `committeeUsers` ADD FOREIGN KEY (`committeeId`) REFERENCES `committees` (`committeeId`);
@@ -297,6 +302,10 @@ ALTER TABLE projects
 ADD COLUMN otherCurrentBudget TEXT,
 ADD COLUMN otherInvestmentBudget TEXT;
 
+ALTER TABLE customDeliverables 
+ADD COLUMN quantity INT,
+ADD COLUMN deliverableTypeId INT,
+ADD COLUMN project_id INT;
 
 -- Datos estaticos para la parte superior del formulario
 ALTER TABLE projects

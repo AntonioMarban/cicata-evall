@@ -141,12 +141,18 @@ CREATE PROCEDURE createProject(
     IN p_associatedProjectsJSON JSON,
     IN p_membersJSON JSON,
     IN p_collaborativeInstitutionsJSON JSON,
+    IN p_specificObjectivesJSON JSON,
     IN p_scheduleActivitiesJSON JSON,
     IN p_deliverablesJSON JSON,
     IN p_budgetsJSON JSON,
     IN p_goalsJSON JSON,
     IN p_methodologiesJSON JSON,
     IN p_referencesJSON JSON,
+
+    -- Extras para los entregabels
+    IN p_extras1JSON JSON,
+    IN p_extras2JSON JSON,
+    IN p_extras3JSON JSON,
 
     -- Usuario
     IN p_userId INT
@@ -155,6 +161,13 @@ BEGIN
     DECLARE v_projectId INT;
     DECLARE i INT DEFAULT 0;
     DECLARE total INT;
+    DECLARE v_customId INT;
+    DECLARE j INT DEFAULT 0;
+    DECLARE totalKeys INT;
+    DECLARE keyName VARCHAR(50);
+    DECLARE keyValue VARCHAR(50);
+    DECLARE valuesJSON JSON;
+    DECLARE nameValue VARCHAR(255);
 
     -- Insertar en projects
     INSERT INTO projects (
@@ -232,6 +245,19 @@ BEGIN
             JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].collaborationAgreement'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].agreementType'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].agreementNumber'))),
+            v_projectId
+        );
+        SET i = i + 1;
+    END WHILE;
+
+    -- specificObjectives
+    SET i = 0;
+    SET total = JSON_LENGTH(p_specificObjectivesJSON);
+    WHILE i < total DO
+        INSERT INTO specificObjectives (objectiveName, objectiveDescription, project_id)
+        VALUES (
+            JSON_UNQUOTE(JSON_EXTRACT(p_specificObjectivesJSON, CONCAT('$[', i, '].objectiveName'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_specificObjectivesJSON, CONCAT('$[', i, '].objectiveDescription'))),
             v_projectId
         );
         SET i = i + 1;
@@ -322,6 +348,66 @@ BEGIN
     INSERT INTO usersProjects (user_id, project_id)
     VALUES (p_userId, v_projectId);
 
+    -- EXTRAS 1
+    SET i = 0;
+    WHILE i < JSON_LENGTH(p_extras1JSON) DO
+        SET nameValue = JSON_UNQUOTE(JSON_EXTRACT(p_extras1JSON, CONCAT('$[', i, '].name')));
+        SET valuesJSON = JSON_EXTRACT(p_extras1JSON, CONCAT('$[', i, '].values'));
+
+        IF JSON_VALID(valuesJSON) THEN
+            SET totalKeys = JSON_LENGTH(JSON_KEYS(valuesJSON));
+            SET j = 0;
+            WHILE j < totalKeys DO
+                SET keyName = JSON_UNQUOTE(JSON_EXTRACT(JSON_KEYS(valuesJSON), CONCAT('$[', j, ']')));
+                SET keyValue = JSON_UNQUOTE(JSON_EXTRACT(valuesJSON, CONCAT('$.\"', keyName, '\"')));
+                INSERT INTO customDeliverables (name, quantity, deliverableTypeId, project_id)
+                VALUES (nameValue, keyValue, keyName, v_projectId);
+                SET j = j + 1;
+            END WHILE;
+        END IF;
+        SET i = i + 1;
+    END WHILE;
+
+    -- EXTRAS 2
+    SET i = 0;
+    WHILE i < JSON_LENGTH(p_extras2JSON) DO
+        SET nameValue = JSON_UNQUOTE(JSON_EXTRACT(p_extras2JSON, CONCAT('$[', i, '].name')));
+        SET valuesJSON = JSON_EXTRACT(p_extras2JSON, CONCAT('$[', i, '].values'));
+
+        IF JSON_VALID(valuesJSON) THEN
+            SET totalKeys = JSON_LENGTH(JSON_KEYS(valuesJSON));
+            SET j = 0;
+            WHILE j < totalKeys DO
+                SET keyName = JSON_UNQUOTE(JSON_EXTRACT(JSON_KEYS(valuesJSON), CONCAT('$[', j, ']')));
+                SET keyValue = JSON_UNQUOTE(JSON_EXTRACT(valuesJSON, CONCAT('$.\"', keyName, '\"')));
+                INSERT INTO customDeliverables (name, quantity, deliverableTypeId, project_id)
+                VALUES (nameValue, keyValue, keyName, v_projectId);
+                SET j = j + 1;
+            END WHILE;
+        END IF;
+        SET i = i + 1;
+    END WHILE;
+
+    -- EXTRAS 3
+    SET i = 0;
+    WHILE i < JSON_LENGTH(p_extras3JSON) DO
+        SET nameValue = JSON_UNQUOTE(JSON_EXTRACT(p_extras3JSON, CONCAT('$[', i, '].name')));
+        SET valuesJSON = JSON_EXTRACT(p_extras3JSON, CONCAT('$[', i, '].values'));
+
+        IF JSON_VALID(valuesJSON) THEN
+            SET totalKeys = JSON_LENGTH(JSON_KEYS(valuesJSON));
+            SET j = 0;
+            WHILE j < totalKeys DO
+                SET keyName = JSON_UNQUOTE(JSON_EXTRACT(JSON_KEYS(valuesJSON), CONCAT('$[', j, ']')));
+                SET keyValue = JSON_UNQUOTE(JSON_EXTRACT(valuesJSON, CONCAT('$.\"', keyName, '\"')));
+                INSERT INTO customDeliverables (name, quantity, deliverableTypeId, project_id)
+                VALUES (nameValue, keyValue, keyName, v_projectId);
+                SET j = j + 1;
+            END WHILE;
+        END IF;
+        SET i = i + 1;
+    END WHILE;  
+
     SELECT v_projectId AS projectId;
 END //
 DELIMITER ;
@@ -387,6 +473,12 @@ BEGIN
     FROM collaborativeInstitutions
     WHERE project_id = p_projectId;
 
+    -- specificObjectives
+    SELECT
+        objectiveName, objectiveDescription 
+    FROM specificObjectives
+    WHERE project_id = p_projectId;
+
     -- scheduleActivities
     SELECT
         goal, institution, responsibleMember,
@@ -405,6 +497,21 @@ BEGIN
     JOIN deliverables d ON dp.deliverableId = d.deliverableId
     JOIN deliverableTypes dt ON dp.deliverableTypeId = dt.deliverableTypeId
     WHERE dp.projectId = p_projectId;
+
+    -- EXTRAS 1
+    SELECT name, quantity, deliverableTypeId
+    FROM customDeliverables
+    WHERE project_id = p_projectId AND deliverableTypeId IN (1, 2, 3); -- educativo
+
+    -- EXTRAS 2
+    SELECT name, quantity, deliverableTypeId
+    FROM customDeliverables
+    WHERE project_id = p_projectId AND deliverableTypeId IN (4, 5); -- difusión
+
+    -- EXTRAS 3
+    SELECT name, quantity, deliverableTypeId
+    FROM customDeliverables
+    WHERE project_id = p_projectId AND deliverableTypeId IN (6, 7); -- tecnológico
 
     -- budgets
     SELECT
@@ -470,6 +577,263 @@ BEGIN
       AND e.project_id = p_projectId
       AND e.comments IS NOT NULL
     GROUP BY c.name, e.comments;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE updateFullProject(
+    IN p_projectId INT,
+
+    -- Campos del proyecto
+    IN p_title VARCHAR(100),
+    IN p_startDate DATE,
+    IN p_endDate DATE,
+    IN p_typeResearch VARCHAR(50),
+    IN p_topic VARCHAR(50),
+    IN p_subtopic VARCHAR(50),
+    IN p_alignmentPNIorODS TEXT,
+    IN p_summary TEXT,
+    IN p_introduction TEXT,
+    IN p_background TEXT,
+    IN p_statementOfProblem TEXT,
+    IN p_justification TEXT,
+    IN p_hypothesis TEXT,
+    IN p_generalObjective TEXT,
+    IN p_ethicalAspects TEXT,
+    IN p_workWithHumans BOOL,
+    IN p_workWithAnimals BOOL,
+    IN p_biosecurityConsiderations TEXT,
+    IN p_contributionsToIPNandCICATA TEXT,
+    IN p_conflictOfInterest TEXT,
+    IN p_aditionalComments TEXT,
+    IN p_folio VARCHAR(50),
+    IN p_otherTypeResearch VARCHAR(100),
+    IN p_alignsWithPNIorODS BOOLEAN,
+    IN p_hasCollaboration BOOLEAN,
+    IN p_collaborationJustification TEXT,
+    IN p_otherEducationalDeliverable TEXT,
+    IN p_otherDiffusionDeliverable TEXT,
+    IN p_otherCurrentBudget TEXT,
+    IN p_otherInvestmentBudget TEXT,
+
+    -- Arreglos
+    IN p_associatedProjectsJSON JSON,
+    IN p_membersJSON JSON,
+    IN p_collaborativeInstitutionsJSON JSON,
+    IN p_scheduleActivitiesJSON JSON,
+    IN p_deliverablesJSON JSON,
+    IN p_budgetsJSON JSON,
+    IN p_goalsJSON JSON,
+    IN p_methodologiesJSON JSON,
+    IN p_referencesJSON JSON
+)
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE total INT;
+
+    -- Actualizar solo campos provistos
+    UPDATE projects
+    SET 
+        title = IFNULL(p_title, title),
+        startDate = IFNULL(p_startDate, startDate),
+        endDate = IFNULL(p_endDate, endDate),
+        typeResearch = IFNULL(p_typeResearch, typeResearch),
+        topic = IFNULL(p_topic, topic),
+        subtopic = IFNULL(p_subtopic, subtopic),
+        alignmentPNIorODS = IFNULL(p_alignmentPNIorODS, alignmentPNIorODS),
+        summary = IFNULL(p_summary, summary),
+        introduction = IFNULL(p_introduction, introduction),
+        background = IFNULL(p_background, background),
+        statementOfProblem = IFNULL(p_statementOfProblem, statementOfProblem),
+        justification = IFNULL(p_justification, justification),
+        hypothesis = IFNULL(p_hypothesis, hypothesis),
+        generalObjective = IFNULL(p_generalObjective, generalObjective),
+        ethicalAspects = IFNULL(p_ethicalAspects, ethicalAspects),
+        workWithHumans = IFNULL(p_workWithHumans, workWithHumans),
+        workWithAnimals = IFNULL(p_workWithAnimals, workWithAnimals),
+        biosecurityConsiderations = IFNULL(p_biosecurityConsiderations, biosecurityConsiderations),
+        contributionsToIPNandCICATA = IFNULL(p_contributionsToIPNandCICATA, contributionsToIPNandCICATA),
+        conflictOfInterest = IFNULL(p_conflictOfInterest, conflictOfInterest),
+        aditionalComments = IFNULL(p_aditionalComments, aditionalComments),
+        folio = IFNULL(p_folio, folio),
+        otherTypeResearch = IFNULL(p_otherTypeResearch, otherTypeResearch),
+        alignsWithPNIorODS = IFNULL(p_alignsWithPNIorODS, alignsWithPNIorODS),
+        hasCollaboration = IFNULL(p_hasCollaboration, hasCollaboration),
+        collaborationJustification = IFNULL(p_collaborationJustification, collaborationJustification),
+        otherEducationalDeliverable = IFNULL(p_otherEducationalDeliverable, otherEducationalDeliverable),
+        otherDiffusionDeliverable = IFNULL(p_otherDiffusionDeliverable, otherDiffusionDeliverable),
+        otherCurrentBudget = IFNULL(p_otherCurrentBudget, otherCurrentBudget),
+        otherInvestmentBudget = IFNULL(p_otherInvestmentBudget, otherInvestmentBudget)
+    WHERE projectId = p_projectId;
+
+    -- Reemplazar secciones si son enviadas
+
+    IF p_associatedProjectsJSON IS NOT NULL THEN
+        DELETE FROM associatedProjects WHERE project_id = p_projectId;
+        SET i = 0; SET total = JSON_LENGTH(p_associatedProjectsJSON);
+        WHILE i < total DO
+            INSERT INTO associatedProjects (name, associationDate, project_type, externalRegister, SIPRegister, project_id)
+            VALUES (
+                JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].name'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].associationDate'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].project_type'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].externalRegister'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_associatedProjectsJSON, CONCAT('$[', i, '].SIPRegister'))),
+                p_projectId
+            );
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+
+    -- members
+    SET i = 0;
+    IF p_membersJSON IS NOT NULL THEN
+        DELETE FROM members WHERE project_id = p_projectId;
+        SET total = JSON_LENGTH(p_membersJSON);
+        WHILE i < total DO
+            INSERT INTO members (
+                fName, lastName1, lastName2, email, phone, institution, positionWork, researchNetwork, researchNetworkName,
+                academicDegree, levelName, levelNum, tutorName, project_id
+            )
+            VALUES (
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].fName'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].lastName1'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].lastName2'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].email'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].phone'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].institution'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].positionWork'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetwork'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetworkName'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].academicDegree'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelName'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNum'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].tutorName'))),
+                p_projectId
+            );
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+
+    -- collaborativeInstitutions
+    SET i = 0;
+    IF p_collaborativeInstitutionsJSON IS NOT NULL THEN
+        DELETE FROM collaborativeInstitutions WHERE project_id = p_projectId;
+        SET total = JSON_LENGTH(p_collaborativeInstitutionsJSON);
+        WHILE i < total DO
+            INSERT INTO collaborativeInstitutions (name, partOfIPN, collaborationAgreement, agreementType, agreementNumber, project_id)
+            VALUES (
+                JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].name'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].partOfIPN'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].collaborationAgreement'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].agreementType'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_collaborativeInstitutionsJSON, CONCAT('$[', i, '].agreementNumber'))),
+                p_projectId
+            );
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+
+    -- scheduleActivities
+    SET i = 0;
+    IF p_scheduleActivitiesJSON IS NOT NULL THEN
+        DELETE FROM scheduleActivities WHERE project_id = p_projectId;
+        SET total = JSON_LENGTH(p_scheduleActivitiesJSON);
+        WHILE i < total DO
+            INSERT INTO scheduleActivities (goal, institution, responsibleMember, startDate, endDate, project_id)
+            VALUES (
+                JSON_UNQUOTE(JSON_EXTRACT(p_scheduleActivitiesJSON, CONCAT('$[', i, '].goal'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_scheduleActivitiesJSON, CONCAT('$[', i, '].institution'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_scheduleActivitiesJSON, CONCAT('$[', i, '].responsibleMember'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_scheduleActivitiesJSON, CONCAT('$[', i, '].startDate'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_scheduleActivitiesJSON, CONCAT('$[', i, '].endDate'))),
+                p_projectId
+            );
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+
+    -- deliverables
+    SET i = 0;
+    IF p_deliverablesJSON IS NOT NULL THEN
+        DELETE FROM deliverablesProjects WHERE projectId = p_projectId;
+        SET total = JSON_LENGTH(p_deliverablesJSON);
+        WHILE i < total DO
+            INSERT INTO deliverablesProjects (quantity, projectId, deliverableId, deliverableTypeId)
+            VALUES (
+                JSON_UNQUOTE(JSON_EXTRACT(p_deliverablesJSON, CONCAT('$[', i, '].quantity'))),
+                p_projectId,
+                JSON_UNQUOTE(JSON_EXTRACT(p_deliverablesJSON, CONCAT('$[', i, '].deliverableId'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_deliverablesJSON, CONCAT('$[', i, '].deliverableTypeId')))
+            );
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+
+    -- budgets
+    SET i = 0;
+    IF p_budgetsJSON IS NOT NULL THEN
+        DELETE FROM budgets WHERE project_id = p_projectId;
+        SET total = JSON_LENGTH(p_budgetsJSON);
+        WHILE i < total DO
+            INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id, budgetTypeId)
+            VALUES (
+                JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].investmentExpenditure'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].name'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].expenditure'))),
+                p_projectId,
+                JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetTypeId')))
+            );
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+
+    -- goals
+    SET i = 0;
+    IF p_goalsJSON IS NOT NULL THEN
+        DELETE FROM goals WHERE project_id = p_projectId;
+        SET total = JSON_LENGTH(p_goalsJSON);
+        WHILE i < total DO
+            INSERT INTO goals (goal, project_id)
+            VALUES (
+                JSON_UNQUOTE(JSON_EXTRACT(p_goalsJSON, CONCAT('$[', i, '].goal'))),
+                p_projectId
+            );
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+
+    -- methodologies
+    SET i = 0;
+    IF p_methodologiesJSON IS NOT NULL THEN
+        DELETE FROM methodologies WHERE project_id = p_projectId;
+        SET total = JSON_LENGTH(p_methodologiesJSON);
+        WHILE i < total DO
+            INSERT INTO methodologies (methodology, project_id)
+            VALUES (
+                JSON_UNQUOTE(JSON_EXTRACT(p_methodologiesJSON, CONCAT('$[', i, '].methodology'))),
+                p_projectId
+            );
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+
+    -- references
+    SET i = 0;
+    IF p_referencesJSON IS NOT NULL THEN
+        DELETE FROM p_references WHERE project_id = p_projectId;
+        SET total = JSON_LENGTH(p_referencesJSON);
+        WHILE i < total DO
+            INSERT INTO p_references (reference, project_id)
+            VALUES (
+                JSON_UNQUOTE(JSON_EXTRACT(p_referencesJSON, CONCAT('$[', i, '].reference'))),
+                p_projectId
+            );
+            SET i = i + 1;
+        END WHILE;
+    END IF;
+
+    SELECT 'Proyecto actualizado correctamente' AS message;
 END //
 DELIMITER ;
 

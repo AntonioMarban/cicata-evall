@@ -39,12 +39,17 @@ const createProject = async (req, res) => {
         associatedProjects,
         members,
         collaborativeInstitutions,
+        specificObjectives,
         scheduleActivities,
         deliverables,
         budgets, 
         goals,
         methodologies,
         references,
+        extras1, 
+        extras2, 
+        extras3,
+
 
         // Usuario
         userId 
@@ -54,12 +59,17 @@ const createProject = async (req, res) => {
     const associatedProjectsJSON = JSON.stringify(associatedProjects);
     const membersJSON = JSON.stringify(members);
     const collaborativeInstitutionsJSON = JSON.stringify(collaborativeInstitutions);
+    const specificObjectivesJSON = JSON.stringify(specificObjectives);
     const scheduleActivitiesJSON = JSON.stringify(scheduleActivities);
     const deliverablesJSON = JSON.stringify(deliverables);
     const budgetsJSON = JSON.stringify(budgets); 
     const goalsJSON = JSON.stringify(goals);
     const methodologiesJSON = JSON.stringify(methodologies);
     const referencesJSON = JSON.stringify(references);
+    const extras1JSON = JSON.stringify(extras1);
+    const extras2JSON = JSON.stringify(extras2);
+    const extras3JSON = JSON.stringify(extras3);
+
 
     const projectStartDate = new Date(startDate);
     const year = projectStartDate.getFullYear();
@@ -77,7 +87,7 @@ const createProject = async (req, res) => {
         const consecutivo = String(count).padStart(4, '0');
         const folio = `CICATAMOR/SICIT/${year}/${month}/${consecutivo}`;
 
-        const query = `CALL createProject(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+        const query = `CALL createProject(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
         const values = [
             // Proyecto
@@ -92,12 +102,16 @@ const createProject = async (req, res) => {
             associatedProjectsJSON,
             membersJSON,
             collaborativeInstitutionsJSON,
+            specificObjectivesJSON,
             scheduleActivitiesJSON,
             deliverablesJSON,
             budgetsJSON,
             goalsJSON,
             methodologiesJSON,
             referencesJSON,
+            extras1JSON,
+            extras2JSON,
+            extras3JSON,
 
             // Usuario
             userId
@@ -136,83 +150,6 @@ const uploadDocuments = (req, res) => {
     });
 
     res.status(200).json({ message: 'Documents uploaded successfully' });
-};
-
-const groupDeliverables = (deliverables) => {
-    const educativos = [
-        'Tesis (Alumnos titulados)', 'Practicantes profesionales', 'Alumnos PIFI',
-        'Prestante de servicio social', 'Otro (especificar)'
-    ];
-
-    const difusion = [
-        'Artículo de divulgación', 'Congresos', 'Cursos', 'Libros',
-        'Conferencias o ponencias', 'Artículo científico', 'Seminarios',
-        'Manuales', 'Programas de Radio y/o TV', 'Otro, especificar'
-    ];
-
-    const tecnologicos = [
-        'Patente', 'Hardware', 'Prototipo', 'Certificado de invención',
-        'Software', 'Otro (especificar)'
-    ];
-
-    const grouped = {
-        educativos: [],
-        difusion: [],
-        tecnologicos: []
-    };
-
-    deliverables.forEach(item => {
-        if (educativos.includes(item.name)) {
-        grouped.educativos.push(item);
-        } else if (difusion.includes(item.name)) {
-        grouped.difusion.push(item);
-        } else if (tecnologicos.includes(item.name)) {
-        grouped.tecnologicos.push(item);
-        }
-    });
-
-    return grouped;
-};
-
-const getProjectDetails = (req, res) => {
-    const projectId = req.params.projectId;
-    const query = 'CALL getProjectDetails(?)';
-
-    pool.query(query, [projectId], (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Error fetching project details' });
-        }
-
-        const [
-            projectInfo,
-            associatedProjects,
-            members,
-            collaborativeInstitutions,
-            scheduleActivities,
-            deliverables,
-            budgets,
-            goals,
-            methodologies,
-            references,
-            investigator
-        ] = results;
-        
-        // todo se obtiene como arreglos de objetos(esto de los arreglos le ahorraba tiempo a Gordinho)
-        res.status(200).json({
-            project: projectInfo.length > 0 ? [projectInfo[0]] : [], // meto el objeto dentro de un arreglo
-            associatedProjects: associatedProjects || [],
-            members: members || [],
-            collaborativeInstitutions: collaborativeInstitutions || [],
-            scheduleActivities: scheduleActivities || [],
-            deliverables: groupDeliverables(deliverables) || [],
-            budgets: budgets || [],
-            goals: goals || [],
-            methodologies: methodologies || [],
-            references: references || [],
-            investigator: investigator.length > 0 ? investigator[0] : null
-        });
-    });
 };
 
 const getProjectDocuments = (req, res) => {
@@ -255,4 +192,86 @@ const getCommitteeComments = (req, res) => {
 };
 
 
-module.exports = { getActiveProjects, getInactiveProjects, createProject, uploadDocuments, getProjectDetails, getProjectDocuments, getCommitteeComments }
+const updateProject = (req, res) => {
+  const projectId = req.params.projectId;
+  const {
+    // Datos principales
+    title, startDate, endDate, typeResearch, otherTypeResearch, topic, subtopic, alignmentPNIorODS,
+    alignsWithPNIorODS, summary, introduction, background, statementOfProblem,
+    justification, hypothesis, generalObjective, ethicalAspects, workWithHumans,
+    workWithAnimals, biosecurityConsiderations, contributionsToIPNandCICATA,
+    conflictOfInterest, aditionalComments, folio, hasCollaboration,
+    collaborationJustification, otherEducationalDeliverable, otherDiffusionDeliverable,
+    otherCurrentBudget, otherInvestmentBudget,
+
+    // Arreglos (pueden ser nulos)
+    associatedProjects = null,
+    members = null,
+    collaborativeInstitutions = null,
+    scheduleActivities = null,
+    deliverables = null,
+    budgets = null,
+    goals = null,
+    methodologies = null,
+    references = null
+  } = req.body;
+
+  const sql = `CALL updateFullProject(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  const values = [
+    projectId,
+    title,
+    startDate,
+    endDate,
+    typeResearch,
+    topic,
+    subtopic,
+    alignmentPNIorODS,
+    summary,
+    introduction,
+    background,
+    statementOfProblem,
+    justification,
+    hypothesis,
+    generalObjective,
+    ethicalAspects,
+    workWithHumans,
+    workWithAnimals,
+    biosecurityConsiderations,
+    contributionsToIPNandCICATA,
+    conflictOfInterest,
+    aditionalComments,
+    folio,
+    otherTypeResearch,               
+    alignsWithPNIorODS,
+    hasCollaboration,
+    collaborationJustification,
+    otherEducationalDeliverable,
+    otherDiffusionDeliverable,
+    otherCurrentBudget,
+    otherInvestmentBudget,
+
+    // Los JSON deben convertirse a strings
+    associatedProjects ? JSON.stringify(associatedProjects) : null,
+    members ? JSON.stringify(members) : null,
+    collaborativeInstitutions ? JSON.stringify(collaborativeInstitutions) : null,
+    scheduleActivities ? JSON.stringify(scheduleActivities) : null,
+    deliverables ? JSON.stringify(deliverables) : null,
+    budgets ? JSON.stringify(budgets) : null,
+    goals ? JSON.stringify(goals) : null,
+    methodologies ? JSON.stringify(methodologies) : null,
+    references ? JSON.stringify(references) : null
+  ];
+
+  pool.query(sql, values, (err, results) => {
+    if (err) {
+      console.error('❌ Error al actualizar el proyecto:', err);
+      return res.status(500).json({ error: 'Error al actualizar el proyecto' });
+    }
+    return res.status(200).json({ message: '✅ Proyecto actualizado correctamente' });
+  });
+};
+
+
+module.exports = { getActiveProjects, getInactiveProjects, createProject, uploadDocuments, 
+                 getProjectDocuments, getCommitteeComments, updateProject }
