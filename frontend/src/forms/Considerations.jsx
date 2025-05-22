@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useFormHandler } from "../hooks/useFormHandler";
 import useLoadFormData from "../hooks/useLoadFormData";
-import { prevOption } from "../hooks/optionUtils";
+import useSubmitFormBack from "../hooks/useSubmitFormBack";
+import useSubmitFormNext from "../hooks/useSubmitFormNext";
 
 const  Considerations = ({option,setOption}) => {
     const [considerationsBio, setConsiderationsBio] = useState(
@@ -16,13 +16,11 @@ const  Considerations = ({option,setOption}) => {
         setConsiderationsBio({ ...considerationsBio, [name]: value });
     };
     
-    useLoadFormData(considerationsBio.idF,setConsiderationsBio);
 
-    const handleOnSubmitForm = useFormHandler({
-        form: considerationsBio,
-        onSuccess: ()=> setOption(prevOption => prevOption + 1),
-    });
-
+    
+    const handleOnSubmitFormBack = useSubmitFormBack(considerationsBio, setOption);
+    const handleOnSubmitFormNext = useSubmitFormNext(considerationsBio, setOption);
+    
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
         const newErrorsDF = {}
@@ -32,10 +30,11 @@ const  Considerations = ({option,setOption}) => {
         }
         setNewErrorsD(newErrorsDF)
         if(!Object.keys(newErrorsDF).length>0){
-            handleOnSubmitForm(event)
+            handleOnSubmitFormNext(event)
         }
     }
-
+    
+    useLoadFormData(considerationsBio.idF,setConsiderationsBio);
     return (
         <div>
             <div className="flex flex-col justify-between h-[59vh]">
@@ -51,7 +50,9 @@ const  Considerations = ({option,setOption}) => {
                                 del proyecto) <br/> 
                                 {newErrorsD.biosecurityConsiderations && <span className="text-red-600">*{newErrorsD.biosecurityConsiderations}</span>}</p>
                             <textarea  
-                                className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
+                                className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] 
+                                hover:border-[#5CB7E6] transition-colors duration-300
+                                flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
                                 name="biosecurityConsiderations" 
                                 value={considerationsBio.biosecurityConsiderations}
                                 onChange={handleChange}
@@ -61,8 +62,12 @@ const  Considerations = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
-                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleSubmitWithValidation}>Siguiente</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>
     )

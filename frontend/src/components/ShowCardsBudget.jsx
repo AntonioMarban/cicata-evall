@@ -5,7 +5,6 @@ const ShowCardsBudget = ({cards, slice,handleDeleteFile,handleEditModal,nameArra
     const onClick = (index, card,setData) =>{
         handleEditModal(index, card,setData);
     }
-    console.log("cards",cards)
     return (
     <div className="rounded-lg !p-0 w-full">
         <div  className="rounded-lg !p-0 w-full border-2 border-gray-300">
@@ -13,13 +12,13 @@ const ShowCardsBudget = ({cards, slice,handleDeleteFile,handleEditModal,nameArra
             <div className="!p-2 m-5 flex justify-between items-center w-full" key={index}>
                 <p className="flex-1">{card.nameType}</p>
 
-                <p className="flex-1 overflow-auto whitespace-nowrap px-2 rounded">
+                <p className="flex-1">
                     {card.name}
                 </p>
 
                 <p className="flex-1 flex justify-end">{card.expenditure}</p>
 
-                <div className="flex-1 flex items-center justify-end gap-2">
+                <div className="flex-1  flex items-center justify-end gap-2">
                     <button 
                         className="cursor-pointer px-3 py-1 text-black rounded hover:bg-blue-200" 
                         type="button" 

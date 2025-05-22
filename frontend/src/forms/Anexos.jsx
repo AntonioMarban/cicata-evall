@@ -1,17 +1,14 @@
 import { useState, useEffect } from "react";
 import { updateForm,getAllData } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
-import { prevOption } from "../hooks/optionUtils";
 import DragDrop from "../components/DragDrop";
 import { useNavigate  } from 'react-router-dom'
+import useSubmitFormBack from "../hooks/useSubmitFormBack";
 
 const  Anexos = ({option,setOption}) => {
     const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
     
-    const [filesForms, setFilesForms] = useState([]);
-
-
     const [filesSend,setFilesSend] = useState([]);
     const [anexos, setAnexos] = useState({   
         idF: 14,
@@ -21,6 +18,8 @@ const  Anexos = ({option,setOption}) => {
     const [newErrors,setNewErrors] = useState({
         aditionalComments:""
     });
+    const handleOnSubmitFormBack = useSubmitFormBack(anexos, setOption);
+
     const handleOnSubmit = async (event) => {
         event.preventDefault();
         
@@ -171,14 +170,20 @@ const  Anexos = ({option,setOption}) => {
                     <div className="flex flex-wrap">
                         <div className="flex-1">
                             <textarea  
-                            className="w-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
+                            className="w-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start 
+                            hover:border-[#5CB7E6] transition-colors duration-300
+                            items-start text-gray-600 mt-3 min-w-[250px]"
                             name="aditionalComments" 
                             value={anexos.aditionalComments}
                             onChange={handleChange}
                             placeholder="Escribe los comentarios adicionales..."></textarea>
                             <div className="!mt-5 w-1/2">
                                 <p className="text-[18px] !mb-5">Agregar archivos anexos al proyecto</p>
-                                <DragDrop setFilesSend={setFilesSend} filesSend={filesSend} />
+                                                        <DragDrop 
+                                                            setFilesSend={setFilesSend} 
+                                                            filesSend={filesSend} 
+                                                            tagType="Anexos"
+                                                        />
                                 {anexos.afilesSend.length > 0 && (
                                     <div className="!p-0 w-full  h-1/3 overflow-y-auto flex flex-col justify-center items-center rounded-[30px]">
                                     <ul className="!p-2 text-sm text-gray-800  w-[80%]">
@@ -197,8 +202,12 @@ const  Anexos = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center !mt-5 !mb-5">
-                <button className="!p-2 !mr-5 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleSubmitWithValidation}>Enviar formulario</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleSubmitWithValidation}>Enviar formulario</button>
             </div>
         </form>
     )

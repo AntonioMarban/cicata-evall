@@ -19,7 +19,6 @@ const ViewCompleteForms = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
     const [completeForm, setCompleteForm] = useState(null);
     const [files, setFiles] = useState([]);
-    console.log(completeForm)
     const fetchData = (url,setData) =>{
         fetch(url,{
             method: "GET",
@@ -58,7 +57,6 @@ const ViewCompleteForms = () => {
 
 
 
-    console.log("todo",completeForm)
     return (
     <div className='fullTable-background'>
         <div className='div-button'>

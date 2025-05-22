@@ -1,19 +1,17 @@
-import { useFormHandler } from "../hooks/useFormHandler";
 import AddActividades from "../components/AddActivities";
-import { prevOption } from "../hooks/optionUtils";
 import useLoadFormData from "../hooks/useLoadFormData";
-import ShowCards from "../components/ShowCards";
+import ShowCards from "../components/ShowCards.jsx";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
-
 import { useState } from "react";
+import useSubmitFormBack from "../hooks/useSubmitFormBack";
+import useSubmitFormNext from "../hooks/useSubmitFormNext";
+
 const  Activities = ({option,setOption}) => {
     const [activities, setActivities] = useState({ idF: 9, scheduleActivities: [] });
     const [activitiesToEdit, setActivitiesToEdit] = useState(null);
 
-    const handleOnSubmitForm = useFormHandler({
-        form: activities,
-        onSuccess: ()=> setOption(prevOption => prevOption + 1),
-    });
+    const handleOnSubmitFormBack = useSubmitFormBack(activities, setOption);
+    const handleOnSubmitFormNext = useSubmitFormNext(activities, setOption);
 
     const handleDeleteArray = (index) => {
         setActivities({
@@ -29,7 +27,6 @@ const  Activities = ({option,setOption}) => {
     const handleEditComplete = () => {
         setActivitiesToEdit(null);
     };
-
 
     useLoadFormData(activities.idF,setActivities);
 
@@ -64,8 +61,12 @@ const  Activities = ({option,setOption}) => {
                 </div>
             </div>
             <div className="flex justify-end items-center mt-5 mb-5">
-                <button className="!p-2 !mr-5 ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" type="button"  onClick={() => prevOption(setOption)}>Regresar</button>
-                <button className="!p-2 !ml-8 text-[20px] rounded-lg border-none bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md" onClick={handleOnSubmitForm}>Siguiente</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
+                <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
+                bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
+                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleOnSubmitFormNext}>Siguiente</button>
             </div>
         </div>
     )
