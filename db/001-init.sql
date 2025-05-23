@@ -2405,7 +2405,7 @@ CREATE PROCEDURE getResultThirdStage(
 )
 BEGIN
     DECLARE sendingPending BOOLEAN DEFAULT FALSE;
-
+    DECLARE createDictum BOOLEAN DEFAULT FALSE;
     DECLARE v_result VARCHAR(50);
     DECLARE found INTEGER DEFAULT 1;
     DECLARE resultCursor CURSOR FOR
@@ -2432,7 +2432,14 @@ BEGIN
     THEN
         SET sendingPending = TRUE;
     END IF;
-    SELECT @finalResult, sendingPending;
+    IF (
+        (@finalResult = 'Aprobado' or @finalResult = 'No aprobado') 
+        AND (SELECT COUNT(*) FROM dictums WHERE project_id = p_projectId) = 0
+    )
+    THEN
+        SET createDictum = TRUE;
+    END IF;
+    SELECT @finalResult, sendingPending, createDictum;
 END //
 DELIMITER ;
 
