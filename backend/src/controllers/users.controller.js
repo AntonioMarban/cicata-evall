@@ -105,7 +105,7 @@ const groupDeliverables = (deliverables) => {
         'Manuales', 'Programas de Radio y/o TV', 'Otro, especificar'
     ];
     const deliverables3 = [
-        'Proceso','Patente', 'Hardware', 'Prototipo', 'Certificado de invención',
+        'Proceso','Patente', 'Hardware', 'Prototipo', 'Certificado de inversión',
         'Software', 'Otro (especificar)'
     ];
 
