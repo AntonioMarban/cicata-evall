@@ -1,4 +1,4 @@
-const pool = require('../helpers/mysql_config'); 
+const pool = require('../helpers/mysql_config');
 
 /*
     Función para obtener la firma del acuerdo de un proyecto de un usuario que sea evaluador
@@ -10,27 +10,27 @@ const pool = require('../helpers/mysql_config');
 */
 const getAgreementSignature = (req, res) => {
     const { userId, projectId } = req.params;
-  
+
     const sql = `CALL getAgreementSignature(?, ?)`;
-    const values = [ userId, projectId];
+    const values = [userId, projectId];
     pool.query(sql, values, (err, results) => {
-      if (err) {
-        console.error("Error obtaining agreement signature:", err);
-        return res
-          .status(400)
-          .json({ error: "Invalid query parameters" });
-      }
-      if (results.length === 0) {
-        return res
-          .status(404)
-          .json({
-            error: "Resource does not exist",
-          });
-      }
-      return res.status(200).json(results[0]);
+        if (err) {
+            console.error("Error obtaining agreement signature:", err);
+            return res
+                .status(400)
+                .json({ error: "Invalid query parameters" });
+        }
+        if (results.length === 0) {
+            return res
+                .status(404)
+                .json({
+                    error: "Resource does not exist",
+                });
+        }
+        return res.status(200).json(results[0]);
     });
-  };
-  
+};
+
 /*
     Función para firmar el acuerdo de un proyecto de cualquier usuario que sea evaluador
     Se hace uso de un procedimiento almacena updateAgreementSignature
@@ -41,28 +41,28 @@ const getAgreementSignature = (req, res) => {
 const updateAgreementSignature = (req, res) => {
     const { email, password } = req.body;
     const { userId, projectId } = req.params;
-  
+
     const sql = `CALL updateAgreementSignature(?, ?, ?, ?)`;
-    const values = [ userId, projectId, email, password];
+    const values = [userId, projectId, email, password];
     pool.query(sql, values, (err, results) => {
-      if (err) {
-        console.error("Error updating agreement signature:", err);
+        if (err) {
+            console.error("Error updating agreement signature:", err);
+            return res
+                .status(400)
+                .json({ error: "Invalid credentials" });
+        }
+        if (results.length === 0) {
+            return res
+                .status(404)
+                .json({
+                    error: "Resource does not exist",
+                });
+        }
         return res
-          .status(400)
-          .json({ error: "Invalid credentials" });
-      }
-      if (results.length === 0) {
-        return res
-          .status(404)
-          .json({
-            error: "Resource does not exist",
-          });
-      }
-      return res
-        .status(200)
-        .json({ message: "Agreement signed" });
+            .status(200)
+            .json({ message: "Agreement signed" });
     });
-  };
+};
 
 /* 
   Función para obtener datos resumen de un proyecto
@@ -72,26 +72,26 @@ const updateAgreementSignature = (req, res) => {
 */
 const getProjectSummary = (req, res) => {
     const { projectId } = req.params;
-  
+
     const sql = `CALL getProjectSummary(?)`;
-    const values = [ projectId];
+    const values = [projectId];
     pool.query(sql, values, (err, results) => {
-      if (err) {
-        console.error("Error obtaining project summary:", err);
-        return res
-          .status(400)
-          .json({ error: "Invalid query parameters" });
-      }
-      if (results.length === 0) {
-        return res
-          .status(404)
-          .json({
-            error: "Resource does not exist",
-          });
-      }
-      return res.status(200).json(results[0]);
+        if (err) {
+            console.error("Error obtaining project summary:", err);
+            return res
+                .status(400)
+                .json({ error: "Invalid query parameters" });
+        }
+        if (results.length === 0) {
+            return res
+                .status(404)
+                .json({
+                    error: "Resource does not exist",
+                });
+        }
+        return res.status(200).json(results[0]);
     });
-  }
+}
 
 
 const groupDeliverables = (deliverables) => {
@@ -118,8 +118,8 @@ const groupDeliverables = (deliverables) => {
     deliverables.forEach(item => {
         const group =
             educativos.includes(item.name) ? 'educativos' :
-            difusion.includes(item.name) ? 'difusion' :
-            tecnologicos.includes(item.name) ? 'tecnologicos' : null;
+                difusion.includes(item.name) ? 'difusion' :
+                    tecnologicos.includes(item.name) ? 'tecnologicos' : null;
 
         if (!group) return;
 
@@ -152,7 +152,7 @@ const groupDeliverables = (deliverables) => {
 const getDictum = (req, res) => {
     const { projectId } = req.params;
     const sql = `CALL getDictum(?)`;
-    const values = [ projectId];
+    const values = [projectId];
     pool.query(sql, values, (err, results) => {
         if (err) {
             console.error("Error obtaining project dictum:", err);
@@ -198,6 +198,63 @@ const groupExtras = (extras) => {
     return Array.from(map.values());
 };
 
+const groupBudgets = (budgets) => {
+    const grouped = {
+        gastoInversion: [],
+        gastoCorriente: [],
+        internas: [],
+        externas: []
+    };
+
+    // Mapear cada tipo de budgetTypeId a su categoría
+    const typeMap = {
+        // Gasto de Inversión
+        1: 'gastoInversion',
+        2: 'gastoInversion',
+        3: 'gastoInversion',
+        4: 'gastoInversion',
+
+        // Gasto Corriente
+        5: 'gastoCorriente',
+        6: 'gastoCorriente',
+        7: 'gastoCorriente',
+        8: 'gastoCorriente',
+        9: 'gastoCorriente',
+        10: 'gastoCorriente',
+        11: 'gastoCorriente',
+        12: 'gastoCorriente',
+        13: 'gastoCorriente',
+        14: 'gastoCorriente',
+        15: 'gastoCorriente',
+        16: 'gastoCorriente',
+
+        // Internas
+        17: 'internas',
+        18: 'internas',
+        19: 'internas',
+        20: 'internas',
+        21: 'internas',
+        22: 'internas',
+
+        // Externas
+        23: 'externas'
+    };
+
+    budgets.forEach(budget => {
+        const groupKey = typeMap[budget.budgetTypeId];
+        if (!groupKey) return;
+
+        grouped[groupKey].push({
+            budgetTypeId: budget.budgetTypeId,
+            name: budget.type_name || '',
+            expenditure: budget.expenditure,
+            budgetDate: budget.budgetDate ? new Date(budget.budgetDate).toISOString().split('T')[0] : ''
+        });
+    });
+
+    return grouped;
+};
+
 const getProjectDetails = (req, res) => {
     const projectId = req.params.projectId;
     const query = 'CALL getProjectDetails(?)';
@@ -225,7 +282,7 @@ const getProjectDetails = (req, res) => {
             references,
             investigator
         ] = results;
-        
+
         // todo se obtiene como arreglos de objetos(esto de los arreglos le ahorraba tiempo a Gordinho)
         const grouped = groupDeliverables(deliverables || []);
         const response = {
@@ -300,7 +357,7 @@ const getProjectDetails = (req, res) => {
             },
             idf31: {
                 idF: 31,
-                budgets: budgets || []
+                budgets: groupBudgets(budgets || [])
             },
             idf32: {
                 idF: 32,
@@ -327,8 +384,8 @@ const getProjectDetails = (req, res) => {
         res.status(200).json(response);
     });
 };
-  
-  
+
+
 module.exports = {
     updateAgreementSignature,
     getAgreementSignature,

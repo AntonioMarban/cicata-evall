@@ -338,13 +338,14 @@ BEGIN
     SET i = 0;
     SET total = JSON_LENGTH(p_budgetsJSON);
     WHILE i < total DO
-        INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id, budgetTypeId)
+        INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id, budgetTypeId, budgetDate)
         VALUES (
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].idType'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].idName'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].expenditure'))),
             v_projectId,
-            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetTypeId')))
+            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetTypeId'))),
+            STR_TO_DATE(JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetDate'))), '%Y-%m-%d')
         );
         SET i = i + 1;
     END WHILE;

@@ -129,6 +129,7 @@ CREATE TABLE `budgets` (
   `investmentExpenditure` integer,
   `name` varchar(50),
   `expenditure` integer,
+  `budgetDate` date,
   `project_id` integer
 );
 
