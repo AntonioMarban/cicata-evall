@@ -97,15 +97,15 @@ const getProjectSummary = (req, res) => {
 const groupDeliverables = (deliverables) => {
     const deliverables1 = [
         'Tesis (Alumnos titulados)', 'Practicantes profesionales', 'Alumnos PIFI',
-        'Prestante de servicio social', 'Otro (especificar)'
+        'Prestante del servicio social', 'Otro (especificar)'
     ];
     const deliverables2 = [
         'Artículo de divulgación', 'Congresos', 'Cursos', 'Libros',
-        'Conferencias o ponencias', 'Artículo científico', 'Seminarios',
+        'Conferencias o ponencias', 'Artículos científico', 'Seminarios',
         'Manuales', 'Programas de Radio y/o TV', 'Otro, especificar'
     ];
     const deliverables3 = [
-        'Patente', 'Hardware', 'Prototipo', 'Certificado de invención',
+        'Proceso','Patente', 'Hardware', 'Prototipo', 'Certificado de invención',
         'Software', 'Otro (especificar)'
     ];
 
