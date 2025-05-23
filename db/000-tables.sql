@@ -130,6 +130,7 @@ CREATE TABLE `budgets` (
   `name` varchar(50),
   `expenditure` integer,
   `budgetDate` date,
+  `otherName` varchar(50),
   `project_id` integer
 );
 

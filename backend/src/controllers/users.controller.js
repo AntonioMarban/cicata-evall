@@ -249,7 +249,8 @@ const groupBudgets = (budgets) => {
             budgetTypeId: budget.budgetTypeId,
             name: budget.type_name || '',
             expenditure: budget.expenditure,
-            budgetDate: budget.budgetDate ? new Date(budget.budgetDate).toISOString().split('T')[0] : ''
+            budgetDate: budget.budgetDate ? new Date(budget.budgetDate).toISOString().split('T')[0] : '',
+            otherName: budget.otherName || ''
         });
     });
 
