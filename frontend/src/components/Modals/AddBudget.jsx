@@ -216,7 +216,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                     ></input>
                                 </div>
                                 <div>
-                                    {(budgetForm.name.budgetTypeId === 24 || budgetForm.name.budgetTypeId === 4 || budgetForm.name.budgetTypeId === 23) && (
+                                    {(budgetForm.name.budgetTypeId === 16 || budgetForm.name.budgetTypeId === 24 || budgetForm.name.budgetTypeId === 4 || budgetForm.name.budgetTypeId === 23) && (
                                         <div>
                                             <p>Nombre del presupuesto
                                                 <br/>{newErrors.otherName && <span className="text-red-600">*{newErrors.otherName}</span>}
