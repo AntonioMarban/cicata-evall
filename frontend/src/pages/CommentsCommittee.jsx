@@ -310,7 +310,7 @@ const CommentsCommittee = () => {
                 otherName: "23423"
             },
             {
-                convDate: "",
+                budgetDate: "",
                 expenditure: "4234",
                 idName: 2,
                 idType: 1,

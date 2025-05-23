@@ -10,7 +10,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
         name: "",
         expenditure: "",
         otherName: "",
-        convDate: ""
+        budgetDate: ""
     };
     const [typeToShow, setTypeToShow] = useState([]);
     const [budgetForm, setBudgetForm] = useState(initialFormValues)
@@ -56,11 +56,11 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
               newErrorsF[key] = `El campo  es requerido`;
             }
         });
-        if (budgetForm.name.idName != 4){
+        if (budgetForm.name.budgetTypeId != 4){
             delete newErrorsF['otherName']
         }
-        if (budgetForm.name.idName != 23){
-            delete newErrorsF['convDate']
+        if (budgetForm.name.budgetTypeId != 23){
+            delete newErrorsF['budgetDate']
         }
         setNewErrors(newErrorsF)
         function flattenObject(obj, parentKey = '', result = {}) {
@@ -93,12 +93,12 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                     nameType: budgetToEdit.nameType || ""
                 },
                 name:  {
-                    idName: budgetToEdit.idName || "", 
+                    budgetTypeId: budgetToEdit.budgetTypeId || "", 
                     name: budgetToEdit.name || ""
                 },
                 expenditure: budgetToEdit.expenditure || 0,
                 otherName: budgetToEdit.otherName || "",
-                convDate: budgetToEdit.convDate
+                budgetDate: budgetToEdit.budgetDate
             });
             setIsOpen(true);
         }
@@ -106,41 +106,42 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
     useEffect(()=>{
         if(budgetForm.investmentExpenditure.nameType === "Gasto de Inversión"){
             setTypeToShow([
-                {idName: 1, name: "Equipo de laboratorio"},
-                {idName: 2, name: "Equipo de cómputo"},
-                {idName: 3, name: "Herramientas y accesorios"},
-                {idName: 4, name:  "Otros (especifique)"}
+                {budgetTypeId: 1, name: "Equipo de laboratorio"},
+                {budgetTypeId: 2, name: "Equipo de cómputo"},
+                {budgetTypeId: 3, name: "Herramientas y accesorios"},
+                {budgetTypeId: 4, name:  "Otros (especifique)"}
               ])
         }
         else if(budgetForm.investmentExpenditure.nameType === "Gasto Corriente"){
             setTypeToShow([
-                {idName: 5, name: "Artículos, materiales y útiles diversos"},
-                {idName: 6, name: "Gastos de trabajo de campo"},
-                {idName: 7, name: "Difusión de los resultados de investigación"},
-                {idName: 8, name: "Pago por servicios externos"},
-                {idName: 9, name: "Viáticos, pasajes y gastos de transportación"},
-                {idName: 10, name: "Gastos de atención a profesores visitantes, técnicos o expertos visitantes"},
-                {idName: 11, name: "Compra de libros y suscripción a revistas"},
-                {idName: 12, name: "Gastos de publicación en revistas nacionales e internacionales"},
-                {idName: 13, name: "Registro de patentes y propiedad intelectual"},
-                {idName: 14, name: "Validación de concepto tecnológico"},
-                {idName: 15, name: "Animales para el desarrollo de protocolos de investigación"},
-                {idName: 4,  name: "Otros (especifique)"}
+                {budgetTypeId: 5, name: "Artículos, materiales y útiles diversos"},
+                {budgetTypeId: 6, name: "Gastos de trabajo de campo"},
+                {budgetTypeId: 7, name: "Difusión de los resultados de investigación"},
+                {budgetTypeId: 8, name: "Pago por servicios externos"},
+                {budgetTypeId: 9, name: "Viáticos, pasajes y gastos de transportación"},
+                {budgetTypeId: 10, name: "Gastos de atención a profesores visitantes, técnicos o expertos visitantes"},
+                {budgetTypeId: 11, name: "Compra de libros y suscripción a revistas"},
+                {budgetTypeId: 12, name: "Gastos de publicación en revistas nacionales e internacionales"},
+                {budgetTypeId: 13, name: "Registro de patentes y propiedad intelectual"},
+                {budgetTypeId: 14, name: "Validación de concepto tecnológico"},
+                {budgetTypeId: 15, name: "Animales para el desarrollo de protocolos de investigación"},
+                {budgetTypeId: 16,  name: "Otros (especifique)"}
               ])
         }
         else if(budgetForm.investmentExpenditure.nameType === "Obtención presupuesto interno"){
             setTypeToShow([
-                {idName: 17, name:"Proyectos de Investigación Científica y Desarrollo Tecnológico"},
-                {idName: 18, name:"Proyectos de Investigación en el Programa Especial de Consolidación de Investigadores"},
-                {idName: 19, name:"Proyectos de Desarrollo Tecnológico o Innovación en el IPN"},
-                {idName: 20, name:"Proyectos de Investigación Multidisciplinarios y Transdisciplinarios de Investigación Científica y Desarrollo Tecnológico"},
-                {idName: 21, name:"Proyecto transdiciplinario"},
-                {idName: 22, name:"Proyectos de Desarrollo Tecnológico o Innovación para alumnos del IPN"}
+                {budgetTypeId: 17, name:"Proyectos de Investigación Científica y Desarrollo Tecnológico"},
+                {budgetTypeId: 18, name:"Proyectos de Investigación en el Programa Especial de Consolidación de Investigadores"},
+                {budgetTypeId: 19, name:"Proyectos de Desarrollo Tecnológico o Innovación en el IPN"},
+                {budgetTypeId: 20, name:"Proyectos de Investigación Multidisciplinarios y Transdisciplinarios de Investigación Científica y Desarrollo Tecnológico"},
+                {budgetTypeId: 21, name:"Proyecto transdiciplinario"},
+                {budgetTypeId: 22, name:"Proyectos de Desarrollo Tecnológico o Innovación para alumnos del IPN"},
+                {budgetTypeId: 24, name:"Otros (especifique)"}
               ])
         }
         else if(budgetForm.investmentExpenditure.nameType === "Obtención presupuesto externo"){
             setTypeToShow([
-                {idName: 23, name:"Externas"}
+                {budgetTypeId: 23, name:"Externas"}
               ])
         }
     },[budgetForm.investmentExpenditure])
@@ -215,7 +216,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                     ></input>
                                 </div>
                                 <div>
-                                    {(budgetForm.name.idName === 4 || budgetForm.name.idName === 23) && (
+                                    {(budgetForm.name.budgetTypeId === 16 || budgetForm.name.budgetTypeId === 24 || budgetForm.name.budgetTypeId === 4 || budgetForm.name.budgetTypeId === 23) && (
                                         <div>
                                             <p>Nombre del presupuesto
                                                 <br/>{newErrors.otherName && <span className="text-red-600">*{newErrors.otherName}</span>}
@@ -230,15 +231,16 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                     )}
                                 </div>
                                 <div>
-                                    {budgetForm.name.idName === 23 && (
+                                    {(budgetForm.investmentExpenditure.nameType === "Obtención presupuesto interno" || 
+                                    budgetForm.name.budgetTypeId === 23) && (
                                         <div>
                                             <p>Fecha de convocatoria
-                                                <br/>{newErrors.convDate && <span className="text-red-600">*{newErrors.convDate}</span>}
+                                                <br/>{newErrors.budgetDate && <span className="text-red-600">*{newErrors.budgetDate}</span>}
                                             </p>
                                             <input 
                                                 type="date"
-                                                name="convDate"
-                                                value={budgetForm.convDate}
+                                                name="budgetDate"
+                                                value={budgetForm.budgetDate}
                                                 onChange={handleInputChange}
                                             ></input>
                                         </div>

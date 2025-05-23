@@ -78,11 +78,6 @@ const createProject = async (req, res) => {
     ];
 
 
-     console.log("Deliverables1 original:", deliverables1);
-    console.log("Deliverables2 original:", deliverables2);
-    console.log("Deliverables3 original:", deliverables3);
-    console.log("Deliverables transformados:", transformedDeliverables);
-
     // Convertir arreglos a JSON string
     const associatedProjectsJSON = JSON.stringify(associatedProjects);
     const membersJSON = JSON.stringify(members);

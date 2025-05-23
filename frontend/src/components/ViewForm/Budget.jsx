@@ -1,6 +1,21 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
 const ConflictInterest = ({Budget}) => {  
+    const sumInversion = Array.isArray(Budget.gastoInversion)
+    ? Budget.gastoInversion.reduce((sum, Inversion) => sum + Inversion.expenditure, 0)
+    : 0;
+
+    const sumInternas = Array.isArray(Budget.gastoInversion)
+    ? Budget.internas.reduce((sum, Inversion) => sum + Inversion.expenditure, 0)
+    : 0;
+
+    const sumExternas= Array.isArray(Budget.gastoInversion)
+    ? Budget.externas.reduce((sum, Inversion) => sum + Inversion.expenditure, 0)
+    : 0;
+
+    const sumCorriente = Array.isArray(Budget.gastoInversion)
+    ? Budget.gastoCorriente.reduce((sum, Inversion) => sum + Inversion.expenditure, 0)
+    : 0;
     return (
     <>
         <table className='BackgroundTable'>
@@ -10,37 +25,42 @@ const ConflictInterest = ({Budget}) => {
                 </tr>
             </thead>
             <tbody className='table-form-body'>
-                <tr>
-                    <td>1.	Equipo de laboratorio</td>
-                    <td>$0.00</td>
+                {Array.isArray(Budget.gastoInversion) && Budget.gastoInversion.map((Inversion, index) => (
+                <tr key={index}>
+                    <td>{Inversion.name + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
+                    <td>${Inversion.expenditure}</td>
                 </tr>
-                <tr>
-                    <td>Subtotal Gasto de Inversion.</td>
-                    <td>$0.00</td>
-                </tr>
+                ))}
             </tbody>
-        </table>
-
-        <table className='BackgroundTable'>
+            <thead className='table-form-body'>
+                <tr>
+                    <td>Subtotal</td>
+                    <td>$ {sumInversion}</td>
+                </tr>
+            </thead>
             <thead className='table-form-header'>
                 <tr>
                     <th colSpan="2">Gasto Corriente</th>
                 </tr>
             </thead>
             <tbody className='table-form-body'>
-                <tr>
-                    <td>1.	1.	Artículos, materiales y útiles diversos.</td>
-                    <td>$0.00</td>
+                {Array.isArray(Budget.gastoCorriente) && Budget.gastoCorriente.map((Inversion, index) => (
+                <tr key={index}>
+                    <td>{Inversion.name + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
+                    <td>${Inversion.expenditure}</td>
                 </tr>
-                <tr>
-                    <td>Subtotal Gasto Corriente.</td>
-                    <td>$0.00</td>
-                </tr>
+                ))}
             </tbody>
+            <thead className='table-form-body'>
+                <tr>
+                    <td>Subtotal</td>
+                    <td>$ {sumCorriente}</td>
+                </tr>
+            </thead>
             <thead className='table-form-header'>
                 <tr>
                     <th>Total</th>
-                    <th>$0.00</th>
+                    <th>${sumCorriente+sumInversion}</th>
                 </tr>
             </thead>
         </table>
@@ -52,21 +72,41 @@ const ConflictInterest = ({Budget}) => {
                 </tr>
             </thead>
             <tbody className='table-form-body'>
-                <tr>
-                    <td>INTERNAS</td>
+                <tr className='table-form-title-bold'>
+                    <td>Internas</td>
                     <td>Monto aproximado a obtener</td>
-                    <td>Mes y año de aprobación(Si aplica)</td>
+                    <td>Mes y año de aprobación</td>
                 </tr>
-                <tr>
-                    <td>EXTERNAS</td>
+                {Array.isArray(Budget.internas) && Budget.internas.map((Inversion, index) => (
+                <tr key={index}>
+                    <td>{Inversion.name + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
+                    <td>${Inversion.expenditure}</td>
+                    <td>{Inversion.budgetDate}</td>
+                </tr>
+                ))}
+                <tr className='table-form-title-bold'>
+                    <td>Externas</td>
                     <td></td>
                     <td></td>
                 </tr>
+                 {Array.isArray(Budget.externas) && Budget.externas.map((Inversion, index) => (
+                <tr key={index}>
+                    <td>{Inversion.name + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
+                    <td>${Inversion.expenditure}</td>
+                    <td>{Inversion.budgetDate}</td>
+                </tr>
+                ))}
             </tbody>
             <thead className='table-form-header'>
                 <tr>
                     <th>Total</th>
-                    <th>$0.00</th>
+                    <th>${sumExternas+sumInternas}</th>
+                </tr>
+            </thead>
+            <thead className='table-form-header'>
+                <tr>
+                    <th>Gasto Inversión - Presupuesto</th>
+                    <th>${sumExternas+sumInternas-sumCorriente-sumInversion}</th>
                 </tr>
             </thead>
         </table>

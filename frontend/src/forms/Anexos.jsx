@@ -19,6 +19,18 @@ const  Anexos = ({option,setOption}) => {
     const [newErrors,setNewErrors] = useState({
         aditionalComments:""
     });
+
+    function base64ToFile(base64, fileName, mimeType) {
+    const arr = base64.split(',');
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], fileName, { type: mimeType });
+    }
+
     const handleOnSubmitFormBack = useSubmitFormBack(anexos, setOption);
 
     const handleOnSubmit = async (event) => {
@@ -65,17 +77,19 @@ const  Anexos = ({option,setOption}) => {
                         
                         const formDataFiles = new FormData();
                         formDataFiles.append('projectId', data.projectId);
-                        if (afilesSend){
-                        Object.entries(afilesSend).forEach(([key, value]) => {
-                            formDataFiles.append('documents',value)
+                        
+                        const appendFiles = (filesArray) => {
+                        filesArray.forEach(file => {
+                            const realFile = base64ToFile(file.content, file.name, file.type);
+                            formDataFiles.append('documents', realFile); // campo puede repetirse
                         });
-                        }
-                        if (efilesSend){
-                        Object.entries(efilesSend).forEach(([key, value]) => {
-                            formDataFiles.append('documents',value)
-                        });
-                        }
-                        //console.log(formDataFiles)
+                        };
+
+                        if (afilesSend) appendFiles(afilesSend);
+                        if (efilesSend) appendFiles(efilesSend);
+                        
+                        console.log(efilesSend)
+                        console.log(formDataFiles)
                         const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
                             method: 'POST',                    
                             body: formDataFiles,
@@ -184,18 +198,6 @@ const  Anexos = ({option,setOption}) => {
                                                             filesSend={filesSend} 
                                                             tagType="Anexos"
                                                         />
-                                {Array.isArray(anexos.afilesSend) && anexos.afilesSend.length > 0 && (
-                                    <div className="!p-0 w-full  h-1/3 overflow-y-auto flex flex-col justify-center items-center rounded-[30px]">
-                                    <ul className="!p-2 text-sm text-gray-800  w-[80%]">
-                                        {anexos.afilesSend.map((file, index) => (
-                                            <li key={index} className="flex justify-between">
-                                            <p>{file.name}</p>
-                                            <button className="cursor-pointer" type="button" onClick={()=>{handleDeleteFile(index)}}>Eliminar</button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>

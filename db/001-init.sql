@@ -338,13 +338,17 @@ BEGIN
     SET i = 0;
     SET total = JSON_LENGTH(p_budgetsJSON);
     WHILE i < total DO
-        INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id, budgetTypeId)
+        INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id, budgetTypeId, budgetDate, otherName)
         VALUES (
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].idType'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].idName'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].expenditure'))),
             v_projectId,
-            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetTypeId')))
+            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetTypeId'))),
+            STR_TO_DATE(
+            NULLIF(JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetDate'))), ''),
+            '%Y-%m-%d'),
+            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].otherName')))
         );
         SET i = i + 1;
     END WHILE;
@@ -556,9 +560,11 @@ BEGIN
     WHERE project_id = p_projectId AND deliverableTypeId IN (6, 7); -- tecnológico
 
     -- budgets
-    SELECT
-       *
-    FROM budgets b
+    SELECT 
+    * FROM 
+    budgets b 
+    INNER JOIN budgetTypes bt 
+    ON b.budgetTypeId = bt.budgetTypeId 
     WHERE b.project_id = p_projectId;
 
     -- goals
