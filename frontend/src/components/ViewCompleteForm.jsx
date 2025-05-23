@@ -101,7 +101,7 @@ const ViewCompleteForms = () => {
 
             <h1>10. DESCRIPCIÓN DE PRESUPUESTO REQUERIDO Y POSIBLES FUENTES DE OBTENCIÓN</h1>
 
-            <Budget Budget={completeForm.idf31}/>
+            <Budget Budget={completeForm.idf31.budgets}/>
             
             <h1>11. CONFLICTO DE INTERÉS</h1>
             

@@ -153,18 +153,6 @@ const  EthicalAsp = ({option,setOption}) => {
                             filesSend={filesSend} 
                             text="Etico"
                         />
-                        {ethicalAsp.efilesSend.length > 0 && (
-                            <div className="!p-0 w-full  h-1/3 overflow-y-auto flex flex-col justify-center items-center rounded-[30px]">
-                            <ul className="!p-2 text-sm text-gray-800  w-[80%]">
-                                {ethicalAsp.efilesSend.map((file, index) => (
-                                    <li key={index} className="flex justify-between">
-                                    <p>{file.name}</p>
-                                    <button className="cursor-pointer" type="button" onClick={()=>{handleDeleteFile(index)}}>Eliminar</button>
-                                    </li>
-                                ))}
-                            </ul>
-                            </div>
-                        )}
                     </>
                     :
                     <p></p>

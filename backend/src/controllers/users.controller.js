@@ -95,31 +95,31 @@ const getProjectSummary = (req, res) => {
 
 
 const groupDeliverables = (deliverables) => {
-    const educativos = [
+    const deliverables1 = [
         'Tesis (Alumnos titulados)', 'Practicantes profesionales', 'Alumnos PIFI',
         'Prestante de servicio social', 'Otro (especificar)'
     ];
-    const difusion = [
+    const deliverables2 = [
         'Artículo de divulgación', 'Congresos', 'Cursos', 'Libros',
         'Conferencias o ponencias', 'Artículo científico', 'Seminarios',
         'Manuales', 'Programas de Radio y/o TV', 'Otro, especificar'
     ];
-    const tecnologicos = [
+    const deliverables3 = [
         'Patente', 'Hardware', 'Prototipo', 'Certificado de invención',
         'Software', 'Otro (especificar)'
     ];
 
     const grouped = {
-        educativos: new Map(),
-        difusion: new Map(),
-        tecnologicos: new Map()
+        deliverables1: new Map(),
+        deliverables2: new Map(),
+        deliverables3: new Map()
     };
 
     deliverables.forEach(item => {
         const group =
-            educativos.includes(item.name) ? 'educativos' :
-                difusion.includes(item.name) ? 'difusion' :
-                    tecnologicos.includes(item.name) ? 'tecnologicos' : null;
+            deliverables1.includes(item.name) ? 'deliverables1' :
+                deliverables2.includes(item.name) ? 'deliverables2' :
+                    deliverables3.includes(item.name) ? 'deliverables3' : null;
 
         if (!group) return;
 
@@ -137,9 +137,9 @@ const groupDeliverables = (deliverables) => {
     });
 
     return {
-        educativos: Array.from(grouped.educativos.values()),
-        difusion: Array.from(grouped.difusion.values()),
-        tecnologicos: Array.from(grouped.tecnologicos.values())
+        deliverables1: Array.from(grouped.deliverables1.values()),
+        deliverables2: Array.from(grouped.deliverables2.values()),
+        deliverables3: Array.from(grouped.deliverables3.values())
     };
 };
 
@@ -235,6 +235,7 @@ const groupBudgets = (budgets) => {
         20: 'internas',
         21: 'internas',
         22: 'internas',
+        24: 'internas',
 
         // Externas
         23: 'externas'

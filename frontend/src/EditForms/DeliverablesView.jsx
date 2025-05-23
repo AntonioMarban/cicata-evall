@@ -106,7 +106,7 @@ const DeliverablesView = ({ option, setOption }) => {
     const handleOnSubmitFormBack = useSubmitFormBack(deliverables, setOption);
     const handleOnSubmitFormNext = useSubmitFormNext(deliverables, setOption);
     useLoadFormData(deliverables.idF, setDeliverables);
-    
+    console.log(deliverables)
     return (
     <div>
         <table className="table">

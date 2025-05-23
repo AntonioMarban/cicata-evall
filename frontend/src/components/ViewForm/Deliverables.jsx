@@ -6,7 +6,6 @@ const Deliverables = ({Deliverables}) => {
     const columns = [1, 2, 3];
     const columns2 = [4, 5];
     const columns3 = [6, 7];
-    console.log(Deliverables)
     const categories3 = ["Piloto", "Laboratorio"];
 
     const categories = ["Nacional", "Internacional"];
@@ -24,7 +23,7 @@ const Deliverables = ({Deliverables}) => {
                 </tr>
             </thead>
             <tbody className='table-form-show-body'>
-                {Deliverables.educativos.map((deliverable) => (
+                {Deliverables.deliverables1.map((deliverable) => (
                   <tr key={deliverable.deliveryId}>
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns.map((col) => (
@@ -57,7 +56,7 @@ const Deliverables = ({Deliverables}) => {
                 </tr>
             </thead>
             <tbody className='table-form-show-body'>
-                {Deliverables.difusion.map((deliverable) => (
+                {Deliverables.deliverables2.map((deliverable) => (
                   <tr key={deliverable.deliveryId}>
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns2.map((col) => (
@@ -91,7 +90,7 @@ const Deliverables = ({Deliverables}) => {
                 </tr>
             </thead>
             <tbody className='table-form-show-body'>
-                {Deliverables.tecnologicos.map((deliverable) => (
+                {Deliverables.deliverables3.map((deliverable) => (
                   <tr key={deliverable.deliveryId}>
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns3.map((col) => (

@@ -134,8 +134,14 @@
     display: flex;
     flex-direction: column;
 }
-
-
+.center-data{
+    display: flex;
+    text-align: center;
+}
+td {
+  text-align: center;  /* Centrado horizontal */
+  vertical-align: middle; /* Centrado vertical */
+}
 
 .table-form-show {
     width: 100%;

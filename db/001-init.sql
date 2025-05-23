@@ -345,7 +345,9 @@ BEGIN
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].expenditure'))),
             v_projectId,
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetTypeId'))),
-            STR_TO_DATE(JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetDate'))), '%Y-%m-%d')
+            STR_TO_DATE(
+            NULLIF(JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetDate'))), ''),
+            '%Y-%m-%d')
         );
         SET i = i + 1;
     END WHILE;
@@ -557,9 +559,11 @@ BEGIN
     WHERE project_id = p_projectId AND deliverableTypeId IN (6, 7); -- tecnológico
 
     -- budgets
-    SELECT
-       *
-    FROM budgets b
+    SELECT 
+    * FROM 
+    budgets b 
+    INNER JOIN budgetTypes bt 
+    ON b.budgetTypeId = bt.budgetTypeId 
     WHERE b.project_id = p_projectId;
 
     -- goals

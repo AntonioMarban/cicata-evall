@@ -527,7 +527,8 @@ INSERT INTO budgetTypes (type_name, description) VALUES
 ('Proyectos de Investigación Multidisciplinarios y Transdisciplinarios de Investigación Científica y Desarrollo Tecnológico', 'Internas'),
 ('Proyecto transdiciplinario', 'Internas'),
 ('Proyectos de Desarrollo Tecnológico o Innovación para alumnos del IPN', 'Internas'),
-('Externas', 'Externas');
+('Externas', 'Externas'),
+('Otros (especifique)', 'Internas');
 
 
 -- members
