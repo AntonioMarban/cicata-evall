@@ -324,7 +324,7 @@ const getProjectDetails = (req, res) => {
                 justification: projectInfo[0]?.justification || '',
                 generalObjective: projectInfo[0]?.generalObjective || '',
                 hypothesis: projectInfo[0]?.hypothesis || '',
-                sObjectives: specificObjectives || []
+                specificObjectives: specificObjectives || []
             },
             idf25: {
                 idF: 25,

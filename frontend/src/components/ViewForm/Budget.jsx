@@ -16,7 +16,6 @@ const ConflictInterest = ({Budget}) => {
     const sumCorriente = Array.isArray(Budget.gastoInversion)
     ? Budget.gastoCorriente.reduce((sum, Inversion) => sum + Inversion.expenditure, 0)
     : 0;
-    console.log(Budget)
     return (
     <>
         <table className='BackgroundTable'>
@@ -27,7 +26,7 @@ const ConflictInterest = ({Budget}) => {
             </thead>
             <tbody className='table-form-body'>
                 {Array.isArray(Budget.gastoInversion) && Budget.gastoInversion.map((Inversion, index) => (
-                <tr>
+                <tr key={index}>
                     <td>{Inversion.name}</td>
                     <td>${Inversion.expenditure}</td>
                 </tr>
@@ -46,7 +45,7 @@ const ConflictInterest = ({Budget}) => {
             </thead>
             <tbody className='table-form-body'>
                 {Array.isArray(Budget.gastoCorriente) && Budget.gastoCorriente.map((Inversion, index) => (
-                <tr>
+                <tr key={index}>
                     <td>{Inversion.name}</td>
                     <td>${Inversion.expenditure}</td>
                 </tr>
@@ -79,7 +78,7 @@ const ConflictInterest = ({Budget}) => {
                     <td>Mes y año de aprobación</td>
                 </tr>
                 {Array.isArray(Budget.internas) && Budget.internas.map((Inversion, index) => (
-                <tr>
+                <tr key={index}>
                     <td>{Inversion.name}</td>
                     <td>${Inversion.expenditure}</td>
                     <td>{Inversion.budgetDate}</td>
@@ -91,7 +90,7 @@ const ConflictInterest = ({Budget}) => {
                     <td></td>
                 </tr>
                  {Array.isArray(Budget.externas) && Budget.externas.map((Inversion, index) => (
-                <tr>
+                <tr key={index}>
                     <td>{Inversion.name}</td>
                     <td>${Inversion.expenditure}</td>
                     <td>{Inversion.budgetDate}</td>

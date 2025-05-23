@@ -103,8 +103,8 @@ const  Anexos = ({option,setOption}) => {
                         
                         if (uploadData.message == 'Documents uploaded successfully') {
                             console.log("File uploaded successfully:", uploadData.message);
-                            navigate(`/VerFormulario/${data.projectId}`);
-                            indexedDB.deleteDatabase('Cicata');
+                            // navigate(`/VerFormulario/${data.projectId}`);
+                            // indexedDB.deleteDatabase('Cicata');
                         } else {
                             console.warn("Upload succeeded but no confirmation message:", uploadData);
                         }
@@ -113,8 +113,8 @@ const  Anexos = ({option,setOption}) => {
                         alert("El proyecto se creó, pero hubo un error al subir el archivo.");
                     }
                 } else {
-                    navigate(`/VerFormulario/${data.projectId}`);
-                    indexedDB.deleteDatabase('Cicata');
+                    // navigate(`/VerFormulario/${data.projectId}`);
+                    // indexedDB.deleteDatabase('Cicata');
                 }
             } else {
                 throw new Error("Missing projectId in server response.");

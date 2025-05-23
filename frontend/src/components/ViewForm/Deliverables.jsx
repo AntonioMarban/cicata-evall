@@ -25,10 +25,10 @@ const Deliverables = ({Deliverables}) => {
             <tbody className='table-form-show-body'>
                 {Deliverables.deliverables1.map((deliverable) => (
                   <tr key={deliverable.deliveryId}>
-                      <td data-label="Entregable">{deliverable.name}</td>
+                      <td data-label="Entregable" >{deliverable.name}</td>
                       {columns.map((col) => (
-                        <td key={col}>
-                          {deliverable.values[col] ?? ''} {/* Muestra el valor o vacío si no existe */}
+                        <td key={`${deliverable.deliveryId}-${col}`}>
+                          {deliverable.values[col] ?? ''}
                         </td>
                       ))}
                   </tr>
@@ -37,8 +37,8 @@ const Deliverables = ({Deliverables}) => {
                   <tr key={deliverable.deliveryId}>
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns.map((col) => (
-                        <td key={col}>
-                          {deliverable.values[col] ?? ''} {/* Muestra el valor o vacío si no existe */}
+                        <td key={`${deliverable.deliveryId}-${col}`}>
+                          {deliverable.values[col] ?? ''}
                         </td>
                       ))}
                   </tr>
@@ -60,8 +60,8 @@ const Deliverables = ({Deliverables}) => {
                   <tr key={deliverable.deliveryId}>
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns2.map((col) => (
-                        <td key={col}>
-                          {deliverable.values[col] ?? ''} {/* Muestra el valor o vacío si no existe */}
+                        <td key={`${deliverable.deliveryId}-${col}`}>
+                          {deliverable.values[col] ?? ''}
                         </td>
                       ))}
                   </tr>
@@ -70,8 +70,8 @@ const Deliverables = ({Deliverables}) => {
                 <tr key={deliverable.deliveryId}>
                     <td data-label="Entregable">{deliverable.name}</td>
                     {columns2.map((col) => (
-                      <td key={col}>
-                        {deliverable.values[col] ?? ''} {/* Muestra el valor o vacío si no existe */}
+                      <td key={`${deliverable.deliveryId}-${col}`}>
+                        {deliverable.values[col] ?? ''}
                       </td>
                     ))}
                 </tr>
@@ -94,8 +94,8 @@ const Deliverables = ({Deliverables}) => {
                   <tr key={deliverable.deliveryId}>
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns3.map((col) => (
-                        <td key={col}>
-                          {deliverable.values[col] ?? ''} {/* Muestra el valor o vacío si no existe */}
+                        <td key={`${deliverable.deliveryId}-${col}`}>
+                          {deliverable.values[col] ?? ''}
                         </td>
                       ))}
                   </tr>
@@ -104,8 +104,8 @@ const Deliverables = ({Deliverables}) => {
                 <tr key={deliverable.deliveryId}>
                     <td data-label="Entregable">{deliverable.name}</td>
                     {columns3.map((col) => (
-                      <td key={col}>
-                        {deliverable.values[col] ?? ''} {/* Muestra el valor o vacío si no existe */}
+                      <td key={`${deliverable.deliveryId}-${col}`}>
+                        {deliverable.values[col] ?? ''}
                       </td>
                     ))}
                 </tr>

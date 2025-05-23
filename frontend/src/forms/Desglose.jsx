@@ -16,7 +16,7 @@ const  Desglose = ({option,setOption}) => {
             justification:"", 
             hypothesis: "",
             generalObjective: "", 
-            sObjectives: [] });
+            specificObjectives: [] });
     
     const [newErrorsD,setNewErrorsD] = useState(
         {
@@ -54,7 +54,7 @@ const  Desglose = ({option,setOption}) => {
     const handleDeleteArray = (index) => {
         setDesglose({
             ...desglose,
-            sObjectives: removeItemByIndex(desglose.sObjectives, index)
+            specificObjectives: removeItemByIndex(desglose.specificObjectives, index)
         });
     };
 
@@ -137,12 +137,14 @@ const  Desglose = ({option,setOption}) => {
                             <div className="rounded-lg p-0 w-full">
                                 <div className="flex justify-between !p-2">
                                     <p className="flex-1">Nombre del Objetivo específico</p>
+                                    <p className="flex-1">Descripción</p>
+                                    <p className="flex-1"></p>
                                 </div>
                             </div>
-                            <ShowCards cards={desglose.sObjectives} 
+                            <ShowCards cards={desglose.specificObjectives} 
                                 handleDeleteFile={handleDeleteArray}
                                 handleEditModal={handleEditModal}
-                                slice={1}/>
+                                slice={2}/>
                         </div>
                         <div className="!flex items-center justify-center">
                                 <AddObjectivesSpe 

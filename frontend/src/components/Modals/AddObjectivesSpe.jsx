@@ -8,6 +8,7 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
     const [isOpen, setIsOpen] = useState(false)
     const initialValues = {
         objectiveName: "",
+        objectiveDescription:""
     }
     const [objectiveSpe, setObjectiveSpe] = useState(initialValues)
     const [newErrors,setNewErrors] =  useState(initialValues);
@@ -22,7 +23,8 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
     useEffect(()=>{
         if (desgloseToEdit){
             setObjectiveSpe({
-                objectiveName: desgloseToEdit.objectiveName || ""
+                objectiveName: desgloseToEdit.objectiveName || "",
+                objectiveDescription: desgloseToEdit.objectiveDescription || ""
             });
             setIsOpen(true);
         }
@@ -30,7 +32,7 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
  
     const handleObjectiveSubmit = useFormAddHandler({
         setState: setDesglose,
-        key: 'sObjectives',
+        key: 'specificObjectives',
         onSuccess: () => {
             setIsOpen(false);
             if (onEditComplete && desgloseToEdit){
@@ -79,6 +81,14 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                                        className="form-pieza-input" 
                                        placeholder="Escribe el nombre del objetivo..."
                                        value={objectiveSpe.objectiveName}
+                                       onChange={handleInputChange}></input>
+                                <p>Descripcion del Objetivo específico
+                                <br/>{newErrors.objectiveDescription && <span className="text-red-600">*{newErrors.objectiveDescription}</span>}
+                                </p>
+                                <input name="objectiveDescription" 
+                                       className="form-pieza-input" 
+                                       placeholder="Escribe el nombre del objetivo..."
+                                       value={objectiveSpe.objectiveDescription}
                                        onChange={handleInputChange}></input>
                             </div>
                             <div className="dialog-actions">
