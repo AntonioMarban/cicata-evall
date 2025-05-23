@@ -557,9 +557,8 @@ BEGIN
 
     -- budgets
     SELECT
-        b.investmentExpenditure, b.name, b.expenditure, bt.budgetTypeId, bt.type_name, bt.description
+       *
     FROM budgets b
-    JOIN budgetTypes bt ON b.budgetTypeId = bt.budgetTypeId
     WHERE b.project_id = p_projectId;
 
     -- goals
