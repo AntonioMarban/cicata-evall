@@ -17,6 +17,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         levelName: "",
         levelNum: "",
         email: "",
+        phone: "",
         researchNetworkName: "",
         researchNetwork: 1
       };
@@ -73,12 +74,12 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             if (value === 0){
                 delete newErrorsF[key]
             }
-            if (key=== "researchNetwork" && value === 0 ){
-                delete newErrorsF[key]
-                delete newErrorsF["researchNetworkName"]
-            }
           }
         });
+        console.log("hsfkajs")
+        if (participant.researchNetwork === 0 ){
+                delete newErrorsF["researchNetworkName"]
+        }
         delete newErrorsF["index"];
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
@@ -106,6 +107,8 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             )
         }
     },[participant.researchNetwork])
+
+    console.log(newErrors)
     return (
         <>
             {!participantToEdit && (
@@ -243,16 +246,27 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                     </select>
                                 </div>
                             </div>
-                            <div>
+                            <div className="">
                                 <p>Datos de contacto</p>
                                 <div>
-                                    <p>Email <br/>{newErrors.email && <span className="text-red-600"> *{newErrors.email}</span>}</p>
-                                    <input 
-                                    name="email"
-                                    value={participant.email}
-                                    onChange={handleInputChange} 
-                                    placeholder="Escribe el email..."
-                                    className="participant-form-pieza-input2"></input>
+                                    <div>
+                                        <p>Email <br/>{newErrors.email && <span className="text-red-600"> *{newErrors.email}</span>}</p>
+                                        <input 
+                                        name="email"
+                                        value={participant.email}
+                                        onChange={handleInputChange} 
+                                        placeholder="Escribe el email..."
+                                        className="participant-form-pieza-input2"></input>
+                                    </div>
+                                    <div className="!mt-2">
+                                    <p>Teléfono <br/>{newErrors.phone && <span className="text-red-600"> *{newErrors.phone}</span>}</p>
+                                        <input 
+                                        name="phone"
+                                        value={participant.phone}
+                                        onChange={handleInputChange} 
+                                        placeholder="Escribe el teléfono..."
+                                        className="participant-form-pieza-input2"></input>
+                                    </div>
                                 </div>
                             </div>
                             <div className="participant-dialog-actions">

@@ -1,4 +1,4 @@
-
+import FormsNavigation from "../components/EditFormsNavigation";
 const  CreateProject = () => {
     return (
     <main className="!p-5 flex flex-wrap">
@@ -9,6 +9,7 @@ const  CreateProject = () => {
                 </div>
             </div>
             <div className="w-full">
+                    <FormsNavigation/>
             </div>
         </div>
     </main>

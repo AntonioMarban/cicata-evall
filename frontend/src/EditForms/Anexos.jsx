@@ -12,7 +12,7 @@ const  Anexos = ({option,setOption}) => {
     
     const [filesSend,setFilesSend] = useState([]);
     const [anexos, setAnexos] = useState({   
-        idF: 14,
+        idF: 33,
         aditionalComments:"",
         afilesSend: filesSend 
     });
@@ -69,12 +69,12 @@ const  Anexos = ({option,setOption}) => {
             const data = await response.json();
     
             if (data.projectId) {
-                //console.log("Project created successfully, ID:", data.projectId);
+                console.log("Project created successfully, ID:", data.projectId);
                 
                 if ((afilesSend && afilesSend.length > 0) || (efilesSend && efilesSend.length > 0)) {
                     try {
-                        //console.log("Uploading document:", afilesSend[0].name);
-                        //console.log("Uploading document:", efilesSend[0].name);
+                        console.log("Uploading document:", afilesSend[0].name);
+                        console.log("Uploading document:", efilesSend[0].name);
                         const formDataFiles = new FormData();
                         formDataFiles.append('projectId', data.projectId);
                         
@@ -98,11 +98,11 @@ const  Anexos = ({option,setOption}) => {
                         const uploadData = await uploadResponse.json();
                         
                         if (uploadData.message == 'Documents uploaded successfully') {
-                            //console.log("File uploaded successfully 1:", uploadData.message);
+                            console.log("File uploaded successfully 1:", uploadData.message);
                         } else {
                             console.warn("Upload succeeded but no confirmation message:", uploadData);
                         }
-                        //console.log("aqui va")
+                        console.log("aqui va")
                         const formDataEFiles = new FormData();
                         const appendFiles2 = (filesArray) => {
                         filesArray.forEach(file => {
@@ -122,20 +122,21 @@ const  Anexos = ({option,setOption}) => {
                         }
     
                         const uploadDataE = await uploadResponseE.json();
+                        
                         if (uploadDataE.message == 'Documents uploaded successfully') {
-                            //console.log("File uploaded successfully 2:", uploadDataE.message);
+                            console.log("File uploaded successfully:", uploadDataE.message);
                         } else {
-                            //console.warn("Upload succeeded but no confirmation message:", uploadDataE);
+                            console.warn("Upload succeeded but no confirmation message:", uploadDataE);
                         }
-                        navigate(`/VerFormulario/${data.projectId}`);
-                        indexedDB.deleteDatabase('Cicata');
+                        //navigate(`/VerFormulario/${data.projectId}`);
+                        //indexedDB.deleteDatabase('Cicata');
                     } catch (uploadError) {
                         console.error("Error uploading file:", uploadError);
                         alert("El proyecto se creó, pero hubo un error al subir el archivo.");
                     }
                 } else {
-                    navigate(`/VerFormulario/${data.projectId}`);
-                    indexedDB.deleteDatabase('Cicata');
+                    // navigate(`/VerFormulario/${data.projectId}`);
+                    // indexedDB.deleteDatabase('Cicata');
                 }
             } else {
                 throw new Error("Missing projectId in server response.");

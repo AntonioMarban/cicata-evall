@@ -37,12 +37,11 @@ export default function ProjectProgress({ projectId }) {
         extras2:[],
         extras3:[]
     });
-
-     const navigate = useNavigate();
+    const navigate = useNavigate();
     const apiUrl = import.meta.env.VITE_API_URL;
     const [comments, setComments] = useState([]);
-    const [projectData, setProjectData] = useState(null);
-
+    const [projectData, setProjectData] = useState();
+    const [files,setFiles] = useState()
     const fetchData = (url, setData) => {
     fetch(url, {
         method: "GET",
@@ -52,25 +51,105 @@ export default function ProjectProgress({ projectId }) {
         },
     })
         .then(res => res.json())
-        .then(data => {setData(data); console.log(data)})
+        .then(data => {
+            setData(data); 
+        const flattened = Object.values(data.idf31.budgets).flat();
+
+        setData(prev => ({
+            ...prev,
+            idf31: {
+                ...prev.idf31,
+                budgets: flattened
+            }
+            }));
+        setData(prev => ({
+            ...prev,
+            idf26: {
+                ...prev.idf26,
+                efilesSend: []
+            }
+            }));
+        setData(prev => ({
+            ...prev,
+            idf33: {
+                ...prev.idf33,
+                afilesSend: []
+            }
+            }));
+        })
+        
         .catch(error => console.error("Error fetching data:", error));
     };    
 
-    const navigateToForms = () => {
-        saveMultipleForms(projectData)
-        .then(result => {
-            if (result.success) {
-                console.log("Todos los formularios guardados:", result.results);
+    const navigateToForms = async (files, e) => {
+        try {
+            const { idf26, idf33 } = await readFiles(files, e);
+            
+            const updatedProjectData = {
+                ...projectData,
+                idf26: {
+                    ...projectData.idf26,
+                    efilesSend: [...projectData.idf26.efilesSend, ...idf26.efilesSend]
+                },
+                idf33: {
+                    ...projectData.idf33,
+                    afilesSend: [...projectData.idf33.afilesSend, ...idf33.afilesSend]
+                }
+            };
+
+            const result = await saveMultipleForms(updatedProjectData);
+            
+            if (result) {
+                navigate('/Editar-proyecto');
             } else {
-                console.error("Error al guardar:", result.error);
+                console.error("Save error:", result.error);
             }
+        } catch (error) {
+            console.error("Processing error:", error);
+        }
+    };
+    const readFiles = (files, e) => {
+    return new Promise((resolve) => {
+        e.preventDefault();
+        const updates = {
+            idf26: { efilesSend: [] },
+            idf33: { afilesSend: [] }
+        };
+
+        Object.values(files).forEach(fileList => {
+            fileList.forEach(file => {
+                if (file.tag === "anexos") {
+                    updates.idf33.afilesSend.push(file);
+                } else if (file.tag === "eticos") {
+                    updates.idf26.efilesSend.push(file);
+                }
+            });
         });
-        navigate('/Editar-proyecto');
-    }
+
+        setProjectData(prev => {
+            const newState = {
+                ...prev,
+                idf26: {
+                    ...prev.idf26,
+                    efilesSend: [...(prev.idf26.efilesSend || []), ...updates.idf26.efilesSend]
+                },
+                idf33: {
+                    ...prev.idf33,
+                    afilesSend: [...(prev.idf33.afilesSend || []), ...updates.idf33.afilesSend]
+                }
+            };
+            return newState;
+        });
+
+        resolve(updates);
+    });
+    };
     useEffect(() => {
         fetchData(`${apiUrl}/researchers/projects/${projectId}/comments`, setComments);
         fetchData(`${apiUrl}/users/projects/${projectId}`, setProjectData);
+        fetchData(`${apiUrl}/researchers/projects/${projectId}/documents`,setFiles);
     }, [projectId]);
+    console.log(projectData)
     return (
     <main className="w-[100%] flex justify-center">
         <div className="w-[90%]">
@@ -89,7 +168,7 @@ export default function ProjectProgress({ projectId }) {
             </div>
 
             <div className="footer-comments">
-                <button onClick={navigateToForms} className="info-button">Realizar correcciones</button>
+                <button onClick={(e)=>{navigateToForms(files,e)}} className="info-button">Realizar correcciones</button>
             </div>
         </div>
     </main>
