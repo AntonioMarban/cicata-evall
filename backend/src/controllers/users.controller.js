@@ -294,7 +294,7 @@ const getProjectDetails = (req, res) => {
                 startDate: projectInfo[0]?.startDate || '',
                 endDate: projectInfo[0]?.endDate || '',
                 folio: projectInfo[0]?.folio || '',
-                typeResearch: projectInfo[0]?.typeResearch || '',
+                typeResearch: parseInt(projectInfo[0]?.typeResearch) || '',
                 alignmentPNIorODS: projectInfo[0]?.alignmentPNIorODS || '',
                 alignsWithPNIorODS: projectInfo[0]?.alignsWithPNIorODS || '',
                 otherTypeResearch: projectInfo[0]?.otherTypeResearch || '',

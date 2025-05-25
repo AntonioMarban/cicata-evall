@@ -7,7 +7,7 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEditComplete = null}) => {
     const [isOpen, setIsOpen] = useState(false)
     const initialCollaboration = {
-        institutionName: "",
+        name: "",
         collaborationAgreement: "",
         agreementType: "",
         agreementNumber: "",
@@ -19,7 +19,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
     useEffect(() => {
         if (collaborationToEdit) {
             setCollaboration({
-                institutionName: collaborationToEdit.institutionName || "",
+                name: collaborationToEdit.name || "",
                 collaborationAgreement: collaborationToEdit.collaborationAgreement || "",
                 agreementType: collaborationToEdit.agreementType || "",
                 agreementNumber: collaborationToEdit.agreementNumber || "",
@@ -91,10 +91,10 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                             <div className="form-rows">
                                 <div>
                                     <p>Nombre de la institución
-                                        <br/>{newErrors.institutionName && <span className="text-red-600">*{newErrors.institutionName}</span>}
+                                        <br/>{newErrors.name && <span className="text-red-600">*{newErrors.name}</span>}
                                     </p>
-                                    <input name="institutionName" 
-                                    value={collaboration.institutionName}
+                                    <input name="name" 
+                                    value={collaboration.name}
                                     onChange={handleInputChange}
                                     className="form-pieza-input" placeholder="Escribe el nombre de la institución..."></input>
                                 </div>
