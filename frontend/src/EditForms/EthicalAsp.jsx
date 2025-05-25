@@ -74,16 +74,7 @@ const  EthicalAsp = ({option,setOption}) => {
         )
     },[filesSend])
 
-    const handleDeleteFile = (index) => {
-        const newFileNames = [...ethicalAsp.efilesSend];
-        const newFiles = Array.from(ethicalAsp.efilesSend);
-      
-        newFileNames.splice(index, 1);
-        newFiles.splice(index, 1);
-      
-        setFilesSend(newFiles);
-    };
-
+    console.log(ethicalAsp)
     useLoadFormData(ethicalAsp.idF,setEthicalAsp);
     return (
         <div>

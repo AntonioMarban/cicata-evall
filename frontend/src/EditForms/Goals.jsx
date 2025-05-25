@@ -1,10 +1,10 @@
-import useLoadFormData from "../hooks/useLoadFormData.js";
-import { removeItemByIndex } from "../hooks/removeItemByIndex.js";
-import useSubmitFormBack from "../hooks/useSubmitFormBack.js";
-import useSubmitFormNext from "../hooks/useSubmitFormNext.js";
+import useLoadFormData from "../hooks/useLoadFormData";
+import { removeItemByIndex } from "../hooks/removeItemByIndex";
+import useSubmitFormBack from "../hooks/useSubmitFormBack";
+import useSubmitFormNext from "../hooks/useSubmitFormNext";
 import ShowCards from "../components/ShowCards.jsx";
-import AddGoals from "../components/Modals/AddGoals.jsx";
-import AddReferences from "../components/Modals/AddReferences.jsx";
+import AddGoals from "../components/Modals/AddGoals";
+import AddReferences from "../components/Modals/AddReferences";
 import AddMethodology from "../components/Modals/AddMethodology.jsx";
 
 import { useState } from "react";

@@ -7,7 +7,7 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = null, setData}) => {
     const [isOpen, setIsOpen] = useState(false)
     const initialValues = {
-        referenceName: "",
+        reference: "",
     }
     const [references, setReferences] = useState(initialValues)
     const [newErrors,setNewErrors] =  useState(initialValues);
@@ -23,7 +23,7 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
     useEffect(()=>{
         if (referencesToEdit){
             setReferences({
-                referenceName: referencesToEdit.referenceName || ""
+                reference: referencesToEdit.reference || ""
             });
             setIsOpen(true);
         }
@@ -74,12 +74,12 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Nombre de la Referencia
-                                <br/>{newErrors.referenceName && <span className="text-red-600">*{newErrors.referenceName}</span>}
+                                <br/>{newErrors.reference && <span className="text-red-600">*{newErrors.reference}</span>}
                                 </p>
-                                <input name="referenceName" 
+                                <input name="reference" 
                                        className="form-pieza-input" 
                                        placeholder="Escribe el nombre de la Referencia..."
-                                       value={references.referenceName}
+                                       value={references.reference}
                                        onChange={handleInputChange}></input>
                             </div>
                             <div className="dialog-actions">

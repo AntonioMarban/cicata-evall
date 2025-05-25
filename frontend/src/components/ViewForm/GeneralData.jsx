@@ -1,6 +1,7 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
 const ViewGeneralData = ({generalData,associatedProjects}) => { 
+    console.log(associatedProjects)
     return (
     <>
     <table className='BackgroundTable'>
@@ -150,11 +151,11 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
             </tr>
         </thead>
         <tbody className='table-form-body'>
-            {Array.isArray(associatedProjects) && associatedProjects.map((associatedProject, index) => (
+            {Array.isArray(associatedProjects.associatedProjects) && associatedProjects.associatedProjects.map((associatedProject, index) => (
                 <tr key={index}>
                     <td>{index+1}</td>
                     <td>{associatedProject.name}</td>
-                    <td>Tipo del proyecto</td>
+                    <td>{associatedProject.project_type}</td>
                     <td>{associatedProject.externalRegister}</td>
                     <td>{associatedProject.SIPRegister}</td>
                     <td>{associatedProject.associationDate}</td>

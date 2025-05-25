@@ -7,7 +7,7 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplete = null,setData}) => {
     const [isOpen, setIsOpen] = useState(false)
     const initialValues = {
-        methodologyName: "",
+        methodology: "",
     }
     const [methodologies, setMethodologies] = useState(initialValues)
     const [newErrors,setNewErrors] =  useState(initialValues);
@@ -22,7 +22,7 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
     useEffect(()=>{
         if (methodologiesToEdit){
             setMethodologies({
-                methodologyName: methodologiesToEdit.methodologyName || ""
+                methodology: methodologiesToEdit.methodology || ""
             });
             setIsOpen(true);
         }
@@ -73,12 +73,12 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Nombre de la Metodología
-                                <br/>{newErrors.methodologyName && <span className="text-red-600">*{newErrors.methodologyName}</span>}
+                                <br/>{newErrors.methodology && <span className="text-red-600">*{newErrors.methodology}</span>}
                                 </p>
-                                <input name="methodologyName" 
+                                <input name="methodology" 
                                        className="form-pieza-input" 
                                        placeholder="Escribe el nombre de la metodología..."
-                                       value={methodologies.methodologyName}
+                                       value={methodologies.methodology}
                                        onChange={handleInputChange}></input>
                             </div>
                             <div className="dialog-actions">

@@ -26,12 +26,10 @@ const GeneralData = ({option,setOption}) => {
             otherTypeResearch: "", 
             topic: "",
             subtopic: "", 
-            alignsWithPNIorODS,
             alignmentPNIorODS: "",
             summary:""
     });
     const handleOnSubmitFormNext = useSubmitFormNext(generalData, setOption);
-
     const handleChangeButton = (key, value) => {
         setGeneralData((prevState) => ({
             ...prevState,
@@ -64,6 +62,9 @@ const GeneralData = ({option,setOption}) => {
         });
         if(generalData.typeResearch < 4){
             delete newErrorsF['otherTypeResearch'];
+        }
+        if(generalData.alignsWithPNIorODS === 0){
+            delete newErrorsF['alignsWithPNIorODS']
         }
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){

@@ -69,27 +69,23 @@ const  Anexos = ({option,setOption}) => {
             const data = await response.json();
     
             if (data.projectId) {
-                console.log("Project created successfully, ID:", data.projectId);
+                //console.log("Project created successfully, ID:", data.projectId);
                 
                 if ((afilesSend && afilesSend.length > 0) || (efilesSend && efilesSend.length > 0)) {
                     try {
-                        console.log("Uploading document:", afilesSend[0].name);
-                        
+                        //console.log("Uploading document:", afilesSend[0].name);
+                        //console.log("Uploading document:", efilesSend[0].name);
                         const formDataFiles = new FormData();
                         formDataFiles.append('projectId', data.projectId);
                         
                         const appendFiles = (filesArray) => {
                         filesArray.forEach(file => {
                             const realFile = base64ToFile(file.content, file.name, file.type);
-                            formDataFiles.append('documents', realFile); // campo puede repetirse
+                            formDataFiles.append('documents', realFile);
                         });
                         };
-
                         if (afilesSend) appendFiles(afilesSend);
-                        if (efilesSend) appendFiles(efilesSend);
-                        
-                        console.log(efilesSend)
-                        console.log(formDataFiles)
+                        formDataFiles.append('tag', 'eticos');
                         const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
                             method: 'POST',                    
                             body: formDataFiles,
@@ -102,12 +98,37 @@ const  Anexos = ({option,setOption}) => {
                         const uploadData = await uploadResponse.json();
                         
                         if (uploadData.message == 'Documents uploaded successfully') {
-                            console.log("File uploaded successfully:", uploadData.message);
-                            navigate(`/VerFormulario/${data.projectId}`);
-                            indexedDB.deleteDatabase('Cicata');
+                            //console.log("File uploaded successfully 1:", uploadData.message);
                         } else {
                             console.warn("Upload succeeded but no confirmation message:", uploadData);
                         }
+                        //console.log("aqui va")
+                        const formDataEFiles = new FormData();
+                        const appendFiles2 = (filesArray) => {
+                        filesArray.forEach(file => {
+                            const realFile = base64ToFile(file.content, file.name, file.type);
+                            formDataEFiles.append('documents', realFile);
+                        });
+                        };
+                        formDataEFiles.append('projectId', data.projectId);
+                        formDataEFiles.append('tag', 'anexos');
+                        if (efilesSend) appendFiles2(efilesSend);
+                        const uploadResponseE = await fetch(`${apiUrl}/researchers/projects/upload`, {
+                            method: 'POST',                    
+                            body: formDataEFiles,
+                        });
+                        if (!uploadResponseE.ok) {
+                            throw new Error(`File upload failed: ${uploadResponseE.status}`);
+                        }
+    
+                        const uploadDataE = await uploadResponseE.json();
+                        if (uploadDataE.message == 'Documents uploaded successfully') {
+                            //console.log("File uploaded successfully 2:", uploadDataE.message);
+                        } else {
+                            //console.warn("Upload succeeded but no confirmation message:", uploadDataE);
+                        }
+                        navigate(`/VerFormulario/${data.projectId}`);
+                        indexedDB.deleteDatabase('Cicata');
                     } catch (uploadError) {
                         console.error("Error uploading file:", uploadError);
                         alert("El proyecto se creó, pero hubo un error al subir el archivo.");

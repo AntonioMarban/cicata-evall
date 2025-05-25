@@ -13,7 +13,7 @@ const Files = ({files}) => {
     <div className="flex flex-col">
         {Array.isArray(files.documents) && files.documents.map((file, index) => (
             <button className="cursor-pointer" key={index} onClick={() => handleViewFile(file.document)}>
-            Archivo {file.annexeId}
+            Archivo {file.annexeId} - {file.tag}
             </button>
         ))}
     </div>

@@ -338,7 +338,7 @@ BEGIN
     SET i = 0;
     SET total = JSON_LENGTH(p_budgetsJSON);
     WHILE i < total DO
-        INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id, budgetTypeId, budgetDate)
+        INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id, budgetTypeId, budgetDate, otherName)
         VALUES (
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].idType'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].idName'))),
@@ -347,7 +347,8 @@ BEGIN
             JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetTypeId'))),
             STR_TO_DATE(
             NULLIF(JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetDate'))), ''),
-            '%Y-%m-%d')
+            '%Y-%m-%d'),
+            JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].otherName')))
         );
         SET i = i + 1;
     END WHILE;
@@ -2410,7 +2411,7 @@ CREATE PROCEDURE getResultThirdStage(
 )
 BEGIN
     DECLARE sendingPending BOOLEAN DEFAULT FALSE;
-
+    DECLARE createDictum BOOLEAN DEFAULT FALSE;
     DECLARE v_result VARCHAR(50);
     DECLARE found INTEGER DEFAULT 1;
     DECLARE resultCursor CURSOR FOR
@@ -2437,7 +2438,14 @@ BEGIN
     THEN
         SET sendingPending = TRUE;
     END IF;
-    SELECT @finalResult, sendingPending;
+    IF (
+        (@finalResult = 'Aprobado' or @finalResult = 'No aprobado') 
+        AND (SELECT COUNT(*) FROM dictums WHERE project_id = p_projectId) = 0
+    )
+    THEN
+        SET createDictum = TRUE;
+    END IF;
+    SELECT @finalResult, sendingPending, createDictum;
 END //
 DELIMITER ;
 

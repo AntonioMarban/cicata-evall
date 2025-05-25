@@ -89,15 +89,17 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
                     <tr>
                         <th>No.</th>
                         <th>Nombre del objetivo</th>
+                        <th>Descripción</th>
                     </tr>
                 </thead>
                 <tbody className='table-form-body'>
-                    {/*{Array.isArray(scheduleActivities) && sObjectives.map((scheduleActivities, index) => (
-                    <tr>
+                    {Array.isArray(desglose.specificObjectives) && desglose.specificObjectives.map((sObjective, index) => (
+                    <tr key={index}>
                         <td>{index}</td>
-                        <td>{sObjectives.objective}</td>
+                        <td>{sObjective.objectiveName}</td>
+                        <td>{sObjective.objectiveDescription}</td>
                     </tr>
-                    ))}*/}
+                    ))}
                 </tbody>
         </table>
 
@@ -111,9 +113,9 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
                 </thead>
                 <tbody className='table-form-body'>
                     {Array.isArray(goals) && goals.map((goal, index) => (
-                        <tr>
+                        <tr key={index}>
                             <td>{index+1}</td>
-                            <td>{goal.name}</td>
+                            <td>{goal.goal}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -128,10 +130,10 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
                     </tr>
                 </thead>
                 <tbody className='table-form-body'>
-                    {Array.isArray(methodologies) && goals.map((methodology, index) => (
-                        <tr>
+                    {Array.isArray(methodologies) && methodologies.map((methodology, index) => (
+                        <tr key={index}>
                             <td>{index+1}</td>
-                            <td>{methodology.name}</td>
+                            <td>{methodology.methodology}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -141,13 +143,15 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
         <table className='BackgroundTable'>
             <thead className='table-form-header'>
                 <tr>
+                    <th>No.</th>
                     <th>Referencias</th>
                 </tr>
             </thead>
             <tbody className='table-form-body'>
                 {Array.isArray(references) && references.map((reference, index) => (
-                    <tr>
+                    <tr key={index}>
                         <td>{index+1}</td>
+                        <td>{reference.reference}</td>
                     </tr>
                 ))}
             </tbody>

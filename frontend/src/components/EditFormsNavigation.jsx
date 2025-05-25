@@ -15,6 +15,7 @@ import React, { useState } from 'react';
 import Anexos from '../EditForms/Anexos';
 import Deliverables from '../EditForms/DeliverablesView';
 import "../styles/formsnavigation.css"
+
 const FormsNavigation = () => {
   const [option, setOption] = useState(20);
   const mystyle = {

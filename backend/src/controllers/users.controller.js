@@ -97,15 +97,15 @@ const getProjectSummary = (req, res) => {
 const groupDeliverables = (deliverables) => {
     const deliverables1 = [
         'Tesis (Alumnos titulados)', 'Practicantes profesionales', 'Alumnos PIFI',
-        'Prestante de servicio social', 'Otro (especificar)'
+        'Prestante del servicio social', 'Otro (especificar)'
     ];
     const deliverables2 = [
         'Artículo de divulgación', 'Congresos', 'Cursos', 'Libros',
-        'Conferencias o ponencias', 'Artículo científico', 'Seminarios',
+        'Conferencias o ponencias', 'Artículos científico', 'Seminarios',
         'Manuales', 'Programas de Radio y/o TV', 'Otro, especificar'
     ];
     const deliverables3 = [
-        'Patente', 'Hardware', 'Prototipo', 'Certificado de invención',
+        'Proceso','Patente', 'Hardware', 'Prototipo', 'Certificado de inversión',
         'Software', 'Otro (especificar)'
     ];
 
@@ -249,7 +249,8 @@ const groupBudgets = (budgets) => {
             budgetTypeId: budget.budgetTypeId,
             name: budget.type_name || '',
             expenditure: budget.expenditure,
-            budgetDate: budget.budgetDate ? new Date(budget.budgetDate).toISOString().split('T')[0] : ''
+            budgetDate: budget.budgetDate ? new Date(budget.budgetDate).toISOString().split('T')[0] : '',
+            otherName: budget.otherName || ''
         });
     });
 
@@ -323,7 +324,7 @@ const getProjectDetails = (req, res) => {
                 justification: projectInfo[0]?.justification || '',
                 generalObjective: projectInfo[0]?.generalObjective || '',
                 hypothesis: projectInfo[0]?.hypothesis || '',
-                sObjectives: specificObjectives || []
+                specificObjectives: specificObjectives || []
             },
             idf25: {
                 idF: 25,

@@ -9,7 +9,7 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
     const initialFormValues = {
         name: "",
         associationDate: "",
-        projectType: "",
+        project_type: "",
         externalRegister: "",
         SIPRegister: ""
     };
@@ -22,7 +22,7 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
             setFormValues({
                 name: projectToEdit.name || "",
                 associationDate: projectToEdit.associationDate || "",
-                projectType: projectToEdit.projectType || "",
+                project_type: projectToEdit.project_type || "",
                 externalRegister: projectToEdit.externalRegister || "",
                 SIPRegister: projectToEdit.SIPRegister || ""
             });
@@ -111,13 +111,13 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                             <div className="form-complete-row">
                                 <p>Tipo de proyecto</p>
                                 <p className="form-subtext">(p.e. Tesis maestría, convocatoria interna innovación, convocatoria externa fronteras, etc.)
-                                    <br/>{newErrors.projectType && <span className="text-red-600">*{newErrors.projectType}</span>}
+                                    <br/>{newErrors.project_type && <span className="text-red-600">*{newErrors.project_type}</span>}
                                 </p>
                                 <input 
-                                    name="projectType" 
+                                    name="project_type" 
                                     className="form-pieza-input" 
                                     placeholder="Escribe el tipo de proyecto..."
-                                    value={formValues.projectType}
+                                    value={formValues.project_type}
                                     onChange={handleInputChange}
                                 />
                             </div>

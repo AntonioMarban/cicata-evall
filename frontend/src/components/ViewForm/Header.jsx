@@ -2,7 +2,6 @@ import "../../styles/viewcompleteforms.css"
 import logoCICATA from "../../assets/logoCICATA.svg"
 import LOGOIPN from "../../assets/logoIPN.svg"
 const Header = ({generalData}) => {  
-    console.log(generalData)
     return (
     <>
     <main className="background-header">

@@ -7,7 +7,7 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setData}) => {
     const [isOpen, setIsOpen] = useState(false)
     const initialValues = {
-        goalName: "",
+        goal: "",
     }
     const [goals, setGoals] = useState(initialValues)
     const [newErrors,setNewErrors] =  useState(initialValues);
@@ -22,7 +22,7 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
     useEffect(()=>{
         if (goalsToEdit){
             setGoals({
-                goalName: goalsToEdit.goalName || ""
+                goal: goalsToEdit.goal || ""
             });
             setIsOpen(true);
         }
@@ -73,12 +73,12 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Nombre de la Meta
-                                <br/>{newErrors.goalName && <span className="text-red-600">*{newErrors.goalName}</span>}
+                                <br/>{newErrors.goal && <span className="text-red-600">*{newErrors.goal}</span>}
                                 </p>
-                                <input name="goalName" 
+                                <input name="goal" 
                                        className="form-pieza-input" 
                                        placeholder="Escribe el nombre de la meta..."
-                                       value={goals.goalName}
+                                       value={goals.goal}
                                        onChange={handleInputChange}></input>
                             </div>
                             <div className="dialog-actions">

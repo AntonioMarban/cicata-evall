@@ -269,6 +269,9 @@ td {
     width: 50%;
     font-weight: 600;
 }
+.table-form-title-bold td{
+    font-weight: 600;
+}
 @media print {
     .div-button {
       display: none !important;

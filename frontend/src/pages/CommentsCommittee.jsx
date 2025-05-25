@@ -72,7 +72,7 @@ const CommentsCommittee = () => {
                 associationDate: "2025-05-15",
                 externalRegister: "erwer",
                 name: "werwe",
-                projectType: "werw"
+                project_type: "werw"
             }
         ]
     },

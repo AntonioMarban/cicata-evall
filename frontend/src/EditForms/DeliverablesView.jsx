@@ -106,7 +106,7 @@ const DeliverablesView = ({ option, setOption }) => {
     const handleOnSubmitFormBack = useSubmitFormBack(deliverables, setOption);
     const handleOnSubmitFormNext = useSubmitFormNext(deliverables, setOption);
     useLoadFormData(deliverables.idF, setDeliverables);
-    console.log(deliverables)
+    
     return (
     <div>
         <table className="table">
@@ -292,8 +292,8 @@ const DeliverablesView = ({ option, setOption }) => {
                         type="number"
                         min={0}
                         data-id={deliverable.id}
-                        data-index={index+7}
-                        value={deliverable.values?.[index+7] ?? ""}
+                        data-index={index+6}
+                        value={deliverable.values?.[index+6] ?? ""}
                         onChange={(e) => handleInputNumberChange(e, 'extras3', index)}
                     />
                     </td>
