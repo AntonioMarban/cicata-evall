@@ -21,11 +21,11 @@ export default function Project() {
     async function fetchProjectData() {
       try {
         if (!projectId) return;
-        const response = await fetch(`${apiUrl}/researchers/projects/${projectId}`);
+        const response = await fetch(`${apiUrl}/users/projects/${projectId}/summary`);
         const data = await response.json();
 
-        if (data.project && data.project.length > 0) {
-          setProjectData(data.project[0]);
+        if (data && data.length > 0) {
+          setProjectData(data[0]);
         }
 
       } catch (error) {

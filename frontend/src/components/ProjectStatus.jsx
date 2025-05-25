@@ -85,11 +85,11 @@ export default function ProjectStatus({ projectId }) {
       try {
         if (!projectId) return;
         const response = await fetch(
-          `${apiUrl}/researchers/projects/${projectId}`
+          `${apiUrl}/users/projects/${projectId}/summary`
         );
         const data = await response.json();
-        if (data.project && data.project.length > 0) {
-          setProjectData(data.project[0]);
+        if (data && data.length > 0) {
+          setProjectData(data[0]);
         }
       } catch (error) {
         console.error("Error fetching project:", error);
@@ -112,9 +112,7 @@ export default function ProjectStatus({ projectId }) {
   }, [stage1Completed, fetchStage2Evaluations]);
 
   useEffect(() => {
-    if (stage2Completed === 1) {
-      fetchStage3();
-    }
+    fetchStage3()
   }, [stage2Completed, fetchStage3]);
 
   if (loading) {
@@ -195,7 +193,7 @@ export default function ProjectStatus({ projectId }) {
     } catch (error) {
       console.error("Error en el PATCH de etapa 3:", error);
     } finally {
-      setSendingStage2(false);
+      setSendingStage3(false);
     }
   };
 
