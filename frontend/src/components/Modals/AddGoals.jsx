@@ -61,7 +61,7 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
         <>
             {!goalsToEdit && (
                 <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
-                    Agregar Meta
+                    Agregar meta
                 </button>
             )
             }
@@ -72,7 +72,7 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
                         <p className="dialog-title">{goalsToEdit ? "Editar meta" : "Agregar meta"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
-                                <p>Nombre de la Meta
+                                <p>Nombre de la meta
                                 <br/>{newErrors.goal && <span className="text-red-600">*{newErrors.goal}</span>}
                                 </p>
                                 <input name="goal" 

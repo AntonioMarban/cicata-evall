@@ -214,7 +214,7 @@ BEGIN
     INSERT INTO projects (
         title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary, introduction, background,
         statementOfProblem, justification, hypothesis, generalObjective, ethicalAspects, workWithHumans, workWithAnimals,
-        biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio,
+        biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
         otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification, formVersion,
         nextReview, preparedBy, reviewedBy, approvedBy, preparedDate, reviewedDate, approvedDate, 
         otherEducationalDeliverable, otherDiffusionDeliverable, otherCurrentBudget, otherInvestmentBudget
@@ -223,7 +223,7 @@ BEGIN
         p_title, p_startDate, p_endDate, p_typeResearch, p_topic, p_subtopic, p_alignmentPNIorODS, p_summary,
         p_introduction, p_background, p_statementOfProblem, p_justification, p_hypothesis, p_generalObjective,
         p_ethicalAspects, p_workWithHumans, p_workWithAnimals, p_biosecurityConsiderations, p_contributionsToIPNandCICATA,
-        p_conflictOfInterest, p_aditionalComments, p_folio,
+        p_conflictOfInterest, p_aditionalComments, p_folio, 'En revision',
         p_otherTypeResearch, p_alignsWithPNIorODS, p_hasCollaboration, p_collaborationJustification,
         '03', 'septiembre 2025', 'Leslie Olmedo Nieva', 'Leslie Olmedo Nieva', 'Paul Mondragón Terán',
         '2024-06-01', '2024-07-08', '2024-11-04', p_otherEducationalDeliverable, p_otherDiffusionDeliverable,
@@ -462,11 +462,12 @@ DELIMITER //
 CREATE PROCEDURE uploadDocument(
   IN p_document LONGBLOB,
   IN p_projectId INT,
-  IN p_tag VARCHAR(100)
+  IN p_tag VARCHAR(100),
+  IN p_filename VARCHAR(255)
 )
 BEGIN
-  INSERT INTO annexes (document, projectId, tag)
-  VALUES (p_document, p_projectId, p_tag);
+  INSERT INTO annexes (document, projectId, tag, filename)
+  VALUES (p_document, p_projectId, p_tag, p_filename);
 END //
 DELIMITER ;
 
@@ -477,6 +478,7 @@ BEGIN
     -- datos principales del proyecto
     SELECT
         p.title,
+        p.projectId,
         DATE_FORMAt(p.startDate, '%Y-%m-%d') AS startDate,
         DATE_FORMAT(p.endDate, '%Y-%m-%d') AS endDate,
         p.typeResearch, p.otherTypeResearch,
@@ -536,7 +538,7 @@ BEGIN
     -- deliverablesProjects
     SELECT
         dp.quantity,
-        d.deliverableId,
+        d.deliverableId as id,
         dt.deliverableTypeId,
         d.name
     FROM deliverablesProjects dp
@@ -561,10 +563,10 @@ BEGIN
 
     -- budgets
     SELECT 
-    * FROM 
-    budgets b 
-    INNER JOIN budgetTypes bt 
-    ON b.budgetTypeId = bt.budgetTypeId 
+    b.*, bt.type_name, bs.name AS section_name, bt.budgetSectionId
+    FROM budgets b 
+    INNER JOIN budgetTypes bt ON b.budgetTypeId = bt.budgetTypeId 
+    INNER JOIN budgetSections bs ON bt.budgetSectionId = bs.budgetSectionId
     WHERE b.project_id = p_projectId;
 
     -- goals
@@ -588,6 +590,11 @@ BEGIN
     FROM usersProjects up
     JOIN users u ON up.user_id = u.userId
     WHERE up.project_id = p_projectId;
+
+        -- annexes 
+    SELECT annexeId, tag, filename
+    FROM annexes
+    WHERE projectId = p_projectId;
 
 END //
 DELIMITER ;
@@ -1296,7 +1303,9 @@ BEGIN
     ELSE
         SELECT
             cu.userId,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            u.academicDegree,
+            u.email
         FROM committeeUsers cu
         JOIN users u ON cu.userId = u.userId
         WHERE committeeId = p_committeeId AND u.userType_id = 5 and active = true;
@@ -1854,6 +1863,7 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE getUsersByRole(IN p_userType_id INT)
 BEGIN
+    -- Validar que el tipo de usuario existe
     IF NOT EXISTS (
         SELECT 1 FROM userTypes
         WHERE userTypeId = p_userType_id
@@ -1861,14 +1871,34 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user type does not exist';
     END IF;
-    SELECT
-        u.userId,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
-        u.email
-    FROM
-        users u
-    WHERE
-        u.userType_id = p_userType_id AND u.active = true;
+
+    -- Si es presidente o secretario, unir con comité
+    IF p_userType_id = 3 || p_userType_id = 4 THEN
+        SELECT
+            u.userId,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            u.academicDegree,
+            u.email,
+            c.name AS committeeName
+        FROM
+            users u
+        JOIN committeeUsers cu ON u.userId = cu.userId
+        JOIN committees c ON cu.committeeId = c.committeeId
+        WHERE
+            u.userType_id = p_userType_id AND u.active = true;
+    ELSE
+        -- Para los demás tipos de usuario
+        SELECT
+            u.userId,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            u.academicDegree,
+            u.email,
+            u.userType_id
+        FROM
+            users u
+        WHERE
+            u.userType_id = p_userType_id AND u.active = true;
+    END IF;
 END //
 DELIMITER ;
 

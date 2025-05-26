@@ -125,6 +125,10 @@
     font-weight: 600;
     padding: 10px;
 }
+.participant-tag-title{
+    font-weight: 600;
+    padding: 10px; 
+}
 .participant-tag-data{
     display: flex;
     justify-content: center;

@@ -63,7 +63,7 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
         <>
             {!desgloseToEdit && (
                 <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
-                    Agregar Objetivo
+                    Agregar objetivo
                 </button>
             )
             }
@@ -74,7 +74,7 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                         <p className="dialog-title">{desgloseToEdit ? "Editar Objetivo Específico" : "Agregar Objetivo Específico"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
-                                <p>Nombre del Objetivo específico
+                                <p>Nombre del objetivo específico
                                 <br/>{newErrors.objectiveName && <span className="text-red-600">*{newErrors.objectiveName}</span>}
                                 </p>
                                 <input name="objectiveName" 
@@ -82,7 +82,7 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                                        placeholder="Escribe el nombre del objetivo..."
                                        value={objectiveSpe.objectiveName}
                                        onChange={handleInputChange}></input>
-                                <p>Descripcion del Objetivo específico
+                                <p>Descripcion del objetivo específico
                                 <br/>{newErrors.objectiveDescription && <span className="text-red-600">*{newErrors.objectiveDescription}</span>}
                                 </p>
                                 <input name="objectiveDescription" 

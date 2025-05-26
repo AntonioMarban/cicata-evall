@@ -65,7 +65,7 @@ CREATE TABLE `projects` (
   `conflictOfInterest` TEXT,
   `aditionalComments` TEXT,
   `folio` varchar(50),
-  `status` varchar(50)
+  `status` varchar(50) DEFAULT 'En revisión'
 );
 
 CREATE TABLE `deliverables` (
@@ -161,6 +161,7 @@ CREATE TABLE `usersProjects` (
 CREATE TABLE `annexes` (
   `annexeId` integer PRIMARY KEY AUTO_INCREMENT,
   `document` LONGBLOB,
+  `filename` VARCHAR(255),
   `projectId` integer
 );
 
@@ -224,12 +225,17 @@ CREATE TABLE `p_references` (
 CREATE TABLE `budgetTypes` (
   `budgetTypeId` integer PRIMARY KEY AUTO_INCREMENT,
   `type_name` varchar(150),
-  `description` varchar(255)
+  `budgetSectionId` INT
 );
 
 CREATE TABLE `customDeliverables` (
   `customDeliverables_id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255)
+);
+
+CREATE TABLE budgetSections (
+  `budgetSectionId` INT PRIMARY KEY AUTO_INCREMENT,
+  `name` VARCHAR(100)
 );
 
 ALTER TABLE `users` ADD FOREIGN KEY (`userType_id`) REFERENCES `userTypes` (`userTypeId`);
@@ -309,6 +315,10 @@ ALTER TABLE customDeliverables
 ADD COLUMN quantity INT,
 ADD COLUMN deliverableTypeId INT,
 ADD COLUMN project_id INT;
+
+ALTER TABLE budgetTypes
+ADD CONSTRAINT fk_budgetSections
+FOREIGN KEY (budgetSectionId) REFERENCES budgetSections(budgetSectionId);
 
 ALTER TABLE annexes ADD COLUMN tag VARCHAR(100);
 

@@ -35,7 +35,7 @@ const  Projects = ({option,setOption}) => {
         <div>
             <div className="flex flex-col justify-between">
                 <div>
-                    <p className="text-[22px]">Proyectos Asociados</p>
+                    <p className="text-[22px]">Proyectos asociados</p>
                 </div>
                 <div className="rounded-lg p-0 w-full">
                     <div className="flex justify-between !p-2">

@@ -62,7 +62,7 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
         <>
             {!referencesToEdit && (
                 <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
-                    Agregar Referencia
+                    Agregar referencia
                 </button>
             )
             }
@@ -73,7 +73,7 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
                         <p className="dialog-title">{referencesToEdit ? "Editar Referencia" : "Agregar Referencia"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
-                                <p>Nombre de la Referencia
+                                <p>Nombre de la referencia
                                 <br/>{newErrors.reference && <span className="text-red-600">*{newErrors.reference}</span>}
                                 </p>
                                 <input name="reference" 

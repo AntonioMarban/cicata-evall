@@ -1,7 +1,6 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
 const ViewGeneralData = ({generalData,associatedProjects}) => { 
-    console.log(associatedProjects)
     return (
     <>
     <table className='BackgroundTable'>

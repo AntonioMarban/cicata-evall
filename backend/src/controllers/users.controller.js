@@ -127,7 +127,7 @@ const groupDeliverables = (deliverables) => {
 
         if (!grouped[group].has(key)) {
             grouped[group].set(key, {
-                deliverableId: item.deliverableId,
+                id: item.id,
                 name: item.name,
                 values: {}
             });
@@ -240,17 +240,22 @@ const groupBudgets = (budgets) => {
         // Externas
         23: 'externas'
     };
-
     budgets.forEach(budget => {
         const groupKey = typeMap[budget.budgetTypeId];
         if (!groupKey) return;
 
         grouped[groupKey].push({
             budgetTypeId: budget.budgetTypeId,
-            name: budget.type_name || '',
+            idType: budget.budgetSectionId,
+            name: budget.type_name || budget.name || '',
+            nameType: budget.section_name || '',
             expenditure: budget.expenditure,
+            //idType: budget.budgetstId,
             budgetDate: budget.budgetDate ? new Date(budget.budgetDate).toISOString().split('T')[0] : '',
-            otherName: budget.otherName || ''
+            otherName: budget.otherName || '',
+            investmentExpenditure: budget.investmentExpenditure || 0,
+            project_id: budget.project_id || null,
+            budgetSectionId: budget.budgetSectionId || ''
         });
     });
 
@@ -282,25 +287,30 @@ const getProjectDetails = (req, res) => {
             goals,
             methodologies,
             references,
-            investigator
+            investigator,
+            annexes
         ] = results;
 
         // todo se obtiene como arreglos de objetos(esto de los arreglos le ahorraba tiempo a Gordinho)
         const grouped = groupDeliverables(deliverables || []);
+        const groupedBudgets = groupBudgets(budgets || []);
+        console.log(groupedBudgets)
         const response = {
             idf20: {
                 idF: 20,
                 title: projectInfo[0]?.title || '',
+                projectId: projectInfo[0]?.projectId || '',
                 startDate: projectInfo[0]?.startDate || '',
                 endDate: projectInfo[0]?.endDate || '',
                 folio: projectInfo[0]?.folio || '',
-                typeResearch: projectInfo[0]?.typeResearch || '',
+                typeResearch: parseInt(projectInfo[0]?.typeResearch) || '',
                 alignmentPNIorODS: projectInfo[0]?.alignmentPNIorODS || '',
                 alignsWithPNIorODS: projectInfo[0]?.alignsWithPNIorODS || '',
                 otherTypeResearch: projectInfo[0]?.otherTypeResearch || '',
                 subtopic: projectInfo[0]?.subtopic || '',
                 summary: projectInfo[0]?.summary || '',
-                topic: projectInfo[0]?.topic || ''
+                topic: projectInfo[0]?.topic || '',
+                status: projectInfo[0]?.status || ''
             },
             idf21: {
                 idF: 21,
@@ -359,7 +369,7 @@ const getProjectDetails = (req, res) => {
             },
             idf31: {
                 idF: 31,
-                budgets: groupBudgets(budgets || [])
+                budgets: groupedBudgets || []
             },
             idf32: {
                 idF: 32,
@@ -380,7 +390,11 @@ const getProjectDetails = (req, res) => {
                 reviewedDate: projectInfo[0]?.reviewedDate || '',
                 approvedDate: projectInfo[0]?.approvedDate || ''
             },
-            investigator: investigator.length > 0 ? investigator[0] : null
+            investigator: investigator.length > 0 ? investigator[0] : null,
+            idf35: {
+                idF: 35,
+                annexes: annexes || []
+            }
         };
 
         res.status(200).json(response);

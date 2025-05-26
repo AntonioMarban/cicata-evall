@@ -501,34 +501,40 @@ VALUES
 (35000, 'Publicidad y difusión', 20000, 7), 
 (40000, 'Otros gastos', 40300, 8);
 
+INSERT INTO budgetSections (name) VALUES
+('Gasto de Inversión'),
+('Gasto Corriente'),
+('Obtención presupuesto interno'),
+('Obtención presupuesto externo');
+
 -- budgetTypes
-INSERT INTO budgetTypes (type_name, description) VALUES 
+INSERT INTO budgetTypes (type_name, budgetSectionId) VALUES 
 -- Primera tabla
-('Equipo de laboratorio', 'Gasto de Inversion'),
-('Equipo de cómputo', 'Gasto de Inversion'),
-('Herramientas y accesorios', 'Gasto de Inversion'),
-('Otros (especifique)', 'Gasto de Inversion'),
-('Artículos, materiales y útiles diversos', 'Gasto Corriente'),
-('Gastos de trabajo de campo', 'Gasto Corriente'),
-('Difusión de los resultados de investigación', 'Gasto Corriente'),
-('Pago por servicios externos', 'Gasto Corriente'),
-('Viáticos, pasajes y gastos de transportación', 'Gasto Corriente'),
-('Gastos de atención a profesores visitantes, técnicos o expertos visitantes', 'Gasto Corriente'),
-('Compra de libros y suscripción a revistas', 'Gasto Corriente'),
-('Gastos de publicación en revistas nacionales e internacionales', 'Gasto Corriente'),
-('Registro de patentes y propiedad intelectual', 'Gasto Corriente'),
-('Validación de concepto tecnológico', 'Gasto Corriente'),
-('Animales para protocolos de investigación', 'Gasto Corriente'),
-('Otros (especifique)', 'Gasto Corriente'),
+('Equipo de laboratorio', 1),
+('Equipo de cómputo', 1),
+('Herramientas y accesorios', 1),
+('Otros (especifique)', 1),
+('Artículos, materiales y útiles diversos', 2),
+('Gastos de trabajo de campo', 2),
+('Difusión de los resultados de investigación', 2),
+('Pago por servicios externos', 2),
+('Viáticos, pasajes y gastos de transportación', 2),
+('Gastos de atención a profesores visitantes, técnicos o expertos visitantes', 2),
+('Compra de libros y suscripción a revistas', 2),
+('Gastos de publicación en revistas nacionales e internacionales', 2),
+('Registro de patentes y propiedad intelectual', 2),
+('Validación de concepto tecnológico', 2),
+('Animales para protocolos de investigación', 2),
+('Otros (especifique)', 2),
 -- Segunda tabla
-('Proyectos de investigacion cientifica y desarrollo tecnologico', 'Internas'),
-('Proyectos de Investigación en el Programa Especial de Consolidación de Investigadores', 'Internas'),
-('Proyectos de Desarrollo Tecnológico o Innovación en el IPN', 'Internas'),
-('Proyectos de Investigación Multidisciplinarios y Transdisciplinarios de Investigación Científica y Desarrollo Tecnológico', 'Internas'),
-('Proyecto transdiciplinario', 'Internas'),
-('Proyectos de Desarrollo Tecnológico o Innovación para alumnos del IPN', 'Internas'),
-('Externas', 'Externas'),
-('Otros (especifique)', 'Internas');
+('Proyectos de Investigación Científica y Desarrollo Tecnológico', 3),
+('Proyectos de Investigación en el Programa Especial de Consolidación de Investigadores', 3),
+('Proyectos de Desarrollo Tecnológico o Innovación en el IPN', 3),
+('Proyectos de Investigación Multidisciplinarios y Transdisciplinarios de Investigación Científica y Desarrollo Tecnológico', 3),
+('Proyecto transdiciplinario', 3),
+('Proyectos de Desarrollo Tecnológico o Innovación para alumnos del IPN', 3),
+('Externas', 4),
+('Otros (especifique)', 3);
 
 
 -- members

@@ -16,7 +16,7 @@ const Activities = ({scheduleActivities}) => {
                     </tr>
                 </thead>
                 <tbody className='table-form-body'>
-                {Array.isArray(scheduleActivities) && scheduleActivities.map((scheduleActivity, index) => (
+                {Array.isArray(scheduleActivities.scheduleActivities) && scheduleActivities.scheduleActivities.map((scheduleActivity, index) => (
                     <tr key={index}>
                         <td>{index+1}</td>
                         <td>{scheduleActivity.goal}</td>

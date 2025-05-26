@@ -74,7 +74,6 @@ const  EthicalAsp = ({option,setOption}) => {
         )
     },[filesSend])
 
-    console.log(ethicalAsp)
     useLoadFormData(ethicalAsp.idF,setEthicalAsp);
     return (
         <div>
