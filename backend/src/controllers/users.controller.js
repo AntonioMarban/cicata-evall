@@ -249,6 +249,7 @@ const groupBudgets = (budgets) => {
         budgetTypeId: budget.budgetTypeId,
         idType: budget.budgetSectionId,
         nameType: budget.type_name || budget.name || '',
+        nameSection: budget.section_name || '',
         expenditure: budget.expenditure,
         //idType: budget.budgetstId,
         budgetDate: budget.budgetDate ? new Date(budget.budgetDate).toISOString().split('T')[0] : '',
