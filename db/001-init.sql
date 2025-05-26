@@ -214,7 +214,7 @@ BEGIN
     INSERT INTO projects (
         title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary, introduction, background,
         statementOfProblem, justification, hypothesis, generalObjective, ethicalAspects, workWithHumans, workWithAnimals,
-        biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio,
+        biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
         otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification, formVersion,
         nextReview, preparedBy, reviewedBy, approvedBy, preparedDate, reviewedDate, approvedDate, 
         otherEducationalDeliverable, otherDiffusionDeliverable, otherCurrentBudget, otherInvestmentBudget
@@ -223,7 +223,7 @@ BEGIN
         p_title, p_startDate, p_endDate, p_typeResearch, p_topic, p_subtopic, p_alignmentPNIorODS, p_summary,
         p_introduction, p_background, p_statementOfProblem, p_justification, p_hypothesis, p_generalObjective,
         p_ethicalAspects, p_workWithHumans, p_workWithAnimals, p_biosecurityConsiderations, p_contributionsToIPNandCICATA,
-        p_conflictOfInterest, p_aditionalComments, p_folio,
+        p_conflictOfInterest, p_aditionalComments, p_folio, 'En revision',
         p_otherTypeResearch, p_alignsWithPNIorODS, p_hasCollaboration, p_collaborationJustification,
         '03', 'septiembre 2025', 'Leslie Olmedo Nieva', 'Leslie Olmedo Nieva', 'Paul Mondragón Terán',
         '2024-06-01', '2024-07-08', '2024-11-04', p_otherEducationalDeliverable, p_otherDiffusionDeliverable,
@@ -462,11 +462,12 @@ DELIMITER //
 CREATE PROCEDURE uploadDocument(
   IN p_document LONGBLOB,
   IN p_projectId INT,
-  IN p_tag VARCHAR(100)
+  IN p_tag VARCHAR(100),
+  IN p_filename VARCHAR(255)
 )
 BEGIN
-  INSERT INTO annexes (document, projectId, tag)
-  VALUES (p_document, p_projectId, p_tag);
+  INSERT INTO annexes (document, projectId, tag, filename)
+  VALUES (p_document, p_projectId, p_tag, p_filename);
 END //
 DELIMITER ;
 

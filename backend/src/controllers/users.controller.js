@@ -247,13 +247,13 @@ const groupBudgets = (budgets) => {
 
         grouped[groupKey].push({
         budgetTypeId: budget.budgetTypeId,
+        budgetSectionId: budget.budgetSectionId,
         name: budget.type_name || budget.name || '',
         expenditure: budget.expenditure,
         //idType: budget.budgetstId,
         budgetDate: budget.budgetDate ? new Date(budget.budgetDate).toISOString().split('T')[0] : '',
         otherName: budget.otherName || '',
         investmentExpenditure: budget.investmentExpenditure || 0,
-        description: budget.description || '',
         project_id: budget.project_id || null
         });
     });
@@ -306,7 +306,8 @@ const getProjectDetails = (req, res) => {
                 otherTypeResearch: projectInfo[0]?.otherTypeResearch || '',
                 subtopic: projectInfo[0]?.subtopic || '',
                 summary: projectInfo[0]?.summary || '',
-                topic: projectInfo[0]?.topic || ''
+                topic: projectInfo[0]?.topic || '',
+                status: projectInfo[0]?.status || ''
             },
             idf21: {
                 idF: 21,

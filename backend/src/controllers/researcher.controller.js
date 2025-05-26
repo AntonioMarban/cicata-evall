@@ -165,6 +165,7 @@ const uploadDocuments = (req, res) => {
     const query = 'CALL uploadDocument(?, ?, ?)';
 
     documents.forEach((doc) => {
+        const filename = doc.originalname.split('.').slice(0, -1).join('.')
         pool.query(query, [doc.buffer, projectId, tag], (err, result) => {
             if (err) {
                 console.error(err);
