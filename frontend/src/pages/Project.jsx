@@ -7,7 +7,6 @@ import ProjectProgress from "../components/ProjectProgress";
 import ProjectEvaluations from "../components/ProjectEvaluations";
 
 const apiUrl = import.meta.env.VITE_API_URL;
-const userType = Number(localStorage.getItem("userType"))
 
 export default function Project() {
   const location = useLocation();
@@ -16,18 +15,30 @@ export default function Project() {
 
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userType, setUserType] = useState(localStorage.getItem("userType"));
+
+  useEffect(() => {
+    // Actualizar userType si cambia en localStorage
+    const handleStorageChange = () => {
+      setUserType(localStorage.getItem("userType"));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   useEffect(() => {
     async function fetchProjectData() {
       try {
         if (!projectId) return;
-        const response = await fetch(`${apiUrl}/users/projects/${projectId}/summary`);
+        const response = await fetch(
+          `${apiUrl}/users/projects/${projectId}/summary`
+        );
         const data = await response.json();
 
         if (data && data.length > 0) {
           setProjectData(data[0]);
         }
-
       } catch (error) {
         console.error("Error fetching project data:", error);
       } finally {
@@ -58,9 +69,11 @@ export default function Project() {
         />
 
         {/* Vistas condicionales por tipo de usuario */}
-        {userType === 2 && <ProjectStatus projectId={projectId} />}
-        {userType === 1 && <ProjectProgress projectId={projectId} />}
-        {(userType === 3 || userType === 4) && <ProjectEvaluations projectId={projectId} />}
+        {userType === "2" && <ProjectStatus projectId={projectId} />}
+        {userType === "1" && <ProjectProgress projectId={projectId} />}
+        {(userType === "3" || userType === "4") && (
+          <ProjectEvaluations projectId={projectId} />
+        )}
       </main>
     </div>
   );
