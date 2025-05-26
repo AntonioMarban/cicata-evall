@@ -536,7 +536,7 @@ BEGIN
     -- deliverablesProjects
     SELECT
         dp.quantity,
-        d.deliverableId,
+        d.deliverableId as id,
         dt.deliverableTypeId,
         d.name
     FROM deliverablesProjects dp
