@@ -1302,7 +1302,8 @@ BEGIN
     ELSE
         SELECT
             cu.userId,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            u.academicDegree
         FROM committeeUsers cu
         JOIN users u ON cu.userId = u.userId
         WHERE committeeId = p_committeeId AND u.userType_id = 5 and active = true;

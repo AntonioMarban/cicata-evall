@@ -38,53 +38,61 @@ const AccountTables = ({ users, showCommittee }) => {
         }
         setIsLoading(false);
         closeModal();
+        window.location.reload();
     }
 
 
     return (
         <>
-            <div className="overflow-x-auto mb-6!">
-                <table className="min-w-full ">
-                    <thead>
-                        <tr className="text-gray-400">
-                            <th className="py-2! px-4! text-left">Nombre</th>
-                            <th className="py-2! px-4! text-left">Grado académico</th>
-                            <th className="py-2! px-4! text-left">Email</th>
-                            {showCommittee && <th className="py-2! px-4! text-left">Comité</th>}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user) => (
-                            <tr key={user.userId} className="hover:bg-gray-50">
-                                <td className="py-2! px-4! text-left!">{user.fullName}</td>
-                                <td className="py-2! px-4! text-left!">{user.academicDegree}</td>
-                                <td className="py-2! px-4! text-left!">{user.email}</td>
-                                {showCommittee && <td className="py-2! px-4! text-left!">{user.committeeName}</td>}
-                                <td className="py-2! px-4! text-left!">{user.userType_id}</td>
-                                <td className="py-2! px-4! text-left!">
-                                        <button
-                                            className="text-white rounded-lg cursor-pointer px-3! py-1! mr-3! mb-1! bg-[#5CB7E6] hover:bg-[#1591D1]"
-                                            onClick={() => console.log(`Editar usuario con ID: ${user.userId}`)}
-                                        >
-                                            Editar <Pencil className="inline" />
-                                        </button>
-                                        {/* Reglas para mostrar el botón Eliminar */}
-                                        {(user.userType_id === 1 // Investigadores
-                                        || (user.userId === currentUserId && currentUserType === 2 && adminUsers.length > 1)) // Eliminarse a sí mismo como admin si hay más de uno
-                                        ? (
-                                            <button
-                                                className="text-white rounded-lg cursor-pointer px-3! py-1! bg-red-500 hover:bg-red-600"
-                                                onClick={() => openModal(user.userId)}
-                                            >
-                                                Eliminar <Trash className="inline" />
-                                            </button>
-                                        ) : null}
-                                    </td>
+            {users.length === 0 ? (
+                <div className="text-left text-gray-600 py-10!">
+                    <p className="text-lg font-medium">No hay usuarios disponibles para mostrar.</p>
+                    <p className="text-sm">Agrega nuevos usuarios para poderse mostrar aquí.</p>
+                </div>
+            ) : (
+                <div className="overflow-x-auto mb-6!">
+                    <table className="min-w-full ">
+                        <thead>
+                            <tr className="text-gray-400">
+                                <th className="py-2! px-4! text-left">Nombre</th>
+                                <th className="py-2! px-4! text-left">Grado académico</th>
+                                <th className="py-2! px-4! text-left">Email</th>
+                                {showCommittee && <th className="py-2! px-4! text-left">Comité</th>}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            {users.map((user) => (
+                                <tr key={user.userId} className="hover:bg-gray-50">
+                                    <td className="py-2! px-4! text-left!">{user.fullName}</td>
+                                    <td className="py-2! px-4! text-left!">{user.academicDegree}</td>
+                                    <td className="py-2! px-4! text-left!">{user.email}</td>
+                                    {showCommittee && <td className="py-2! px-4! text-left!">{user.committeeName}</td>}
+                                    <td className="py-2! px-4! text-left!">{user.userType_id}</td>
+                                    <td className="py-2! px-4! text-left!">
+                                            <button
+                                                className="text-white rounded-lg cursor-pointer px-3! py-1! mr-3! mb-1! bg-[#5CB7E6] hover:bg-[#1591D1]"
+                                                onClick={() => console.log(`Editar usuario con ID: ${user.userId}`)}
+                                            >
+                                                Editar <Pencil className="inline" />
+                                            </button>
+                                            {/* Reglas para mostrar el botón Eliminar */}
+                                            {(user.userType_id === 1 // Investigadores
+                                            || (user.userId === currentUserId && currentUserType === 2 && adminUsers.length > 1)) // Eliminarse a sí mismo como admin si hay más de uno
+                                            ? (
+                                                <button
+                                                    className="text-white rounded-lg cursor-pointer px-3! py-1! bg-red-500 hover:bg-red-600"
+                                                    onClick={() => openModal(user.userId)}
+                                                >
+                                                    Eliminar <Trash className="inline" />
+                                                </button>
+                                            ) : null}
+                                        </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
 
             {/* Modal de Confirmación */}
             <Dialog open={isOpen} onClose={closeModal} className="relative z-50">

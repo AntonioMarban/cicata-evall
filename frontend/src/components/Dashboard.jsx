@@ -64,7 +64,18 @@ function Dashboard({ projectCards }) {
 
   return (
     <main className="dashboard-main">
-      <h1 className="dashboard-title">¡Hola, {userFullName}!</h1>
+      <div id="header" className="dashboard-header flex justify-between items-center">
+        <h1 className="dashboard-title">¡Hola, {userFullName}!</h1>
+        { userType === 1 && (
+          <button
+            className="dashboard-button text-white rounded-lg cursor-pointer p-3! bg-[#5CB7E6] hover:bg-[#1591D1]"
+            onClick={() => navigate("/CrearProyecto")}
+          >
+            + Crear proyecto
+          </button>
+        )}
+      </div>
+      
 
       {projectCards.length === 0 ? (
         <p className="empty-message">{getEmptyMessage()}</p>
