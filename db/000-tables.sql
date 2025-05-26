@@ -65,7 +65,7 @@ CREATE TABLE `projects` (
   `conflictOfInterest` TEXT,
   `aditionalComments` TEXT,
   `folio` varchar(50),
-  `status` varchar(50)
+  `status` varchar(50) DEFAULT 'En revisión'
 );
 
 CREATE TABLE `deliverables` (
