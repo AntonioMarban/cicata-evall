@@ -1,9 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import "../styles/projectstatus.css";
 
-const apiUrl = import.meta.env.VITE_API_URL;
-
 export default function ProjectStatus({ projectId }) {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
 
