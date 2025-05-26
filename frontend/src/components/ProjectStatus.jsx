@@ -21,10 +21,12 @@ export default function ProjectStatus({ projectId }) {
   const [finalResult, setFinalResult] = useState(null);
   const [sendingStage3, setSendingStage3] = useState(false);
   const [sendingPendingResearcher, setSendingPendingResearcher] = useState(0);
+  const [folioDictamen, setFolioDictamen] = useState("");
 
   // Control Variables
   const [jumpThirdStage, setJumpThirdStage] = useState(0);
   const [sendingPending, setSendingPending] = useState(0);
+  const [createDictum, setCreateDictum] = useState(0);
 
   const fetchStage1Evaluations = useCallback(async () => {
     try {
@@ -74,6 +76,7 @@ export default function ProjectStatus({ projectId }) {
       if (data) {
         setFinalResult(data["@finalResult"]);
         setSendingPendingResearcher(data.sendingPending);
+        setCreateDictum(data.createDictum);
       }
     } catch (error) {
       console.error("Error fetching stage 3:", error);
@@ -112,7 +115,7 @@ export default function ProjectStatus({ projectId }) {
   }, [stage1Completed, fetchStage2Evaluations]);
 
   useEffect(() => {
-    fetchStage3()
+    fetchStage3();
   }, [stage2Completed, fetchStage3]);
 
   if (loading) {
@@ -148,7 +151,6 @@ export default function ProjectStatus({ projectId }) {
   };
 
   const handleSendStage2 = async () => {
-    console.log("hola");
     try {
       setSendingStage2(true);
       const response = await fetch(
@@ -173,7 +175,6 @@ export default function ProjectStatus({ projectId }) {
   };
 
   const handleSendStage3 = async () => {
-    console.log("hola");
     try {
       setSendingStage3(true);
       const response = await fetch(
@@ -187,6 +188,9 @@ export default function ProjectStatus({ projectId }) {
       );
       if (response.ok) {
         await fetchStage3();
+        if (createDictum === 1) {
+          await handleCreateDictum();
+        }
       } else {
         console.error("Error en el envío de evaluación etapa 3.");
       }
@@ -194,6 +198,35 @@ export default function ProjectStatus({ projectId }) {
       console.error("Error en el PATCH de etapa 3:", error);
     } finally {
       setSendingStage3(false);
+    }
+  };
+
+  const handleCreateDictum = async () => {
+    try {
+      const authorizerId = Number(localStorage.getItem("userIaad"));
+      if (!authorizerId || !folioDictamen) {
+        console.error(`Folio o authorizerId no disponibles.`);
+        return;
+      }
+      const body = {
+        folio: folioDictamen,
+        authorizerId: authorizerId,
+      };
+      const response = await fetch(
+        `${apiUrl}/subdirectorade/projects/${projectId}/dictum`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+      if (!response.ok) {
+        console.error("Error en el envío de dictamen final.");
+      }
+    } catch (error) {
+      console.error("Error en el POST de dictamen final:", error);
     }
   };
 
@@ -335,6 +368,18 @@ export default function ProjectStatus({ projectId }) {
               ? "El resultado de este proyecto aún no ha sido enviado al investigador."
               : ""}
           </p>
+          {createDictum === 1 && sendingPendingResearcher === 1 && (
+            <div className="dictum-input-form">
+              <label htmlFor="folio-dictamen">Folio de dictamen final:</label>
+              <input
+                id="folio-dictamen"
+                type="text"
+                value={folioDictamen}
+                onChange={(e) => setFolioDictamen(e.target.value)}
+                placeholder="Escribe el folio aquí"
+              />
+            </div>
+          )}
           <button
             className={`stage-button ${
               sendingStage3

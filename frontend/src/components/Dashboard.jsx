@@ -18,7 +18,7 @@ function formatFecha(fechaISO) {
 function Dashboard({ projectCards }) {
   const [userFullName, setUserFullName] = useState("");
   const [userType, setUserType] = useState(null);
-  const navigate = useNavigate(); // <-- nuevo
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const nameFromStorage = localStorage.getItem("userFullName") || "Usuario";
