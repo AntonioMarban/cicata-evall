@@ -19,7 +19,7 @@ function Sidebar() {
   const [userType, setUserType] = useState(localStorage.getItem("userType"));
 
   const handleLogout = () => {
-    localStorage.clear(); 
+    localStorage.clear();
     navigate("/");
     window.location.reload(); // force reload to reflect changes
   };
@@ -62,15 +62,6 @@ function Sidebar() {
         >
           <LogOut /> Salir
         </Button>
-        <button
-          className="w-full py-2! text-lg text-[#1591D1] hover:text-[#2C4A90] text-left break-words flex gap-2 items-center justify-start whitespace-normal"
-          onClick={() => {
-            localStorage.clear();
-            window.location.href = "/";
-          }}
-        >
-          <LogOut /> Cerrar sesión
-        </button>
       </div>
     </aside>
   );

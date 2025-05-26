@@ -3,21 +3,33 @@ import Dashboard from "../components/Dashboard";
 
 export default function HomePage() {
   const [projectCards, setProjectCards] = useState([]);
+  const [userId, setUserId] = useState(localStorage.getItem("userId"));
+  const [userType, setUserType] = useState(localStorage.getItem("userType"));
+  const [committeeId, setCommitteeId] = useState(
+    localStorage.getItem("committeeId")
+  );
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setUserId(localStorage.getItem("userId"));
+      setUserType(localStorage.getItem("userType"));
+      setCommitteeId(localStorage.getItem("committeeId"));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const userId = localStorage.getItem("userId");
-      const userType = localStorage.getItem("userType");
-      const committeeId = localStorage.getItem("committeeId");
-      const apiUrl = import.meta.env.VITE_API_URL;
-
       if (!userId || !apiUrl || !userType) {
         console.error("Missing userId, userType, or apiUrl");
         return;
       }
 
       let endpoint = "";
-      console.log(userType)
+      console.log(userType);
       switch (parseInt(userType)) {
         case 1:
           endpoint = `/researchers/${userId}/projects/active`;
@@ -59,7 +71,7 @@ export default function HomePage() {
 
         const data = await response.json();
         // Transform data to the format expected by Dashboard component
-        console.log(data)
+        console.log(data);
         const formattedCards = data.map((project) => ({
           projectId: project.projectId,
           title: project.title,
@@ -68,9 +80,8 @@ export default function HomePage() {
           endDate: project.endDate,
           folio: project.folio,
           status: project.status,
-          notification: project.notification
+          notification: project.notification,
         }));
-        
 
         setProjectCards(formattedCards);
       } catch (error) {
