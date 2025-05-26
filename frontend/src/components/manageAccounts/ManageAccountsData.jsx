@@ -68,16 +68,39 @@ const ManageAccountsData = ({ accountTypeToManage }) => {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        if (userType_id) {
-            console.log("Fetching users with userType_id:", userType_id);
-            fetch(`${apiUrl}/subdirectorade/users?userType_id=${userType_id}`)
-                .then(res => res.json())
-                .then(data => {
-                    setUsers(data);
-                })
-                .catch(err => console.error("Error al obtener usuarios:", err));
-        }
-    }, [userType_id]);
+        const fetchUsers = async () => {
+            const userType = parseInt(localStorage.getItem("userType"));
+            const userId = parseInt(localStorage.getItem("userId"));
+            const committeeId = parseInt(localStorage.getItem("committeeId"));
+
+            try {
+                let response;
+
+                if (userType === 3 || userType === 4) {
+                    if (!committeeId || !userId) {
+                        console.error("Faltan committeeId o userId para obtener los miembros del comité");
+                        return;
+                    }
+
+                    console.log("Sí entra aquí");
+
+                    const url = `${apiUrl}/committees/${committeeId}/secretaries/${userId}/members`;
+                    response = await fetch(url);
+                } else {
+                    const url = `${apiUrl}/subdirectorade/users?userType_id=${userType_id}`;
+                    response = await fetch(url);
+                }
+
+                const data = await response.json();
+                setUsers(data);
+            } catch (err) {
+                console.error("Error al obtener usuarios:", err);
+            }
+        };
+
+        fetchUsers();
+    }, [userType_id, accountTypeToManage]);
+
 
 
     return (
