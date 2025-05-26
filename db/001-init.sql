@@ -478,6 +478,7 @@ BEGIN
     -- datos principales del proyecto
     SELECT
         p.title,
+        p.projectId,
         DATE_FORMAt(p.startDate, '%Y-%m-%d') AS startDate,
         DATE_FORMAT(p.endDate, '%Y-%m-%d') AS endDate,
         p.typeResearch, p.otherTypeResearch,
@@ -562,7 +563,7 @@ BEGIN
 
     -- budgets
     SELECT 
-    b.*, bt.type_name, bs.name AS section_name
+    b.*, bt.type_name, bs.name AS section_name, bt.budgetSectionId
     FROM budgets b 
     INNER JOIN budgetTypes bt ON b.budgetTypeId = bt.budgetTypeId 
     INNER JOIN budgetSections bs ON bt.budgetSectionId = bs.budgetSectionId

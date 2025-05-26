@@ -194,7 +194,7 @@ const getProjectDocuments = (req, res) => {
         filename: row.filename,
         document: row.document ? Buffer.from(row.document).toString('base64') : null
       }));
-  
+      console.log(documents)
       res.status(200).json({ documents });
     });
 };
@@ -246,7 +246,7 @@ const updateProject = (req, res) => {
     extras2 = null,
     extras3 = null,
   } = req.body;
-
+  console.log("Holaaaaaa")
   const sql = `CALL updateProject(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
@@ -303,7 +303,7 @@ const updateProject = (req, res) => {
       console.error('Error al actualizar el proyecto:', err);
       return res.status(500).json({ error: 'Error al actualizar el proyecto' });
     }
-    return res.status(200).json({ message: 'Proyecto actualizado correctamente' });
+    return res.status(200).json({ message: 'Proyecto actualizado correctamente',projectId: values[0] });
   });
 };
 

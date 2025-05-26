@@ -103,8 +103,9 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
             setIsOpen(true);
         }
     }, [budgetToEdit])
+    console.log("hola",budgetForm)
     useEffect(()=>{
-        if(budgetForm.investmentExpenditure.nameType === "Gasto de Inversión"){
+        if(budgetForm.investmentExpenditure.idType === 1){
             setTypeToShow([
                 {budgetTypeId: 1, name: "Equipo de laboratorio"},
                 {budgetTypeId: 2, name: "Equipo de cómputo"},
@@ -112,7 +113,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                 {budgetTypeId: 4, name:  "Otros (especifique)"}
               ])
         }
-        else if(budgetForm.investmentExpenditure.nameType === "Gasto Corriente"){
+        else if(budgetForm.investmentExpenditure.idType === 2){
             setTypeToShow([
                 {budgetTypeId: 5, name: "Artículos, materiales y útiles diversos"},
                 {budgetTypeId: 6, name: "Gastos de trabajo de campo"},
@@ -128,7 +129,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                 {budgetTypeId: 16,  name: "Otros (especifique)"}
               ])
         }
-        else if(budgetForm.investmentExpenditure.nameType === "Obtención presupuesto interno"){
+        else if(budgetForm.investmentExpenditure.idType === 3){
             setTypeToShow([
                 {budgetTypeId: 17, name:"Proyectos de Investigación Científica y Desarrollo Tecnológico"},
                 {budgetTypeId: 18, name:"Proyectos de Investigación en el Programa Especial de Consolidación de Investigadores"},
@@ -139,7 +140,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                 {budgetTypeId: 24, name:"Otros (especifique)"}
               ])
         }
-        else if(budgetForm.investmentExpenditure.nameType === "Obtención presupuesto externo"){
+        else if(budgetForm.investmentExpenditure.idType === 4){
             setTypeToShow([
                 {budgetTypeId: 23, name:"Externas"}
               ])
@@ -231,7 +232,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                     )}
                                 </div>
                                 <div>
-                                    {(budgetForm.investmentExpenditure.nameType === "Obtención presupuesto interno" || 
+                                    {(budgetForm.investmentExpenditure.idType === 3 || 
                                     budgetForm.name.budgetTypeId === 23) && (
                                         <div>
                                             <p>Fecha de convocatoria

@@ -240,22 +240,22 @@ const groupBudgets = (budgets) => {
         // Externas
         23: 'externas'
     };
-    console.log(budgets)
     budgets.forEach(budget => {
         const groupKey = typeMap[budget.budgetTypeId];
         if (!groupKey) return;
 
         grouped[groupKey].push({
-        budgetTypeId: budget.budgetTypeId,
-        idType: budget.budgetSectionId,
-        nameType: budget.type_name || budget.name || '',
-        nameSection: budget.section_name || '',
-        expenditure: budget.expenditure,
-        //idType: budget.budgetstId,
-        budgetDate: budget.budgetDate ? new Date(budget.budgetDate).toISOString().split('T')[0] : '',
-        otherName: budget.otherName || '',
-        investmentExpenditure: budget.investmentExpenditure || 0,
-        project_id: budget.project_id || null
+            budgetTypeId: budget.budgetTypeId,
+            idType: budget.budgetSectionId,
+            name: budget.type_name || budget.name || '',
+            nameType: budget.section_name || '',
+            expenditure: budget.expenditure,
+            //idType: budget.budgetstId,
+            budgetDate: budget.budgetDate ? new Date(budget.budgetDate).toISOString().split('T')[0] : '',
+            otherName: budget.otherName || '',
+            investmentExpenditure: budget.investmentExpenditure || 0,
+            project_id: budget.project_id || null,
+            budgetSectionId: budget.budgetSectionId || ''
         });
     });
 
@@ -294,10 +294,12 @@ const getProjectDetails = (req, res) => {
         // todo se obtiene como arreglos de objetos(esto de los arreglos le ahorraba tiempo a Gordinho)
         const grouped = groupDeliverables(deliverables || []);
         const groupedBudgets = groupBudgets(budgets || []);
+        console.log(groupedBudgets)
         const response = {
             idf20: {
                 idF: 20,
                 title: projectInfo[0]?.title || '',
+                projectId: projectInfo[0]?.projectId || '',
                 startDate: projectInfo[0]?.startDate || '',
                 endDate: projectInfo[0]?.endDate || '',
                 folio: projectInfo[0]?.folio || '',

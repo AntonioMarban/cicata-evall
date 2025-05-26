@@ -63,7 +63,7 @@ const GeneralData = ({option,setOption}) => {
         if(generalData.typeResearch < 4){
             delete newErrorsF['otherTypeResearch'];
         }
-        if(generalData.alignsWithPNIorODS === 0){
+        if(generalData.alignsWithPNIorODS === 0 || generalData.alignsWithPNIorODS === ""){
             delete newErrorsF['alignsWithPNIorODS']
         }
         setNewErrors(newErrorsF)
@@ -197,7 +197,7 @@ const GeneralData = ({option,setOption}) => {
                             '!ml-2 !mr-2 bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px] hover:bg-[#D1D1D1] transition-colors duration-300'} 
                             onClick={() => handleChangeButton('alignsWithPNIorODS', 1)} >Si</button>
                         <button type="button"
-                            className={generalData.alignsWithPNIorODS === 0 ? 
+                            className={(!generalData.alignsWithPNIorODS || generalData.alignsWithPNIorODS === "") ?
                             'bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px] hover:bg-[#4CA6D5] transition-colors duration-300'
                             : 
                             'bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px] hover:bg-[#D1D1D1] transition-colors duration-300'} 
