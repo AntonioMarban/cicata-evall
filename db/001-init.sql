@@ -590,6 +590,11 @@ BEGIN
     JOIN users u ON up.user_id = u.userId
     WHERE up.project_id = p_projectId;
 
+        -- annexes 
+    SELECT annexeId, tag, filename
+    FROM annexes
+    WHERE projectId = p_projectId;
+
 END //
 DELIMITER ;
 

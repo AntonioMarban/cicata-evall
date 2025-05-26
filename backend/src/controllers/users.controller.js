@@ -286,7 +286,8 @@ const getProjectDetails = (req, res) => {
             goals,
             methodologies,
             references,
-            investigator
+            investigator,
+            annexes
         ] = results;
 
         // todo se obtiene como arreglos de objetos(esto de los arreglos le ahorraba tiempo a Gordinho)
@@ -386,7 +387,11 @@ const getProjectDetails = (req, res) => {
                 reviewedDate: projectInfo[0]?.reviewedDate || '',
                 approvedDate: projectInfo[0]?.approvedDate || ''
             },
-            investigator: investigator.length > 0 ? investigator[0] : null
+            investigator: investigator.length > 0 ? investigator[0] : null,
+            idf35: {
+                idF: 35,
+                annexes: annexes || []
+            }
         };
 
         res.status(200).json(response);
