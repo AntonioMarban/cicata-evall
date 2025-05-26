@@ -61,7 +61,7 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
         <>
             {!methodologiesToEdit && (
                 <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
-                    Agregar Metodología
+                    Agregar metodología
                 </button>
             )
             }
@@ -72,7 +72,7 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
                         <p className="dialog-title">{methodologiesToEdit ? "Editar meta" : "Agregar meta"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
-                                <p>Nombre de la Metodología
+                                <p>Nombre de la metodología
                                 <br/>{newErrors.methodology && <span className="text-red-600">*{newErrors.methodology}</span>}
                                 </p>
                                 <input name="methodology" 

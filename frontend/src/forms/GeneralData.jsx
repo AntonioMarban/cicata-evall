@@ -92,7 +92,7 @@ const GeneralData = ({option,setOption}) => {
                     <p className="text-lg font-normal">Periodo del proyecto</p>
                     <div className="flex flex-wrap">
                         <div className="flex-1">
-                            <p>Fecha de Inicio {newErrors.startDate && <span className="text-red-600">*{newErrors.startDate}</span>}</p>
+                            <p>Fecha de inicio {newErrors.startDate && <span className="text-red-600">*{newErrors.startDate}</span>}</p>
                             <input 
                                     className="!p-2 w-[95%] min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end hover:border-[#5CB7E6] transition-colors duration-300 max-[800px]:w-full"
                                     name="startDate" 
@@ -102,7 +102,7 @@ const GeneralData = ({option,setOption}) => {
                                 ></input>
                         </div>
                         <div className="flex-1">
-                            <p>Fecha de Fin {newErrors.endDate && <span className="text-red-600">*{newErrors.endDate}</span>}</p>
+                            <p>Fecha de fin {newErrors.endDate && <span className="text-red-600">*{newErrors.endDate}</span>}</p>
                             <input  
                                     className="!p-2 w-[100%] min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end hover:border-[#5CB7E6] transition-colors duration-300"
                                     name="endDate" 

@@ -54,14 +54,13 @@ const ViewCompleteForms = () => {
         fetchData(`${apiUrl}/users/projects/${id}`,setCompleteForm);
         fetchData(`${apiUrl}/researchers/projects/${id}/documents`,setFiles);
     },[]);
-
     return (
     <div className='fullTable-background'>
         <div className='div-button'>
             <button onClick={handlePrint2}>Descargar anexos</button>
             <button onClick={handlePrint}>Descargar proyecto</button>
         </div>
-        {completeForm && (
+        {completeForm ? (
         <div className='fullTable-body'>
 
             <Header generalData={completeForm.idf34}/>
@@ -109,6 +108,10 @@ const ViewCompleteForms = () => {
             <h1>12. ANEXOS</h1>
             <Files files={files}/> 
         </div>
+        )
+        :
+        (
+            <p>Cargando...</p>
         )}
     </div>
   );

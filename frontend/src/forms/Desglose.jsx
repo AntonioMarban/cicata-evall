@@ -97,7 +97,7 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe los antecedentes del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Planteamiento del Problema {newErrorsD.statementOfProblem && <span className="text-red-600">*{newErrorsD.statementOfProblem}</span>}</p>
+                            <p className="!mt-2 text-xl">Planteamiento del problema {newErrorsD.statementOfProblem && <span className="text-red-600">*{newErrorsD.statementOfProblem}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] hover:border-[#5CB7E6] transition-colors duration-300 text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
                             name="statementOfProblem"

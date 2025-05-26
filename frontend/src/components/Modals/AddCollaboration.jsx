@@ -114,7 +114,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                                 </div>
                             </div>
                             <div className="form-complete-row">
-                                <p>¿Ya cuenta con Convenio de Colaboración?
+                                <p>¿Ya cuenta con convenio de colaboración?
                                     <br/><span className="form-subtext">(General/Específico)</span>
                                     <br/>{newErrors.collaborationAgreement && <span className="text-red-600">*{newErrors.collaborationAgreement}</span>}
                                 </p>
@@ -125,7 +125,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                             </div>
                             <div className="form-rows">
                                 <div>
-                                    <p>¿El convenio es Nacional o Extranjero?</p>
+                                    <p>¿El convenio es nacional o extranjero?</p>
                                     <p className="form-subtext">(Si aplica)</p>
                                     <input 
                                     value={collaboration.agreementType}
