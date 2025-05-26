@@ -3,6 +3,7 @@ import DragDrop from "../components/DragDrop";
 import { useEffect, useState } from "react";
 import useSubmitFormBack from "../hooks/useSubmitFormBack";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
+import EthicalAspects from "../components/ViewForm/EthicalAspects";
 
 const  EthicalAsp = ({option,setOption}) => {
     
@@ -74,15 +75,16 @@ const  EthicalAsp = ({option,setOption}) => {
         )
     },[filesSend])
 
-    const handleDeleteFile = (index) => {
-        const newFileNames = [...ethicalAsp.efilesSend];
-        const newFiles = Array.from(ethicalAsp.efilesSend);
-      
-        newFileNames.splice(index, 1);
-        newFiles.splice(index, 1);
-      
-        setFilesSend(newFiles);
-    };
+    useEffect(() => {
+        if (ethicalAsp.workWithAnimals === 0 && ethicalAsp.workWithHumans === 0) {
+            console.log("borrando")
+            setEthicalAsp(prev => ({
+                ...prev,
+                efilesSend: []  // Esto borrará todos los archivos
+            }));
+            setFilesSend([])
+        }
+    }, [ethicalAsp.workWithAnimals, ethicalAsp.workWithHumans]);
 
     useLoadFormData(ethicalAsp.idF,setEthicalAsp);
     return (

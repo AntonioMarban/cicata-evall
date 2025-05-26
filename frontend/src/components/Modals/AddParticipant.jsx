@@ -105,7 +105,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             })
             )
         }
-    },[participant.researchNetwork])
+    },[participant.researchNetwork]);
 
     return (
         <>
