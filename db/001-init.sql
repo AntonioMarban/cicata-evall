@@ -1855,6 +1855,7 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE getUsersByRole(IN p_userType_id INT)
 BEGIN
+    -- Validar que el tipo de usuario existe
     IF NOT EXISTS (
         SELECT 1 FROM userTypes
         WHERE userTypeId = p_userType_id
@@ -1862,14 +1863,34 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The user type does not exist';
     END IF;
-    SELECT
-        u.userId,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
-        u.email
-    FROM
-        users u
-    WHERE
-        u.userType_id = p_userType_id AND u.active = true;
+
+    -- Si es presidente o secretario, unir con comité
+    IF p_userType_id = 3 || p_userType_id = 4 THEN
+        SELECT
+            u.userId,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            u.academicDegree,
+            u.email,
+            c.name AS committeeName
+        FROM
+            users u
+        JOIN committeeUsers cu ON u.userId = cu.userId
+        JOIN committees c ON cu.committeeId = c.committeeId
+        WHERE
+            u.userType_id = p_userType_id AND u.active = true;
+    ELSE
+        -- Para los demás tipos de usuario
+        SELECT
+            u.userId,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            u.academicDegree,
+            u.email,
+            u.userType_id
+        FROM
+            users u
+        WHERE
+            u.userType_id = p_userType_id AND u.active = true;
+    END IF;
 END //
 DELIMITER ;
 

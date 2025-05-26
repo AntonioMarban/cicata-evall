@@ -1,18 +1,32 @@
+import { useEffect, useState } from "react";
+import AccountTables from "./AccountTables";
+
 const dataToShow = {
     "Investigadores": {
         title: "Investigadores",
         subtitle: "Gestión de usuarios investigadores",
-        role: "investigador"
+        role: "investigador",
+        userType_id: 1,
     },
     "Administradores": {
         title: "Administradores",
         subtitle: "Gestión de usuarios administradores",
-        role: "administrador"
+        role: "administrador",
+        userType_id: 2,
     },
-    "Presidentes y secretarios": {
-        title: "Presidentes y secretarios",
-        subtitle: "Gestión de usuarios presidentes y secretarios de comité de evaluación",
-        role: "presidente o secretario"
+    "Presidentes de comité": {
+        title: "Presidentes de comité",
+        subtitle: "Gestión de usuarios presidentes de comité de evaluación",
+        role: "presidente",
+        userType_id: 3,
+        showCommittee: true,
+    },
+    "Secretarios de comité": {
+        title: "Secretarios de comité",
+        subtitle: "Gestión de usuarios secretarios de comité de evaluación",
+        role: "secretario",
+        userType_id: 4,
+        showCommittee: true,
     },
     "Comité Interno de Proyectos (CIP)": {
         title: "Comité Interno de Proyectos (CIP)",
@@ -41,25 +55,42 @@ const dataToShow = {
     }
 }
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const ManageAccountsData = ({ accountTypeToManage }) => {
 
-    const { title, subtitle, role } = dataToShow[accountTypeToManage] || {
+    const { title, subtitle, role, userType_id, showCommittee = false } = dataToShow[accountTypeToManage] || {
         title: "Tipo no reconocido",
         subtitle: "No hay información disponible para este tipo de cuenta.",
         role: "desconocido"
     };
+
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        if (userType_id) {
+            console.log("Fetching users with userType_id:", userType_id);
+            fetch(`${apiUrl}/subdirectorade/users?userType_id=${userType_id}`)
+                .then(res => res.json())
+                .then(data => {
+                    setUsers(data);
+                })
+                .catch(err => console.error("Error al obtener usuarios:", err));
+        }
+    }, [userType_id]);
+
 
     return (
 
         <>
             {accountTypeToManage && (
                 <>
-                    <div id="accountsToManageTitle" className="flex flex-col overflow-y-auto h-screen max-h-screen">
+                    <div id="accountsToManageTitle" className="flex flex-col overflow-y-auto max-h-[80vh] mb-4!">
                         <h2 className="text-xl font-bold mb-2">{title}</h2>
                         <p className="text-gray-600 mb-4">{subtitle}</p>
                     </div>
                     <div id="accountsToManageDT">
-                        tabla
+                        <AccountTables users={users} showCommittee={showCommittee} />
                     </div>
                     {accountTypeToManage !== "Presidentes y secretarios" && (
                         <div id="accountsToManageButtons" className="flex flex-row items-center gap-10 mb-6 flex-wrap">
