@@ -56,7 +56,7 @@ const  Anexos = ({option,setOption}) => {
             //console.log("Submitting project data:", cleanFormData);
             //console.log("Files to upload (afilesSend):", afilesSend);
     
-            const response = await fetch(`${apiUrl}/researchers/projects`, {
+            const response = await fetch(`${apiUrl}/researchers/projects/:projectId/update`, {
                 method: 'POST',
                 body: JSON.stringify(cleanFormData),
                 headers: { 'Content-Type': 'application/json' },
