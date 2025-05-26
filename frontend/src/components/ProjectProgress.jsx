@@ -84,18 +84,28 @@ export default function ProjectProgress({ projectId }) {
     const navigateToForms = async (files, e) => {
         try {
             const { idf26, idf33 } = await readFiles(files, e);
-            
+            const { idf29 } = await handleClic();
+
             const updatedProjectData = {
                 ...projectData,
                 idf26: {
                     ...projectData.idf26,
                     efilesSend: [...projectData.idf26.efilesSend, ...idf26.efilesSend]
                 },
+                idf29: {
+                    ...projectData.idf29,
+                    deliverables1: idf29.deliverables1,
+                    deliverables2: idf29.deliverables2, 
+                    deliverables3: idf29.deliverables3,                  
+                },
                 idf33: {
                     ...projectData.idf33,
                     afilesSend: [...projectData.idf33.afilesSend, ...idf33.afilesSend]
                 }
             };
+
+
+            console.log(updatedProjectData)
 
             const result = await saveMultipleForms(updatedProjectData);
             
@@ -109,47 +119,68 @@ export default function ProjectProgress({ projectId }) {
         }
     };
     const readFiles = (files, e) => {
-    return new Promise((resolve) => {
-        e.preventDefault();
-        const updates = {
-            idf26: { efilesSend: [] },
-            idf33: { afilesSend: [] }
-        };
-
-        Object.values(files).forEach(fileList => {
-            fileList.forEach(file => {
-                if (file.tag === "anexos") {
-                    updates.idf33.afilesSend.push(file);
-                } else if (file.tag === "eticos") {
-                    updates.idf26.efilesSend.push(file);
-                }
-            });
-        });
-
-        setProjectData(prev => {
-            const newState = {
-                ...prev,
-                idf26: {
-                    ...prev.idf26,
-                    efilesSend: [...(prev.idf26.efilesSend || []), ...updates.idf26.efilesSend]
-                },
-                idf33: {
-                    ...prev.idf33,
-                    afilesSend: [...(prev.idf33.afilesSend || []), ...updates.idf33.afilesSend]
-                }
+        return new Promise((resolve) => {
+            e.preventDefault();
+            const updates = {
+                idf26: { efilesSend: [] },
+                idf33: { afilesSend: [] }
             };
-            return newState;
-        });
 
-        resolve(updates);
-    });
+            Object.values(files).forEach(fileList => {
+                fileList.forEach(file => {
+                    if (file.tag === "anexos") {
+                        updates.idf33.afilesSend.push(file);
+                    } else if (file.tag === "eticos") {
+                        updates.idf26.efilesSend.push(file);
+                    }
+                });
+            });
+
+            setProjectData(prev => {
+                const newState = {
+                    ...prev,
+                    idf26: {
+                        ...prev.idf26,
+                        efilesSend: [...(prev.idf26.efilesSend || []), ...updates.idf26.efilesSend]
+                    },
+                    idf33: {
+                        ...prev.idf33,
+                        afilesSend: [...(prev.idf33.afilesSend || []), ...updates.idf33.afilesSend]
+                    }
+                };
+                return newState;
+            });
+
+            resolve(updates);
+        });
     };
     useEffect(() => {
         fetchData(`${apiUrl}/researchers/projects/${projectId}/comments`, setComments);
         fetchData(`${apiUrl}/users/projects/${projectId}`, setProjectData);
         fetchData(`${apiUrl}/researchers/projects/${projectId}/documents`,setFiles);
     }, [projectId]);
-    console.log(projectData)
+    const handleClic = () =>{
+        return new Promise((resolve) => {
+            const deliverables1 = deliverables.deliverables1.map(item => {
+                const match = projectData.idf29.deliverables1.find(val => val.id === item.id);
+                return match ? { ...item, values: match.values } : item;
+            });
+
+            const deliverables2 = deliverables.deliverables2.map(item => {
+                const match = projectData.idf29.deliverables2.find(val => val.id === item.id);
+                return match ? { ...item, values: match.values } : item;
+            });
+
+            const deliverables3 = deliverables.deliverables3.map(item => {
+                const match = projectData.idf29.deliverables3.find(val => val.id === item.id);
+                return match ? { ...item, values: match.values } : item;
+            });
+        const updates = {
+            idf29: { deliverables1, deliverables2, deliverables3 }
+        };
+            resolve(updates)
+        });
+    }
     return (
     <main className="w-[100%] flex justify-center">
         <div className="w-[90%]">
@@ -166,7 +197,6 @@ export default function ProjectProgress({ projectId }) {
                 <p>No hay comentarios aún.</p>
                 )}
             </div>
-
             <div className="footer-comments">
                 <button onClick={(e)=>{navigateToForms(files,e)}} className="info-button">Realizar correcciones</button>
             </div>

@@ -127,7 +127,7 @@ const groupDeliverables = (deliverables) => {
 
         if (!grouped[group].has(key)) {
             grouped[group].set(key, {
-                deliverableId: item.deliverableId,
+                id: item.id,
                 name: item.name,
                 values: {}
             });
@@ -246,11 +246,15 @@ const groupBudgets = (budgets) => {
         if (!groupKey) return;
 
         grouped[groupKey].push({
-            budgetTypeId: budget.budgetTypeId,
-            name: budget.type_name || '',
-            expenditure: budget.expenditure,
-            budgetDate: budget.budgetDate ? new Date(budget.budgetDate).toISOString().split('T')[0] : '',
-            otherName: budget.otherName || ''
+        budgetTypeId: budget.budgetTypeId,
+        name: budget.type_name || budget.name || '',
+        expenditure: budget.expenditure,
+        //idType: budget.budgetstId,
+        budgetDate: budget.budgetDate ? new Date(budget.budgetDate).toISOString().split('T')[0] : '',
+        otherName: budget.otherName || '',
+        investmentExpenditure: budget.investmentExpenditure || 0,
+        description: budget.description || '',
+        project_id: budget.project_id || null
         });
     });
 
@@ -287,6 +291,8 @@ const getProjectDetails = (req, res) => {
 
         // todo se obtiene como arreglos de objetos(esto de los arreglos le ahorraba tiempo a Gordinho)
         const grouped = groupDeliverables(deliverables || []);
+        const groupedBudgets = groupBudgets(budgets || []);
+        console.log(deliverables)
         const response = {
             idf20: {
                 idF: 20,
@@ -359,7 +365,7 @@ const getProjectDetails = (req, res) => {
             },
             idf31: {
                 idF: 31,
-                budgets: groupBudgets(budgets || [])
+                budgets: groupedBudgets || []
             },
             idf32: {
                 idF: 32,
