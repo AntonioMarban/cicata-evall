@@ -502,10 +502,10 @@ VALUES
 (40000, 'Otros gastos', 40300, 8);
 
 INSERT INTO budgetSections (name) VALUES
-('Gasto de Inversion'),
+('Gasto de Inversión'),
 ('Gasto Corriente'),
-('Internas'),
-('Externas');
+('Obtención presupuesto interno'),
+('Obtención presupuesto externo');
 
 -- budgetTypes
 INSERT INTO budgetTypes (type_name, budgetSectionId) VALUES 
@@ -527,7 +527,7 @@ INSERT INTO budgetTypes (type_name, budgetSectionId) VALUES
 ('Animales para protocolos de investigación', 2),
 ('Otros (especifique)', 2),
 -- Segunda tabla
-('Proyectos de investigacion cientifica y desarrollo tecnologico', 3),
+('Proyectos de Investigación Científica y Desarrollo Tecnológico', 3),
 ('Proyectos de Investigación en el Programa Especial de Consolidación de Investigadores', 3),
 ('Proyectos de Desarrollo Tecnológico o Innovación en el IPN', 3),
 ('Proyectos de Investigación Multidisciplinarios y Transdisciplinarios de Investigación Científica y Desarrollo Tecnológico', 3),

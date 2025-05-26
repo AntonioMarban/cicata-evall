@@ -76,7 +76,6 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             }
           }
         });
-        console.log("hsfkajs")
         if (participant.researchNetwork === 0 ){
                 delete newErrorsF["researchNetworkName"]
         }
@@ -106,9 +105,8 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             })
             )
         }
-    },[participant.researchNetwork])
+    },[participant.researchNetwork]);
 
-    console.log(newErrors)
     return (
         <>
             {!participantToEdit && (
@@ -131,7 +129,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                         className="participant-form-pieza-input" placeholder="Escribe el nombre del miembro..."></input>
                                 </div>
                                 <div>
-                                    <p>Apellido Paterno 
+                                    <p>Apellido paterno 
                                         <br/>{newErrors.lastName1 && <span className="text-red-600">*{newErrors.lastName1}</span>}</p>
                                     <input 
                                         name="lastName1"
@@ -141,7 +139,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                         className="participant-form-pieza-input"></input>
                                 </div>
                                 <div>
-                                    <p>Apellido Materno 
+                                    <p>Apellido materno 
                                         <br/>{newErrors.lastName2 && <span className="text-red-600">*{newErrors.lastName2}</span>}</p>
                                     <input 
                                         name="lastName2"
@@ -208,7 +206,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             }
                             
                             <div className="participant-complete-row-2">
-                                <p>Grado Académico
+                                <p>Grado académico
                                     <br/>{newErrors.academicDegree && <span className="text-red-600"> *{newErrors.academicDegree}</span>}
                                 </p>
                                 <input

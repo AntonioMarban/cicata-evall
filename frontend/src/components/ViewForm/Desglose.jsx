@@ -33,7 +33,7 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
         <table className='BackgroundTable'>
             <thead className='table-form-header'>
                 <tr>
-                    <th>Planteamiento del Problema</th>
+                    <th>Planteamiento del problema</th>
                 </tr>
             </thead>
             <tbody className='table-form-body'>

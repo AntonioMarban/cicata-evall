@@ -104,11 +104,7 @@ export default function ProjectProgress({ projectId }) {
                 }
             };
 
-
-            console.log(updatedProjectData)
-
             const result = await saveMultipleForms(updatedProjectData);
-            
             if (result) {
                 navigate('/Editar-proyecto');
             } else {
@@ -159,6 +155,8 @@ export default function ProjectProgress({ projectId }) {
         fetchData(`${apiUrl}/users/projects/${projectId}`, setProjectData);
         fetchData(`${apiUrl}/researchers/projects/${projectId}/documents`,setFiles);
     }, [projectId]);
+
+
     const handleClic = () =>{
         return new Promise((resolve) => {
             const deliverables1 = deliverables.deliverables1.map(item => {

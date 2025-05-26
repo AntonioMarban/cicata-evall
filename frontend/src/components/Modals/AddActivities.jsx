@@ -108,7 +108,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                                     ></input>
                                 </div>
                                 <div>
-                                    <p>Participante Responsable
+                                    <p>Participante responsable
                                         <br/>{newErrors.responsibleMember && <span className="text-red-600">*{newErrors.responsibleMember}</span>}
                                     </p>
                                     <select 

@@ -27,7 +27,7 @@ const ConflictInterest = ({Budget}) => {
             <tbody className='table-form-body'>
                 {Array.isArray(Budget.gastoInversion) && Budget.gastoInversion.map((Inversion, index) => (
                 <tr key={index}>
-                    <td>{Inversion.name + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
+                    <td>{Inversion.nameType + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
                     <td>${Inversion.expenditure}</td>
                 </tr>
                 ))}
@@ -46,7 +46,7 @@ const ConflictInterest = ({Budget}) => {
             <tbody className='table-form-body'>
                 {Array.isArray(Budget.gastoCorriente) && Budget.gastoCorriente.map((Inversion, index) => (
                 <tr key={index}>
-                    <td>{Inversion.name + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
+                    <td>{Inversion.nameType + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
                     <td>${Inversion.expenditure}</td>
                 </tr>
                 ))}
@@ -79,7 +79,7 @@ const ConflictInterest = ({Budget}) => {
                 </tr>
                 {Array.isArray(Budget.internas) && Budget.internas.map((Inversion, index) => (
                 <tr key={index}>
-                    <td>{Inversion.name + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
+                    <td>{Inversion.nameType + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
                     <td>${Inversion.expenditure}</td>
                     <td>{Inversion.budgetDate}</td>
                 </tr>
@@ -91,7 +91,7 @@ const ConflictInterest = ({Budget}) => {
                 </tr>
                  {Array.isArray(Budget.externas) && Budget.externas.map((Inversion, index) => (
                 <tr key={index}>
-                    <td>{Inversion.name + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
+                    <td>{Inversion.nameType + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
                     <td>${Inversion.expenditure}</td>
                     <td>{Inversion.budgetDate}</td>
                 </tr>
