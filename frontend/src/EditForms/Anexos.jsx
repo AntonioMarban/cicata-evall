@@ -20,7 +20,12 @@ const  Anexos = ({option,setOption}) => {
         aditionalComments:""
     });
 
-    function base64ToFile(base64, fileName, mimeType) {
+    function base64ToFile(base64, fileName, mimeType = 'application/pdf') {
+
+    if (!base64.startsWith('data:')) {
+        base64 = `data:${mimeType};base64,${base64}`;
+    }
+
     const arr = base64.split(',');
     const bstr = atob(arr[1]);
     let n = bstr.length;
@@ -30,6 +35,7 @@ const  Anexos = ({option,setOption}) => {
     }
     return new File([u8arr], fileName, { type: mimeType });
     }
+
 
     const handleOnSubmitFormBack = useSubmitFormBack(anexos, setOption);
 
@@ -78,8 +84,15 @@ const  Anexos = ({option,setOption}) => {
                         
                         const appendFiles = (filesArray) => {
                             filesArray.forEach(file => {
-                                const realFile = base64ToFile(file.content, file.name, file.type);
-                                formDataFiles.append('documents', realFile);
+                                if (file.content && file.name && file.type) {
+                                    const realFile = base64ToFile(file.content, file.name, file.type);
+                                    formDataFiles.append('documents', realFile);
+                                } else if (file.document && file.filename) {
+                                    const realFile = base64ToFile(file.document, file.filename, 'application/pdf');
+                                    formDataFiles.append('documents', realFile);
+                                } else {
+                                    console.warn('Archivo con formato no reconocido:', file);
+                                }
                             });
                         };
                         
@@ -107,10 +120,17 @@ const  Anexos = ({option,setOption}) => {
                         //console.log("aqui va")
                         const formDataEFiles = new FormData();
                         const appendFiles2 = (filesArray) => {
-                        filesArray.forEach(file => {
-                            const realFile = base64ToFile(file.content, file.name, file.type);
-                            formDataEFiles.append('documents', realFile);
-                        });
+                            filesArray.forEach(file => {
+                                if (file.content && file.name && file.type) {
+                                    const realFile = base64ToFile(file.content, file.name, file.type);
+                                    formDataEFiles.append('documents', realFile);
+                                } else if (file.document && file.filename) {
+                                    const realFile = base64ToFile(file.document, file.filename, 'application/pdf');
+                                    formDataEFiles.append('documents', realFile);
+                                } else {
+                                    console.warn('Archivo con formato no reconocido:', file);
+                                }
+                            });
                         };
                         if (efilesSend  && efilesSend .length > 0) {
                             appendFiles2(efilesSend);
@@ -133,14 +153,14 @@ const  Anexos = ({option,setOption}) => {
                             }
                         }
                         
-                        navigate(`/VerFormulario/${data.projectId}`);
+                        navigate(`/Proyecto?projectId=${data.projectId}`);
                         indexedDB.deleteDatabase('Cicata');
                     } catch (uploadError) {
                         console.error("Error uploading file:", uploadError);
                         alert("El proyecto se creó, pero hubo un error al subir el archivo.");
                     }
                 } else {
-                    navigate(`/VerFormulario/${data.projectId}`);
+                    navigate(`/Proyecto?projectId=${data.projectId}`);
                     indexedDB.deleteDatabase('Cicata');
                 }
             } else {
