@@ -71,7 +71,9 @@ const ManageAccountsData = ({ accountTypeToManage }) => {
         const fetchUsers = async () => {
             const userType = parseInt(localStorage.getItem("userType"));
             const userId = parseInt(localStorage.getItem("userId"));
-            const committeeId = parseInt(localStorage.getItem("committeeId"));
+            const committeeId = parseInt(localStorage.getItem("committeeId"))
+
+            if (!userType_id && userType === 2) return;
 
             try {
                 let response;
@@ -81,8 +83,6 @@ const ManageAccountsData = ({ accountTypeToManage }) => {
                         console.error("Faltan committeeId o userId para obtener los miembros del comité");
                         return;
                     }
-
-                    console.log("Sí entra aquí");
 
                     const url = `${apiUrl}/committees/${committeeId}/secretaries/${userId}/members`;
                     response = await fetch(url);

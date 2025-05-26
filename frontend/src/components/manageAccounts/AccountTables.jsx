@@ -67,7 +67,6 @@ const AccountTables = ({ users, showCommittee }) => {
                                     <td className="py-2! px-4! text-left!">{user.academicDegree}</td>
                                     <td className="py-2! px-4! text-left!">{user.email}</td>
                                     {showCommittee && <td className="py-2! px-4! text-left!">{user.committeeName}</td>}
-                                    <td className="py-2! px-4! text-left!">{user.userType_id}</td>
                                     <td className="py-2! px-4! text-left!">
                                             <button
                                                 className="text-white rounded-lg cursor-pointer px-3! py-1! mr-3! mb-1! bg-[#5CB7E6] hover:bg-[#1591D1]"
