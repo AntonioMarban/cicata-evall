@@ -48,11 +48,15 @@ function Sidebar() {
       </nav>
 
       <div className="mb-10 w-full px-4">
-        <Link to="/" className="w-full">
-          <Button className="flex gap-2 justify-start whitespace-normal">
-            <LogOut /> Salir
-          </Button>
-        </Link>
+        <button
+          className="w-full py-2! text-lg text-[#1591D1] hover:text-[#2C4A90] text-left break-words flex gap-2 items-center justify-start whitespace-normal"
+          onClick={() => {
+            localStorage.clear();
+            window.location.href = "/";
+          }}
+        >
+          <LogOut /> Cerrar sesión
+        </button>
       </div>
     </aside>
   );
