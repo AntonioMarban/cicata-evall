@@ -55,7 +55,6 @@ const ViewCompleteForms = () => {
         fetchData(`${apiUrl}/researchers/projects/${id}/documents`,setFiles);
     },[]);
 
-    console.log(completeForm)
     return (
     <div className='fullTable-background'>
         <div className='div-button'>

@@ -76,7 +76,6 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             }
           }
         });
-        console.log("hsfkajs")
         if (participant.researchNetwork === 0 ){
                 delete newErrorsF["researchNetworkName"]
         }
@@ -108,7 +107,6 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         }
     },[participant.researchNetwork])
 
-    console.log(newErrors)
     return (
         <>
             {!participantToEdit && (

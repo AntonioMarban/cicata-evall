@@ -105,7 +105,6 @@ export default function ProjectProgress({ projectId }) {
             };
 
             const result = await saveMultipleForms(updatedProjectData);
-            console.log("asfas",result)
             if (result) {
                 navigate('/Editar-proyecto');
             } else {
@@ -157,7 +156,6 @@ export default function ProjectProgress({ projectId }) {
         fetchData(`${apiUrl}/researchers/projects/${projectId}/documents`,setFiles);
     }, [projectId]);
 
-    console.log(files)
 
     const handleClic = () =>{
         return new Promise((resolve) => {

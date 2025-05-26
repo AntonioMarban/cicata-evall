@@ -103,7 +103,6 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
             setIsOpen(true);
         }
     }, [budgetToEdit])
-    console.log("hola",budgetForm)
     useEffect(()=>{
         if(budgetForm.investmentExpenditure.idType === 1){
             setTypeToShow([
