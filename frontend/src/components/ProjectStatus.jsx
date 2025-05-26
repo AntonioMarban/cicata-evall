@@ -364,8 +364,14 @@ export default function ProjectStatus({ projectId }) {
         <div className="stage">
           <h3>Etapa 3</h3>
           <p>
-            {sendingPendingResearcher === 1 && jumpThirdStage === 1
-              ? "El resultado de este proyecto aún no ha sido enviado al investigador."
+            {sendingPendingResearcher === 1 &&
+            jumpThirdStage === 1 &&
+            createDictum === 1
+              ? `El resultado final de este proyecto es: ${finalResult} y aún no ha sido enviado al investigador.`
+              : createDictum === 0 && sendingPendingResearcher === 1
+              ? "El resultado de las evaluaciones aún no ha sido enviado al investigador"
+              : createDictum === 1 && sendingPendingResearcher === 0
+              ? "El resultado final de este proyecto ya fue enviado al investigador."
               : ""}
           </p>
           {createDictum === 1 && sendingPendingResearcher === 1 && (
