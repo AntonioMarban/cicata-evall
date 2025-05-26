@@ -445,9 +445,9 @@ const sendEvaluationResult = async (req, res) => {
 */
 const createDictum = async (req, res) => {
   const { projectId } = req.params;
-  const { folio, authorizingAdminId } = req.body;
+  const { folio, authorizerId } = req.body;
   const query = "CALL createDictum(?, ?, ?)";
-  const values = [projectId, folio, authorizingAdminId];
+  const values = [projectId, folio, authorizerId];
   pool.query(query, values, (error, results) => {
     if (error) {
       console.error(error);

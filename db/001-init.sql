@@ -562,10 +562,10 @@ BEGIN
 
     -- budgets
     SELECT 
-    * FROM 
-    budgets b 
-    INNER JOIN budgetTypes bt 
-    ON b.budgetTypeId = bt.budgetTypeId 
+    b.*, bt.type_name, bs.name AS section_name
+    FROM budgets b 
+    INNER JOIN budgetTypes bt ON b.budgetTypeId = bt.budgetTypeId 
+    INNER JOIN budgetSections bs ON bt.budgetSectionId = bs.budgetSectionId
     WHERE b.project_id = p_projectId;
 
     -- goals
@@ -589,6 +589,11 @@ BEGIN
     FROM usersProjects up
     JOIN users u ON up.user_id = u.userId
     WHERE up.project_id = p_projectId;
+
+        -- annexes 
+    SELECT annexeId, tag, filename
+    FROM annexes
+    WHERE projectId = p_projectId;
 
 END //
 DELIMITER ;
