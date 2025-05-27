@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AccountTables from "./AccountTables";
 
 const dataToShow = {
@@ -55,9 +56,13 @@ const dataToShow = {
     }
 }
 
-const apiUrl = import.meta.env.VITE_API_URL;
+
+
 
 const ManageAccountsData = ({ accountTypeToManage }) => {
+
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const navigate = useNavigate();
 
     const { title, subtitle, role, userType_id, showCommittee = false } = dataToShow[accountTypeToManage] || {
         title: "Tipo no reconocido",
@@ -101,10 +106,11 @@ const ManageAccountsData = ({ accountTypeToManage }) => {
         fetchUsers();
     }, [userType_id, accountTypeToManage]);
 
-
+    const handleAddUser = (role) => () => {
+        navigate('/FormularioDeUsuario', { state: { formType: "new", role: role } })
+    }
 
     return (
-
         <>
             {accountTypeToManage && (
                 <>
@@ -113,13 +119,14 @@ const ManageAccountsData = ({ accountTypeToManage }) => {
                         <p className="text-gray-600 mb-4">{subtitle}</p>
                     </div>
                     <div id="accountsToManageDT">
-                        <AccountTables users={users} showCommittee={showCommittee} />
+                        <AccountTables users={users} showCommittee={showCommittee} role={role} />
                     </div>
                     {accountTypeToManage !== "Presidentes y secretarios" && (
                         <div id="accountsToManageButtons" className="flex flex-row items-center gap-10 mb-6 flex-wrap">
                             <button
                                 className="bg-[#5CB7E6] text-white font-semibold rounded hover:bg-[#1591D1] cursor-pointer"
                                 style={{ padding: '10px 20px', width: '100%', maxWidth: '300px', textAlign: 'center' }}
+                                onClick={handleAddUser(role)}
                             >
                                 Agregar {role} +
                             </button>

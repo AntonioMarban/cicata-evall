@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { Pencil, Trash } from 'lucide-react';
-import { Dialog, DialogDescription, DialogPanel, DialogTitle } from '@headlessui/react';
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import { useNavigate } from 'react-router-dom';
 
-const AccountTables = ({ users, showCommittee }) => {
+const AccountTables = ({ users, showCommittee, role }) => {
     const apiUrl = import.meta.env.VITE_API_URL;
     const currentUserId = parseInt(localStorage.getItem("userId"));
     const currentUserType = parseInt(localStorage.getItem("userType"));
     const adminUsers = users.filter(u => u.userType_id === 2);
 
-    console.log('users: ', users);
+    const navigate = useNavigate();
+
     const [isOpen, setIsOpen] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -21,6 +23,10 @@ const AccountTables = ({ users, showCommittee }) => {
     const closeModal = () => {
         setSelectedUserId(null);
         setIsOpen(false);
+    }
+
+    const handleEdit = (userId) => () => {
+        navigate('/FormularioDeUsuario', { state: { formType: "edit", role: role, userId: userId } })
     }
 
     const handleDelete = async () => {
@@ -70,14 +76,14 @@ const AccountTables = ({ users, showCommittee }) => {
                                     <td className="py-2! px-4! text-left!">
                                             <button
                                                 className="text-white rounded-lg cursor-pointer px-3! py-1! mr-3! mb-1! bg-[#5CB7E6] hover:bg-[#1591D1]"
-                                                onClick={() => console.log(`Editar usuario con ID: ${user.userId}`)}
+                                                onClick={handleEdit(user.userId)}
                                             >
                                                 Editar <Pencil className="inline" />
                                             </button>
                                             {/* Reglas para mostrar el botón Eliminar */}
                                             {(user.userType_id === 1 // Investigadores
                                             || (user.userId === currentUserId && currentUserType === 2 && adminUsers.length > 1)) // Eliminarse a sí mismo como admin si hay más de uno
-                                            || (currentUserId === 3 || currentUserId === 4) // Presidentes y secretarios de comité
+                                            || (currentUserType === 3 || currentUserType === 4) // Presidentes y secretarios de comité
                                             ? (
                                                 <button
                                                     className="text-white rounded-lg cursor-pointer px-3! py-1! bg-red-500 hover:bg-red-600"

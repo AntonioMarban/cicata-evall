@@ -1,7 +1,7 @@
 import { Home, FileBadge, LogOut, Users } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import CICATA from "../assets/cicatam.png";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function Button({ children, className, ...props }) {
   return (
@@ -16,7 +16,7 @@ function Button({ children, className, ...props }) {
 
 function Sidebar() {
   const navigate = useNavigate();
-  const [userType, setUserType] = useState(localStorage.getItem("userType"));
+  const [userType] = useState(localStorage.getItem("userType"));
 
   const handleLogout = () => {
     localStorage.clear();

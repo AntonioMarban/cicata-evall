@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const userTextInput = (label, id, type, placeholder, sublabel) => {
     let subtitle = sublabel || null;
@@ -61,7 +62,19 @@ const divider = () => {
     );
 }
 
-const ManageIndividualUserForm = (formType, role) => {
+const ManageIndividualUserForm = () => {
+
+    const { state } = useLocation();
+    const navigate = useNavigate();
+
+    const formType = state?.formType;
+    const role = state?.role || "usuario";
+
+    useEffect(() => {
+        if (!formType || !role) {
+            navigate('/Cuentas');
+        }
+    }, [formType, role, navigate]);
 
     const [isInResearchNetwork, setIsInResearchNetwork] = useState(null);
     const formTitle = formType === "new" ? "Crear nuevo usuario " + role : "Editar usuario " + role;
