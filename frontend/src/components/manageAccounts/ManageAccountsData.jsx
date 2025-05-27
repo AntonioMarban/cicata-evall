@@ -104,7 +104,7 @@ const ManageAccountsData = ({ accountTypeToManage }) => {
         };
 
         fetchUsers();
-    }, [userType_id, accountTypeToManage]);
+    }, [userType_id, accountTypeToManage, apiUrl]);
 
     const handleAddUser = (role) => () => {
         navigate('/FormularioDeUsuario', { state: { formType: "new", role: role } })
