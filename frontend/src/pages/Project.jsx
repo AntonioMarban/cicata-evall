@@ -66,6 +66,7 @@ export default function Project() {
           endDate={projectData.endDate}
           folio={projectData.folio}
           status={projectData.status}
+          projectId={projectData.projectId}
         />
 
         {/* Vistas condicionales por tipo de usuario */}

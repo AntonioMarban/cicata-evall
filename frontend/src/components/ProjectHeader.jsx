@@ -1,5 +1,6 @@
 import "../styles/projectheader.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function ProjectHeader({
   title,
@@ -7,7 +8,9 @@ export default function ProjectHeader({
   endDate,
   folio,
   status,
+  projectId, // <- Asegúrate de pasar esto desde el componente padre
 }) {
+  const navigate = useNavigate();
   const [userType, setUserType] = useState(localStorage.getItem("userType"));
 
   useEffect(() => {
@@ -23,6 +26,10 @@ export default function ProjectHeader({
     if (!dateString) return "-";
     const date = new Date(dateString);
     return date.toLocaleDateString("es-MX");
+  };
+
+  const handleInfoClick = () => {
+    navigate(`/VerFormulario/${projectId}`);
   };
 
   return (
@@ -49,7 +56,9 @@ export default function ProjectHeader({
         </div>
       </div>
       <div id="project-buttons" className="flex md:flex-row gap-3">
-        <button className="info-button">Información</button>
+        <button className="info-button" onClick={handleInfoClick}>
+          Información
+        </button>
         {userType === "4" && <button className="info-button">Evaluar</button>}
       </div>
     </div>
