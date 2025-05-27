@@ -1,7 +1,5 @@
-import React from 'react';
 import "../../styles/viewcompleteforms.css"
 const Members = ({members ,investigator}) => {  
-    console.log(investigator)
     return (
     <>
         <div className='backgroundParticipants'>

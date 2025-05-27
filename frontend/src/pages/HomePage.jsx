@@ -47,7 +47,7 @@ export default function HomePage() {
         case 4:
           if (!committeeId) {
             console.error("Missing committeeId for committee user");
-            return;
+            return;   
           }
           endpoint = `/committees/${committeeId}/secretaries/${userId}/evaluations`;
           break;
@@ -56,7 +56,7 @@ export default function HomePage() {
             console.error("Missing committeeId for committee user");
             return;
           }
-          endpoint = `/committees/${committeeId}/members/${userId}/evaluations`;
+          endpoint = `/committees/${committeeId}/members/${userId}/projects`;
           break;
         default:
           console.error("Unsupported userType:", userType);

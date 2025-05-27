@@ -294,7 +294,6 @@ const getProjectDetails = (req, res) => {
         // todo se obtiene como arreglos de objetos(esto de los arreglos le ahorraba tiempo a Gordinho)
         const grouped = groupDeliverables(deliverables || []);
         const groupedBudgets = groupBudgets(budgets || []);
-        console.log(groupedBudgets)
         const response = {
             idf20: {
                 idF: 20,

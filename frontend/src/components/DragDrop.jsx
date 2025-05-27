@@ -42,7 +42,6 @@ const DragDrop = ({ setFilesSend, filesSend, tagType = "Etico" }) => {
   const handleDeleteFile = (indexToDelete) => {
     setFilesSend((prev) => prev.filter((_, index) => index !== indexToDelete));
   };
-  console.log(filesSend)
   return (
     <div className="w-[90%]">
       {/* Zona de carga */}
@@ -76,7 +75,7 @@ const DragDrop = ({ setFilesSend, filesSend, tagType = "Etico" }) => {
           <ul className="!p-2 text-sm text-gray-800 w-[80%]">
             {filesSend.map((file, index) => (
               <li key={index} className="flex justify-between items-center mb-1">
-                <span>{file.name || file.fileName}</span>
+                <span>{file.name || file.filename}</span>
                 <button
                   className="text-red-600 cursor-pointer hover:underline"
                   type="button"

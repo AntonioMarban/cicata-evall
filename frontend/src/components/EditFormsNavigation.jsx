@@ -23,12 +23,13 @@ const FormsNavigation = () => {
     padding: "10px",
     borderRadius:"20px",
     width:`${((option-20)*100)/13}%`,
-    marginBottom: "20px"
+    marginBottom: "20px",
+    minWidth: "60px"
   };
   return (
     <>
       <div style={mystyle}>
-        <p className='text-right text-white font-semibold'>{option === 20 ? '\u00A0' : `${Math.round(((option-20) * 100) / 13)} %`}</p>
+        <p className='text-right text-white font-semibold'>{`${Math.round(((option-20) * 100) / 13)} %`}</p>
       </div>
       <Buttons option={option} setOption={setOption}/>
       <div style={{marginBottom:"50px"}}>
