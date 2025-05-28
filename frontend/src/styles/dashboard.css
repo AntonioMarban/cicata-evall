@@ -79,5 +79,5 @@
   align-items: center;
 }
 .hide-notification {
-  display: none;
+  visibility: hidden;
 }

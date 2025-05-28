@@ -97,16 +97,21 @@ function Dashboard({ projectCards }) {
                 }}
               >
                 <CardContent>
-                  {userType > 1 && (
-                    <div className={card.notification === 1 ? 'show-notification' : 'hide-notification'}>
-                      <img src={NOTIFICATION} alt="Notification" />
-                    </div>
-                  )}
-                  {userType === 0  && (
-                    <div className={card.notification === 0 ? 'show-notification' : 'hide-notification'}>
-                    <img src={NOTIFICATION} alt="Notification" />
-                    </div>
-                  )}
+                  {
+                    userType === 1 ? (
+                      <div className={card.status === "Pendiente de correcciones" ? 'show-notification' : 'hide-notification'}>
+                        <img src={NOTIFICATION} alt="Notification" />
+                      </div>
+                    ) : userType > 2 ? (
+                      <div className={card.status === "En revisión" ? 'show-notification' : 'hide-notification'}>
+                        <img src={NOTIFICATION} alt="Notification" />
+                      </div>
+                    ) : (
+                      <div className="hide-notification">
+                        <img src={NOTIFICATION} alt="Notification" />
+                      </div>
+                    )
+                  }
                   <div>
                     <div className="card-text">{card.title}</div>
                     <div className="card-text">{card.investigador}</div>

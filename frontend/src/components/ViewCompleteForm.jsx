@@ -14,6 +14,7 @@ import Header from './ViewForm/Header';
 import Budget from './ViewForm/Budget'
 import { useParams  } from 'react-router-dom'
 import Files from './ViewForm/Files';
+import Annexes from './ViewForm/Annexes';
 const ViewCompleteForms = () => {  
     const { id }  = useParams();
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -54,6 +55,8 @@ const ViewCompleteForms = () => {
         fetchData(`${apiUrl}/users/projects/${id}`,setCompleteForm);
         fetchData(`${apiUrl}/researchers/projects/${id}/documents`,setFiles);
     },[]);
+
+    console.log(completeForm)
     return (
     <div className='fullTable-background'>
         <div className='div-button'>
@@ -106,6 +109,7 @@ const ViewCompleteForms = () => {
             <ConflictInterest conflictOfInterest={completeForm.idf32.conflictOfInterest}/>
 
             <h1>12. ANEXOS</h1>
+            <Annexes Annexes={completeForm.idf33.aditionalComments}/>
             <Files files={files}/> 
         </div>
         )

@@ -189,7 +189,7 @@ const groupExtras = (extras) => {
         if (!map.has(name,)) {
            
             map.set(name, {
-                id: index,
+                id: index+1,
                 name,
                 values: {}
             });

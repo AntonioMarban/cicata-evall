@@ -2,10 +2,14 @@ import { useState, useEffect } from "react";
 import "../styles/commentscommittee.css";
 import ProjectHeader from "../components/ProjectHeader";
 import { useNavigate } from "react-router-dom";
-import { saveMultipleForms  } from "../db/index";
+import { saveMultipleForms, hasFormsInRange  } from "../db/index";
+import useLoadFormData from "../hooks/useLoadFormData";
 
 export default function ProjectProgress({ projectId }) {
-
+    const [generalData, setGeneralData] = useState(
+        {   idF: 20,
+            projectId
+        });
     const [deliverables, setDeliverables] = useState({
         idF: 29,
         deliverables1: [
@@ -82,6 +86,10 @@ export default function ProjectProgress({ projectId }) {
     };    
 
     const navigateToForms = async (files, e) => {
+        if(generalData.projectId != projectId){
+            alert("Primero debes terminar de editar el primer proyecto")
+            return
+        }
         try {
             const { idf26, idf33 } = await readFiles(files, e);
             const { idf29 } = await handleClic();
@@ -155,7 +163,25 @@ export default function ProjectProgress({ projectId }) {
         fetchData(`${apiUrl}/users/projects/${projectId}`, setProjectData);
         fetchData(`${apiUrl}/researchers/projects/${projectId}/documents`,setFiles);
     }, [projectId]);
-
+    
+    
+    useLoadFormData(generalData.idF,setGeneralData);
+    
+    const checkForms = async () => {
+        const forms = await hasFormsInRange(20, 33);
+        console.log("Formularios encontrados:", forms);
+        if(forms){
+            if(generalData.projectId != projectId){
+                alert("Primero debes terminar de editar el primer proyecto")
+            }
+            else{
+                navigate("/Editar-proyecto")
+            }
+        }
+        else{
+            alert("No hay datos para editar")
+        }
+    };
 
     const handleClic = () =>{
         return new Promise((resolve) => {
@@ -196,6 +222,7 @@ export default function ProjectProgress({ projectId }) {
                 )}
             </div>
             <div className="footer-comments">
+                <button onClick={checkForms} className="info-button">Continuar con correcciones</button>
                 <button onClick={(e)=>{navigateToForms(files,e)}} className="info-button">Realizar correcciones</button>
             </div>
         </div>

@@ -132,3 +132,25 @@ export async function getFormsInRange(minId, maxId) {
         request.onerror = (event) => reject(`Error al obtener formularios en rango: ${event.target.error}`);
     }).finally(() => db.close());
 }
+/**
+ * Verifica si hay formularios almacenados con IDs entre un rango
+ * @param {number} minId - ID mínimo (incluido)
+ * @param {number} maxId - ID máximo (incluido)
+ * @returns {Promise<boolean>} - `true` si hay al menos uno, `false` si no hay ninguno
+ */
+export async function hasFormsInRange(minId, maxId) {
+    const db = await openDB();
+    const transaction = db.transaction("Forms", "readonly");
+    const store = transaction.objectStore("Forms");
+
+    return new Promise((resolve, reject) => {
+        const request = store.getAll(IDBKeyRange.bound(minId, maxId));
+        request.onsuccess = () => {
+            const results = request.result;
+            resolve(results.length > 0);
+        };
+        request.onerror = (event) => {
+            reject("Error al verificar formularios en el rango: " + event.target.error);
+        };
+    }).finally(() => db.close());
+}

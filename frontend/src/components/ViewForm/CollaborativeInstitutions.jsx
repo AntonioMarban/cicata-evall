@@ -3,7 +3,7 @@ import "../../styles/viewcompleteforms.css"
 const CollaborativeInstitutions = ({collaborativeInstitutions}) => {  
     return (
     <>
-    {Array.isArray(collaborativeInstitutions.collaborativeInstitutions) ? (
+    {Array.isArray(collaborativeInstitutions.hasCollaboration) ? (
         <table className='BackgroundTable'>
                 <caption className="table-form-caption">Relación de Proyectos Asociados al proyecto principal</caption>
                 <thead className='table-form-header'>
@@ -46,7 +46,7 @@ const CollaborativeInstitutions = ({collaborativeInstitutions}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>Porque no existe colab</td>
+                    <td>{collaborativeInstitutions.collaborationJustification}</td>
                 </tr>
             </tbody>
         </table>
