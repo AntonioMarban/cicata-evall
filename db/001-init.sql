@@ -614,7 +614,7 @@ BEGIN
     annexeId,
     projectId,
     document,
-    filename,
+    filename as name,
     tag
   FROM annexes
   WHERE projectId = p_projectId;
