@@ -238,17 +238,18 @@ td {
     justify-content: center;
     align-items: center;
     text-align: center;
+    color: #666666;
 }
 .row-header{
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
+    border-left: 1px solid #666666;
+    border-right: 1px solid #666666;
+    border-bottom: 1px solid #666666;
     display: flex;
     justify-content: space-between;
 }
 .row-header div{
     flex: 1;
-    border-right: 1px solid black;
+    border-right: 1px solid #666666;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -257,7 +258,7 @@ td {
     display: flex;
 }
 .folio-version-first{
-    border-right: 1px solid black;
+    border-right: 1px solid #666666;
     height: 100%;
     display: flex;
     justify-content: center;

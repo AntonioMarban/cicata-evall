@@ -76,15 +76,15 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
                                 <p>Nombre de la referencia
                                 <br/>{newErrors.reference && <span className="text-red-600">*{newErrors.reference}</span>}
                                 </p>
-                                <input name="reference" 
+                                <textarea name="reference" 
                                        className="form-pieza-input" 
                                        placeholder="Escribe el nombre de la Referencia..."
                                        value={references.reference}
-                                       onChange={handleInputChange}></input>
+                                       onChange={handleInputChange}></textarea>
                             </div>
                             <div className="dialog-actions">
                                 <button className="button-confirm">
-                                    {referencesToEdit ? "Guardar cambios" : "Guardar Referencia"}
+                                    {referencesToEdit ? "Guardar cambios" : "Guardar referencia"}
                                 </button>
                                 {!referencesToEdit && (
                                     <button 
