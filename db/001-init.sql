@@ -984,6 +984,8 @@ BEGIN
         END WHILE;
     END IF;
 
+    DELETE FROM annexes WHERE projectId = p_projectId;
+
     SELECT 'Proyecto actualizado correctamente' AS message;
 END //
 DELIMITER ;
