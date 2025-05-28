@@ -235,7 +235,9 @@ const updateProject = (req, res) => {
     members = null,
     collaborativeInstitutions = null,
     scheduleActivities = null,
-    deliverables = null,
+    deliverables1 = null,
+    deliverables2 = null,
+    deliverables3 = null,
     budgets = null,
     goals = null,
     methodologies = null,
@@ -245,6 +247,28 @@ const updateProject = (req, res) => {
     extras2 = null,
     extras3 = null,
   } = req.body;
+
+    const transformDeliverables = (deliverablesArray) => {
+        return deliverablesArray.map(deliv => {
+            const { id: deliverableId, values } = deliv;
+            if (values && typeof values === 'object') {
+                return Object.entries(values).map(([deliverableTypeId, quantity]) => ({
+                    deliverableId,
+                    deliverableTypeId: Number(deliverableTypeId),
+                    quantity
+                }));
+            }
+            return [];
+        }).flat();
+    };
+
+    // Combinar y transformar todos los deliverables
+    const transformedDeliverables = [
+        ...transformDeliverables(deliverables1 || []),
+        ...transformDeliverables(deliverables2 || []),
+        ...transformDeliverables(deliverables3 || [])
+    ];
+
   const sql = `CALL updateProject(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
@@ -285,7 +309,7 @@ const updateProject = (req, res) => {
     members ? JSON.stringify(members) : null,
     collaborativeInstitutions ? JSON.stringify(collaborativeInstitutions) : null,
     scheduleActivities ? JSON.stringify(scheduleActivities) : null,
-    deliverables ? JSON.stringify(deliverables) : null,
+    JSON.stringify(transformedDeliverables),
     budgets ? JSON.stringify(budgets) : null,
     goals ? JSON.stringify(goals) : null,
     methodologies ? JSON.stringify(methodologies) : null,
