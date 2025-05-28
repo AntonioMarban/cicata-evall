@@ -77,7 +77,6 @@ const  EthicalAsp = ({option,setOption}) => {
 
     useEffect(() => {
         if (ethicalAsp.workWithAnimals === 0 && ethicalAsp.workWithHumans === 0) {
-            console.log("borrando")
             setEthicalAsp(prev => ({
                 ...prev,
                 efilesSend: []  // Esto borrará todos los archivos

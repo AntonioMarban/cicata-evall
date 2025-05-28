@@ -41,7 +41,7 @@ const CollaborativeInstitutions = ({collaborativeInstitutions}) => {
          <table className='BackgroundTable'>
             <thead className='table-form-header'>
                 <tr>
-                    <th>¿El Cuenta con colaboración de otras instituciones?</th>
+                    <th>¿El proyecto cuenta  con colaboración de otras instituciones?</th>
                 </tr>
             </thead>
             <tbody className='table-form-body'>

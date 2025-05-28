@@ -190,6 +190,10 @@ const Members = ({members ,investigator}) => {
                         <p>{member.email}</p>
                         <p className='participant-label'>email</p>
                     </div>
+                    <div>
+                        <p>{member.phone}</p>
+                        <p className='participant-label'>teléfono</p>
+                    </div>
                 </div>
             </div>
         ))}

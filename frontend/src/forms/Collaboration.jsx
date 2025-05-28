@@ -76,7 +76,7 @@ const  Collaboration = ({option,setOption}) => {
                     <p className="text-[22px]">Colaboración con otras instituciones</p>
                 </div>
                 <div className="!mt-5 !mb-5 flex justify-between flex-wrap mt-5 w-[100%]">
-                    <p className="w-3/4">¿El Cuenta con colaboración de otras instituciones?</p>
+                    <p className="w-3/4">¿El proyecto cuenta con colaboración de otras instituciones?</p>
                     <div className="w-1/4 min-w-[200px] flex justify-between">
                         <button type="button"
                             className={collaborations.hasCollaboration === 1  ? 

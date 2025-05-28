@@ -39,8 +39,8 @@ const  Participants = ({option,setOption}) => {
                 <div className="rounded-lg p-0 w-full">
                     <div className="flex justify-between !p-2">
                     <p className="flex-1">Nombre</p>
-                    <p className="flex-1">Apellido Paterno</p>
-                    <p className="flex-1">Apellido Materno</p>
+                    <p className="flex-1">Apellido paterno</p>
+                    <p className="flex-1">Apellido materno</p>
                     <p className="flex-1">Institución</p>
                     <p className="flex-1">Puesto</p>
                     <p className="flex-1"></p>
