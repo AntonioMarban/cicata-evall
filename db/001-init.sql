@@ -217,7 +217,8 @@ BEGIN
         biosecurityConsiderations, contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio, status,
         otherTypeResearch, alignsWithPNIorODS, hasCollaboration, collaborationJustification, formVersion,
         nextReview, preparedBy, reviewedBy, approvedBy, preparedDate, reviewedDate, approvedDate, 
-        otherEducationalDeliverable, otherDiffusionDeliverable, otherCurrentBudget, otherInvestmentBudget
+        otherEducationalDeliverable, otherDiffusionDeliverable, otherCurrentBudget, otherInvestmentBudget,
+        firstEvaluation, reevaluation, committiesModify
     )
     VALUES (
         p_title, p_startDate, p_endDate, p_typeResearch, p_topic, p_subtopic, p_alignmentPNIorODS, p_summary,
@@ -227,7 +228,8 @@ BEGIN
         p_otherTypeResearch, p_alignsWithPNIorODS, p_hasCollaboration, p_collaborationJustification,
         '03', 'septiembre 2025', 'Leslie Olmedo Nieva', 'Leslie Olmedo Nieva', 'Paul Mondragón Terán',
         '2024-06-01', '2024-07-08', '2024-11-04', p_otherEducationalDeliverable, p_otherDiffusionDeliverable,
-        p_otherCurrentBudget, p_otherInvestmentBudget
+        p_otherCurrentBudget, p_otherInvestmentBudget, TRUE, 0, 'ninguno'
+
     );
 
     SET v_projectId = LAST_INSERT_ID();
@@ -496,7 +498,10 @@ BEGIN
         p.otherEducationalDeliverable,
         p.otherDiffusionDeliverable,
         p.otherCurrentBudget, 
-        p.otherInvestmentBudget
+        p.otherInvestmentBudget, 
+        p.firstEvaluation,
+        p.reevaluation,
+        p.committiesModify
     FROM projects p
     WHERE p.projectId = p_projectId;
 

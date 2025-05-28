@@ -311,7 +311,10 @@ const getProjectDetails = (req, res) => {
                 subtopic: projectInfo[0]?.subtopic || '',
                 summary: projectInfo[0]?.summary || '',
                 topic: projectInfo[0]?.topic || '',
-                status: projectInfo[0]?.status || ''
+                status: projectInfo[0]?.status || '', 
+                firstEvaluation: projectInfo[0]?.firstEvaluation || '',
+                reevaluation: projectInfo[0]?.reevaluation || '',
+                committiesModify: projectInfo[0]?.committiesModify || ''
             },
             idf21: {
                 idF: 21,
@@ -399,6 +402,7 @@ const getProjectDetails = (req, res) => {
         };
 
         res.status(200).json(response);
+        console.log(projectInfo[0])
     });
 };
 

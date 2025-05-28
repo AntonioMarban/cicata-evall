@@ -322,6 +322,11 @@ FOREIGN KEY (budgetSectionId) REFERENCES budgetSections(budgetSectionId);
 
 ALTER TABLE annexes ADD COLUMN tag VARCHAR(100);
 
+ALTER TABLE projects
+ADD COLUMN firstEvaluation BOOLEAN DEFAULT TRUE,
+ADD COLUMN reevaluation INT DEFAULT 0,
+ADD COLUMN committiesModify TEXT;
+
 -- Datos estaticos para la parte superior del formulario
 ALTER TABLE projects
 ADD COLUMN formVersion VARCHAR(10) DEFAULT '03',
