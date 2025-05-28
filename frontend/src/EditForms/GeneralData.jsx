@@ -66,6 +66,8 @@ const GeneralData = ({option,setOption}) => {
         if(generalData.alignsWithPNIorODS === 0 || generalData.alignsWithPNIorODS === ""){
             delete newErrorsF['alignsWithPNIorODS']
         }
+        delete newErrorsF['reevaluation'];
+        delete newErrorsF['committiesModify'];
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
             handleOnSubmitFormNext(event); 
@@ -73,7 +75,7 @@ const GeneralData = ({option,setOption}) => {
     };
 
     useLoadFormData(generalData.idF,setGeneralData);
-    
+    console.log(newErrors)
     return (
         <main>
             <div className="flex flex-col">
