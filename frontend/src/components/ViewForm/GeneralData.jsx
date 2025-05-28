@@ -14,9 +14,9 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
         </thead>
         <tbody className='table-form-body'>
             <tr>
-                <td>{generalData.firstTime}</td>
-                <td>{generalData.numberR}</td>
-                <td>{generalData.committee}</td>
+                <td>{generalData.firstEvaluation}</td>
+                <td>{generalData.reevaluation}</td>
+                <td>{generalData.committiesModify}</td>
                 <td>{generalData.folio}</td>
             </tr>
         </tbody>
