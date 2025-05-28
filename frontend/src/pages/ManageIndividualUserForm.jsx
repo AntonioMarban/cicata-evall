@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const userTextInput = (label, id, type, placeholder, sublabel, value, onChange) => {
+const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, error) => {
     let subtitle = sublabel || null;
 
     return (
@@ -13,18 +13,18 @@ const userTextInput = (label, id, type, placeholder, sublabel, value, onChange) 
             <input
                 type={type || "text"}
                 id={id}
-                className="border border-gray-300 rounded-lg w-full"
+                className={`border rounded-lg w-full ${error ? 'border-red-500' : 'border-gray-300'}`}
                 style={{ padding: '15px' }}
                 placeholder={placeholder}
                 value={value || ""}
                 onChange={onChange}
-                required
             />
+            {error && <span className="text-red-500 text-sm">{error}</span>}
         </div>
     );
 }
 
-const yesNoInput = (label, id, stateValue, setStateValue) => {
+const yesNoInput = (label, id, stateValue, setStateValue, error) => {
     return (
         <div className="flex flex-col gap-2 mb-4 basis-1/3 min-w-[250px]" style={{ boxSizing: 'border-box', padding: '0 1%', margin: '1% 0' }}>
             <label htmlFor={id} className="text-xl font-semibold">
@@ -53,6 +53,7 @@ const yesNoInput = (label, id, stateValue, setStateValue) => {
                     Sí
                 </button>
             </div>
+            {error && <span className="text-red-500 text-sm">{error}</span>}
         </div>
     );
 };
@@ -87,6 +88,9 @@ const ManageIndividualUserForm = () => {
     }, [formType, role, navigate]);
 
     const handleCreateUser = async () => {
+
+        if (!validateForm()) return;
+
         if (password !== confirmPassword) {
             alert("Las contraseñas no coinciden.");
             return;
@@ -153,6 +157,47 @@ const ManageIndividualUserForm = () => {
     const [levelName, setLevelName] = useState("");
     const [levelNum, setLevelNum] = useState("");
 
+    const [errors, setErrors] = useState({});
+
+    const handleFieldChange = (field, value, setter) => {
+        setter(value);
+        setErrors(prev => {
+            const updated = { ...prev };
+            if (value.trim() !== "") delete updated[field];
+            if (field === "confirmPassword" && value === password) delete updated.confirmPassword;
+            return updated;
+        });
+    };
+
+    const handleYesNoChange = (value, setter, fieldName) => {
+        setter(value);
+        if (errors[fieldName] !== null) {
+            setErrors(prev => ({ ...prev, [fieldName]: null }));
+        }
+    };
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!fName.trim()) newErrors.fName = "Este campo es obligatorio.";
+        if (!lastName1.trim()) newErrors.lastName1 = "Este campo es obligatorio.";
+        if (!lastName2.trim()) newErrors.lastName2 = "Este campo es obligatorio.";
+        if (!email.trim()) newErrors.email = "Este campo es obligatorio.";
+        if (!password.trim()) newErrors.password = "Este campo es obligatorio.";
+        if (!confirmPassword.trim()) newErrors.confirmPassword = "Este campo es obligatorio.";
+        if (password !== confirmPassword) newErrors.confirmPassword = "Las contraseñas no coinciden.";
+        if (!institution.trim()) newErrors.institution = "Este campo es obligatorio.";
+        if (!positionWork.trim()) newErrors.positionWork = "Este campo es obligatorio.";
+        if (isInResearchNetwork === null) newErrors.isInResearchNetwork = "Selecciona una opción.";
+        if (isInResearchNetwork && !researchNetworkName.trim()) newErrors.researchNetworkName = "Este campo es obligatorio.";
+        if (!academicDegree.trim()) newErrors.academicDegree = "Este campo es obligatorio.";
+        if (!levelName.trim()) newErrors.levelName = "Este campo es obligatorio.";
+        if (!levelNum.trim()) newErrors.levelNum = "Este campo es obligatorio.";
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     return (
         <>
             <div className='flex flex-col overflow-y-auto h-screen max-h-screen' style={{ padding: '5%' }}>
@@ -167,19 +212,19 @@ const ManageIndividualUserForm = () => {
                         <br />
 
                         <div id="userFullNameContainer" className="flex flex-row items-center mb-6 flex-wrap justify-between">
-                            {userTextInput("Nombre(s)", "name", "text", "Nombre(s) del usuario", null, fName, (e) => setFName(e.target.value))}
-                            {userTextInput("Apellido paterno", "firstLastName", "text", "Apellido paterno del usuario", null, lastName1, (e) => setLastName1(e.target.value))}
-                            {userTextInput("Apellido materno", "secondLastName", "text", "Apellido materno del usuario", null, lastName2, (e) => setLastName2(e.target.value))}
+                            {userTextInput("Nombre(s)", "name", "text", "Nombre(s) del usuario", null, fName, (e) => handleFieldChange("fName", e.target.value, setFName), errors.fName)}
+                            {userTextInput("Apellido paterno", "firstLastName", "text", "Apellido paterno del usuario", null, lastName1, (e) => handleFieldChange("lastName1", e.target.value, setLastName1), errors.lastName1)}
+                            {userTextInput("Apellido materno", "secondLastName", "text", "Apellido materno del usuario", null, lastName2, (e) => handleFieldChange("lastName2", e.target.value, setLastName2), errors.lastName2)}
                         </div>
 
                         <div id="userEmailContainer" className="flex flex-row items-center gap-10 mb-6 flex-wrap justify-between">
-                            {userTextInput("Correo electrónico", "email", "email", "Correo electrónico del usuario", null, email, (e) => setEmail(e.target.value))}
+                            {userTextInput("Correo electrónico", "email", "email", "Correo electrónico del usuario", null, email, (e) => handleFieldChange("email", e.target.value, setEmail), errors.email)}
                         </div>
 
 
                         <div id="userPasswordContainer" className="flex flex-row items-center mb-6 flex-wrap justify-start">
-                            {userTextInput("Contraseña", "password", "password", "Contraseña del usuario", null, password, (e) => setPassword(e.target.value))}
-                            {userTextInput("Confirmar contraseña", "confirmPassword", "password", "Confirmar contraseña del usuario", null, confirmPassword, (e) => setConfirmPassword(e.target.value))}
+                            {userTextInput("Contraseña", "password", "password", "Contraseña del usuario", null, password, (e) => handleFieldChange("password", e.target.value, setPassword), errors.password)}
+                            {userTextInput("Confirmar contraseña", "confirmPassword", "password", "Confirmar contraseña del usuario", null, confirmPassword, (e) => handleFieldChange("confirmPassword", e.target.value, setConfirmPassword), errors.confirmPassword)}
                         </div>
                     </div>
 
@@ -190,19 +235,22 @@ const ManageIndividualUserForm = () => {
                         <br />
 
                         <div id="userInstitutionContainer" className="flex flex-row items-center mb-6 flex-wrap justify-start">
-                            {userTextInput("Institución a la que pertenece", "institution", "text", "Institución del usuario", "Ej. Universidad, empresa, organización, etc.", institution, (e) => setInstitution(e.target.value))}
-                            {userTextInput("Puesto que desempeña", "positionWorl", "text", "Puesto del usuario", "Ej. investigador, estudiante, directivo, etc.", positionWork, (e) => setPositionWork(e.target.value))}
+                            {userTextInput("Institución a la que pertenece", "institution", "text", "Institución del usuario", "Ej. Universidad, empresa, organización, etc.", institution, (e) => handleFieldChange("institution", e.target.value, setInstitution), errors.institution)}
+                            {userTextInput("Puesto que desempeña", "positionWorl", "text", "Puesto del usuario", "Ej. investigador, estudiante, directivo, etc.", positionWork, (e) => handleFieldChange("positionWork", e.target.value, setPositionWork), errors.positionWork)}
                         </div>
 
                         <div id="investigationNetworkContainer" className="flex flex-row items-center mb-6 flex-wrap justify-start">
-                            {yesNoInput("¿Pertenece a alguna red de investigación?", "researchNetwork", isInResearchNetwork, setIsInResearchNetwork)}
-                            {isInResearchNetwork && userTextInput("Nombre de la red de investigación", "researchNetworkName", "text", "Nombre de la red de investigación", null, researchNetworkName, (e) => setResearchNetworkName(e.target.value))}
+                            {yesNoInput("¿Pertenece a alguna red de investigación?", "researchNetwork", isInResearchNetwork, setIsInResearchNetwork, errors.isInResearchNetwork)}
+                            <div>
+                                
+                            </div>
+                            {isInResearchNetwork && userTextInput("Nombre de la red de investigación", "researchNetworkName", "text", "Nombre de la red de investigación", null, researchNetworkName, (e) => handleFieldChange("researchNetworkName", e.target.value, setResearchNetworkName), errors.researchNetworkName)}
                         </div>
 
                         <div id="userAcademicDegree" className="flex flex-row items-center mb-6 flex-wrap justify-start">
-                            {userTextInput("Grado académico", "academicDegree", "text", "Grado académico del usuario", "Ej. Doctorado, Maestría, Licenciatura, etc.", academicDegree, (e) => setAcademicDegree(e.target.value))}
-                            {userTextInput("Nivel académico", "levelName", "text", "Nivel académico del usuario", "Ej. SNII, COFFA, EDI, etc.", levelName, (e) => setLevelName(e.target.value))}
-                            {userTextInput("Número de cédula", "levelNum", "number", "Número de cédula del usuario", "Ej. 1, 2, 3, etc.", levelNum, (e) => setLevelNum(e.target.value))}
+                            {userTextInput("Grado académico", "academicDegree", "text", "Grado académico del usuario", "Ej. Doctorado, Maestría, Licenciatura, etc.", academicDegree, (e) => handleFieldChange("academicDegree", e.target.value, setAcademicDegree), errors.academicDegree)}
+                            {userTextInput("Nivel académico", "levelName", "text", "Nivel académico del usuario", "Ej. SNII, COFFA, EDI, etc.", levelName, (e) => handleFieldChange("levelName", e.target.value, setLevelName), errors.levelName)}
+                            {userTextInput("Número de cédula", "levelNum", "number", "Número de cédula del usuario", "Ej. 1, 2, 3, etc.", levelNum, (e) => handleFieldChange("levelNum", e.target.value, setLevelNum), errors.levelNum)}
                         </div>
 
                     </div>

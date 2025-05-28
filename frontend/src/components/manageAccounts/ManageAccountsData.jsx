@@ -121,7 +121,7 @@ const ManageAccountsData = ({ accountTypeToManage }) => {
                     <div id="accountsToManageDT">
                         <AccountTables users={users} showCommittee={showCommittee} role={role} />
                     </div>
-                    {accountTypeToManage !== "Presidentes y secretarios" && (
+                    {accountTypeToManage !== "Presidentes de comité" && (
                         <div id="accountsToManageButtons" className="flex flex-row items-center gap-10 mb-6 flex-wrap">
                             <button
                                 className="bg-[#5CB7E6] text-white font-semibold rounded hover:bg-[#1591D1] cursor-pointer"
