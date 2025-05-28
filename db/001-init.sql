@@ -729,7 +729,8 @@ BEGIN
         otherEducationalDeliverable = IFNULL(p_otherEducationalDeliverable, otherEducationalDeliverable),
         otherDiffusionDeliverable = IFNULL(p_otherDiffusionDeliverable, otherDiffusionDeliverable),
         otherCurrentBudget = IFNULL(p_otherCurrentBudget, otherCurrentBudget),
-        otherInvestmentBudget = IFNULL(p_otherInvestmentBudget, otherInvestmentBudget)
+        otherInvestmentBudget = IFNULL(p_otherInvestmentBudget, otherInvestmentBudget),
+        status = 'En revision'
     WHERE projectId = p_projectId;
 
     -- Reemplazar secciones si son enviadas
@@ -842,13 +843,15 @@ BEGIN
         DELETE FROM budgets WHERE project_id = p_projectId;
         SET total = JSON_LENGTH(p_budgetsJSON);
         WHILE i < total DO
-            INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id, budgetTypeId)
+            INSERT INTO budgets (investmentExpenditure, name, expenditure, project_id, budgetTypeId, budgetDate, otherName)
             VALUES (
-                JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].investmentExpenditure'))),
-                JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].name'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].idType'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].idnName'))),
                 JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].expenditure'))),
                 p_projectId,
-                JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetTypeId')))
+                JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetTypeId'))),
+                STR_TO_DATE(NULLIF(JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].budgetDate'))), ''), '%Y-%m-%d'),
+                JSON_UNQUOTE(JSON_EXTRACT(p_budgetsJSON, CONCAT('$[', i, '].otherName')))
             );
             SET i = i + 1;
         END WHILE;
@@ -898,6 +901,7 @@ BEGIN
             SET i = i + 1;
         END WHILE;
     END IF;
+
     -- specificObjectives
     IF p_specificObjectivesJSON IS NOT NULL THEN
         DELETE FROM specificObjectives WHERE project_id = p_projectId;
