@@ -402,7 +402,6 @@ const getProjectDetails = (req, res) => {
         };
 
         res.status(200).json(response);
-        console.log(projectInfo[0])
     });
 };
 
