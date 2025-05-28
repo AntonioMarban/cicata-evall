@@ -95,7 +95,7 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
                 <tbody className='table-form-body'>
                     {Array.isArray(desglose.specificObjectives) && desglose.specificObjectives.map((sObjective, index) => (
                     <tr key={index}>
-                        <td>{index}</td>
+                        <td>{index+1}</td>
                         <td>{sObjective.objectiveName}</td>
                         <td>{sObjective.objectiveDescription}</td>
                     </tr>

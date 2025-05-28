@@ -20,6 +20,12 @@
     color: white;
     box-shadow: 0px 6px 12px 0px rgba(63, 140, 255, 0.26);
 }
+.div-button button:hover {
+    background-color: #5ab6e0; 
+    box-shadow: 0px 8px 16px 0px rgba(63, 140, 255, 0.4);
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in-out;
+}
 .table-form-header{
     background-color: #C1E4F5;
 }
