@@ -185,9 +185,11 @@ const getDictum = (req, res) => {
 const groupExtras = (extras) => {
     const map = new Map();
 
-    extras.forEach(({ name, quantity, deliverableTypeId }) => {
-        if (!map.has(name)) {
+    extras.forEach(({ name, quantity, deliverableTypeId },index) => {
+        if (!map.has(name,)) {
+           
             map.set(name, {
+                id: index,
                 name,
                 values: {}
             });
