@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, error) => {
+const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, onBlur, error) => {
     let subtitle = sublabel || null;
 
     return (
@@ -18,6 +18,7 @@ const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, 
                 placeholder={placeholder}
                 value={value || ""}
                 onChange={onChange}
+                onBlur={onBlur}
             />
             {error && <span className="text-red-500 text-sm">{error}</span>}
         </div>
@@ -176,23 +177,49 @@ const ManageIndividualUserForm = () => {
         }
     };
 
+    const isValidName = (text) => {
+        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,30}$/;
+        return regex.test(text.trim()) && text === text.trim();
+    };
+
+    const isValidEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
+
+    const isValidPassword = (pass) => {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        return regex.test(pass);
+    };
+
+    const isValidID = (num) => {
+        const n = parseInt(num);
+        return !isNaN(n) && n >= 1 && n <= 5;
+    };
+
     const validateForm = () => {
         const newErrors = {};
 
-        if (!fName.trim()) newErrors.fName = "Este campo es obligatorio.";
-        if (!lastName1.trim()) newErrors.lastName1 = "Este campo es obligatorio.";
-        if (!lastName2.trim()) newErrors.lastName2 = "Este campo es obligatorio.";
-        if (!email.trim()) newErrors.email = "Este campo es obligatorio.";
-        if (!password.trim()) newErrors.password = "Este campo es obligatorio.";
-        if (!confirmPassword.trim()) newErrors.confirmPassword = "Este campo es obligatorio.";
-        if (password !== confirmPassword) newErrors.confirmPassword = "Las contraseñas no coinciden.";
-        if (!institution.trim()) newErrors.institution = "Este campo es obligatorio.";
-        if (!positionWork.trim()) newErrors.positionWork = "Este campo es obligatorio.";
+        if (!isValidName(fName)) newErrors.fName = "El nombre debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
+        if (!isValidName(lastName1)) newErrors.lastName1 = "El apellido paterno debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
+        if (!isValidName(lastName2)) newErrors.lastName2 = "El apellido materno debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
+        
+        if (!isValidEmail(email)) newErrors.email = "El correo no tiene un formato válido.";
+        
+        if (!isValidPassword(password)) newErrors.password = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
+        if (confirmPassword !== password) newErrors.confirmPassword = "Las contraseñas no coinciden.";
+
+        
+        if (!isValidName(institution)) newErrors.institution = "La institución debe tener entre 3 y 30 letras, sin caracteres especiales.";
+        if (!isValidName(positionWork)) newErrors.positionWork = "El puesto debe tener entre 3 y 30 letras, sin caracteres especiales.";
+
         if (isInResearchNetwork === null) newErrors.isInResearchNetwork = "Selecciona una opción.";
-        if (isInResearchNetwork && !researchNetworkName.trim()) newErrors.researchNetworkName = "Este campo es obligatorio.";
-        if (!academicDegree.trim()) newErrors.academicDegree = "Este campo es obligatorio.";
-        if (!levelName.trim()) newErrors.levelName = "Este campo es obligatorio.";
-        if (!levelNum.trim()) newErrors.levelNum = "Este campo es obligatorio.";
+        if (isInResearchNetwork && !isValidName(researchNetworkName)) newErrors.researchNetworkName = "El nombre de la red de investigación debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
+        
+        if (!isValidName(academicDegree)) newErrors.academicDegree = "El grado académico debe tener entre 3 y 30 letras, sin caracteres especiales.";
+        if (!isValidName(levelName)) newErrors.levelName = "El nivel académico debe tener entre 3 y 30 letras, sin caracteres especiales.";
+
+        if(!isValidID(levelNum)) newErrors.levelNum = "El número de cédula debe ser un número entre 1 y 5.";
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -240,7 +267,7 @@ const ManageIndividualUserForm = () => {
                         </div>
 
                         <div id="investigationNetworkContainer" className="flex flex-row items-center mb-6 flex-wrap justify-start">
-                            {yesNoInput("¿Pertenece a alguna red de investigación?", "researchNetwork", isInResearchNetwork, setIsInResearchNetwork, errors.isInResearchNetwork)}
+                            {yesNoInput("¿Pertenece a alguna red de investigación?", "researchNetwork", isInResearchNetwork, (value) => handleYesNoChange(value, setIsInResearchNetwork, "isInResearchNetwork"), errors.isInResearchNetwork)}
                             <div>
                                 
                             </div>
@@ -248,7 +275,7 @@ const ManageIndividualUserForm = () => {
                         </div>
 
                         <div id="userAcademicDegree" className="flex flex-row items-center mb-6 flex-wrap justify-start">
-                            {userTextInput("Grado académico", "academicDegree", "text", "Grado académico del usuario", "Ej. Doctorado, Maestría, Licenciatura, etc.", academicDegree, (e) => handleFieldChange("academicDegree", e.target.value, setAcademicDegree), errors.academicDegree)}
+                            {userTextInput("Grado académico", "academicDegree", "text", "Grado académico del usuario", "Ej. Doctorado, Maestría, Licenciatura", academicDegree, (e) => handleFieldChange("academicDegree", e.target.value, setAcademicDegree), errors.academicDegree)}
                             {userTextInput("Nivel académico", "levelName", "text", "Nivel académico del usuario", "Ej. SNII, COFFA, EDI, etc.", levelName, (e) => handleFieldChange("levelName", e.target.value, setLevelName), errors.levelName)}
                             {userTextInput("Número de cédula", "levelNum", "number", "Número de cédula del usuario", "Ej. 1, 2, 3, etc.", levelNum, (e) => handleFieldChange("levelNum", e.target.value, setLevelNum), errors.levelNum)}
                         </div>
@@ -260,6 +287,7 @@ const ManageIndividualUserForm = () => {
                     <button
                         className="bg-[#FF4D4D] text-white font-semibold rounded hover:bg-[#FF0000] cursor-pointer"
                         style={{ padding: '10px 20px', width: '100%', maxWidth: '200px', textAlign: 'center' }}
+                        onClick={() => navigate('/Cuentas')}
                     >
                         Cancelar
                     </button>
