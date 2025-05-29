@@ -165,6 +165,51 @@ const ManageIndividualUserForm = () => {
         }
     }
 
+    const handleEditUser = async () => {
+        if (!validateForm()) return;
+
+        if (password !== confirmPassword) {
+            alert("Las contraseñas no coinciden.");
+            return;
+        }
+
+        const body = {
+            fName,
+            lastName1,
+            lastName2,
+            email,
+            phone,
+            password,
+            institution,
+            positionWork,
+            researchNetwork: isInResearchNetwork ? 1 : 0,
+            researchNetworkName: isInResearchNetwork ? researchNetworkName : "",
+            academicDegree,
+            levelName,
+            levelNum: parseInt(levelNum),
+        }
+
+        try {
+            const response = await fetch(`${apiUrl}/subdirectorade/users/${userId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al editar el usuario');
+            }
+
+            alert("Usuario editado exitosamente.");
+            navigate('/Cuentas');
+        } catch (error) {
+            console.error('Error al editar el usuario:', error);
+            alert("Error al editar el usuario. Por favor, inténtalo de nuevo.");
+        }
+    }
+
     
     const formTitle = formType === "new" ? "Crear nuevo usuario " + role : "Editar usuario " + role;
     
@@ -399,9 +444,9 @@ const ManageIndividualUserForm = () => {
                     <button
                         className="bg-[#5CB7E6] text-white font-semibold rounded hover:bg-[#1591D1] cursor-pointer"
                         style={{ padding: '10px 20px', width: '100%', maxWidth: '200px', textAlign: 'center' }}
-                        onClick={handleCreateUser}
+                        onClick={formType === "edit" ? handleEditUser : handleCreateUser}
                     >
-                        {formType === "new" ? "Crear" : "Guardar"}
+                        {formType === "edit" ? "Guardar cambios" : "Crear usuario"}
                     </button>
                 </div>
             </div>
