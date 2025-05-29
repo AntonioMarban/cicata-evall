@@ -103,6 +103,15 @@
   margin-top: 12px;
   padding: 10px;
 }
+.form-colab-input{
+  border-radius: 10px;
+  width: 100%;
+  border: 2px solid #E1E1E1;
+  font-size: 13px;
+  color: #6D7580;
+  margin-top: 12px;
+  padding: 10px;
+}
 .modal-foot-pieza{
     display: flex;
     justify-content: flex-end;

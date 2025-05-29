@@ -43,7 +43,12 @@ const  Anexos = ({option,setOption}) => {
             alert("Error al guardar el formulario. Por favor, inténtalo de nuevo.");
             return; 
         }
-
+        const respuesta = window.confirm("ya no se podrá modificar hasta que se revisado, ¿Estás seguro de que quieres continuar?");
+        if (respuesta) {
+        console.log("El usuario eligió: Sí");
+        } else {
+        return 
+        }
         try {
             const formData = await getFormsInRange(1, 14);
             if (!formData) {

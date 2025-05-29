@@ -63,7 +63,7 @@ const ViewCompleteForms = () => {
             <button onClick={handlePrint2}>Descargar anexos</button>
             <button onClick={handlePrint}>Descargar proyecto</button>
         </div>
-        {completeForm ? (
+        {(completeForm && files) ? (
         <div className='fullTable-body'>
 
             <Header generalData={completeForm.idf34}/>

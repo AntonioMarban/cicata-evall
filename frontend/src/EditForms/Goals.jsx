@@ -4,29 +4,60 @@ import useSubmitFormBack from "../hooks/useSubmitFormBack";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
 import ShowCards from "../components/ShowCards.jsx";
 import AddGoals from "../components/Modals/AddGoals";
-import AddReferences from "../components/Modals/AddReferences";
 import AddMethodology from "../components/Modals/AddMethodology.jsx";
 
 import { useState } from "react";
 const  Goals = ({option,setOption}) => {
     
-    const [desglose, setDesglose] = useState(
-        {   idF: 25,
+    const [desglose, setDesglose] = useState({   idF: 25,
             goals: [],
-            references: [],
+            referencesText: "",
             methodologies: []
         });
+    const [newErrorsD,setNewErrorsD] = useState(
+        {
+            referencesText: "*",
+            methodologies: "*",
+            goals: "*",
+    });
     const [goalsToEdit, setGoalsToEdit] = useState(null);
-    const [referencesToEdit, setReferencesToEdit] = useState(null);
     const [methodologiesToEdit, setMethodologiesToEdit] = useState(null);
 
     const handleOnSubmitForm = useSubmitFormNext(desglose, setOption);
     const handleOnSubmitFormBack = useSubmitFormBack(desglose, setOption);
-
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
-        handleOnSubmitForm(event); 
+        const newErrorsDF = {}
+
+        if(desglose.referencesText === ''){
+            newErrorsDF['referencesText'] = "* El campo es requerido"
+        }
+        else{
+            delete newErrorsDF['referencesText']
+        }
+        if(desglose.goals.length<1){
+            newErrorsDF['goals'] = `* Debe haber al menos una meta`;
+        }
+        if(desglose.goals.length>=1){
+            delete newErrorsDF['goals']
+        }
+        if(desglose.methodologies.length<1){
+            newErrorsDF['methodologies'] = `* Debe haber al menos una metodología`;
+        }
+        if(desglose.methodologies.length>=1){
+            delete newErrorsDF['methodologies']
+        }
+        setNewErrorsD(newErrorsDF)
+        if(!Object.keys(newErrorsDF).length>0){
+            handleOnSubmitForm(event); 
+        }
+
     }
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setDesglose({ ...desglose, [name]: value });
+    };
 
     const handleDeleteArray = (index,arrayToEdit) => {
         setDesglose({
@@ -54,10 +85,10 @@ const  Goals = ({option,setOption}) => {
                     <div className="flex flex-wrap flex-col">
                         
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Metas </p>
+                            <p className="!mt-2 text-xl">Metas {newErrorsD.goals && <span className="text-red-600">{newErrorsD.goals}</span>}</p>
                             <div className="rounded-lg p-0 w-full">
                                 <div className="flex justify-between !p-2">
-                                    <p className="flex-1">Nombre de la meta</p>
+                                    <p className="flex-1">Meta</p>
                                 </div>
                             </div>
                             <ShowCards cards={desglose.goals} 
@@ -77,33 +108,10 @@ const  Goals = ({option,setOption}) => {
                         </div>
 
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Referencias </p>
+                            <p className="!mt-2 text-xl">Metodologías {newErrorsD.methodologies && <span className="text-red-600">{newErrorsD.methodologies}</span>}</p>
                             <div className="rounded-lg p-0 w-full">
                                 <div className="flex justify-between !p-2">
-                                    <p className="flex-1">Nombre de la referencia</p>
-                                </div>
-                            </div>
-                            <ShowCards cards={desglose.references} 
-                                handleDeleteFile={handleDeleteArray}
-                                handleEditModal={handleEditModal}
-                                setData = {setReferencesToEdit}
-                                nameArray='references'
-                                slice={1}/>
-                        </div>
-                        <div className="!flex items-center justify-center">
-                                <AddReferences 
-                                    setDesglose={setDesglose}
-                                    referencesToEdit={referencesToEdit}
-                                    setData ={setReferencesToEdit}
-                                    onEditComplete={handleEditComplete}
-                                />
-                        </div>
-
-                        <div className="flex-1">
-                            <p className="!mt-2 text-xl">Metodologías </p>
-                            <div className="rounded-lg p-0 w-full">
-                                <div className="flex justify-between !p-2">
-                                    <p className="flex-1">Nombre de la Metodología</p>
+                                    <p className="flex-1">Metodología</p>
                                 </div>
                             </div>
                             <ShowCards cards={desglose.methodologies} 
@@ -121,10 +129,19 @@ const  Goals = ({option,setOption}) => {
                                     onEditComplete={handleEditComplete}
                                 />
                         </div>
+                        <div className="flex-1">
+                            <p className="!mt-2 text-xl">Referencias {newErrorsD.referencesText && <span className="text-red-600">{newErrorsD.referencesText}</span>}</p>
+                            <textarea  
+                            className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] hover:border-[#5CB7E6] transition-colors duration-300 text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
+                            name="referencesText"
+                            value={desglose.referencesText}
+                            onChange={handleChange} 
+                            placeholder="Escribe las referencias del proyecto..."></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div className="flex justify-end items-center mt-5 mb-5">
+            <div className="flex justify-end items-center !mt-5 mb-5">
                 <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
                 bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
                  hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>

@@ -10,7 +10,7 @@ const CollaborativeInstitutions = ({collaborativeInstitutions}) => {
                 <thead className='table-form-header'>
                     <tr>
                         <th>No. </th>
-                        <th>Nombre de la Institución</th>
+                        <th>Nombre de la institución</th>
                         <th>¿Es parte del IPN?</th>
                         <th>¿Ya cuenta con Convenio de Colaboración?
                         <br/><span className='subtitle-text'>(General / Específico)</span>
