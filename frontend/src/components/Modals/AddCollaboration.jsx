@@ -150,7 +150,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                                     name="agreementType" className="form-colab-input" placeholder="Escribe el tipo de convenio..."></input>
                                 </div>
                                 <div>
-                                    <p>¿Número de covenio?</p>
+                                    <p>¿Número de convenio?</p>
                                     <p className="form-subtext">(Si aplica)</p>
                                     <input 
                                         value={collaboration.agreementNumber}
