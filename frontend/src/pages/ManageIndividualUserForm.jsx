@@ -59,6 +59,9 @@ const ManageIndividualUserForm = () => {
     const formType = state?.formType;
     const role = state?.role || "usuario";
     const userId = state?.userId || null;
+    
+    const [committeeId] = useState(localStorage.getItem("committeeId"));
+    const [currentUserId] = useState(localStorage.getItem("userId"));
 
     const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -120,14 +123,7 @@ const ManageIndividualUserForm = () => {
             return;
         }
 
-        console.log("Creating user with role:", role);
-
-        const normalizedRole = role.trim().toLowerCase();
-        const userType_id = roles[normalizedRole];
-
-        console.log("User type ID:", userType_id);
-
-        const body = {
+        const commonBody = {
             fName,
             lastName1,
             lastName2,
@@ -141,17 +137,34 @@ const ManageIndividualUserForm = () => {
             academicDegree,
             levelName,
             levelNum: parseInt(levelNum),
-            userType_id: roles[role.toLowerCase()] || null
-        }
+        };
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/subdirectorade/users`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            });
+            let response;
+
+            if (role.toLowerCase() === "miembro") {
+                const url = `${apiUrl}/committees/${committeeId}/secretaries/${currentUserId}/members`;
+                response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(commonBody)
+                });
+            } else {
+                const body = {
+                    ...commonBody,
+                    userType_id: roles[role.toLowerCase()] || null
+                };
+                const url = `${apiUrl}/subdirectorade/users`;
+                response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+            }
 
             if (!response.ok) {
                 throw new Error('Error al crear el usuario');

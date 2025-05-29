@@ -224,7 +224,7 @@ const getCommitteeMember = (req, res) => {
     if (results[0].length === 0) {
       return res.status(404).json({ message: "Resource does not exist" });
     }
-    return res.status(200).json(results[0]);
+    return res.status(200).json(results[0][0]);
   });
 };
 
