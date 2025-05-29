@@ -75,7 +75,6 @@ const GeneralData = ({option,setOption}) => {
     };
 
     useLoadFormData(generalData.idF,setGeneralData);
-    console.log(newErrors)
     return (
         <main>
             <div className="flex flex-col">

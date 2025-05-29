@@ -19,15 +19,15 @@ const GeneralData = ({option,setOption}) => {
             summary:"" });
     
     const [newErrors,setNewErrors] = useState({
-            title: "",
-            startDate:"",
-            endDate:"",
+            title: "*",
+            startDate:"*",
+            endDate:"*",
             typeResearch, 
-            otherTypeResearch: "", 
-            topic: "",
-            subtopic: "", 
-            alignmentPNIorODS: "",
-            summary:""
+            otherTypeResearch: "*", 
+            topic: "*",
+            subtopic: "*", 
+            alignmentPNIorODS: "*",
+            summary:"*"
     });
     const handleOnSubmitFormNext = useSubmitFormNext(generalData, setOption);
     const handleChangeButton = (key, value) => {
@@ -57,7 +57,7 @@ const GeneralData = ({option,setOption}) => {
         const newErrorsF = {}
         Object.entries(generalData).forEach(([key, value]) => {
           if (!value || (typeof value === 'string' && value.trim() === '')) {
-            newErrorsF[key] = `El campo  es requerido`;
+            newErrorsF[key] = `* El campo  es requerido`;
           }
         });
         if(generalData.typeResearch < 4){
@@ -67,6 +67,7 @@ const GeneralData = ({option,setOption}) => {
             delete newErrorsF['alignsWithPNIorODS']
         }
         setNewErrors(newErrorsF)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         if(!Object.keys(newErrorsF).length>0){
             handleOnSubmitFormNext(event); 
         }
@@ -79,7 +80,7 @@ const GeneralData = ({option,setOption}) => {
             <div className="flex flex-col">
                 <div className="!mt-5 flex-1">
                     <p className="text-2xl font-normal">Datos generales del proyecto</p>
-                    <p className="text-lg !mt-3 !mb-2">Título del proyecto {newErrors.title && <span className="text-red-600">*{newErrors.title}</span>}</p>
+                    <p className="text-lg !mt-3 !mb-2">Título del proyecto {newErrors.title && <span className="text-red-600">{newErrors.title}</span>}</p>
                     <input 
                         type="text"
                         name="title"
@@ -92,7 +93,7 @@ const GeneralData = ({option,setOption}) => {
                     <p className="text-lg font-normal">Periodo del proyecto</p>
                     <div className="flex flex-wrap">
                         <div className="flex-1">
-                            <p>Fecha de inicio {newErrors.startDate && <span className="text-red-600">*{newErrors.startDate}</span>}</p>
+                            <p>Fecha de inicio {newErrors.startDate && <span className="text-red-600">{newErrors.startDate}</span>}</p>
                             <input 
                                     className="!p-2 w-[95%] min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end hover:border-[#5CB7E6] transition-colors duration-300 max-[800px]:w-full"
                                     name="startDate" 
@@ -102,7 +103,7 @@ const GeneralData = ({option,setOption}) => {
                                 ></input>
                         </div>
                         <div className="flex-1">
-                            <p>Fecha de fin {newErrors.endDate && <span className="text-red-600">*{newErrors.endDate}</span>}</p>
+                            <p>Fecha de fin {newErrors.endDate && <span className="text-red-600">{newErrors.endDate}</span>}</p>
                             <input  
                                     className="!p-2 w-[100%] min-w-[250px] p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end hover:border-[#5CB7E6] transition-colors duration-300"
                                     name="endDate" 
@@ -153,7 +154,7 @@ const GeneralData = ({option,setOption}) => {
                     </div>
                     {generalData.typeResearch === 4 &&
                         <div className="!mt-5 w-[100%] flex-1">
-                            <p>¿Cuál? {newErrors.otherTypeResearch && <span className="text-red-600">*{newErrors.otherTypeResearch}</span>}</p>
+                            <p>¿Cuál? {newErrors.otherTypeResearch && <span className="text-red-600">{newErrors.otherTypeResearch}</span>}</p>
                             <input  
                                     className="!p-2 w-[47%] max-[800px]:w-full p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 hover:border-[#5CB7E6] transition-colors duration-300" 
                                     name="otherTypeResearch" 
@@ -167,7 +168,7 @@ const GeneralData = ({option,setOption}) => {
                 <div className="flex-1 !mt-5">
                     <div className="flex flex-wrap">
                         <div className="flex-1">
-                            <p className="!mb-5">Tema especialidad {newErrors.topic && <span className="text-red-600">*{newErrors.topic}</span>}</p>
+                            <p className="!mb-5">Tema especialidad {newErrors.topic && <span className="text-red-600">{newErrors.topic}</span>}</p>
                             <input  
                                     className="!p-2 !mb-5 w-[95%] min-w-[250px] rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end hover:border-[#5CB7E6] transition-colors duration-300 max-[800px]:w-full"
                                     name="topic" 
@@ -176,7 +177,7 @@ const GeneralData = ({option,setOption}) => {
                                     placeholder="Escribe el tema de especialidad..."></input>
                         </div>
                         <div className="flex-1">
-                            <p className="!mb-5">Subtema especialidad {newErrors.subtopic && <span className="text-red-600">*{newErrors.subtopic}</span>}</p>
+                            <p className="!mb-5">Subtema especialidad {newErrors.subtopic && <span className="text-red-600">{newErrors.subtopic}</span>}</p>
                             <input  
                                     className="!p-2 w-[100%] min-w-[250px] rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] mt-3 flex justify-end hover:border-[#5CB7E6] transition-colors duration-300"
                                     name="subtopic" 
@@ -206,7 +207,7 @@ const GeneralData = ({option,setOption}) => {
                 </div>
                 
                 <div className="!mt-5 flex-1">
-                    <p className="text-lg mt-3">En caso afirmativo ¿Con cuál? / No se considera ¿Por qué? {newErrors.alignmentPNIorODS && <span className="text-red-600">*{newErrors.alignmentPNIorODS}</span>}</p>
+                    <p className="text-lg mt-3">{generalData.alignsWithPNIorODS === 1 ? 'En caso afirmativo ¿Con cuál?' :  'No se considera ¿Por qué?'} {newErrors.alignmentPNIorODS && <span className="text-red-600">{newErrors.alignmentPNIorODS}</span>}</p>
                     <input  
                             className="!p-2 w-[47%] max-[800px]:w-full !p-2 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] !mt-3 hover:border-[#5CB7E6] transition-colors duration-300" 
                             name="alignmentPNIorODS"  
@@ -215,7 +216,7 @@ const GeneralData = ({option,setOption}) => {
                             placeholder="Escribe las como es que se considera o no..."></input>
                 </div>
                 <div className="!mt-5 flex-1 w-[100%]">
-                    <p className="text-lg mt-3">Resumen del proyecto {newErrors.summary && <span className="text-red-600">*{newErrors.summary}</span>}</p>
+                    <p className="text-lg mt-3">Resumen del proyecto {newErrors.summary && <span className="text-red-600">{newErrors.summary}</span>}</p>
                     <p className="text-lg mt-3">(Máximo de 1500 caracteres con espacios)</p>
                     <textarea 
                         name="summary" 

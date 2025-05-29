@@ -19,7 +19,7 @@ const Header = ({generalData}) => {
                     <p className="folio-version-second">Versión: {generalData.formVersion}</p>
                 </div>
                 <div>
-                    <p>Proxima revisión: {generalData.nextReview}</p>
+                    <p>Próxima revisión: {generalData.nextReview}</p>
                 </div>
             </div>
             

@@ -83,7 +83,7 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
                             </div>
                             <div className="dialog-actions">
                                 <button className="button-confirm">
-                                    {methodologiesToEdit ? "Guardar cambios" : "Guardar Meta"}
+                                    {methodologiesToEdit ? "Guardar cambios" : "Guardar metodología"}
                                 </button>
                                 {!methodologiesToEdit && (
                                     <button 

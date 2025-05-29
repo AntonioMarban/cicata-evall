@@ -20,6 +20,12 @@
     color: white;
     box-shadow: 0px 6px 12px 0px rgba(63, 140, 255, 0.26);
 }
+.div-button button:hover {
+    background-color: #5ab6e0; 
+    box-shadow: 0px 8px 16px 0px rgba(63, 140, 255, 0.4);
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in-out;
+}
 .table-form-header{
     background-color: #C1E4F5;
 }
@@ -232,17 +238,18 @@ td {
     justify-content: center;
     align-items: center;
     text-align: center;
+    color: #666666;
 }
 .row-header{
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
+    border-left: 1px solid #666666;
+    border-right: 1px solid #666666;
+    border-bottom: 1px solid #666666;
     display: flex;
     justify-content: space-between;
 }
 .row-header div{
     flex: 1;
-    border-right: 1px solid black;
+    border-right: 1px solid #666666;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -251,7 +258,7 @@ td {
     display: flex;
 }
 .folio-version-first{
-    border-right: 1px solid black;
+    border-right: 1px solid #666666;
     height: 100%;
     display: flex;
     justify-content: center;

@@ -1,9 +1,10 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
 const CollaborativeInstitutions = ({collaborativeInstitutions}) => {  
+    console.log(collaborativeInstitutions)
     return (
     <>
-    {Array.isArray(collaborativeInstitutions.hasCollaboration) ? (
+    {collaborativeInstitutions.hasCollaboration===1 ? (
         <table className='BackgroundTable'>
                 <caption className="table-form-caption">Relación de Proyectos Asociados al proyecto principal</caption>
                 <thead className='table-form-header'>

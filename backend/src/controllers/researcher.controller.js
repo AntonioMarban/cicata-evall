@@ -191,7 +191,7 @@ const getProjectDocuments = (req, res) => {
         annexeId: row.annexeId,
         projectId: row.projectId,
         tag: row.tag,
-        filename: row.filename,
+        name: row.name,
         document: row.document ? Buffer.from(row.document).toString('base64') : null
       }));
       res.status(200).json({ documents });

@@ -29,6 +29,16 @@ const DragDrop = ({ setFilesSend, filesSend, tagType = "Etico" }) => {
   };
 
   const handleFileChange = async (event) => {
+    const files = Array.from(event.target.files);
+    const pdfFiles = files.filter(file => file.type === "application/pdf");
+
+    if (pdfFiles.length !== files.length) {
+      alert("Solo se permiten archivos PDF.");
+      return;
+    }
+
+  // Procesa los archivos PDF
+  console.log("Archivos válidos:", pdfFiles);
     const newFiles = await Promise.all(
       Array.from(event.target.files).map(processFile)
     );

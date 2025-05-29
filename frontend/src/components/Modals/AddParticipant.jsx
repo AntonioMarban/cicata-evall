@@ -269,7 +269,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             </div>
                             <div className="participant-dialog-actions">
                                 <button  className="participant-button-confirm">
-                                    {participantToEdit ? "Guardar cambios" : "Guardar estudiante"}
+                                    {participantToEdit ? "Guardar cambios" : "Guardar participante"}
                                 </button>
                                 {!participantToEdit &&(
                                     <button

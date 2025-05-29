@@ -20,7 +20,7 @@ const DeletePopUp = ({ handleDeleteFile, index, nameArray, value }) => {
             <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p className="dialog-title">¿Seguro que deseas borrar la tarjeta?</p>
+                        <p className="dialog-title">¿Seguro que deseas borrar?</p>
                         <div className="dialog-actions">
                             <button 
                                 className="button-confirm hover:bg-gray-700 transition-colors duration-200"
@@ -29,14 +29,14 @@ const DeletePopUp = ({ handleDeleteFile, index, nameArray, value }) => {
                                     setIsOpen(false);
                                 }}
                             >
-                                Borrar tarjeta
+                                Si
                             </button>
                             <button 
                                 type="button" 
                                 className="button-cancel hover:bg-gray-300 transition-colors duration-200"
                                 onClick={() => setIsOpen(false)}
                             >
-                                Cancelar
+                                No
                             </button>
                         </div>
                     </DialogPanel>

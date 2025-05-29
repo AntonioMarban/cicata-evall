@@ -87,7 +87,7 @@ const  Anexos = ({option,setOption}) => {
                         if (afilesSend && afilesSend.length > 0) {
                             appendFiles(afilesSend);
                             formDataFiles.append('projectId', data.projectId);
-                            formDataFiles.append('tag', 'eticos');
+                            formDataFiles.append('tag', 'anexos');
                             
                             // Subir archivos 'eticos'
                             const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
@@ -116,7 +116,7 @@ const  Anexos = ({option,setOption}) => {
                         if (efilesSend  && efilesSend .length > 0) {
                             appendFiles2(efilesSend);
                             formDataEFiles.append('projectId', data.projectId);
-                            formDataEFiles.append('tag', 'anexos');
+                            formDataEFiles.append('tag', 'eticos');
                             
                             // Subir archivos 'anexos'
                             const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
@@ -198,7 +198,6 @@ const  Anexos = ({option,setOption}) => {
             handleOnSubmit(event)
         }
     };
-
 
     return (
         <form onSubmit={handleOnSubmit}>
