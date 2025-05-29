@@ -10,7 +10,7 @@ const  Contributions = ({option,setOption}) => {
         contributionsToIPNandCICATA:"" 
     })
     const [newErrorsD,setNewErrorsD] = useState({
-        contributionsToIPNandCICATA:""
+        contributionsToIPNandCICATA:"*"
     });
     
     const handleOnSubmitFormBack = useSubmitFormBack(contributions, setOption);
@@ -27,7 +27,7 @@ const  Contributions = ({option,setOption}) => {
         const newErrorsDF = {}
         if (!contributions.contributionsToIPNandCICATA || (typeof contributions.contributionsToIPNandCICATA === 'string' 
             && contributions.contributionsToIPNandCICATA.trim() === '')) {
-                newErrorsDF.contributionsToIPNandCICATA = "El campo es requerido";
+                newErrorsDF.contributionsToIPNandCICATA = "* El campo es requerido";
         }
         setNewErrorsD(newErrorsDF)
         if(!Object.keys(newErrorsDF).length>0){
@@ -42,7 +42,12 @@ const  Contributions = ({option,setOption}) => {
             <div className="flex flex-col justify-between">
                 <div>
                     <p className="text-[22px]">Aportaciones del proyecto al IPN y al CICATA Unidad Morelos
-                        <br/> {newErrorsD.contributionsToIPNandCICATA && <span className="text-red-600">*{newErrorsD.contributionsToIPNandCICATA}</span>}
+                        {newErrorsD.contributionsToIPNandCICATA && (
+                            <>
+                                {newErrorsD.contributionsToIPNandCICATA !== '*' && <br />}
+                                <span className="text-red-600"> {newErrorsD.contributionsToIPNandCICATA}</span>
+                            </>
+                        )} 
                     </p>
                 </div>
                 <div className="flex-1 !mt-5">

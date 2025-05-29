@@ -5,7 +5,7 @@ import useLoadFormData from "../../hooks/useLoadFormData";
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 
-const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete = null,Number }) => {
+const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete = null,Number,NumberDate }) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const initialFormValues = {
@@ -15,12 +15,19 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
         startDate: "",
         endDate: ""
     };
+    const initialFormValuesErrors = {
+        goal: "*",
+        institution: "*",
+        responsibleMember: "*",
+        startDate: "*",
+        endDate: "*"
+    };
     const [activity, setActivity] = useState(initialFormValues)
-    const [newErrors,setNewErrors] = useState(initialFormValues);
+    const [newErrors,setNewErrors] = useState(initialFormValuesErrors);
     const [responsable,setResponsable] = useState([]);
-
+    const [datesManage,setDatesManage] = useState([]);
     useLoadFormData(Number,setResponsable);
-
+    useLoadFormData(NumberDate,setDatesManage);
     useEffect(() => {
             if (activitesToEdit) {
                 setActivity({
@@ -58,13 +65,16 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if(datesManage.startDate>=activity.startDate || datesManage.endDate <= activity.endDate){
+            return alert("Las fechas deben de estar dentro del rango del proyecto")
+        }
         const newErrorsF = {}
         if (activity.startDate > activity.endDate) {
             return alert("No puede ser la fecha de inicio después de la fecha de fin");
         }
         Object.entries(activity).forEach(([key, value]) => {
             if (!value || (typeof value === 'string' && value.trim() === '')) {
-              newErrorsF[key] = `El campo  es requerido`;
+              newErrorsF[key] = `* El campo  es requerido`;
             }
         });
 
@@ -84,7 +94,12 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Meta
-                                    <br/>{newErrors.goal && <span className="text-red-600">*{newErrors.goal}</span>}
+                                   {newErrors.goal && (
+                                        <>
+                                            {newErrors.goal !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.goal}</span>
+                                        </>
+                                    )} 
                                 </p>
                                 <input 
                                     name="goal" 
@@ -97,7 +112,12 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                             <div className="form-rows">
                                 <div>
                                     <p>¿Dónde se realizará?
-                                        <br/>{newErrors.institution && <span className="text-red-600">*{newErrors.institution}</span>}
+                                        {newErrors.institution && (
+                                        <>
+                                            {newErrors.institution !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.institution}</span>
+                                        </>
+                                        )} 
                                     </p>
                                     <input 
                                         name="institution" 
@@ -109,7 +129,12 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                                 </div>
                                 <div>
                                     <p>Participante responsable
-                                        <br/>{newErrors.responsibleMember && <span className="text-red-600">*{newErrors.responsibleMember}</span>}
+                                        {newErrors.responsibleMember && (
+                                        <>
+                                            {newErrors.responsibleMember !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.responsibleMember}</span>
+                                        </>
+                                        )} 
                                     </p>
                                     <select 
                                         name="responsibleMember" 
@@ -129,7 +154,12 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                             <div className="form-rows">
                                 <div>
                                     <p>Fecha de inicio
-                                        <br/>{newErrors.startDate && <span className="text-red-600">*{newErrors.startDate}</span>}
+                                        {newErrors.startDate && (
+                                        <>
+                                            {newErrors.startDate !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.startDate}</span>
+                                        </>
+                                        )} 
                                     </p>
                                     <input 
                                         type="date" 
@@ -141,7 +171,12 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                                 </div>
                                 <div>
                                     <p>Fecha de fin
-                                        <br/>{newErrors.endDate && <span className="text-red-600">*{newErrors.endDate}</span>}
+                                        {newErrors.endDate && (
+                                        <>
+                                            {newErrors.endDate !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.endDate}</span>
+                                        </>
+                                        )} 
                                     </p>
                                     <input 
                                         type="date" 
@@ -156,15 +191,19 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                                 <button className="button-confirm">
                                     {activitesToEdit ? "Guardar cambios" : "Guardar actividad"}
                                 </button>
-                                {!activitesToEdit && (
-                                    <button 
-                                    type="button" 
-                                    onClick={(e) => setIsOpen(false)} 
-                                    className="button-cancel"
-                                    >
-                                    Cancelar
-                                    </button>
-                                )}
+                               
+                                <button 
+                                type="button" 
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setIsOpen(false)
+                                    setActivity(initialFormValues)
+                                    setNewErrors(initialFormValuesErrors)
+                                }} 
+                                className="button-cancel"
+                                >
+                                Cancelar
+                                </button>
                             </div>
                         </form>
                     </DialogPanel>

@@ -58,6 +58,7 @@ const  Activities = ({option,setOption}) => {
                             activitesToEdit={activitiesToEdit}
                             onEditComplete={handleEditComplete}
                             Number={22}
+                            NumberDate={20}
                             />
                     </div>
                 </div>

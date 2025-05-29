@@ -9,8 +9,11 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
     const initialValues = {
         reference: "",
     }
+    const initialValuesErrors = {
+        reference: "*",
+    }
     const [references, setReferences] = useState(initialValues)
-    const [newErrors,setNewErrors] =  useState(initialValues);
+    const [newErrors,setNewErrors] =  useState(initialValuesErrors);
     
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -50,7 +53,7 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
         const newErrorsF = {}
         Object.entries(references).forEach(([key, value]) => {
           if (!value || (typeof value === 'string' && value.trim() === '')) {
-            newErrorsF[key] = `El campo  es requerido`;
+            newErrorsF[key] = `* El campo  es requerido`;
           }
         });
         setNewErrors(newErrorsF)
@@ -60,12 +63,9 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
     };
     return (
         <>
-            {!referencesToEdit && (
-                <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
-                    Agregar referencia
-                </button>
-            )
-            }
+            <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
+                Agregar referencia
+            </button>
 
             <Dialog open={isOpen} onClose={() => {}} className="dialog-overlay">
                 <div className="dialog-container">
@@ -74,7 +74,12 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Nombre de la referencia
-                                <br/>{newErrors.reference && <span className="text-red-600">*{newErrors.reference}</span>}
+                                    {newErrors.reference && (
+                                        <>
+                                            {newErrors.reference !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.reference}</span>
+                                        </>
+                                    )} 
                                 </p>
                                 <textarea name="reference" 
                                        className="form-pieza-input" 
@@ -86,19 +91,18 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
                                 <button className="button-confirm">
                                     {referencesToEdit ? "Guardar cambios" : "Guardar referencia"}
                                 </button>
-                                {!referencesToEdit && (
-                                    <button 
-                                    type="button" 
-                                    onClick={(e) => {
-                                        setIsOpen(false)
-                                        setReferences(initialValues)
-                                        setNewErrors(initialValues)
-                                    }} 
-                                    className="button-cancel"
-                                    >
-                                    Cancelar
-                                    </button>
-                                )}
+                                <button 
+                                type="button" 
+                                onClick={(e) => {
+                                    setIsOpen(false)
+                                    e.preventDefault()
+                                    setReferences(initialValues)
+                                    setNewErrors(initialValuesErrors)
+                                }} 
+                                className="button-cancel"
+                                >
+                                Cancelar
+                                </button>
                             </div>
                         </form>
                     </DialogPanel>

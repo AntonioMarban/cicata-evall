@@ -9,7 +9,7 @@ const  Considerations = ({option,setOption}) => {
         {   idF: 27,
             biosecurityConsiderations:"" });
     const [newErrorsD,setNewErrorsD] = useState({
-            biosecurityConsiderations:""
+            biosecurityConsiderations:"*"
     });
 
     const handleChange = (e) => {
@@ -48,8 +48,8 @@ const  Considerations = ({option,setOption}) => {
                             <p className="text-[17px] text-gray-600">(Describir el tipo de riesgo que presenta la investigación, 
                                 así como mencionar las acciones que se llevarán a cabo para salvaguardar a los pacientes, animales 
                                 de laboratorio, el ambiente, estudiantes, investigadores o cualquier involucrado en el desarrollo 
-                                del proyecto) <br/> 
-                                {newErrorsD.biosecurityConsiderations && <span className="text-red-600">*{newErrorsD.biosecurityConsiderations}</span>}</p>
+                                del proyecto)<br/>
+                                {newErrorsD.biosecurityConsiderations && <span className="text-red-600">{newErrorsD.biosecurityConsiderations}</span>}</p>
                             <textarea  
                                 className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] 
                                 hover:border-[#5CB7E6] transition-colors duration-300

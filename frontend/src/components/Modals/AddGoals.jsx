@@ -9,8 +9,11 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
     const initialValues = {
         goal: "",
     }
+    const ErrorinitialValues = {
+        goal: "*",
+    }
     const [goals, setGoals] = useState(initialValues)
-    const [newErrors,setNewErrors] =  useState(initialValues);
+    const [newErrors,setNewErrors] =  useState(ErrorinitialValues);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setGoals(prev => ({
@@ -49,7 +52,7 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
         const newErrorsF = {}
         Object.entries(goals).forEach(([key, value]) => {
           if (!value || (typeof value === 'string' && value.trim() === '')) {
-            newErrorsF[key] = `El campo  es requerido`;
+            newErrorsF[key] = `* El campo  es requerido`;
           }
         });
         setNewErrors(newErrorsF)
@@ -59,12 +62,10 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
     };
     return (
         <>
-            {!goalsToEdit && (
-                <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
-                    Agregar meta
-                </button>
-            )
-            }
+            <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
+                Agregar meta
+            </button>
+
 
             <Dialog open={isOpen} onClose={() => {}} className="dialog-overlay">
                 <div className="dialog-container">
@@ -73,31 +74,36 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Nombre de la meta
-                                <br/>{newErrors.goal && <span className="text-red-600">*{newErrors.goal}</span>}
+                                    {newErrors.goal && (
+                                        <>
+                                            {newErrors.goal !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.goal}</span>
+                                        </>
+                                    )} 
                                 </p>
-                                <input name="goal" 
+                                <textarea name="goal" 
                                        className="form-pieza-input" 
                                        placeholder="Escribe el nombre de la meta..."
                                        value={goals.goal}
-                                       onChange={handleInputChange}></input>
+                                       onChange={handleInputChange}></textarea>
                             </div>
                             <div className="dialog-actions">
                                 <button className="button-confirm">
-                                    {goalsToEdit ? "Guardar cambios" : "Guardar Meta"}
+                                    {goalsToEdit ? "Guardar cambios" : "Guardar meta"}
                                 </button>
-                                {!goalsToEdit && (
-                                    <button 
-                                    type="button" 
-                                    onClick={(e) => {
-                                        setIsOpen(false)
-                                        setGoals(initialValues)
-                                        setNewErrors(initialValues)
-                                    }} 
-                                    className="button-cancel"
-                                    >
-                                    Cancelar
-                                    </button>
-                                )}
+                                
+                                <button 
+                                type="button" 
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setIsOpen(false)
+                                    setGoals(initialValues)
+                                    setNewErrors(ErrorinitialValues)
+                                }} 
+                                className="button-cancel"
+                                >
+                                Cancelar
+                                </button>
                             </div>
                         </form>
                     </DialogPanel>

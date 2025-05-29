@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import "../styles/commentscommittee.css";
-import ProjectHeader from "../components/ProjectHeader";
 import { useNavigate } from "react-router-dom";
 import { saveMultipleForms, hasFormsInRange  } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
 
-export default function ProjectProgress({ projectId }) {
+export default function ProjectProgress({ projectId,status }) {
+    const [isEnabledButton, setIsEnabledButton] = useState();
+    const [isAvailableToModify, setIsAvailableToModify] = useState();
     const [generalData, setGeneralData] = useState(
         {   idF: 20,
             projectId
@@ -163,8 +164,15 @@ export default function ProjectProgress({ projectId }) {
         fetchData(`${apiUrl}/users/projects/${projectId}`, setProjectData);
         fetchData(`${apiUrl}/researchers/projects/${projectId}/documents`,setFiles);
     }, [projectId]);
-    
-    
+    useEffect(()=>{
+        console.log("Hola")
+        status === "Pendiente de correcciones" ? setIsEnabledButton(true) : setIsEnabledButton(false)
+        const result = async () =>{
+            const resultArray = await hasFormsInRange(20, 33);
+            setIsAvailableToModify(resultArray)
+        }
+        result()
+    },[])
     useLoadFormData(generalData.idF,setGeneralData);
     
     const checkForms = async () => {
@@ -221,10 +229,14 @@ export default function ProjectProgress({ projectId }) {
                 <p>No hay comentarios aún.</p>
                 )}
             </div>
-            <div className="footer-comments">
-                <button onClick={checkForms} className="info-button">Continuar con correcciones</button>
-                <button onClick={(e)=>{navigateToForms(files,e)}} className="info-button">Realizar correcciones</button>
-            </div>
+            {isEnabledButton && (
+                <div className="footer-comments">
+                    <button onClick={checkForms} className="info-button" disabled={!isEnabledButton}>Continuar con correcciones</button>
+                    {!isAvailableToModify &&(
+                    <button onClick={(e)=>{navigateToForms(files,e)}} className="info-button"  disabled={!isEnabledButton}>Realizar correcciones</button>
+                    )}
+                </div>
+            )}
         </div>
     </main>
     );

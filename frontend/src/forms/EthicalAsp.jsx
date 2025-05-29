@@ -19,7 +19,7 @@ const  EthicalAsp = ({option,setOption}) => {
     });
     
     const [newErrors,setNewErrors] = useState({
-        ethicalAspects:""
+        ethicalAspects:"*"
     });
 
     const handleChangeButton = (key, value) => {
@@ -42,7 +42,7 @@ const  EthicalAsp = ({option,setOption}) => {
         const newErrorsF = {}
         Object.entries(ethicalAsp).forEach(([key, value]) => {
           if (!value || (typeof value === 'string' && value.trim() === '')) {
-            newErrorsF[key] = `El campo  es requerido`;
+            newErrorsF[key] = `* El campo  es requerido`;
             if (value === 0){
                 delete newErrorsF[key]
             }
@@ -92,7 +92,15 @@ const  EthicalAsp = ({option,setOption}) => {
                 <div className="flex flex-col justify-between flex-1">
                     <div className="flex-1 w-[90%]">
                         <p className="text-2xl">Aspectos éticos de la investigación</p>
-                        <p className="text-lg !mt-3 text-[#6D7580]">Describir cómo el proyecto se apega a los principios bioéticos especificados en la Declaración de Helsinki y otros aspectos bioéticos que sea importante mencionar<br/>{newErrors.ethicalAspects && <span className="text-red-600">*{newErrors.ethicalAspects}</span>}</p>
+                        <p className="text-lg !mt-3 text-[#6D7580]">Describir cómo el proyecto se apega a los principios bioéticos 
+                            especificados en la Declaración de Helsinki y otros aspectos bioéticos que sea importante mencionar
+                            {newErrors.ethicalAspects && (
+                                        <>
+                                            {newErrors.ethicalAspects !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.ethicalAspects}</span>
+                                        </>
+                            )}    
+                        </p>
                     </div>
                     <div className="flex-1 mt-5 w-[90%]">
                         <div className="flex flex-wrap">

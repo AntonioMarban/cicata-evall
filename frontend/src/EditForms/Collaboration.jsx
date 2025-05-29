@@ -98,8 +98,8 @@ const  Collaboration = ({option,setOption}) => {
                         <div className="flex justify-between !p-2">
                             <p className="flex-1">Institución</p>
                             <p className="flex-1">Convenio colaboración</p>
-                            <p className="flex-1">Extranjero / Nacional</p>
-                            <p className="flex-1 text-center">Institución</p>
+                            <p className="flex-1">Internacional / Nacional</p>
+                            <p className="flex-1 text-center">Número de covenio</p>
                             <p className="flex-1"></p>
                         </div>
                     </div>

@@ -13,7 +13,14 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
         agreementNumber: "",
         partOfIPN: 1
     };
-    const [newErrors,setNewErrors] =  useState(initialCollaboration);
+    const initialCollaborationErrors = {
+        name: "*",
+        collaborationAgreement: "*",
+        agreementType: "*",
+        agreementNumber: "*",
+        partOfIPN: 1
+    };
+    const [newErrors,setNewErrors] =  useState(initialCollaborationErrors);
     const [collaboration, setCollaboration] = useState(initialCollaboration);
 
     useEffect(() => {
@@ -65,7 +72,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
         const newErrorsF = {}
         Object.entries(collaboration).forEach(([key, value]) => {
           if (!value || (typeof value === 'string' && value.trim() === '')) {
-            newErrorsF[key] = `El campo  es requerido`;
+            newErrorsF[key] = `* El campo  es requerido`;
             if (value === 0){
                 delete newErrorsF[key]
             }
@@ -91,7 +98,12 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                             <div className="form-rows">
                                 <div>
                                     <p>Nombre de la institución
-                                        <br/>{newErrors.name && <span className="text-red-600">*{newErrors.name}</span>}
+                                    {newErrors.name && (
+                                        <>
+                                            {newErrors.name !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.name}</span>
+                                        </>
+                                    )}
                                     </p>
                                     <input name="name" 
                                     value={collaboration.name}
@@ -116,7 +128,12 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                             <div className="form-complete-row">
                                 <p>¿Ya cuenta con convenio de colaboración?
                                     <br/><span className="form-subtext">(General/Específico)</span>
-                                    <br/>{newErrors.collaborationAgreement && <span className="text-red-600">*{newErrors.collaborationAgreement}</span>}
+                                    {newErrors.collaborationAgreement && (
+                                        <>
+                                            {newErrors.collaborationAgreement !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.collaborationAgreement}</span>
+                                        </>
+                                    )}
                                 </p>
                                 <input 
                                 value={collaboration.collaborationAgreement}
@@ -125,7 +142,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                             </div>
                             <div className="form-rows">
                                 <div>
-                                    <p>¿El convenio es nacional o extranjero?</p>
+                                    <p>¿El convenio es nacional o internacional?</p>
                                     <p className="form-subtext">(Si aplica)</p>
                                     <input 
                                     value={collaboration.agreementType}
@@ -143,17 +160,23 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                             </div>
                             <div className="dialog-actions">
                                 <button className="button-confirm">
-                                    {collaborationToEdit ? "Guardar Cambios" : "Guardar Colaboración"}
+                                    {collaborationToEdit ? "Guardar Cambios" : "Guardar colaboración"}
                                 </button>
-                                {!collaborationToEdit && (
-                                    <button 
-                                    type="button" 
-                                    onClick={(e) => setIsOpen(false)} 
-                                    className="button-cancel"
-                                    >
-                                    Cancelar
-                                    </button>
-                                )}
+                                
+                                <button 
+                                type="button" 
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setIsOpen(false)
+                                    setCollaboration(initialCollaboration)
+                                    setNewErrors(initialCollaborationErrors)
+                                    }
+                                } 
+                                className="button-cancel"
+                                >
+                                Cancelar
+                                </button>
+                               
                             </div>
                         </form>
                     </DialogPanel>

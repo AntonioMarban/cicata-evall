@@ -12,9 +12,16 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
         otherName: "",
         budgetDate: ""
     };
+    const initialFormValuesErrors = {
+        investmentExpenditure: "*",
+        name: "*",
+        expenditure: "*",
+        otherName: "*",
+        budgetDate: "*"
+    };
     const [typeToShow, setTypeToShow] = useState([]);
     const [budgetForm, setBudgetForm] = useState(initialFormValues)
-    const [newErrors,setNewErrors] = useState(initialFormValues);
+    const [newErrors,setNewErrors] = useState(initialFormValuesErrors);
     const [isOpen, setIsOpen] = useState(false)
     const budgetsTypes = 
     [
@@ -53,15 +60,20 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
         const newErrorsF = {}
         Object.entries(budgetForm).forEach(([key, value]) => {
             if (!value || (typeof value === 'string' && value.trim() === '')) {
-              newErrorsF[key] = `El campo  es requerido`;
+              newErrorsF[key] = `* El campo  es requerido`;
             }
         });
-        if (budgetForm.name.budgetTypeId != 4){
+        if (budgetForm.name.budgetTypeId != 4 && 
+            budgetForm.name.budgetTypeId != 16 && 
+            budgetForm.name.budgetTypeId != 24 && 
+            budgetForm.name.budgetTypeId != 23){
             delete newErrorsF['otherName']
         }
-        if (budgetForm.name.budgetTypeId != 23){
+        if (budgetForm.name.budgetTypeId != 23 &&
+            budgetForm.investmentExpenditure.idType != 3){
             delete newErrorsF['budgetDate']
         }
+        console.log(newErrorsF)
         setNewErrors(newErrorsF)
         function flattenObject(obj, parentKey = '', result = {}) {
         for (let key in obj) {
@@ -147,11 +159,10 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
     },[budgetForm.investmentExpenditure])
     return (
         <>
-            {!budgetToEdit && (
-                <button type="button" className='modalAddProject' onClick={() => {setIsOpen(true)}}>
-                    Agregar presupuesto
-                </button>
-            )}
+            <button type="button" className='modalAddProject' onClick={() => {setIsOpen(true)}}>
+                Agregar presupuesto
+            </button>
+
 
             <Dialog open={isOpen} onClose={() => { }} className="dialog-overlay">
                 <div className="dialog-container2">
@@ -161,7 +172,12 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                             <div className="form-complete-row-div">
                                 <div>
                                     <p>Gasto
-                                        <br/>{newErrors.investmentExpenditure && <span className="text-red-600">*{newErrors.investmentExpenditure}</span>}
+                                        {newErrors.investmentExpenditure && (
+                                            <>
+                                                {newErrors.investmentExpenditure !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.investmentExpenditure}</span>
+                                            </>
+                                        )}  
                                     </p>
                                     <select
                                         className="modal-select"
@@ -183,7 +199,12 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                             </div>
                             <div className="form-complete-row">
                                 <p>Nombre
-                                    <br/>{newErrors.name && <span className="text-red-600">*{newErrors.name}</span>}
+                                    {newErrors.name && (
+                                        <>
+                                            {newErrors.name !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.name}</span>
+                                        </>
+                                    )}  
                                 </p>
                                 <select 
                                     className="modal-select"
@@ -202,7 +223,12 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                             <div className="form-complete-row-div">
                                 <div>
                                     <p>Gasto $0.00
-                                        <br/>{newErrors.expenditure && <span className="text-red-600">*{newErrors.expenditure}</span>}
+                                        {newErrors.expenditure && (
+                                            <>
+                                                {newErrors.expenditure !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.expenditure}</span>
+                                            </>
+                                        )}  
                                     </p>
                                     <input 
                                         name="expenditure" 
@@ -219,7 +245,12 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                     {(budgetForm.name.budgetTypeId === 16 || budgetForm.name.budgetTypeId === 24 || budgetForm.name.budgetTypeId === 4 || budgetForm.name.budgetTypeId === 23) && (
                                         <div>
                                             <p>Nombre del presupuesto
-                                                <br/>{newErrors.otherName && <span className="text-red-600">*{newErrors.otherName}</span>}
+                                            {newErrors.otherName && (
+                                            <>
+                                                {newErrors.otherName !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.otherName}</span>
+                                            </>
+                                            )}  
                                             </p>
                                             <input 
                                                 placeholder="Escribe el nombre del presupuesto..." 
@@ -235,7 +266,12 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                     budgetForm.name.budgetTypeId === 23) && (
                                         <div>
                                             <p>Fecha de convocatoria
-                                                <br/>{newErrors.budgetDate && <span className="text-red-600">*{newErrors.budgetDate}</span>}
+                                                {newErrors.budgetDate && (
+                                            <>
+                                                {newErrors.budgetDate !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.budgetDate}</span>
+                                            </>
+                                            )}  
                                             </p>
                                             <input 
                                                 type="date"
@@ -251,15 +287,18 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                 <button className="button-confirm">
                                     {budgetToEdit ? "Guardar cambios" : "Guardar presupuesto"}
                                 </button>
-                                {!budgetToEdit && (
-                                    <button 
-                                    type="button" 
-                                    onClick={(e) => setIsOpen(false)} 
-                                    className="button-cancel"
-                                    >
+                                <button 
+                                type="button" 
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setIsOpen(false)
+                                    setBudgetForm(initialFormValues); 
+                                    setNewErrors(initialFormValuesErrors);
+                                }}
+                                className="button-cancel"
+                                >
                                     Cancelar
-                                    </button>
-                                )}
+                                </button>
                             </div>
                         </form>
                     </DialogPanel>

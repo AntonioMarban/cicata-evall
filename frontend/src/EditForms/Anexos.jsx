@@ -17,7 +17,7 @@ const  Anexos = ({option,setOption}) => {
         afilesSend: filesSend 
     });
     const [newErrors,setNewErrors] = useState({
-        aditionalComments:""
+        aditionalComments:"*"
     });
 
     function base64ToFile(base64, fileName, mimeType = 'application/pdf') {
@@ -195,22 +195,12 @@ const  Anexos = ({option,setOption}) => {
         )
     },[filesSend])
 
-    const handleDeleteFile = (index) => {
-        const newFileNames = [...anexos.afilesSend];
-        const newFiles = Array.from(anexos.afilesSend);
-      
-        newFileNames.splice(index, 1);
-        newFiles.splice(index, 1);
-      
-        setFilesSend(newFiles);
-    };
-
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
         const newErrorsDF = {}
         if (!anexos.aditionalComments || (typeof anexos.aditionalComments === 'string' 
             && anexos.aditionalComments.trim() === '')) {
-                newErrorsDF.aditionalComments = "El campo es requerido";
+                newErrorsDF.aditionalComments = "* El campo es requerido";
         }
         setNewErrors(newErrorsDF)
         if(!Object.keys(newErrorsDF).length>0){
@@ -224,7 +214,12 @@ const  Anexos = ({option,setOption}) => {
             <div className="flex flex-col justify-between">
                 <div>
                     <p className="text-[22px]">Agrega comentarios adicionales a tener en cuenta en el proyecto
-                        <br/> {newErrors.aditionalComments && <span className="text-red-600">*{newErrors.aditionalComments}</span>}
+                        {newErrors.aditionalComments && (
+                            <>
+                                {newErrors.aditionalComments !== '*' && <br />}
+                                <span className="text-red-600"> {newErrors.aditionalComments}</span>
+                            </>
+                        )}
                     </p>
                 </div>
                 <div className="flex-1 !mt-5">
