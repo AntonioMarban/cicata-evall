@@ -8,19 +8,58 @@ export default function ProjectHeader({
   endDate,
   folio,
   status,
-  projectId, // <- Asegúrate de pasar esto desde el componente padre
+  projectId,
 }) {
   const navigate = useNavigate();
   const [userType, setUserType] = useState(localStorage.getItem("userType"));
+  const [committeeId, setCommitteeId] = useState(localStorage.getItem("committeeId"));
+  const [userId, setUserId] = useState(localStorage.getItem("userId"));
+  const [isEvaluator, setIsEvaluator] = useState(false);
+
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const handleStorageChange = () => {
       setUserType(localStorage.getItem("userType"));
+      setCommitteeId(localStorage.getItem("committeeId"));
+      setUserId(localStorage.getItem("userId"));
     };
 
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
+
+  useEffect(() => {
+    const checkIfEvaluator = async () => {
+
+      if (!projectId || !committeeId || !userId) return;
+
+      if ((userType === "3" || userType === "4") && committeeId && userId && projectId) {
+        try {
+          const response = await fetch(
+            `${apiUrl}/committees/${committeeId}/secretaries/${userId}/evaluations/${projectId}`
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            
+            const isUserInEvaluatorList = data.some(
+              (evaluator) => String(evaluator.userId) === String(userId)
+            );
+
+            setIsEvaluator(isUserInEvaluatorList);
+          } else {
+            console.error("Error fetching evaluations:", response.statusText);
+            setIsEvaluator(false);
+          }
+        } catch (error) {
+          console.error("Error checking evaluator status:", error);
+          setIsEvaluator(false);
+        }
+      }
+    }
+    checkIfEvaluator();
+  }, [projectId, committeeId, userId, userType, apiUrl]);
 
   const formatDate = (dateString) => {
     if (!dateString) return "-";
@@ -31,6 +70,14 @@ export default function ProjectHeader({
   const handleInfoClick = () => {
     navigate(`/VerFormulario/${projectId}`);
   };
+
+  const handleEvaluateClick = () => {
+    if (isEvaluator) {
+      navigate(`/EvaluarProyecto/${projectId}`);
+    } else {
+      alert("No tienes permisos para evaluar este proyecto.");
+    }
+  }
 
   return (
     <div className="project-header">
@@ -55,11 +102,15 @@ export default function ProjectHeader({
           </div>
         </div>
       </div>
-      <div id="project-buttons" className="flex md:flex-row gap-3">
+      <div id="project-buttons" className="flex md:flex-row gap-0">
         <button className="info-button" onClick={handleInfoClick}>
           Información
         </button>
-        {userType === "4" && <button className="info-button">Evaluar</button>}
+        {isEvaluator && (
+          <button className="info-button" onClick={handleEvaluateClick}>
+            Evaluar
+          </button>
+        )}
       </div>
     </div>
   );

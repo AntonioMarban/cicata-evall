@@ -37,9 +37,13 @@
 
 .evaluations-table th,
 .evaluations-table td {
-  text-align: left;
+  text-align: start;
   padding: 12px;
   border-bottom: 1px solid #ddd;
+}
+
+.evaluators-table td {
+  text-align: start;
 }
 
 .result-approved {

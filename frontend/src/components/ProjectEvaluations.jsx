@@ -103,7 +103,7 @@ export default function ProjectEvaluations({ projectId }) {
       
           alert("Evaluador agregado exitosamente.");
           setIsAddEvaluatorOpen(false);
-          window.location.reload(); // Recarga toda la página para refrescar las evaluaciones
+          window.location.reload();
         } catch (error) {
           console.error("Error al agregar evaluador:", error);
           alert("Ocurrió un error al intentar agregar el evaluador.");
@@ -189,7 +189,7 @@ export default function ProjectEvaluations({ projectId }) {
 
                         {potentialEvaluators.length > 0 ? (
                             <div className="overflow-x-auto">
-                            <table className="min-w-full">
+                            <table className="min-w-full evaluators-table">
                                 <thead>
                                 <tr>
                                     <th className="text-left py-2! px-4!">Nombre</th>
@@ -199,15 +199,15 @@ export default function ProjectEvaluations({ projectId }) {
                                 <tbody>
                                 {potentialEvaluators.map((evaluator) => (
                                     <tr key={evaluator.userId} className="py-2! px-4!">
-                                    <td className="py-2! px-4!">{evaluator.fullName}</td>
-                                    <td className="py-2! px-4!">
-                                        <button
-                                        className="bg-[#5CB7E6] text-white px-3! py-1! rounded-lg hover:bg-[#1591D1]"
-                                        onClick={() => addEvaluator(evaluator.userId)}
-                                        >
-                                        Agregar evaluador
-                                        </button>
-                                    </td>
+                                        <td className="py-2! px-4!" id="tdFullNameEvaluators">{evaluator.fullName}</td>
+                                        <td className="py-2! px-4!">
+                                            <button
+                                            className="bg-[#5CB7E6] text-white px-3! py-1! rounded-lg hover:bg-[#1591D1]"
+                                            onClick={() => addEvaluator(evaluator.userId)}
+                                            >
+                                            Agregar evaluador
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                                 </tbody>
