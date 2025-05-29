@@ -15,7 +15,7 @@ const CollaborativeInstitutions = ({collaborativeInstitutions}) => {
                         <th>¿Ya cuenta con Convenio de Colaboración?
                         <br/><span className='subtitle-text'>(General / Específico)</span>
                         </th>
-                        <th>¿El convenio es Nacional o Extranjero? 
+                        <th>¿El convenio es Nacional o Internacional? 
                         <br/><span className='subtitle-text'>(Si aplica)</span>
                         </th>
                         <th>Número de convenio 

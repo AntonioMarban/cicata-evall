@@ -10,7 +10,7 @@ const  ConflictoInt = ({option,setOption}) => {
         conflictOfInterest:"" 
     });
     const [newErrorsD,setNewErrorsD] = useState({
-        conflictOfInterest:""
+        conflictOfInterest:"*"
     });
 
     const handleChange = (e) => {
@@ -26,7 +26,7 @@ const  ConflictoInt = ({option,setOption}) => {
         const newErrorsDF = {}
         if (!conflict.conflictOfInterest || (typeof conflict.conflictOfInterest === 'string' 
             && conflict.conflictOfInterest.trim() === '')) {
-                newErrorsDF.conflictOfInterest = "El campo es requerido";
+                newErrorsDF.conflictOfInterest = "* El campo es requerido";
         }
         setNewErrorsD(newErrorsDF)
         if(!Object.keys(newErrorsDF).length>0){
@@ -47,7 +47,13 @@ const  ConflictoInt = ({option,setOption}) => {
                         <p className="text-[17px] text-gray-600">(Declarar si existe un interés laboral, personal, profesional, 
                             familiar o el proyecto está ligado a la industria farmacéutica, que pueda afectar el desempeño
                             imparcial de alguno de los participantes)
-                            <br/> {newErrorsD.conflictOfInterest && <span className="text-red-600">*{newErrorsD.conflictOfInterest}</span>}</p>
+                            {newErrorsD.conflictOfInterest && (
+                                            <>
+                                                {newErrorsD.conflictOfInterest !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrorsD.conflictOfInterest}</span>
+                                            </>
+                            )}
+                            </p>
                             <textarea  
                             className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px]
                             hover:border-[#5CB7E6] transition-colors duration-300

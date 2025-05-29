@@ -20,8 +20,23 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         phone: "",
         researchNetworkName: "",
         researchNetwork: 1
-      };
-    const [newErrors,setNewErrors] =  useState(initialParticipant);
+    };
+    const ArrayNewErrors = {
+        fName: "*",
+        lastName1: "*",
+        lastName2: "*",
+        institution: "*",
+        positionWork: "*",
+        academicDegree: "*",
+        tutorName: "*",
+        levelName: "*",
+        levelNum: "*",
+        email: "*",
+        phone: "*",
+        researchNetworkName: "*",
+        researchNetwork: 1
+    } 
+    const [newErrors,setNewErrors] =  useState(ArrayNewErrors);
     const [participant, setParticipant] = useState(initialParticipant);
     
     const handleChangeButton = (key, value) => {
@@ -69,8 +84,16 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         e.preventDefault();
         const newErrorsF = {}
         Object.entries(participant).forEach(([key, value]) => {
+            console.log(key,value)
+            if(key === "email"){
+                const isValid = !value.includes("@") || !value.includes(".com");
+                if(isValid){
+                    newErrorsF[key] = `* El email no es válido`;
+                }
+                console.log(value)
+            }
           if (!value || (typeof value === 'string' && value.trim() === '')) {
-            newErrorsF[key] = `El campo  es requerido`;
+            newErrorsF[key] = `* El campo  es requerido`;
             if (value === 0){
                 delete newErrorsF[key]
             }
@@ -109,9 +132,8 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
 
     return (
         <>
-            {!participantToEdit && (
-                <button className="participant-modalAgregarPieza" onClick={() => setIsOpen(true)}>Agregar participante</button>
-            )}
+
+            <button className="participant-modalAgregarPieza" onClick={() => setIsOpen(true)}>Agregar participante</button>
 
             <Dialog open={isOpen} onClose={() => {}} className="participant-dialog-overlay">
                 <div className="participant-dialog-container">
@@ -121,7 +143,13 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             <div className="participant-form-rows">
                                 <div>
                                     <p>Nombre  
-                                        <br/>{newErrors.fName && <span className="text-red-600">*{newErrors.fName}</span>}</p>
+                                        {newErrors.fName && (
+                                            <>
+                                                {newErrors.fName !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.fName}</span>
+                                            </>
+                                        )}  
+                                    </p>
                                     <input 
                                         name="fName"
                                         value={participant.fName}
@@ -130,7 +158,13 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                 </div>
                                 <div>
                                     <p>Apellido paterno 
-                                        <br/>{newErrors.lastName1 && <span className="text-red-600">*{newErrors.lastName1}</span>}</p>
+                                        {newErrors.lastName1 && (
+                                            <>
+                                                {newErrors.lastName1 !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.lastName1}</span>
+                                            </>
+                                        )}    
+                                    </p>
                                     <input 
                                         name="lastName1"
                                         value={participant.lastName1}
@@ -140,7 +174,13 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                 </div>
                                 <div>
                                     <p>Apellido materno 
-                                        <br/>{newErrors.lastName2 && <span className="text-red-600">*{newErrors.lastName2}</span>}</p>
+                                        {newErrors.lastName2 && (
+                                            <>
+                                                {newErrors.lastName2 !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.lastName2}</span>
+                                            </>
+                                        )}    
+                                    </p>
                                     <input 
                                         name="lastName2"
                                         value={participant.lastName2}
@@ -152,7 +192,12 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             <div className="participant-form-rows">
                                 <div>
                                     <p>institución perteneciente 
-                                        <br/>{newErrors.institution && <span className="text-red-600"> *{newErrors.institution}</span>}
+                                        {newErrors.institution && (
+                                            <>
+                                                {newErrors.institution !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.institution}</span>
+                                            </>
+                                        )}
                                     </p>
                                     <input 
                                         name="institution"
@@ -162,7 +207,12 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                 </div>
                                 <div>
                                     <p>Puesto que desempeña
-                                        <br/>{newErrors.positionWork && <span className="text-red-600"> *{newErrors.positionWork}</span>}
+                                        {newErrors.positionWork && (
+                                            <>
+                                                {newErrors.positionWork !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.positionWork}</span>
+                                            </>
+                                        )}
                                     </p>
                                     <input
                                         name="positionWork"
@@ -173,7 +223,12 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                 </div>
                                 <div>
                                     <p>Nombre del tutor
-                                        <br/>{newErrors.tutorName && <span className="text-red-600"> *{newErrors.tutorName}</span>}
+                                        {newErrors.tutorName && (
+                                            <>
+                                                {newErrors.tutorName !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.tutorName}</span>
+                                            </>
+                                        )}
                                     </p>
                                     <input
                                         name="tutorName"
@@ -195,7 +250,12 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             {participant.researchNetwork === 1 &&
                                 <div className="participant-complete-row-2">
                                     <p>¿Cuál?
-                                        <br/>{newErrors.researchNetworkName && <span className="text-red-600"> *{newErrors.researchNetworkName}</span>}
+                                       {newErrors.researchNetworkName && (
+                                            <>
+                                                {newErrors.researchNetworkName !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.researchNetworkName}</span>
+                                            </>
+                                        )}
                                     </p>
                                     <input  
                                         name="researchNetworkName"
@@ -207,7 +267,12 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             
                             <div className="participant-complete-row-2">
                                 <p>Grado académico
-                                    <br/>{newErrors.academicDegree && <span className="text-red-600"> *{newErrors.academicDegree}</span>}
+                                    {newErrors.academicDegree && (
+                                            <>
+                                                {newErrors.academicDegree !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.academicDegree}</span>
+                                            </>
+                                    )}
                                 </p>
                                 <input
                                     name="academicDegree"
@@ -219,7 +284,12 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             <div className="participant-form-rows">
                                 <div className="participant-button-degree">
                                     <p >Tipo investigador
-                                        <br/>{newErrors.levelName && <span className="text-red-600"> *{newErrors.levelName}</span>}
+                                        {newErrors.levelName && (
+                                            <>
+                                                {newErrors.levelName !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.levelName}</span>
+                                            </>
+                                        )}
                                     </p>
                                     <select name="levelName" 
                                         value={participant.levelName}
@@ -232,7 +302,12 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                 </div>
                                 <div className="participant-button-degree">
                                     <p>Nivel
-                                        <br/>{newErrors.levelNum && <span className="text-red-600"> *{newErrors.levelNum}</span>}
+                                        {newErrors.levelNum && (
+                                            <>
+                                                {newErrors.levelNum !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.levelNum}</span>
+                                            </>
+                                        )}
                                     </p>
                                     <select name="levelNum" 
                                         value={participant.levelNum}
@@ -244,45 +319,58 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                     </select>
                                 </div>
                             </div>
-                            <div className="">
-                                <p>Datos de contacto</p>
-                                <div>
+                            <p>Datos de contacto</p>
+                            <div className="participant-form-rows">
                                     <div>
-                                        <p>Email <br/>{newErrors.email && <span className="text-red-600"> *{newErrors.email}</span>}</p>
+                                        <p>Email 
+                                            {newErrors.email && (
+                                            <>
+                                                {newErrors.email !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.email}</span>
+                                            </>
+                                            )}
+                                        </p>
                                         <input 
                                         name="email"
                                         value={participant.email}
                                         onChange={handleInputChange} 
                                         placeholder="Escribe el email..."
-                                        className="participant-form-pieza-input2"></input>
+                                        className="formContact-participant-form-pieza-input2"></input>
                                     </div>
-                                    <div className="!mt-2">
-                                    <p>Teléfono <br/>{newErrors.phone && <span className="text-red-600"> *{newErrors.phone}</span>}</p>
+                                    <div>
+                                    <p>
+                                    Teléfono
+                                    {newErrors.phone && (
+                                        <>
+                                            {newErrors.phone !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.phone}</span>
+                                        </>
+                                    )}
+                                    </p>
                                         <input 
                                         name="phone"
                                         value={participant.phone}
                                         onChange={handleInputChange} 
                                         placeholder="Escribe el teléfono..."
-                                        className="participant-form-pieza-input2"></input>
+                                        className="formContact-participant-form-pieza-input2"></input>
                                     </div>
-                                </div>
                             </div>
+                            
                             <div className="participant-dialog-actions">
                                 <button  className="participant-button-confirm">
                                     {participantToEdit ? "Guardar cambios" : "Guardar participante"}
                                 </button>
-                                {!participantToEdit &&(
-                                    <button
-                                    type="button"
-                                    onClick={(e)=>{
-                                        setIsOpen(false); 
-                                        setParticipant(initialParticipant); 
-                                        setNewErrors(initialParticipant);
-                                       }}
-                                    className="button-cancel">
-                                    Cancelar
-                                    </button>
-                                )}
+                                <button
+                                type="button"
+                                onClick={(e)=>{
+                                    e.preventDefault()
+                                    setIsOpen(false); 
+                                    setParticipant(initialParticipant); 
+                                    setNewErrors(ArrayNewErrors);
+                                    }}
+                                className="button-cancel">
+                                Cancelar
+                                </button>
                             </div>
                         </form>
                     </DialogPanel>

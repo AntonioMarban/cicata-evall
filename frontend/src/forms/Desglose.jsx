@@ -20,12 +20,12 @@ const  Desglose = ({option,setOption}) => {
     
     const [newErrorsD,setNewErrorsD] = useState(
         {
-            introduction: "",
-            background:"",
-            statementOfProblem:"",
-            justification:"", 
-            hypothesis: "",
-            generalObjective: ""
+            introduction: "*",
+            background:"*",
+            statementOfProblem:"*",
+            justification:"*", 
+            hypothesis: "*",
+            generalObjective: "*"
         });
     const [desgloseToEdit, setDesgloseToEdit] = useState(null);
 
@@ -42,10 +42,11 @@ const  Desglose = ({option,setOption}) => {
         const newErrorsDF = {}
         Object.entries(desglose).forEach(([key, value]) => {
           if (!value || (typeof value === 'string' && value.trim() === '')) {
-            newErrorsDF[key] = `El campo  es requerido`;
+            newErrorsDF[key] = `* El campo  es requerido`;
           }
         });
         setNewErrorsD(newErrorsDF)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         if(!Object.keys(newErrorsDF).length>0){
             handleOnSubmitFormNext(event); 
         }
@@ -77,7 +78,7 @@ const  Desglose = ({option,setOption}) => {
                 <div className="flex-1 mt-5">
                     <div className="flex flex-wrap flex-col">
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Introducción {newErrorsD.introduction && <span className="text-red-600">*{newErrorsD.introduction}</span>}</p>
+                            <p className="!mt-2 text-xl">Introducción {newErrorsD.introduction && <span className="text-red-600">{newErrorsD.introduction}</span>}</p>
                             <textarea 
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg flex 
                             justify-start items-start text-[#6D7580] mt-3 min-w-[250px]
@@ -88,7 +89,7 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe la introducción del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Antecedentes {newErrorsD.background && <span className="text-red-600">*{newErrorsD.background}</span>}</p>
+                            <p className="!mt-2 text-xl">Antecedentes {newErrorsD.background && <span className="text-red-600">{newErrorsD.background}</span>}</p>
                             <textarea
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] text-lg hover:border-[#5CB7E6] transition-colors duration-300 flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"  
                             name="background"
@@ -97,7 +98,7 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe los antecedentes del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Planteamiento del problema {newErrorsD.statementOfProblem && <span className="text-red-600">*{newErrorsD.statementOfProblem}</span>}</p>
+                            <p className="!mt-2 text-xl">Planteamiento del problema {newErrorsD.statementOfProblem && <span className="text-red-600">{newErrorsD.statementOfProblem}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] hover:border-[#5CB7E6] transition-colors duration-300 text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
                             name="statementOfProblem"
@@ -106,7 +107,7 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe el planteamiento del problema..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Justificación {newErrorsD.justification && <span className="text-red-600">*{newErrorsD.justification}</span>}</p>
+                            <p className="!mt-2 text-xl">Justificación {newErrorsD.justification && <span className="text-red-600">{newErrorsD.justification}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] hover:border-[#5CB7E6] transition-colors duration-300 text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
                             name="justification"
@@ -115,7 +116,7 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe la justificación del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Hipótesis {newErrorsD.hypothesis && <span className="text-red-600">*{newErrorsD.hypothesis}</span>}</p>
+                            <p className="!mt-2 text-xl">Hipótesis {newErrorsD.hypothesis && <span className="text-red-600">{newErrorsD.hypothesis}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] hover:border-[#5CB7E6] transition-colors duration-300 text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
                             name="hypothesis"
@@ -124,7 +125,7 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe la hipótesis del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Objetivo general {newErrorsD.generalObjective && <span className="text-red-600">*{newErrorsD.generalObjective}</span>}</p>
+                            <p className="!mt-2 text-xl">Objetivo general {newErrorsD.generalObjective && <span className="text-red-600">{newErrorsD.generalObjective}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] hover:border-[#5CB7E6] transition-colors duration-300 text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
                             name="generalObjective"

@@ -16,7 +16,12 @@ const ShowCardsBudget = ({cards, slice,handleDeleteFile,handleEditModal,nameArra
                     {card.name}
                 </p>
 
-                <p className="flex-1 flex justify-end">{card.expenditure}</p>
+                <p className="flex-1 flex justify-end">
+                    ${Number(card.expenditure).toLocaleString('es-MX', { 
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 2 
+                    })}
+                </p>
 
                 <div className="flex-1  flex items-center justify-end gap-2">
                     <button 

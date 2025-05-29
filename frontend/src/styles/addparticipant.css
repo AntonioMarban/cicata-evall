@@ -24,6 +24,7 @@
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  overflow-y: auto;
 }
 .participant-dialog-container {
   position: relative;
@@ -170,6 +171,22 @@
   border: 2px solid #E1E1E1;
   font-size: 13px;
   color: #6D7580;
+  padding: 10px;
+}
+.formContact{
+  display: flex;
+  width: 100%;
+}
+.formContact div{
+  flex: 1;
+}
+.formContact-participant-form-pieza-input2{
+  border-radius: 10px;
+  width: 100%;
+  border: 2px solid #E1E1E1;
+  font-size: 13px;
+  color: #6D7580;
+  margin-top: 12px;
   padding: 10px;
 }
 .participant-form-pieza-input2{

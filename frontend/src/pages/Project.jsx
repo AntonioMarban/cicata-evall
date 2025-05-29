@@ -71,7 +71,7 @@ export default function Project() {
 
         {/* Vistas condicionales por tipo de usuario */}
         {userType === "2" && <ProjectStatus projectId={projectId} />}
-        {userType === "1" && <ProjectProgress projectId={projectId} />}
+        {userType === "1" && <ProjectProgress  status={projectData.status} projectId={projectId} />}
         {(userType === "3" || userType === "4") && (
           <ProjectEvaluations projectId={projectId} />
         )}

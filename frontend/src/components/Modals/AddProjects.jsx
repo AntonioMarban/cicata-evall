@@ -13,7 +13,14 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
         externalRegister: "",
         SIPRegister: ""
     };
-    const [newErrors,setNewErrors] = useState(initialFormValues);
+    const newErrorsArray = {
+        name: "*",
+        associationDate: "*",
+        project_type: "*",
+        externalRegister: "*",
+        SIPRegister: "*"
+    };
+    const [newErrors,setNewErrors] = useState(newErrorsArray);
     const [formValues, setFormValues] = useState(initialFormValues);
 
     
@@ -58,7 +65,7 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
         const newErrorsF = {}
         Object.entries(formValues).forEach(([key, value]) => {
             if (!value || (typeof value === 'string' && value.trim() === '')) {
-              newErrorsF[key] = `El campo  es requerido`;
+              newErrorsF[key] = `* El campo  es requerido`;
             }
         });
         delete newErrorsF["externalRegister"];
@@ -71,11 +78,9 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
 
     return (
         <>
-            {!projectToEdit && (
-                <button type="button" className='modalAddProject' onClick={() => setIsOpen(true)}>
-                    Agregar proyecto
-                </button>
-            )}
+            <button type="button" className='modalAddProject' onClick={() => setIsOpen(true)}>
+                Agregar proyecto
+            </button>
 
             <Dialog open={isOpen} onClose={() => {}}  className="dialog-overlay">
                 <div className="dialog-container">
@@ -85,7 +90,12 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                             <div className="form-rows">
                                 <div>
                                     <p>Nombre proyecto
-                                        <br/>{newErrors.name && <span className="text-red-600">*{newErrors.name}</span>}
+                                    {newErrors.name && (
+                                        <>
+                                            {newErrors.name !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.name}</span>
+                                        </>
+                                    )}
                                     </p>
                                     <input 
                                         name="name" 
@@ -97,7 +107,12 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                                 </div>
                                 <div>
                                     <p>Fecha de asociación
-                                        <br/>{newErrors.associationDate && <span className="text-red-600">*{newErrors.associationDate}</span>}
+                                    {newErrors.associationDate && (
+                                        <>
+                                            {newErrors.associationDate !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.associationDate}</span>
+                                        </>
+                                    )}
                                     </p>
                                     <input 
                                         name="associationDate" 
@@ -111,7 +126,12 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                             <div className="form-complete-row">
                                 <p>Tipo de proyecto</p>
                                 <p className="form-subtext">(p.e. Tesis maestría, convocatoria interna innovación, convocatoria externa fronteras, etc.)
-                                    <br/>{newErrors.project_type && <span className="text-red-600">*{newErrors.project_type}</span>}
+                                    {newErrors.project_type && (
+                                        <>
+                                            {newErrors.project_type !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.project_type}</span>
+                                        </>
+                                    )}
                                 </p>
                                 <input 
                                     name="project_type" 
@@ -150,19 +170,20 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                                 <button className="button-confirm">
                                     {projectToEdit ? "Guardar cambios" : "Guardar proyecto"}
                                 </button>
-                                {!projectToEdit && (
-                                    <button 
-                                    type="button" 
-                                    onClick={(e) => {
-                                        setIsOpen(false)
-                                        setFormValues(initialFormValues);
-                                        setNewErrors(initialFormValues)
-                                    }} 
-                                    className="button-cancel"
-                                    >
-                                    Cancelar
-                                    </button>
-                                )}
+                                
+                                <button 
+                                type="button" 
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setIsOpen(false)
+                                    setFormValues(initialFormValues);
+                                    setNewErrors(newErrorsArray)
+                                }} 
+                                className="button-cancel"
+                                >
+                                Cancelar
+                                </button>
+
                             </div>
                         </form>
                     </DialogPanel>

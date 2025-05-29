@@ -9,8 +9,11 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
     const initialValues = {
         methodology: "",
     }
+    const initialValuesErrors = {
+        methodology: "*",
+    }
     const [methodologies, setMethodologies] = useState(initialValues)
-    const [newErrors,setNewErrors] =  useState(initialValues);
+    const [newErrors,setNewErrors] =  useState(initialValuesErrors);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setMethodologies(prev => ({
@@ -49,7 +52,7 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
         const newErrorsF = {}
         Object.entries(methodologies).forEach(([key, value]) => {
           if (!value || (typeof value === 'string' && value.trim() === '')) {
-            newErrorsF[key] = `El campo  es requerido`;
+            newErrorsF[key] = `* El campo  es requerido`;
           }
         });
         setNewErrors(newErrorsF)
@@ -59,12 +62,9 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
     };
     return (
         <>
-            {!methodologiesToEdit && (
-                <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
-                    Agregar metodología
-                </button>
-            )
-            }
+            <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
+                Agregar metodología
+            </button>
 
             <Dialog open={isOpen} onClose={() => {}} className="dialog-overlay">
                 <div className="dialog-container">
@@ -73,31 +73,35 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Nombre de la metodología
-                                <br/>{newErrors.methodology && <span className="text-red-600">*{newErrors.methodology}</span>}
+                                    {newErrors.methodology && (
+                                        <>
+                                            {newErrors.methodology !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.methodology}</span>
+                                        </>
+                                    )} 
                                 </p>
-                                <input name="methodology" 
+                                <textarea name="methodology" 
                                        className="form-pieza-input" 
                                        placeholder="Escribe el nombre de la metodología..."
                                        value={methodologies.methodology}
-                                       onChange={handleInputChange}></input>
+                                       onChange={handleInputChange}></textarea>
                             </div>
                             <div className="dialog-actions">
                                 <button className="button-confirm">
                                     {methodologiesToEdit ? "Guardar cambios" : "Guardar metodología"}
                                 </button>
-                                {!methodologiesToEdit && (
-                                    <button 
-                                    type="button" 
-                                    onClick={(e) => {
-                                        setIsOpen(false)
-                                        setMethodologies(initialValues)
-                                        setNewErrors(initialValues)
-                                    }} 
-                                    className="button-cancel"
-                                    >
-                                    Cancelar
-                                    </button>
-                                )}
+                                <button 
+                                type="button" 
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setIsOpen(false)
+                                    setMethodologies(initialValues)
+                                    setNewErrors(initialValuesErrors)
+                                }} 
+                                className="button-cancel"
+                                >
+                                Cancelar
+                                </button>
                             </div>
                         </form>
                     </DialogPanel>

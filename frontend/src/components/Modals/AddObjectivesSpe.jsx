@@ -10,8 +10,12 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
         objectiveName: "",
         objectiveDescription:""
     }
+    const ErrorInitial = {
+        objectiveName: "*",
+        objectiveDescription:"*"
+    }
     const [objectiveSpe, setObjectiveSpe] = useState(initialValues)
-    const [newErrors,setNewErrors] =  useState(initialValues);
+    const [newErrors,setNewErrors] =  useState(ErrorInitial);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setObjectiveSpe(prev => ({
@@ -50,7 +54,7 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
         const newErrorsF = {}
         Object.entries(objectiveSpe).forEach(([key, value]) => {
           if (!value || (typeof value === 'string' && value.trim() === '')) {
-            newErrorsF[key] = `El campo  es requerido`;
+            newErrorsF[key] = `* El campo  es requerido`;
           }
         });
         setNewErrors(newErrorsF)
@@ -61,12 +65,9 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
 
     return (
         <>
-            {!desgloseToEdit && (
-                <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
-                    Agregar objetivo
-                </button>
-            )
-            }
+            <button type="button" className='modalAddColaboration' onClick={() => setIsOpen(true)}>
+                Agregar objetivo
+            </button>
 
             <Dialog open={isOpen} onClose={() => {}} className="dialog-overlay">
                 <div className="dialog-container">
@@ -75,7 +76,12 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Nombre del objetivo específico
-                                <br/>{newErrors.objectiveName && <span className="text-red-600">*{newErrors.objectiveName}</span>}
+                                    {newErrors.objectiveName && (
+                                        <>
+                                            {newErrors.objectiveName !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.objectiveName}</span>
+                                        </>
+                                    )}  
                                 </p>
                                 <input name="objectiveName" 
                                        className="form-pieza-input" 
@@ -83,7 +89,12 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                                        value={objectiveSpe.objectiveName}
                                        onChange={handleInputChange}></input>
                                 <p>Descripcion del objetivo específico
-                                <br/>{newErrors.objectiveDescription && <span className="text-red-600">*{newErrors.objectiveDescription}</span>}
+                                    {newErrors.objectiveDescription && (
+                                        <>
+                                            {newErrors.objectiveDescription !== '*' && <br />}
+                                            <span className="text-red-600"> {newErrors.objectiveDescription}</span>
+                                        </>
+                                    )}  
                                 </p>
                                 <input name="objectiveDescription" 
                                        className="form-pieza-input" 
@@ -95,19 +106,18 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                                 <button className="button-confirm">
                                     {desgloseToEdit ? "Guardar cambios" : "Guardar objetivo"}
                                 </button>
-                                {!desgloseToEdit && (
-                                    <button 
-                                    type="button" 
-                                    onClick={(e) => {
-                                        setIsOpen(false)
-                                        setObjectiveSpe(initialValues)
-                                        setNewErrors(initialValues)
-                                    }} 
-                                    className="button-cancel"
-                                    >
-                                    Cancelar
-                                    </button>
-                                )}
+                                <button 
+                                type="button" 
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setIsOpen(false)
+                                    setObjectiveSpe(initialValues)
+                                    setNewErrors(ErrorInitial)
+                                }} 
+                                className="button-cancel"
+                                >
+                                Cancelar
+                                </button>
                             </div>
                         </form>
                     </DialogPanel>

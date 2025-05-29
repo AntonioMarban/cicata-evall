@@ -141,7 +141,7 @@ const Members = ({members ,investigator}) => {
                             <p>{member.researchNetwork === 1 ? 'Sí' : 'No'}</p>
                         </div>
                     </div>
-                    {member.researchNetworkName === 1 && (
+                    {member.researchNetwork === 1 && (
                     <div className='participant-institution-inner'>
                         <div>
                         <p className='participant-tag'>En caso afirmativo ¿Cuál?</p>
