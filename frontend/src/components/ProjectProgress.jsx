@@ -164,6 +164,7 @@ export default function ProjectProgress({ projectId,status }) {
         fetchData(`${apiUrl}/users/projects/${projectId}`, setProjectData);
         fetchData(`${apiUrl}/researchers/projects/${projectId}/documents`,setFiles);
     }, [projectId]);
+    
     useEffect(()=>{
         console.log("Hola")
         status === "Pendiente de correcciones" ? setIsEnabledButton(true) : setIsEnabledButton(false)
@@ -173,6 +174,7 @@ export default function ProjectProgress({ projectId,status }) {
         }
         result()
     },[])
+    
     useLoadFormData(generalData.idF,setGeneralData);
     
     const checkForms = async () => {
@@ -231,7 +233,9 @@ export default function ProjectProgress({ projectId,status }) {
             </div>
             {isEnabledButton && (
                 <div className="footer-comments">
+                    {isAvailableToModify &&(
                     <button onClick={checkForms} className="info-button" disabled={!isEnabledButton}>Continuar con correcciones</button>
+                    )}
                     {!isAvailableToModify &&(
                     <button onClick={(e)=>{navigateToForms(files,e)}} className="info-button"  disabled={!isEnabledButton}>Realizar correcciones</button>
                     )}

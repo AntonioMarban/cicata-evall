@@ -139,7 +139,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                                     <select 
                                         name="responsibleMember" 
                                         className="form-pieza-input" 
-                                        placeholder="Select type"
+                                        placeholder="Selecciona un tipo"
                                         value={activity.responsibleMember}
                                         onChange={handleInputChange}
                                     >   
