@@ -6,6 +6,7 @@ const EvaluateProjectForm = ({ projectId }) => {
 
     const [committeeId, setCommitteeId] = useState(localStorage.getItem("committeeId"))
     const [memberId, setMemberId] = useState(localStorage.getItem("userId"))
+    const [userType, setUserType] = useState(localStorage.getItem("userType"))
     const [totalScore, setTotalScore] = useState("")
     const [evaluationResult, setEvaluationResult] = useState("")
     const [evaluationComments, setEvaluationComments] = useState("")
@@ -16,8 +17,13 @@ const EvaluateProjectForm = ({ projectId }) => {
 
     useEffect(() => {
         const handleStorageChange = () => {
-        setCommitteeId(localStorage.getItem("committeeId"));
-        setMemberId(localStorage.getItem("userId"));
+            setCommitteeId(localStorage.getItem("committeeId"));
+            setMemberId(localStorage.getItem("userId"));
+            setUserType(localStorage.getItem("userType"));
+            if (!localStorage.getItem("userId") || localStorage.getItem("userType") === "3" || localStorage.getItem("userType") === "4" || localStorage.getItem("userType") === "5") {
+                console.error("Tipo de usuario no autorizado. Redirigiendo a /Inicio.");
+                navigate("/Inicio");
+            };
         };
 
         window.addEventListener("storage", handleStorageChange);
@@ -73,7 +79,11 @@ const EvaluateProjectForm = ({ projectId }) => {
                 throw new Error("Error al enviar la evaluación");
             } else {
                 alert("Evaluación enviada exitosamente.");
-                navigate('/Inicio');
+                if (userType === "5") {
+                    navigate("/Inicio");
+                } else {
+                    navigate("/Proyecto?projectId=" + projectId);
+                }
             }
         } catch (error) {
             console.error("Error al enviar la evaluación:", error);
