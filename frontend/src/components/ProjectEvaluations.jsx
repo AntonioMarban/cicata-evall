@@ -125,7 +125,7 @@ export default function ProjectEvaluations({ projectId }) {
                         <tr>
                         <th>Evaluador</th>
                         <th>Puntaje</th>
-                        <th>Resultado de evaluación</th>
+                        <th>Resultado de la evaluación</th>
                         <th>Comentarios</th>
                         </tr>
                     </thead>

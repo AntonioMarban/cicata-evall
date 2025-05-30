@@ -4,6 +4,7 @@ import "../styles/deliverables.css";
 import TRASH from "../assets/trash.svg"
 import useSubmitFormBack from "../hooks/useSubmitFormBack";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
+import { toast } from "sonner";
 
 const DeliverablesView = ({ option, setOption }) => {
     
@@ -106,17 +107,17 @@ const DeliverablesView = ({ option, setOption }) => {
     const validateDeliverables = (deliverablesExtras) => {
         for (const [index, values] of Object.entries(deliverablesExtras)) {
             if (!values.name) {
-                alert("Faltan entregables extras por llenar");
+                toast.error("Faltan entregables extras por llenar");
                 return false;
             }
             
             if (Object.keys(values.values).length === 0) {
-                alert("No se puede enviar un entregable extra sin valores");
+                toast.error("No se puede enviar un entregable extra sin valores");
                 return false;
             }
             
             if (Object.values(values.values).some(val => val === 0 || val === "")) {
-                alert("No se puede enviar un entregable extra con valor 0 o vacío");
+                toast.error("No se puede enviar un entregable extra con valor 0 o vacío");
                 return false;
             }
         }

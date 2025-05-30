@@ -4,6 +4,7 @@ import useLoadFormData from "../../hooks/useLoadFormData";
 
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
+import { toast } from "sonner";
 
 const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete = null,Number,NumberDate }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -66,11 +67,11 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
     const handleSubmit = (e) => {
         e.preventDefault();
         if(datesManage.endDate && (datesManage.startDate>=activity.startDate || datesManage.endDate <= activity.endDate)){
-            return alert("Las fechas deben de estar dentro del rango del proyecto")
+            return toast.error("Las fechas deben de estar dentro del rango del proyecto")
         }
         const newErrorsF = {}
         if (activity.startDate > activity.endDate) {
-            return alert("No puede ser la fecha de inicio después de la fecha de fin");
+            return toast.error("No puede ser la fecha de inicio después de la fecha de fin");
         }
         Object.entries(activity).forEach(([key, value]) => {
             if (!value || (typeof value === 'string' && value.trim() === '')) {

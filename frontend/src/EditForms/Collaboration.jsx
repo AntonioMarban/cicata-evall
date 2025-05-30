@@ -98,7 +98,7 @@ const  Collaboration = ({option,setOption}) => {
                             'bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[45%] min-w-[100px]' 
                             : 
                             'bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[45%] min-w-[100px]'} 
-                            onClick={() => handleChangeButton('hasCollaboration', 1)} >Si</button>
+                            onClick={() => handleChangeButton('hasCollaboration', 1)} >Sí</button>
                         <button type="button"
                             className={collaborations.hasCollaboration === 0  ? 
                             'bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[45%] min-w-[100px] '

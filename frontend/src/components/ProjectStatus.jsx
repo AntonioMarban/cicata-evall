@@ -371,7 +371,7 @@ export default function ProjectStatus({ projectId }) {
               ? "El resultado de las evaluaciones aún no ha sido enviado al investigador"
               : createDictum === 1 && sendingPendingResearcher === 0
               ? "El resultado final de este proyecto ya fue enviado al investigador."
-              : ""}
+              : "El último estado de este proyecto ya fue enviado al investigador"}
           </p>
           {createDictum === 1 && sendingPendingResearcher === 1 && (
             <div className="dictum-input-form">

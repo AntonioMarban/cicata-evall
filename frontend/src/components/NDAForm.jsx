@@ -10,33 +10,42 @@ function NDAForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [agreementData, setAgreementData] = useState(null);
+  const [userFullName, setUserFullName] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
+  useEffect(() => {
+    const nameFromStorage = localStorage.getItem("userFullName") || "Usuario";
+    setUserFullName(nameFromStorage);
+  }, []);
+
   const searchParams = new URLSearchParams(location.search);
   const projectId = searchParams.get("projectId");
+
+  function convertMarkdownToHTML(text) {
+    return text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+  }
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     const userType = Number(localStorage.getItem("userType"));
 
-    
     if (!userId || userId === "undefined" || userId === "null") {
       console.error("userId no válido. Redirigiendo a /Inicio.");
       navigate("/Inicio");
       return;
     }
-    
+
     if (!projectId) {
       console.error("No hay projectId. Redirigiendo a /Inicio.");
       navigate("/Inicio");
       return;
     }
-    
+
     if (userType === 1 || userType === 2) {
       navigate(`/Proyecto?projectId=${projectId}`);
     }
-    
+
     const fetchAgreement = async () => {
       try {
         const response = await fetch(
@@ -49,7 +58,7 @@ function NDAForm() {
         if (data.length > 0) {
           const agreement = data[0];
           setAgreementData(agreement);
-          
+
           if (agreement.agreed === 1) {
             navigate(`/Proyecto?projectId=${projectId}`);
           }
@@ -89,6 +98,7 @@ En mi calidad de Evaluador del proyecto titulado ${agreementData.title}, dirigid
 En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consentimiento para que se apliquen las medidas legales y disciplinarias pertinentes conforme a la normativa aplicable.
 
 ATENTAMENTE,
+${userFullName}
 `
     : "Cargando acuerdo...";
 
@@ -132,7 +142,9 @@ ATENTAMENTE,
     const userId = localStorage.getItem("userId");
 
     if (!token || !userId || !projectId) {
-      setError("Información de usuario incompleta. Intenta iniciar sesión nuevamente.");
+      setError(
+        "Información de usuario incompleta. Intenta iniciar sesión nuevamente."
+      );
       return;
     }
 
@@ -155,7 +167,7 @@ ATENTAMENTE,
         throw new Error("Error al firmar el acuerdo.");
       }
 
-      navigate(`/Proyecto?projectId=${projectId}`); // o a donde prefieras llevar al usuario después de firmar
+      navigate(`/Proyecto?projectId=${projectId}`);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -174,7 +186,12 @@ ATENTAMENTE,
 
       <div className="nda-grid">
         <h2 className="nda-subtitle">Contenido</h2>
-        <p className="nda-text">{agreementText}</p>
+        <div
+          className="nda-text"
+          dangerouslySetInnerHTML={{
+            __html: convertMarkdownToHTML(agreementText),
+          }}
+        ></div>
 
         <div className="nda-input-group">
           <input
@@ -184,6 +201,7 @@ ATENTAMENTE,
             className="nda-input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="off"
           />
           <input
             type="password"
@@ -192,6 +210,7 @@ ATENTAMENTE,
             className="nda-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
           />
         </div>
 

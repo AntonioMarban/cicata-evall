@@ -128,7 +128,7 @@ const EvaluateProjectForm = ({ projectId }) => {
                                             placeholder="Puntaje total"
                                             required
                                         />
-                                        <span className="text-gray-500 text-sm">Si no aplica, escribe "N/A"</span>
+                                        <span className="text-gray-500 text-sm">Si no aplica, escribe "N/A".</span>
                                         {scoreError && <span className="text-red-500 text-sm">{scoreError}</span>}
                                     </div>
 

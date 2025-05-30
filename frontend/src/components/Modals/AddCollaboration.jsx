@@ -128,7 +128,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                                         <button
                                         type="button" 
                                         className={collaboration.partOfIPN === 1  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('partOfIPN',1)}
-                                        >Si</button>
+                                        >Sí</button>
                                         <button
                                         type="button" 
                                         className={collaboration.partOfIPN === 0  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('partOfIPN',0)}
