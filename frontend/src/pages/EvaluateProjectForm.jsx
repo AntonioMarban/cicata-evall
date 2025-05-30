@@ -28,7 +28,7 @@ const EvaluateProjectForm = ({ projectId }) => {
 
         window.addEventListener("storage", handleStorageChange);
         return () => window.removeEventListener("storage", handleStorageChange);
-    }, []);
+    }, [navigate]);
 
     const handleScoreBlur = () => {
         const value = totalScore.trim().toUpperCase();

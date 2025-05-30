@@ -14,6 +14,7 @@ export default function ProjectEvaluations({ projectId }) {
 
     const [loading, setLoading] = useState(true);
     const [evaluations, setEvaluations] = useState([]);
+    const allEvaluationsCompleted = evaluations.every(evaluation => evaluation.result !== null);
     const [isDictumFormLoaded, setIsDictumFormLoaded] = useState(false);
     const [isAddEvaluatorOpen, setIsAddEvaluatorOpen] = useState(false);
     const [potentialEvaluators, setPotentialEvaluators] = useState([]);
@@ -164,16 +165,22 @@ export default function ProjectEvaluations({ projectId }) {
             </div>
 
             {!isDictumFormLoaded && (
-                <div className="evaluations-buttons">
+                <div className="flex gap-4 justify-center text-white w-full">
                     <button
-                        className=""
+                        className="mt-5! px-5! py-3! rounded-lg bg-[#5CB7E6] hover:bg-[#1591D1] transition-colors duration-200 cursor-pointer"
                         onClick={openDialogAddEvaluator}
                     >
                         Agregar evaluador
                     </button>
                     <button
-                        className=""
+                        className={`mt-5! px-5! py-3! rounded-lg transition-colors duration-200
+                                    ${evaluations.length === 0 || !allEvaluationsCompleted
+                                        ? "bg-gray-400 cursor-not-allowed"
+                                        : "bg-[#5CB7E6] hover:bg-[#1591D1] cursor-pointer"
+                                    }
+                        `}
                         onClick={openDictumForm}
+                        disabled={evaluations.length === 0 || !allEvaluationsCompleted}
                     >
                         Enviar dictamen de comité
                     </button>
