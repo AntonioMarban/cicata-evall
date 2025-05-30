@@ -73,7 +73,7 @@ export default function ProjectHeader({
 
   const handleEvaluateClick = () => {
     if (isEvaluator) {
-      navigate(`/EvaluarProyecto`);
+      navigate('/EvaluarProyecto', { state: { projectId: projectId } });
     } else {
       alert("No tienes permisos para evaluar este proyecto.");
     }
