@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useLoadFormData from "../hooks/useLoadFormData";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
+import { toast } from "sonner";
 
 const GeneralData = ({option,setOption}) => {
     const [alignsWithPNIorODS, setalignsWithPNIorODS] = useState(1);
@@ -41,10 +42,11 @@ const GeneralData = ({option,setOption}) => {
         setGeneralData({ ...generalData, [name]: value });
     };
 
-    const validateDates = () => {
-        if (generalData.startDate > generalData.endDate) {
-          alert("No puede ser la fecha de inicio después de la fecha de fin");
-          return false; 
+   const validateDates = () => {
+        if (generalData.endDate && generalData.startDate > generalData.endDate) {
+        toast.error("No puede ser la fecha de inicio después de la fecha de fin");
+         window.scrollTo({ top: 0, behavior: 'smooth' });
+        return false;
         }
         return true; 
       };
@@ -60,6 +62,7 @@ const GeneralData = ({option,setOption}) => {
             newErrorsF[key] = `* El campo  es requerido`;
           }
         });
+        delete newErrorsF['endDate']
         if(generalData.typeResearch < 4){
             delete newErrorsF['otherTypeResearch'];
         }

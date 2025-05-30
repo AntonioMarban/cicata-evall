@@ -1,5 +1,6 @@
 import React from "react";
 import Drop from "../assets/BsUpload.svg";
+import { toast } from 'sonner'
 
 const DragDrop = ({ setFilesSend, filesSend, tagType = "Etico" }) => {
   const processFile = async (file) => {
@@ -33,8 +34,7 @@ const DragDrop = ({ setFilesSend, filesSend, tagType = "Etico" }) => {
     const pdfFiles = files.filter(file => file.type === "application/pdf");
 
     if (pdfFiles.length !== files.length) {
-      alert("Solo se permiten archivos PDF.");
-      return;
+      return toast.error("Solo se permiten archivos PDF.");
     }
 
   // Procesa los archivos PDF

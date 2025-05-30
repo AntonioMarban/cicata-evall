@@ -103,12 +103,6 @@ const ConflictInterest = ({Budget}) => {
                     <th>${sumExternas+sumInternas}</th>
                 </tr>
             </thead>
-            <thead className='table-form-header'>
-                <tr>
-                    <th>Gasto Inversión - Presupuesto</th>
-                    <th>${sumExternas+sumInternas-sumCorriente-sumInversion}</th>
-                </tr>
-            </thead>
         </table>
     </>
   );

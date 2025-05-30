@@ -8,11 +8,9 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
     const [isOpen, setIsOpen] = useState(false)
     const initialValues = {
         objectiveName: "",
-        objectiveDescription:""
     }
     const ErrorInitial = {
         objectiveName: "*",
-        objectiveDescription:"*"
     }
     const [objectiveSpe, setObjectiveSpe] = useState(initialValues)
     const [newErrors,setNewErrors] =  useState(ErrorInitial);
@@ -28,7 +26,6 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
         if (desgloseToEdit){
             setObjectiveSpe({
                 objectiveName: desgloseToEdit.objectiveName || "",
-                objectiveDescription: desgloseToEdit.objectiveDescription || ""
             });
             setIsOpen(true);
         }
@@ -75,7 +72,7 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                         <p className="dialog-title">{desgloseToEdit ? "Editar Objetivo Específico" : "Agregar Objetivo Específico"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
-                                <p>Nombre del objetivo específico
+                                <p>Objetivo específico
                                     {newErrors.objectiveName && (
                                         <>
                                             {newErrors.objectiveName !== '*' && <br />}
@@ -85,21 +82,8 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                                 </p>
                                 <input name="objectiveName" 
                                        className="form-pieza-input" 
-                                       placeholder="Escribe el nombre del objetivo..."
+                                       placeholder="Escribe el objetivo específico..."
                                        value={objectiveSpe.objectiveName}
-                                       onChange={handleInputChange}></input>
-                                <p>Descripcion del objetivo específico
-                                    {newErrors.objectiveDescription && (
-                                        <>
-                                            {newErrors.objectiveDescription !== '*' && <br />}
-                                            <span className="text-red-600"> {newErrors.objectiveDescription}</span>
-                                        </>
-                                    )}  
-                                </p>
-                                <input name="objectiveDescription" 
-                                       className="form-pieza-input" 
-                                       placeholder="Escribe el nombre del objetivo..."
-                                       value={objectiveSpe.objectiveDescription}
                                        onChange={handleInputChange}></input>
                             </div>
                             <div className="dialog-actions">

@@ -62,12 +62,12 @@ function Dashboard({ projectCards }) {
         return "No hay proyectos disponibles.";
     }
   };
-
+  console.log(window.location.pathname);
   return (
     <main className="dashboard-main">
       <div id="header" className="dashboard-header flex justify-between items-center">
         <h1 className="dashboard-title">¡Hola, {userFullName}!</h1>
-        { userType === 1 && location.pathname !== "/ProyectosFinalizados" && (
+        { (userType === 1 && window.location.pathname != '/ProyectosFinalizados') && (
           <button
             className="dashboard-button text-white rounded-lg cursor-pointer p-3! bg-[#5CB7E6] hover:bg-[#1591D1]"
             onClick={() => navigate("/CrearProyecto")}

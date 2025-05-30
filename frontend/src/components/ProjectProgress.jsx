@@ -3,6 +3,7 @@ import "../styles/commentscommittee.css";
 import { useNavigate } from "react-router-dom";
 import { saveMultipleForms, hasFormsInRange  } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
+import { toast } from 'sonner'
 
 export default function ProjectProgress({ projectId,status }) {
     const [isEnabledButton, setIsEnabledButton] = useState();
@@ -88,8 +89,7 @@ export default function ProjectProgress({ projectId,status }) {
 
     const navigateToForms = async (files, e) => {
         if(generalData.projectId != projectId){
-            alert("Primero debes terminar de editar el primer proyecto")
-            return
+            return toast.error("Primero debes terminar de editar el primer proyecto")
         }
         try {
             const { idf26, idf33 } = await readFiles(files, e);
@@ -164,8 +164,8 @@ export default function ProjectProgress({ projectId,status }) {
         fetchData(`${apiUrl}/users/projects/${projectId}`, setProjectData);
         fetchData(`${apiUrl}/researchers/projects/${projectId}/documents`,setFiles);
     }, [projectId]);
+    
     useEffect(()=>{
-        console.log("Hola")
         status === "Pendiente de correcciones" ? setIsEnabledButton(true) : setIsEnabledButton(false)
         const result = async () =>{
             const resultArray = await hasFormsInRange(20, 33);
@@ -173,6 +173,7 @@ export default function ProjectProgress({ projectId,status }) {
         }
         result()
     },[])
+    
     useLoadFormData(generalData.idF,setGeneralData);
     
     const checkForms = async () => {
@@ -180,14 +181,14 @@ export default function ProjectProgress({ projectId,status }) {
         console.log("Formularios encontrados:", forms);
         if(forms){
             if(generalData.projectId != projectId){
-                alert("Primero debes terminar de editar el primer proyecto")
+                 return toast.error("Primero debes terminar de editar el primer proyecto")
             }
             else{
                 navigate("/Editar-proyecto")
             }
         }
         else{
-            alert("No hay datos para editar")
+            toast.error("No hay datos para editar")
         }
     };
 
@@ -231,7 +232,9 @@ export default function ProjectProgress({ projectId,status }) {
             </div>
             {isEnabledButton && (
                 <div className="footer-comments">
+                    {isAvailableToModify &&(
                     <button onClick={checkForms} className="info-button" disabled={!isEnabledButton}>Continuar con correcciones</button>
+                    )}
                     {!isAvailableToModify &&(
                     <button onClick={(e)=>{navigateToForms(files,e)}} className="info-button"  disabled={!isEnabledButton}>Realizar correcciones</button>
                     )}

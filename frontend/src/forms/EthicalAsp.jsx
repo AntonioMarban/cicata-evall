@@ -3,7 +3,7 @@ import DragDrop from "../components/DragDrop";
 import { useEffect, useState } from "react";
 import useSubmitFormBack from "../hooks/useSubmitFormBack";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
-import EthicalAspects from "../components/ViewForm/EthicalAspects";
+import { toast } from 'sonner'
 
 const  EthicalAsp = ({option,setOption}) => {
     
@@ -48,8 +48,8 @@ const  EthicalAsp = ({option,setOption}) => {
             }
           }
         });
-        if ((ethicalAsp.workWithHumans || ethicalAsp.workWithAnimals) && filesSend.length<1){
-            return alert("Es necesario subir archivos")
+        if ((ethicalAsp.workWithHumans) && filesSend.length<1){
+            return toast.error('Error, se deben agregar archivos')
           }
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
@@ -156,7 +156,7 @@ const  EthicalAsp = ({option,setOption}) => {
                     {(ethicalAsp.workWithAnimals || ethicalAsp.workWithHumans) ?
                     <>
                         <p className="text-2xl">Subir archivos</p>
-                        <p className="!mb-4">En caso de trabajar con humanos y/o animales o muestras de humanos y/o animales, (adjuntar el consentimiento informado y el aviso de privacidad)</p>
+                        <p className="!mb-4">Si van a trabajar con muestras humanas deben adjuntar el consentimiento y el aviso de privacidad</p>
                         <DragDrop 
                             setFilesSend={setFilesSend} 
                             filesSend={filesSend} 

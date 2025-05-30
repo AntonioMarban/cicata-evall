@@ -13,6 +13,7 @@ const Deliverables = ({Deliverables}) => {
     const categories2 = ["Medio", "Superior", "Posgrado"];
     return (
     <>
+      {(Deliverables.deliverables1 && Deliverables.extras1) && (
         <table className="table-form-show">
             <thead className='table-form-show-head'>
                 <tr>
@@ -45,18 +46,30 @@ const Deliverables = ({Deliverables}) => {
                 ))}
             </tbody>
         </table>
-
-        <table className="table-form-show">
-            <thead className='table-form-show-head'>
-                <tr>
-                    <td></td>
-                    {categories.map((category) => (
-                        <td key={category}>{category}</td>
-                    ))}
-                </tr>
-            </thead>
-            <tbody className='table-form-show-body'>
-                {Deliverables.deliverables2.map((deliverable) => (
+        )}
+        
+        {(Deliverables.deliverables2 && Deliverables.extras2) && (
+          <table className="table-form-show">
+              <thead className='table-form-show-head'>
+                  <tr>
+                      <td></td>
+                      {categories.map((category) => (
+                          <td key={category}>{category}</td>
+                      ))}
+                  </tr>
+              </thead>
+              <tbody className='table-form-show-body'>
+                  {Deliverables.deliverables2.map((deliverable) => (
+                    <tr key={deliverable.deliveryId}>
+                        <td data-label="Entregable">{deliverable.name}</td>
+                        {columns2.map((col) => (
+                          <td key={`${deliverable.deliveryId}-${col}`}>
+                            {deliverable.values[col] ?? ''}
+                          </td>
+                        ))}
+                    </tr>
+                  ))}
+                  {Deliverables.extras2.map((deliverable) => (
                   <tr key={deliverable.deliveryId}>
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns2.map((col) => (
@@ -65,32 +78,33 @@ const Deliverables = ({Deliverables}) => {
                         </td>
                       ))}
                   </tr>
-                ))}
-                {Deliverables.extras2.map((deliverable) => (
-                <tr key={deliverable.deliveryId}>
-                    <td data-label="Entregable">{deliverable.name}</td>
-                    {columns2.map((col) => (
-                      <td key={`${deliverable.deliveryId}-${col}`}>
-                        {deliverable.values[col] ?? ''}
-                      </td>
-                    ))}
-                </tr>
-                ))}
-            </tbody>
-        </table>
+                  ))}
+              </tbody>
+          </table>
+        )}
 
-
-        <table className="table-form-show">
-            <thead className='table-form-show-head'>
-                <tr>
-                    <td></td>
-                    {categories3.map((category) => (
-                        <td key={category}>{category}</td>
-                    ))}
-                </tr>
-            </thead>
-            <tbody className='table-form-show-body'>
-                {Deliverables.deliverables3.map((deliverable) => (
+        {(Deliverables.deliverables3 && Deliverables.extras3) && (
+          <table className="table-form-show">
+              <thead className='table-form-show-head'>
+                  <tr>
+                      <td></td>
+                      {categories3.map((category) => (
+                          <td key={category}>{category}</td>
+                      ))}
+                  </tr>
+              </thead>
+              <tbody className='table-form-show-body'>
+                  {Deliverables.deliverables3.map((deliverable) => (
+                    <tr key={deliverable.deliveryId}>
+                        <td data-label="Entregable">{deliverable.name}</td>
+                        {columns3.map((col) => (
+                          <td key={`${deliverable.deliveryId}-${col}`}>
+                            {deliverable.values[col] ?? ''}
+                          </td>
+                        ))}
+                    </tr>
+                  ))}
+                  {Deliverables.extras3.map((deliverable) => (
                   <tr key={deliverable.deliveryId}>
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns3.map((col) => (
@@ -99,19 +113,10 @@ const Deliverables = ({Deliverables}) => {
                         </td>
                       ))}
                   </tr>
-                ))}
-                {Deliverables.extras3.map((deliverable) => (
-                <tr key={deliverable.deliveryId}>
-                    <td data-label="Entregable">{deliverable.name}</td>
-                    {columns3.map((col) => (
-                      <td key={`${deliverable.deliveryId}-${col}`}>
-                        {deliverable.values[col] ?? ''}
-                      </td>
-                    ))}
-                </tr>
-                ))}
-            </tbody>
-        </table>
+                  ))}
+              </tbody>
+          </table>
+        )}
     </>
   );
 };

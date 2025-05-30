@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, onBlur, error) => {
+const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, onBlur, error, autoComplete) => {
     let subtitle = sublabel || null;
 
     return (
@@ -19,6 +19,7 @@ const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, 
                 value={value || ""}
                 onChange={onChange}
                 onBlur={onBlur}
+                autoComplete={autoComplete || "off"}	
             />
             {error && <span className="text-red-500 text-sm">{error}</span>}
         </div>
@@ -392,11 +393,11 @@ const ManageIndividualUserForm = () => {
                             {userTextInput("Contraseña", "password", "password", "Contraseña del usuario", null, password,
                                 (e) => handleFieldChange("password", e.target.value, setPassword),
                                 () => setErrors(prev => ({ ...prev, password: validateField("password", password) })),
-                                errors.password)}
+                                errors.password, "new-password")}
                             {userTextInput("Confirmar contraseña", "confirmPassword", "password", "Confirmar contraseña del usuario", null, confirmPassword,
                                 (e) => handleFieldChange("confirmPassword", e.target.value, setConfirmPassword),
                                 () => setErrors(prev => ({ ...prev, confirmPassword: validateField("confirmPassword", confirmPassword) })),
-                                errors.confirmPassword)}
+                                errors.confirmPassword, "new-password")}
                         </div>
                     </div>
 

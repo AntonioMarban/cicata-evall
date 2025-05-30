@@ -4,7 +4,7 @@ const Activities = ({scheduleActivities}) => {
     return (
     <>
         <table className='BackgroundTable'>
-                <caption className="table-form-caption">Relación de Proyectos Asociados al proyecto principal</caption>
+                <caption className="table-form-caption">Relación de Proyectos asociados al proyecto principal</caption>
                 <thead className='table-form-header'>
                     <tr>
                         <th>No.</th>

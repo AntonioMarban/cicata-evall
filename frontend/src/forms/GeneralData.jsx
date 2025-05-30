@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useLoadFormData from "../hooks/useLoadFormData";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
+import { toast} from 'sonner'
 
 const GeneralData = ({option,setOption}) => {
     const [alignsWithPNIorODS, setalignsWithPNIorODS] = useState(1);
@@ -21,7 +22,6 @@ const GeneralData = ({option,setOption}) => {
     const [newErrors,setNewErrors] = useState({
             title: "*",
             startDate:"*",
-            endDate:"*",
             typeResearch, 
             otherTypeResearch: "*", 
             topic: "*",
@@ -42,9 +42,10 @@ const GeneralData = ({option,setOption}) => {
     };
 
     const validateDates = () => {
-        if (generalData.startDate > generalData.endDate) {
-          alert("No puede ser la fecha de inicio después de la fecha de fin");
-          return false; 
+        if (generalData.endDate && generalData.startDate > generalData.endDate) {
+        toast.error("No puede ser la fecha de inicio después de la fecha de fin");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return false;
         }
         return true; 
       };
@@ -60,6 +61,7 @@ const GeneralData = ({option,setOption}) => {
             newErrorsF[key] = `* El campo  es requerido`;
           }
         });
+        delete newErrorsF['endDate']
         if(generalData.typeResearch < 4){
             delete newErrorsF['otherTypeResearch'];
         }
@@ -207,7 +209,7 @@ const GeneralData = ({option,setOption}) => {
                 </div>
                 
                 <div className="!mt-5 flex-1">
-                    <p className="text-lg mt-3">{generalData.alignsWithPNIorODS === 1 ? 'En caso afirmativo ¿Con cuál?' :  'No se considera ¿Por qué?'} {newErrors.alignmentPNIorODS && <span className="text-red-600">{newErrors.alignmentPNIorODS}</span>}</p>
+                    <p className="text-lg mt-3">{generalData.alignsWithPNIorODS === 1 ? '¿Con cuál o cuáles?' :  'No se considera ¿Por qué?'} {newErrors.alignmentPNIorODS && <span className="text-red-600">{newErrors.alignmentPNIorODS}</span>}</p>
                     <input  
                             className="!p-2 w-[47%] max-[800px]:w-full !p-2 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] !mt-3 hover:border-[#5CB7E6] transition-colors duration-300" 
                             name="alignmentPNIorODS"  
@@ -230,7 +232,7 @@ const GeneralData = ({option,setOption}) => {
                     <p>Caracteres {generalData.summary.length} / 1500</p>
                 </div>
             </div>
-            <div className="w-[100%] flex justify-end items-center">
+            <div className="!mt-5 w-[100%] flex justify-end items-center">
                 <button 
                 className="!p-2 !mt-5 !mb-5 text-xl rounded-lg border-none bg-[#5CB7E6] text-white font-normal cursor-pointer shadow-md hover:bg-[#4CA6D5] transition-colors duration-300"
                 onClick={handleSubmitWithValidation}>Siguiente</button>

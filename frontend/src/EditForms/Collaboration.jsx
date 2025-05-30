@@ -15,7 +15,9 @@ const  Collaboration = ({option,setOption}) => {
         hasCollaboration,
         collaborationJustification:"", 
         collaborativeInstitutions: [] });
-
+    const [newErrors,setNewErrors] = useState({
+            collaborationJustification:"*"
+    });
     const [collaborationToEdit, setCollaborationToEdit] = useState(null);
 
 
@@ -69,6 +71,19 @@ const  Collaboration = ({option,setOption}) => {
         }
     },[collaborations.hasCollaboration])
 
+
+    const handleSubmitWithValidation = (event) => {
+        event.preventDefault();
+        const newErrorsF = {}
+        if(collaborations.hasCollaboration===0 && (collaborations.collaborationJustification === 'string' || collaborations.collaborationJustification.trim() === '')){
+            newErrorsF['collaborationJustification'] = "* El campo es requerido"
+        }
+        console.log(newErrorsF)
+        setNewErrors(newErrorsF)
+        if(!Object.keys(newErrorsF).length>0){
+            handleOnSubmitForm(event); 
+        }
+    };
     return (
         <div>
             <div className="flex flex-col justify-between">
@@ -99,7 +114,7 @@ const  Collaboration = ({option,setOption}) => {
                             <p className="flex-1">Institución</p>
                             <p className="flex-1">Convenio colaboración</p>
                             <p className="flex-1">Internacional / Nacional</p>
-                            <p className="flex-1 text-center">Número de covenio</p>
+                            <p className="flex-1 text-center">Número de convenio</p>
                             <p className="flex-1"></p>
                         </div>
                     </div>
@@ -118,13 +133,20 @@ const  Collaboration = ({option,setOption}) => {
                 </>
                 ) : (
                     <div className="flex-1 !mb-5">
-                    <p className="!mb-5 text-[17px] text-gray-600">(Declarar porque no existe colaboración con otras instituciones)</p>
-                        <textarea  
-                        className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
-                        name="collaborationJustification" 
-                        placeholder="Escribe porque no hay colaboración con otras instituciones..."
-                        value={collaborations.collaborationJustification}
-                        onChange={handleChange}></textarea>
+                    <p className="!mb-5 text-[17px] text-gray-600">(Declarar porque no existe colaboración con otras instituciones)
+                        {newErrors.collaborationJustification && (
+                            <>
+                                {newErrors.collaborationJustification !== '*' && <br />}
+                                <span className="text-red-600"> {newErrors.collaborationJustification}</span>
+                            </>
+                        )} 
+                    </p>
+                    <textarea  
+                    className="w-full h-full !p-2 rounded-lg border-2 border-gray-300 text-[19px] flex justify-start items-start text-gray-600 mt-3 min-w-[250px]"
+                    name="collaborationJustification" 
+                    placeholder="Escribe porque no hay colaboración con otras instituciones..."
+                    value={collaborations.collaborationJustification}
+                    onChange={handleChange}></textarea>
                     </div>
                 )}
             </div>
@@ -134,7 +156,7 @@ const  Collaboration = ({option,setOption}) => {
                  hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
                 <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
                 bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
-                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleOnSubmitForm}>Siguiente</button>
+                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>
     )

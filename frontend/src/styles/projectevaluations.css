@@ -56,25 +56,6 @@
   font-weight: bold;
 }
 
-/* Action buttons */
-.evaluations-buttons {
-  margin-top: 3rem;
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  width: 100%;
-}
-
-.evaluations-buttons button {
-  background-color: #5cb7e6;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
 .evaluations-buttons button:hover {
   background-color: #47a2d3;
 }

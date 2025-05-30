@@ -4,6 +4,7 @@ import "../styles/deliverables.css";
 import TRASH from "../assets/trash.svg"
 import useSubmitFormBack from "../hooks/useSubmitFormBack";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
+import { toast } from "sonner";
 
 const DeliverablesView = ({ option, setOption }) => {
     
@@ -44,22 +45,23 @@ const DeliverablesView = ({ option, setOption }) => {
     const categories = ["Nacional", "Internacional"];
 
     const handleDelete = (arrayKey, index) => {
-    setDeliverables(prev => ({
-        ...prev,
-        [arrayKey]: (prev[arrayKey] || []).filter((_, i) => i !== index)
-    }));
+        setDeliverables(prev => ({
+            ...prev,
+            [arrayKey]: (prev[arrayKey] || []).filter((_, i) => i !== index)
+        }));
     };
+    console.log(deliverables.extras1)
     const createNewItem = (extraKey) => {
-    const baseItems = deliverables[extraKey] || [];
-    const newId = baseItems.length > 0 
+        const baseItems = deliverables[extraKey] || [];
+        const newId = baseItems.length > 0 
         ? Math.max(...baseItems.map(item => item.id)) + 1 
         : 1;
-    
-    return {
-        id: newId,
-        name: "",
-        values: { }
-    };
+
+        return {
+            id: newId,
+            name: "",
+            values: {}
+        };
     };
     const handleOnClickAdd = (extraKey) => {
         setDeliverables(prev => ({
@@ -85,7 +87,6 @@ const DeliverablesView = ({ option, setOption }) => {
         const { value, dataset } = e.target;
         const id = Number(dataset.id);
         const index = Number(dataset.index);
-
         setDeliverables(prev => ({
             ...prev,
             [deliverableKey]: prev[deliverableKey].map(item => {
@@ -103,8 +104,45 @@ const DeliverablesView = ({ option, setOption }) => {
         }));
     };
     
+    const validateDeliverables = (deliverablesExtras) => {
+        for (const [index, values] of Object.entries(deliverablesExtras)) {
+            if (!values.name) {
+                toast.error("Faltan entregables extras por llenar");
+                return false;
+            }
+            
+            if (Object.keys(values.values).length === 0) {
+                toast.error("No se puede enviar un entregable extra sin valores");
+                return false;
+            }
+            
+            if (Object.values(values.values).some(val => val === 0 || val === "")) {
+                toast.error("No se puede enviar un entregable extra con valor 0 o vacío");
+                return false;
+            }
+        }
+        return true;
+    };
+    
     const handleOnSubmitFormBack = useSubmitFormBack(deliverables, setOption);
+
     const handleOnSubmitFormNext = useSubmitFormNext(deliverables, setOption);
+
+    const handleOnClicNext = (event) => {
+        event.preventDefault()
+        if (!validateDeliverables(deliverables.extras1)) {
+            return; 
+        }
+        
+        if (!validateDeliverables(deliverables.extras2)) { 
+            return;
+        }
+        if (!validateDeliverables(deliverables.extras3)) { 
+            return;
+        }
+        handleOnSubmitFormNext(event);
+    };
+    
     useLoadFormData(deliverables.idF, setDeliverables);
     
     return (
@@ -151,7 +189,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         placeholder="Nombre del entregable"
                         onChange={(e) => handleInputChange(e, 'extras1', 'name')}
                         value={deliverable.name}
-                        data-id={index+1}
+                        data-id={deliverable.id}
                     ></input>
                     <button className="cursor-pointer" onClick={()=>{handleDelete('extras1',index)}}><img src={TRASH}></img></button>
                 </td>
@@ -217,7 +255,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         onChange={(e) => handleInputChange(e, 'extras2', 'name')}
                         name="name" 
                         value={deliverable.name}
-                        data-id={index+1}
+                        data-id={deliverable.id}
                     ></input>
                     <button className="cursor-pointer" onClick={()=>{handleDelete('extras2',index)}}><img src={TRASH}></img></button>
                 </td>
@@ -282,7 +320,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         onChange={(e) => handleInputChange(e, 'extras3', 'name')}
                         name="name" 
                         value={deliverable.name}
-                        data-id={index+1}
+                        data-id={deliverable.id}
                     ></input>
                      <button className="cursor-pointer" onClick={()=>{handleDelete('extras3',index)}}><img src={TRASH}></img></button>
                 </td>
@@ -324,7 +362,7 @@ const DeliverablesView = ({ option, setOption }) => {
           className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
                 bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
                  hover:bg-[#4CA6D5] transition-colors duration-300"
-          onClick={handleOnSubmitFormNext}
+          onClick={handleOnClicNext}
         >
           Siguiente
         </button>

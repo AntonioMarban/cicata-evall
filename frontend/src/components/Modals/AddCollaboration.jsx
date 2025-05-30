@@ -20,6 +20,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
         agreementNumber: "*",
         partOfIPN: 1
     };
+    const collaborationTypes = ["General","Específico","No se cuenta con él"]
     const [newErrors,setNewErrors] =  useState(initialCollaborationErrors);
     const [collaboration, setCollaboration] = useState(initialCollaboration);
 
@@ -35,6 +36,16 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
             setIsOpen(true);
         }
     }, [collaborationToEdit]);
+    useEffect(()=>{
+        if(collaboration.collaborationAgreement === "No se cuenta con él"){
+            setCollaboration(prev=>({
+                ...prev,
+                agreementNumber: "",
+                agreementType: "",
+            })
+            )
+        }
+    },[collaboration.collaborationAgreement])
 
     const handleChangeButton = (key, value) => {
         setCollaboration((prevState) => ({
@@ -135,29 +146,35 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                                         </>
                                     )}
                                 </p>
-                                <input 
-                                value={collaboration.collaborationAgreement}
-                                onChange={handleInputChange}
-                                name="collaborationAgreement" className="form-colab-input" placeholder="Escribe el convenio de colaboración..."></input>
-                            </div>
-                            <div className="form-rows">
-                                <div>
-                                    <p>¿El convenio es nacional o internacional?</p>
-                                    <p className="form-subtext">(Si aplica)</p>
-                                    <input 
-                                    value={collaboration.agreementType}
-                                    onChange={handleInputChange}
-                                    name="agreementType" className="form-colab-input" placeholder="Escribe el tipo de convenio..."></input>
-                                </div>
-                                <div>
-                                    <p>¿Número de convenio?</p>
-                                    <p className="form-subtext">(Si aplica)</p>
-                                    <input 
-                                        value={collaboration.agreementNumber}
+                                <select name="collaborationAgreement" 
+                                        value={collaboration.collaborationAgreement}
                                         onChange={handleInputChange}
-                                    name="agreementNumber" className="form-colab-input" placeholder="Escribe el número de convenio..."></input>
-                                </div>
+                                        className="form-colab-input">
+                                        <option value="">Selecciona una opción</option>
+                                        {Array.isArray(collaborationTypes) && collaborationTypes.map((name, index) => (
+                                            <option key={index} value={name}>{name}</option>
+                                        ))}
+                                </select>
                             </div>
+                            {collaboration.collaborationAgreement != "No se cuenta con él" &&(
+                                <div className="form-rows">
+                                    <div>
+                                        <p>¿El convenio es nacional o internacional?</p>
+                                        <p className="form-subtext">(Si aplica)</p>
+                                        <input 
+                                        value={collaboration.agreementType}
+                                        onChange={handleInputChange}
+                                        name="agreementType" className="form-colab-input" placeholder="Escribe el tipo de convenio..."></input>
+                                    </div>
+                                    <div>
+                                        <p>¿Número de convenio?<br/><br/><span className="form-subtext">(Si aplica)</span></p>
+                                        <input 
+                                            value={collaboration.agreementNumber}
+                                            onChange={handleInputChange}
+                                        name="agreementNumber" className="form-colab-input" placeholder="Escribe el número de convenio..."></input>
+                                    </div>
+                                </div>
+                            )}
                             <div className="dialog-actions">
                                 <button className="button-confirm">
                                     {collaborationToEdit ? "Guardar Cambios" : "Guardar colaboración"}

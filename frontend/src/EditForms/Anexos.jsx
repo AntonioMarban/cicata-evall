@@ -4,6 +4,7 @@ import useLoadFormData from "../hooks/useLoadFormData";
 import DragDrop from "../components/DragDrop";
 import { useNavigate  } from 'react-router-dom'
 import useSubmitFormBack from "../hooks/useSubmitFormBack";
+import { toast } from "sonner";
 
 const  Anexos = ({option,setOption}) => {
     
@@ -46,7 +47,7 @@ const  Anexos = ({option,setOption}) => {
             await updateForm(anexos);
         } catch (error) {
             //console.error("Error saving form to IndexedDB:", error);
-            alert("Error al guardar el formulario. Por favor, inténtalo de nuevo.");
+            toast.error("Error al guardar el formulario. Por favor, inténtalo de nuevo.");
             return; 
         }
 
@@ -157,7 +158,7 @@ const  Anexos = ({option,setOption}) => {
                         indexedDB.deleteDatabase('Cicata');
                     } catch (uploadError) {
                         console.error("Error uploading file:", uploadError);
-                        alert("El proyecto se creó, pero hubo un error al subir el archivo.");
+                        toast.error("El proyecto se creó, pero hubo un error al subir el archivo.");
                     }
                 } else {
                     navigate(`/Proyecto?projectId=${data.projectId}`);
@@ -168,7 +169,7 @@ const  Anexos = ({option,setOption}) => {
             }
         } catch (error) {
             console.error("Error submitting form:", error);
-            alert("Error al enviar el formulario. Por favor, inténtalo de nuevo.");
+            toast.error("Error al enviar el formulario. Por favor, inténtalo de nuevo.");
         }
     };
     const handleChange = (e) => {

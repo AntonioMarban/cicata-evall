@@ -19,7 +19,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         email: "",
         phone: "",
         researchNetworkName: "",
-        researchNetwork: 1
+        researchNetwork: 0
     };
     const ArrayNewErrors = {
         fName: "*",
@@ -28,17 +28,18 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         institution: "*",
         positionWork: "*",
         academicDegree: "*",
-        tutorName: "*",
         levelName: "*",
         levelNum: "*",
         email: "*",
         phone: "*",
         researchNetworkName: "*",
-        researchNetwork: 1
+        researchNetwork: 0
     } 
     const [newErrors,setNewErrors] =  useState(ArrayNewErrors);
     const [participant, setParticipant] = useState(initialParticipant);
-    
+    const levels = ["EDI","COFAA","SNI"]
+    const [levelsToShow,setLevelToShow]= useState([])
+    const memberType = ["Investigador","Investigador post doctoral","Estudiante"]
     const handleChangeButton = (key, value) => {
         setParticipant((prevState) => ({
             ...prevState,
@@ -70,8 +71,6 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         initialData: participantToEdit,
         isEditMode: !!participantToEdit
     });
-    const levels = ["EDI","COFAA","SNI"]
-    const [levelsToShow,setLevelToShow]= useState([])
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setParticipant(prev => ({
@@ -84,13 +83,20 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         e.preventDefault();
         const newErrorsF = {}
         Object.entries(participant).forEach(([key, value]) => {
-            console.log(key,value)
-            if(key === "email"){
-                const isValid = !value.includes("@") || !value.includes(".com");
-                if(isValid){
-                    newErrorsF[key] = `* El email no es válido`;
+            if (key === "email") {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const isValid = emailRegex.test(value);
+                if (!isValid) {
+                    newErrorsF[key] = "* El email no es válido";
                 }
-                console.log(value)
+            }
+
+            if (key === "phone") {
+                const phoneRegex = /^\d{10}$/;
+                const isValid = phoneRegex.test(value);
+                if (!isValid) {
+                    newErrorsF[key] = "* El número es inválido";
+                }
             }
           if (!value || (typeof value === 'string' && value.trim() === '')) {
             newErrorsF[key] = `* El campo  es requerido`;
@@ -100,7 +106,15 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
           }
         });
         if (participant.researchNetwork === 0 ){
-                delete newErrorsF["researchNetworkName"]
+            delete newErrorsF["researchNetworkName"]
+        }
+        console.log(participant.positionWork)
+        if (participant.positionWork == "Estudiante"){
+            delete newErrorsF["levelNum"]
+            delete newErrorsF["levelName"]
+        }
+        if (participant.positionWork != "Estudiante"){
+            delete newErrorsF["tutorName"]
         }
         delete newErrorsF["index"];
         setNewErrors(newErrorsF)
@@ -129,7 +143,25 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             )
         }
     },[participant.researchNetwork]);
+    useEffect(()=>{
+        if(participant.positionWork==="Estudiante"){
+            setParticipant(prev=>({
+                ...prev,
+                levelName: "",
+                levelNum: "",
+                researchNetwork: 0
 
+            })
+            )
+        }
+        if(participant.positionWork !="Estudiante"){
+            setParticipant(prev=>({
+                ...prev,
+                tutorName: "",
+            })
+            )
+        }
+    },[participant.positionWork]);
     return (
         <>
 
@@ -214,58 +246,37 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                             </>
                                         )}
                                     </p>
-                                    <input
-                                        name="positionWork"
+                                    <select name="positionWork" 
                                         value={participant.positionWork}
-                                        onChange={handleInputChange} 
-                                        placeholder="Escribe el puesto que desempeña..."
-                                        className="participant-form-pieza-input"></input>
+                                        onChange={handleInputChange}
+                                        className="participant-form-pieza-input">
+                                        <option value="" disabled>Selecciona una opción</option>
+                                        {Array.isArray(memberType) && memberType.map((name, index) => (
+                                            <option key={index} value={name}>{name}</option>
+                                        ))}
+                                    </select>
                                 </div>
-                                <div>
-                                    <p>Nombre del tutor
-                                        {newErrors.tutorName && (
-                                            <>
-                                                {newErrors.tutorName !== '*' && <br />}
-                                                <span className="text-red-600"> {newErrors.tutorName}</span>
-                                            </>
-                                        )}
-                                    </p>
-                                    <input
-                                        name="tutorName"
-                                        value={participant.tutorName}
-                                        onChange={handleInputChange} 
-                                        placeholder="Escribe el nombre del tutor..."
-                                        className="participant-form-pieza-input"></input>
-                                </div>
+                                {participant.positionWork === "Estudiante" &&(
+                                    <div>
+                                        <p>Nombre del tutor
+                                            {newErrors.tutorName && (
+                                                <>
+                                                    {newErrors.tutorName !== '*' && <br />}
+                                                    <span className="text-red-600"> {newErrors.tutorName}</span>
+                                                </>
+                                            )}
+                                        </p>
+                                        <input
+                                            name="tutorName"
+                                            value={participant.tutorName}
+                                            onChange={handleInputChange} 
+                                            placeholder="Escribe el nombre del tutor..."
+                                            className="participant-form-pieza-input"></input>
+                                    </div>
+                                )}
                             </div>
-                            <div className="participant-complete-row">
-                                <p>Pertence a alguna red de investigación</p>
+                            <div className="participant-form-rows">
                                 <div>
-                                    <button type="button" 
-                                        className={participant.researchNetwork === 1  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('researchNetwork',1)}>Sí</button>
-                                    <button type="button"
-                                        className={participant.researchNetwork === 0  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('researchNetwork',0)}>No</button>
-                                </div>
-                            </div>
-                            {participant.researchNetwork === 1 &&
-                                <div className="participant-complete-row-2">
-                                    <p>¿Cuál?
-                                       {newErrors.researchNetworkName && (
-                                            <>
-                                                {newErrors.researchNetworkName !== '*' && <br />}
-                                                <span className="text-red-600"> {newErrors.researchNetworkName}</span>
-                                            </>
-                                        )}
-                                    </p>
-                                    <input  
-                                        name="researchNetworkName"
-                                        value={participant.researchNetworkName}
-                                        onChange={handleInputChange} 
-                                        placeholder="Escribe el tipo de investigación..."></input>
-                                </div>
-                            }
-                            
-                            <div className="participant-complete-row-2">
                                 <p>Grado académico
                                     {newErrors.academicDegree && (
                                             <>
@@ -279,11 +290,15 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                     value={participant.academicDegree}
                                     onChange={handleInputChange} 
                                     placeholder="Escribe el grado académico..."
+                                    className="participant-form-pieza-input"
                                     ></input>
+                                </div>
                             </div>
+                            {participant.positionWork != "Estudiante" && (
+                            <>
                             <div className="participant-form-rows">
                                 <div className="participant-button-degree">
-                                    <p >Tipo investigador
+                                    <p >Nivel del investigador
                                         {newErrors.levelName && (
                                             <>
                                                 {newErrors.levelName !== '*' && <br />}
@@ -319,7 +334,37 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                     </select>
                                 </div>
                             </div>
-                            <p>Datos de contacto</p>
+
+                            <div className="participant-complete-row">
+                                <p>Pertence a alguna red de investigación</p>
+                                <div>
+                                    <button type="button" 
+                                        className={participant.researchNetwork === 1  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('researchNetwork',1)}>Si</button>
+                                    <button type="button"
+                                        className={participant.researchNetwork === 0  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('researchNetwork',0)}>No</button>
+                                </div>
+                            </div>
+                            {participant.researchNetwork === 1 && (
+                                <div className="participant-complete-row-2">
+                                    <p>¿Cuál?
+                                       {newErrors.researchNetworkName && (
+                                            <>
+                                                {newErrors.researchNetworkName !== '*' && <br />}
+                                                <span className="text-red-600"> {newErrors.researchNetworkName}</span>
+                                            </>
+                                        )}
+                                    </p>
+                                    <input  
+                                        name="researchNetworkName"
+                                        value={participant.researchNetworkName}
+                                        onChange={handleInputChange} 
+                                        placeholder="Escribe el tipo de investigación..."></input>
+                                </div>
+                            )}
+                            </>
+                            )}
+                            
+                            <p className="subTitle-Row">Datos de contacto</p>
                             <div className="participant-form-rows">
                                     <div>
                                         <p>Email 

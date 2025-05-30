@@ -43,11 +43,11 @@ export default function ProjectHeader({
           if (response.ok) {
             const data = await response.json();
             
-            const isUserInEvaluatorList = data.some(
-              (evaluator) => String(evaluator.userId) === String(userId)
+            const isUserPendingEvaluation = data.some(
+              (evaluator) =>
+                String(evaluator.userId) === String(userId) && evaluator.result === null
             );
-
-            setIsEvaluator(isUserInEvaluatorList);
+            setIsEvaluator(isUserPendingEvaluation);
           } else {
             console.error("Error fetching evaluations:", response.statusText);
             setIsEvaluator(false);
@@ -73,7 +73,7 @@ export default function ProjectHeader({
 
   const handleEvaluateClick = () => {
     if (isEvaluator) {
-      navigate(`/EvaluarProyecto`);
+      navigate('/EvaluarProyecto', { state: { projectId: projectId } });
     } else {
       alert("No tienes permisos para evaluar este proyecto.");
     }

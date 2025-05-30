@@ -1042,6 +1042,7 @@ DELIMITER //
                 p.title,
                 CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
                 p.startDate,
+                p.endDate,
                 p.folio,
                 p.status
             FROM
@@ -1633,7 +1634,7 @@ BEGIN
   INSERT INTO users (
     fName,
     lastName1,
-    lastName2,
+    lastName2, 
     email,
     phone,
     password,
@@ -1664,6 +1665,20 @@ BEGIN
 END //
 DELIMITER ;
 
+DELIMITER //
+CREATE TRIGGER verifyUserEmail
+BEFORE INSERT ON users
+FOR EACH ROW
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM users
+        WHERE email = NEW.email AND active = true
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Email already exists for an active user';
+    END IF;
+END //
+DELIMITER ;
 -- Función para obtener todos los datos de un usuario
 -- @param userId: Id del usuario
 -- @returns: Todos los datos de ese usuario

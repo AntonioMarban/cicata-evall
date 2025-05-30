@@ -69,10 +69,10 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
             <Dialog open={isOpen} onClose={() => {}} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p className="dialog-title">{methodologiesToEdit ? "Editar meta" : "Agregar meta"}</p>
+                        <p className="dialog-title">{methodologiesToEdit ? "Editar metodología" : "Agregar metodología"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
-                                <p>Nombre de la metodología
+                                <p>Metodología
                                     {newErrors.methodology && (
                                         <>
                                             {newErrors.methodology !== '*' && <br />}
@@ -82,7 +82,7 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
                                 </p>
                                 <textarea name="methodology" 
                                        className="form-pieza-input" 
-                                       placeholder="Escribe el nombre de la metodología..."
+                                       placeholder="Escribe la metodología..."
                                        value={methodologies.methodology}
                                        onChange={handleInputChange}></textarea>
                             </div>

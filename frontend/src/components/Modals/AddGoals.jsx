@@ -73,7 +73,7 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
                         <p className="dialog-title">{goalsToEdit ? "Editar meta" : "Agregar meta"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
-                                <p>Nombre de la meta
+                                <p>Meta
                                     {newErrors.goal && (
                                         <>
                                             {newErrors.goal !== '*' && <br />}
@@ -83,7 +83,7 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
                                 </p>
                                 <textarea name="goal" 
                                        className="form-pieza-input" 
-                                       placeholder="Escribe el nombre de la meta..."
+                                       placeholder="Escribe la meta..."
                                        value={goals.goal}
                                        onChange={handleInputChange}></textarea>
                             </div>
