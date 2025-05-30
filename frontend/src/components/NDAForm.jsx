@@ -16,27 +16,31 @@ function NDAForm() {
   const searchParams = new URLSearchParams(location.search);
   const projectId = searchParams.get("projectId");
 
+  function convertMarkdownToHTML(text) {
+    return text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+  }
+
   useEffect(() => {
     const userId = localStorage.getItem("userId");
+    const userFullName = localStorage.getITem("userFullName");
     const userType = Number(localStorage.getItem("userType"));
 
-    
     if (!userId || userId === "undefined" || userId === "null") {
       console.error("userId no válido. Redirigiendo a /Inicio.");
       navigate("/Inicio");
       return;
     }
-    
+
     if (!projectId) {
       console.error("No hay projectId. Redirigiendo a /Inicio.");
       navigate("/Inicio");
       return;
     }
-    
+
     if (userType === 1 || userType === 2) {
       navigate(`/Proyecto?projectId=${projectId}`);
     }
-    
+
     const fetchAgreement = async () => {
       try {
         const response = await fetch(
@@ -49,7 +53,7 @@ function NDAForm() {
         if (data.length > 0) {
           const agreement = data[0];
           setAgreementData(agreement);
-          
+
           if (agreement.agreed === 1) {
             navigate(`/Proyecto?projectId=${projectId}`);
           }
@@ -89,6 +93,7 @@ En mi calidad de Evaluador del proyecto titulado ${agreementData.title}, dirigid
 En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consentimiento para que se apliquen las medidas legales y disciplinarias pertinentes conforme a la normativa aplicable.
 
 ATENTAMENTE,
+${userFullName}
 `
     : "Cargando acuerdo...";
 
@@ -132,7 +137,9 @@ ATENTAMENTE,
     const userId = localStorage.getItem("userId");
 
     if (!token || !userId || !projectId) {
-      setError("Información de usuario incompleta. Intenta iniciar sesión nuevamente.");
+      setError(
+        "Información de usuario incompleta. Intenta iniciar sesión nuevamente."
+      );
       return;
     }
 
@@ -174,7 +181,12 @@ ATENTAMENTE,
 
       <div className="nda-grid">
         <h2 className="nda-subtitle">Contenido</h2>
-        <p className="nda-text">{agreementText}</p>
+        <div
+          className="nda-text"
+          dangerouslySetInnerHTML={{
+            __html: convertMarkdownToHTML(agreementText),
+          }}
+        ></div>
 
         <div className="nda-input-group">
           <input

@@ -2,7 +2,7 @@ import "../styles/dashboard.css";
 import { useEffect, useState, useLocation } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardCards from "./DashboardCards";
-import NOTIFICATION from "../assets/Notification.svg"
+import NOTIFICATION from "../assets/Notification.svg";
 const { Card, CardContent } = DashboardCards;
 
 function formatFecha(fechaISO) {
@@ -19,12 +19,12 @@ function Dashboard({ projectCards }) {
   const location = useLocation();
   const [userFullName, setUserFullName] = useState("");
   const [userType, setUserType] = useState(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const nameFromStorage = localStorage.getItem("userFullName") || "Usuario";
     const typeFromStorage = parseInt(localStorage.getItem("userType"), 10) || 1;
-    console.log(typeFromStorage)
+    console.log(typeFromStorage);
     setUserFullName(nameFromStorage);
     setUserType(typeFromStorage);
   }, []);
@@ -65,18 +65,21 @@ function Dashboard({ projectCards }) {
   console.log(window.location.pathname);
   return (
     <main className="dashboard-main">
-      <div id="header" className="dashboard-header flex justify-between items-center">
+      <div
+        id="header"
+        className="dashboard-header flex justify-between items-center"
+      >
         <h1 className="dashboard-title">¡Hola, {userFullName}!</h1>
-        { (userType === 1 && window.location.pathname != '/ProyectosFinalizados') && (
-          <button
-            className="dashboard-button text-white rounded-lg cursor-pointer p-3! bg-[#5CB7E6] hover:bg-[#1591D1]"
-            onClick={() => navigate("/CrearProyecto")}
-          >
-            + Crear proyecto
-          </button>
-        )}
+        {userType === 1 &&
+          window.location.pathname != "/ProyectosFinalizados" && (
+            <button
+              className="dashboard-button text-white rounded-lg cursor-pointer p-3! bg-[#5CB7E6] hover:bg-[#1591D1]"
+              onClick={() => navigate("/CrearProyecto")}
+            >
+              + Crear proyecto
+            </button>
+          )}
       </div>
-      
 
       {projectCards.length === 0 ? (
         <p className="empty-message">{getEmptyMessage()}</p>
@@ -98,28 +101,15 @@ function Dashboard({ projectCards }) {
                 }}
               >
                 <CardContent>
-                  {
-                    userType === 1 ? (
-                      <div className={card.status === "Pendiente de correcciones" ? 'show-notification' : 'hide-notification'}>
-                        <img src={NOTIFICATION} alt="Notification" />
-                      </div>
-                    ) : userType > 2 ? (
-                      <div className={card.status === "En revisión" ? 'show-notification' : 'hide-notification'}>
-                        <img src={NOTIFICATION} alt="Notification" />
-                      </div>
-                    ) : (
-                      <div className="hide-notification">
-                        <img src={NOTIFICATION} alt="Notification" />
-                      </div>
-                    )
-                  }
                   <div>
                     <div className="card-text">{card.title}</div>
                     <div className="card-text">{card.investigador}</div>
                   </div>
                   <div>
                     <div className="card-title">Fecha Inicio</div>
-                    <div className="card-text">{formatFecha(card.startDate)}</div>
+                    <div className="card-text">
+                      {formatFecha(card.startDate)}
+                    </div>
                   </div>
                   <div>
                     <div className="card-title">Fecha Fin</div>
@@ -133,6 +123,33 @@ function Dashboard({ projectCards }) {
                     <div className="card-title">Status</div>
                     <div className="card-text">{card.status}</div>
                   </div>
+
+                  {/* Campana de notificación al final */}
+                  {userType === 1 ? (
+                    <div
+                      className={
+                        card.status === "Pendiente de correcciones"
+                          ? "show-notification"
+                          : "hide-notification"
+                      }
+                    >
+                      <img src={NOTIFICATION} alt="Notification" />
+                    </div>
+                  ) : userType > 2 ? (
+                    <div
+                      className={
+                        card.status === "En revisión"
+                          ? "show-notification"
+                          : "hide-notification"
+                      }
+                    >
+                      <img src={NOTIFICATION} alt="Notification" />
+                    </div>
+                  ) : (
+                    <div className="hide-notification">
+                      <img src={NOTIFICATION} alt="Notification" />
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
