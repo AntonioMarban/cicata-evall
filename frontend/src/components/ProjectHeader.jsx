@@ -43,11 +43,11 @@ export default function ProjectHeader({
           if (response.ok) {
             const data = await response.json();
             
-            const isUserInEvaluatorList = data.some(
-              (evaluator) => String(evaluator.userId) === String(userId)
+            const isUserPendingEvaluation = data.some(
+              (evaluator) =>
+                String(evaluator.userId) === String(userId) && evaluator.result === null
             );
-
-            setIsEvaluator(isUserInEvaluatorList);
+            setIsEvaluator(isUserPendingEvaluation);
           } else {
             console.error("Error fetching evaluations:", response.statusText);
             setIsEvaluator(false);
