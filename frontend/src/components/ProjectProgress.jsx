@@ -166,7 +166,6 @@ export default function ProjectProgress({ projectId,status }) {
     }, [projectId]);
     
     useEffect(()=>{
-        console.log("Hola")
         status === "Pendiente de correcciones" ? setIsEnabledButton(true) : setIsEnabledButton(false)
         const result = async () =>{
             const resultArray = await hasFormsInRange(20, 33);
@@ -241,10 +240,6 @@ export default function ProjectProgress({ projectId,status }) {
                     )}
                 </div>
             )}
-            <div className="footer-comments">
-                    <button onClick={checkForms} className="info-button" >Continuar con correcciones</button>
-                    <button onClick={(e)=>{navigateToForms(files,e)}} className="info-button">Realizar correcciones</button>
-                </div>
         </div>
     </main>
     );
