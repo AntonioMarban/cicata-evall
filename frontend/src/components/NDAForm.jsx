@@ -10,8 +10,14 @@ function NDAForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [agreementData, setAgreementData] = useState(null);
+  const [userFullName, setUserFullName] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    const nameFromStorage = localStorage.getItem("userFullName") || "Usuario";
+    setUserFullName(nameFromStorage);
+  }, []);
 
   const searchParams = new URLSearchParams(location.search);
   const projectId = searchParams.get("projectId");
@@ -22,7 +28,6 @@ function NDAForm() {
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
-    const userFullName = localStorage.getITem("userFullName");
     const userType = Number(localStorage.getItem("userType"));
 
     if (!userId || userId === "undefined" || userId === "null") {

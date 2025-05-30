@@ -16,7 +16,6 @@ function formatFecha(fechaISO) {
 }
 
 function Dashboard({ projectCards }) {
-  const location = useLocation();
   const [userFullName, setUserFullName] = useState("");
   const [userType, setUserType] = useState(null);
   const navigate = useNavigate();
