@@ -139,7 +139,7 @@ const  Anexos = ({option,setOption}) => {
                                 console.warn("Upload succeeded but no confirmation message:", uploadData);
                             }
                         }
-                        
+                        await new Promise(resolve => setTimeout(resolve, 1000));
                         navigate(`/VerFormulario/${data.projectId}`);
                         indexedDB.deleteDatabase('Cicata');
                     } catch (uploadError) {
@@ -147,6 +147,7 @@ const  Anexos = ({option,setOption}) => {
                         toast.error("El proyecto se creó, pero hubo un error al subir el archivo.");
                     }
                 } else {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
                     navigate(`/VerFormulario/${data.projectId}`);
                     indexedDB.deleteDatabase('Cicata');
                 }

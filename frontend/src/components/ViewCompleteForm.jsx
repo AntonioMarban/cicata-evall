@@ -83,7 +83,7 @@ const ViewCompleteForms = () => {
         fetchAll();
     }, [id, apiUrl]);
 
-        console.log(completeForm)
+    console.log(files)
     if (loading) {
         return <p>Cargando...</p>;
     }
