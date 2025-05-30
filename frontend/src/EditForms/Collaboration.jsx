@@ -78,7 +78,6 @@ const  Collaboration = ({option,setOption}) => {
         if(collaborations.hasCollaboration===0 && (collaborations.collaborationJustification === 'string' || collaborations.collaborationJustification.trim() === '')){
             newErrorsF['collaborationJustification'] = "* El campo es requerido"
         }
-        console.log(newErrorsF)
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
             handleOnSubmitForm(event); 

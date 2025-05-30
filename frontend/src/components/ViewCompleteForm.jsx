@@ -19,20 +19,9 @@ const ViewCompleteForms = () => {
     const { id }  = useParams();
     const apiUrl = import.meta.env.VITE_API_URL;
     const [completeForm, setCompleteForm] = useState(null);
-    const [files, setFiles] = useState([]);
-    const fetchData = (url,setData) =>{
-        fetch(url,{
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("token") || ""}`,
-            },
-        })
-        .then(data => data.json())
-        .then((data) => {
-            setData(data);
-        });
-    };
+    const [files, setFiles] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const handlePrint = () => {
         alert("Por favor, marca 'Encabezados y pies de página y gráficos de fondo' en las opciones de impresión para una mejor visualización.");
@@ -51,12 +40,57 @@ const ViewCompleteForms = () => {
     }
     };
 
-    useEffect(()=>{
-        fetchData(`${apiUrl}/users/projects/${id}`,setCompleteForm);
-        fetchData(`${apiUrl}/researchers/projects/${id}/documents`,setFiles);
-    },[]);
+    useEffect(() => {
+        const fetchAll = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                
+                const [formRes, filesRes] = await Promise.all([
+                    fetch(`${apiUrl}/users/projects/${id}`, { 
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token") || ""}`,
+                        }, 
+                    }),
+                    fetch(`${apiUrl}/researchers/projects/${id}/documents`, { 
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token") || ""}`,
+                        }, 
+                    }),
+                ]);
 
-    console.log(completeForm)
+                if (!formRes.ok || !filesRes.ok) {
+                    throw new Error('Error al cargar los datos');
+                }
+
+                const completeForm = await formRes.json();
+                const files = await filesRes.json();
+                
+                setCompleteForm(completeForm);
+                setFiles(files);
+            } catch (err) {
+                console.error(err);
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAll();
+    }, [id, apiUrl]);
+
+        console.log(completeForm)
+    if (loading) {
+        return <p>Cargando...</p>;
+    }
+
+    if (error) {
+        return <p>Error: {error}</p>;
+    }
     return (
     <div className='fullTable-background'>
         <div className='div-button'>

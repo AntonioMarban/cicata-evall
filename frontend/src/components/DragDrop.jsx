@@ -38,7 +38,6 @@ const DragDrop = ({ setFilesSend, filesSend, tagType = "Etico" }) => {
     }
 
   // Procesa los archivos PDF
-  console.log("Archivos válidos:", pdfFiles);
     const newFiles = await Promise.all(
       Array.from(event.target.files).map(processFile)
     );
