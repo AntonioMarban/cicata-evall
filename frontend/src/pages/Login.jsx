@@ -2,6 +2,7 @@ import CICATA from '../assets/cicatalogo.png'
 import LOGOEVAL from '../assets/evallLogo.png'
 import { useNavigate  } from 'react-router-dom'
 import { useRef } from 'react'
+import { toast } from 'sonner'
 
 const  Login = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -29,7 +30,7 @@ const  Login = () => {
             localStorage.setItem('userType', data.userType)
             localStorage.setItem('committeeId', data.committeeId)
         }else{
-            alert('Usuario o contraseña incorrectos')
+            toast.error('Usuario o contraseña incorrectos')
         }
         evt.preventDefault()
     };

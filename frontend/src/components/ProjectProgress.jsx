@@ -3,6 +3,7 @@ import "../styles/commentscommittee.css";
 import { useNavigate } from "react-router-dom";
 import { saveMultipleForms, hasFormsInRange  } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
+import { toast } from 'sonner'
 
 export default function ProjectProgress({ projectId,status }) {
     const [isEnabledButton, setIsEnabledButton] = useState();
@@ -88,8 +89,7 @@ export default function ProjectProgress({ projectId,status }) {
 
     const navigateToForms = async (files, e) => {
         if(generalData.projectId != projectId){
-            alert("Primero debes terminar de editar el primer proyecto")
-            return
+            return toast.error("Primero debes terminar de editar el primer proyecto")
         }
         try {
             const { idf26, idf33 } = await readFiles(files, e);
@@ -181,14 +181,14 @@ export default function ProjectProgress({ projectId,status }) {
         console.log("Formularios encontrados:", forms);
         if(forms){
             if(generalData.projectId != projectId){
-                alert("Primero debes terminar de editar el primer proyecto")
+                 return toast.error("Primero debes terminar de editar el primer proyecto")
             }
             else{
                 navigate("/Editar-proyecto")
             }
         }
         else{
-            alert("No hay datos para editar")
+            toast.error("No hay datos para editar")
         }
     };
 

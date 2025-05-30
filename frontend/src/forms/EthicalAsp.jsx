@@ -3,7 +3,7 @@ import DragDrop from "../components/DragDrop";
 import { useEffect, useState } from "react";
 import useSubmitFormBack from "../hooks/useSubmitFormBack";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
-import EthicalAspects from "../components/ViewForm/EthicalAspects";
+import { toast } from 'sonner'
 
 const  EthicalAsp = ({option,setOption}) => {
     
@@ -49,7 +49,7 @@ const  EthicalAsp = ({option,setOption}) => {
           }
         });
         if ((ethicalAsp.workWithHumans) && filesSend.length<1){
-            return alert("Es necesario subir archivos")
+            return toast.error('Error, se deben agregar archivos')
           }
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
