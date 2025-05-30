@@ -162,7 +162,7 @@ ${userFullName}
         throw new Error("Error al firmar el acuerdo.");
       }
 
-      navigate(`/Proyecto?projectId=${projectId}`); // o a donde prefieras llevar al usuario después de firmar
+      navigate(`/Proyecto?projectId=${projectId}`);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -196,6 +196,7 @@ ${userFullName}
             className="nda-input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="off"
           />
           <input
             type="password"
@@ -204,6 +205,7 @@ ${userFullName}
             className="nda-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
           />
         </div>
 
