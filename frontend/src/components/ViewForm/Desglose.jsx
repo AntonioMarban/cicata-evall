@@ -89,7 +89,6 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
                     <tr>
                         <th>No.</th>
                         <th>Nombre del objetivo</th>
-                        <th>Descripción</th>
                     </tr>
                 </thead>
                 <tbody className='table-form-body'>
@@ -97,7 +96,6 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
                     <tr key={index}>
                         <td>{index+1}</td>
                         <td>{sObjective.objectiveName}</td>
-                        <td>{sObjective.objectiveDescription}</td>
                     </tr>
                     ))}
                 </tbody>
@@ -154,6 +152,19 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
                         <td>{reference.reference}</td>
                     </tr>
                 ))}
+            </tbody>
+        </table>
+
+        <table className='BackgroundTable'>
+            <thead className='table-form-header'>
+                <tr>
+                    <th>Referencias</th>
+                </tr>
+            </thead>
+            <tbody className='table-form-body'>
+                <tr>
+                    <td className='italic'>dasdas{desglose.referenceText || ""}</td>
+                </tr>
             </tbody>
         </table>
     </>

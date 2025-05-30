@@ -25,7 +25,8 @@ const  Desglose = ({option,setOption}) => {
             statementOfProblem:"*",
             justification:"*", 
             hypothesis: "*",
-            generalObjective: "*"
+            generalObjective: "*",
+            specificObjectives: "*"
         });
     const [desgloseToEdit, setDesgloseToEdit] = useState(null);
 
@@ -45,6 +46,12 @@ const  Desglose = ({option,setOption}) => {
             newErrorsDF[key] = `* El campo  es requerido`;
           }
         });
+        if(desglose.specificObjectives.length<1){
+            newErrorsDF['specificObjectives'] = `* Debe haber al menos un objetivo específico`;
+        }
+        if(desglose.specificObjectives.length>=1){
+            delete newErrorsDF['specificObjectives']
+        }
         setNewErrorsD(newErrorsDF)
         window.scrollTo({ top: 0, behavior: 'smooth' });
         if(!Object.keys(newErrorsDF).length>0){
@@ -134,11 +141,10 @@ const  Desglose = ({option,setOption}) => {
                             placeholder="Escribe el objetivo general del proyecto..."></textarea>
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Objetivos específicos </p>
+                            <p className="!mt-2 text-xl">Objetivos específicos {newErrorsD.specificObjectives && <span className="text-red-600">{newErrorsD.specificObjectives}</span>}</p>
                             <div className="rounded-lg p-0 w-full">
                                 <div className="flex justify-between !p-2">
-                                    <p className="flex-1">Nombre del Objetivo específico</p>
-                                    <p className="flex-1">Descripción</p>
+                                    <p className="flex-1">Objetivos específicos</p>
                                     <p className="flex-1"></p>
                                 </div>
                             </div>

@@ -65,7 +65,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(datesManage.startDate>=activity.startDate || datesManage.endDate <= activity.endDate){
+        if(datesManage.endDate && (datesManage.startDate>=activity.startDate || datesManage.endDate <= activity.endDate)){
             return alert("Las fechas deben de estar dentro del rango del proyecto")
         }
         const newErrorsF = {}
@@ -139,7 +139,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                                     <select 
                                         name="responsibleMember" 
                                         className="form-pieza-input" 
-                                        placeholder="Select type"
+                                        placeholder="Selecciona un tipo"
                                         value={activity.responsibleMember}
                                         onChange={handleInputChange}
                                     >   

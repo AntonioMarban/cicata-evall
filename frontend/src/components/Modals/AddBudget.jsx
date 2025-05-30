@@ -234,7 +234,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                         name="expenditure" 
                                         type="number" 
                                         min={0}
-                                        step="0.01"
+                                        step="0.00001"
                                         className="form-pieza-input" 
                                         placeholder="Escribe la cantidad del gasto..."
                                         value={budgetForm.expenditure}

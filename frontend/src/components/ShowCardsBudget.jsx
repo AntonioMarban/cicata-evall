@@ -19,7 +19,7 @@ const ShowCardsBudget = ({cards, slice,handleDeleteFile,handleEditModal,nameArra
                 <p className="flex-1 flex justify-end">
                     ${Number(card.expenditure).toLocaleString('es-MX', { 
                         minimumFractionDigits: 2, 
-                        maximumFractionDigits: 2 
+                        maximumFractionDigits: 10 
                     })}
                 </p>
 

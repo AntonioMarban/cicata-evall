@@ -48,7 +48,7 @@ const  EthicalAsp = ({option,setOption}) => {
             }
           }
         });
-        if ((ethicalAsp.workWithHumans || ethicalAsp.workWithAnimals) && filesSend.length<1){
+        if ((ethicalAsp.workWithHumans) && filesSend.length<1){
             return alert("Es necesario subir archivos")
           }
         setNewErrors(newErrorsF)
@@ -156,7 +156,7 @@ const  EthicalAsp = ({option,setOption}) => {
                     {(ethicalAsp.workWithAnimals || ethicalAsp.workWithHumans) ?
                     <>
                         <p className="text-2xl">Subir archivos</p>
-                        <p className="!mb-4">En caso de trabajar con humanos y/o animales o muestras de humanos y/o animales, (adjuntar el consentimiento informado y el aviso de privacidad)</p>
+                        <p className="!mb-4">Si van a trabajar con muestras humanas deben adjuntar el consentimiento y el aviso de privacidad</p>
                         <DragDrop 
                             setFilesSend={setFilesSend} 
                             filesSend={filesSend} 

@@ -103,8 +103,45 @@ const DeliverablesView = ({ option, setOption }) => {
         }));
     };
     
+    const validateDeliverables = (deliverablesExtras) => {
+        for (const [index, values] of Object.entries(deliverablesExtras)) {
+            if (!values.name) {
+                alert("Faltan entregables extras por llenar");
+                return false;
+            }
+            
+            if (Object.keys(values.values).length === 0) {
+                alert("No se puede enviar un entregable extra sin valores");
+                return false;
+            }
+            
+            if (Object.values(values.values).some(val => val === 0 || val === "")) {
+                alert("No se puede enviar un entregable extra con valor 0 o vacío");
+                return false;
+            }
+        }
+        return true;
+    };
+
     const handleOnSubmitFormBack = useSubmitFormBack(deliverables, setOption);
+    
     const handleOnSubmitFormNext = useSubmitFormNext(deliverables, setOption);
+
+    const handleOnClicNext = (event) => {
+        event.preventDefault()
+        if (!validateDeliverables(deliverables.extras1)) {
+            return; 
+        }
+        
+        if (!validateDeliverables(deliverables.extras2)) { 
+            return;
+        }
+        if (!validateDeliverables(deliverables.extras3)) { 
+            return;
+        }
+        handleOnSubmitFormNext(event);
+    };
+
     useLoadFormData(deliverables.idF, setDeliverables);
     
     return (
@@ -324,7 +361,7 @@ const DeliverablesView = ({ option, setOption }) => {
           className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
                 bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
                  hover:bg-[#4CA6D5] transition-colors duration-300"
-          onClick={handleOnSubmitFormNext}
+          onClick={handleOnClicNext}
         >
           Siguiente
         </button>

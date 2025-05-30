@@ -21,7 +21,6 @@ const GeneralData = ({option,setOption}) => {
     const [newErrors,setNewErrors] = useState({
             title: "*",
             startDate:"*",
-            endDate:"*",
             typeResearch, 
             otherTypeResearch: "*", 
             topic: "*",
@@ -42,9 +41,9 @@ const GeneralData = ({option,setOption}) => {
     };
 
     const validateDates = () => {
-        if (generalData.startDate > generalData.endDate) {
-          alert("No puede ser la fecha de inicio después de la fecha de fin");
-          return false; 
+        if (generalData.endDate && generalData.startDate > generalData.endDate) {
+        alert("No puede ser la fecha de inicio después de la fecha de fin");
+        return false;
         }
         return true; 
       };
@@ -60,6 +59,7 @@ const GeneralData = ({option,setOption}) => {
             newErrorsF[key] = `* El campo  es requerido`;
           }
         });
+        delete newErrorsF['endDate']
         if(generalData.typeResearch < 4){
             delete newErrorsF['otherTypeResearch'];
         }
@@ -230,7 +230,7 @@ const GeneralData = ({option,setOption}) => {
                     <p>Caracteres {generalData.summary.length} / 1500</p>
                 </div>
             </div>
-            <div className="w-[100%] flex justify-end items-center">
+            <div className="!mt-5 w-[100%] flex justify-end items-center">
                 <button 
                 className="!p-2 !mt-5 !mb-5 text-xl rounded-lg border-none bg-[#5CB7E6] text-white font-normal cursor-pointer shadow-md hover:bg-[#4CA6D5] transition-colors duration-300"
                 onClick={handleSubmitWithValidation}>Siguiente</button>
