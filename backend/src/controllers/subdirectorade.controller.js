@@ -82,9 +82,8 @@ const createUser = async (req, res) => {
   pool.query(query, values, (error, results) => {
     if (error) {
       console.error(error);
-      return res.status(500).json({ error: "Error creating user" });
+      return res.status(500).json({ error: "Email already exists" });
     }
-
     res.status(201).json({ message: "User created successfully" });
   });
 };
