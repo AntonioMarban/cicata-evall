@@ -124,7 +124,7 @@ const  EthicalAsp = ({option,setOption}) => {
                             : 
                             'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
                             onClick={() => handleChangeButton('workWithHumans', 1)}
-                            type="button">Si</button>
+                            type="button">Sí</button>
                             <button
                             className={ethicalAsp.workWithHumans === 0  ? 
                             'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 
@@ -141,7 +141,7 @@ const  EthicalAsp = ({option,setOption}) => {
                             : 
                             'bg-[#E1E1E1] w-1/5 p-3 rounded-2xl border-none text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5'} 
                             onClick={() => handleChangeButton('workWithAnimals', 1)}
-                            type="button">Si</button>
+                            type="button">Sí</button>
                             <button
                             className={ethicalAsp.workWithAnimals === 0  ? 
                             'bg-[#5CB7E6] w-1/5 p-3 rounded-2xl border-none text-white text-base font-medium shadow-md cursor-pointer min-w-[150px] !mt-5' 

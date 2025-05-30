@@ -242,7 +242,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                 <p>Pertence a alguna red de investigación</p>
                                 <div>
                                     <button type="button" 
-                                        className={participant.researchNetwork === 1  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('researchNetwork',1)}>Si</button>
+                                        className={participant.researchNetwork === 1  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('researchNetwork',1)}>Sí</button>
                                     <button type="button"
                                         className={participant.researchNetwork === 0  ? 'participant-button-press' : 'participant-button'} onClick={() =>handleChangeButton('researchNetwork',0)}>No</button>
                                 </div>

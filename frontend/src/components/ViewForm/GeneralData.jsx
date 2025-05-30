@@ -100,7 +100,7 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
     <table className='BackgroundTable'>
         <tbody className='table-form-body'>
             <tr>
-                <td>¿El proyecto se alinea con las Prioridades Nacionales de Investigación y/o con los objetivos de la Agenda de desarrollo sostenible?</td>
+                <td>¿El proyecto se alinea con las Prioridades Nacionales de Investigación y/o con los objetivos de la Agenda de Desarrollo Sostenible?</td>
                 <td className='table-alginPNIODS'>{generalData.alignsWithPNIorODS === 1 ? 'Sí' : 'No'}</td>
             </tr>
         </tbody>
@@ -109,7 +109,7 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
     <table className='BackgroundTable'>
         <thead className='table-form-header'>
             <tr>
-                <th>En caso afirmativo ¿Con cuál? / No se considera ¿Por qué?</th>
+                <th>En caso afirmativo, ¿con cuál? / No se considera ¿Por qué?</th>
             </tr>
         </thead>
         <tbody className='table-form-body'>

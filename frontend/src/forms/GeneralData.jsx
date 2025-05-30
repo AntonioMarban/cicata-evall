@@ -196,7 +196,7 @@ const GeneralData = ({option,setOption}) => {
                             '!ml-2 !mr-2 bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px] hover:bg-[#4CA6D5] transition-colors duration-300' 
                             : 
                             '!ml-2 !mr-2 bg-[#E1E1E1] border-none rounded-lg text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px] hover:bg-[#D1D1D1] transition-colors duration-300'} 
-                            onClick={() => handleChangeButton('alignsWithPNIorODS', 1)} >Si</button>
+                            onClick={() => handleChangeButton('alignsWithPNIorODS', 1)} >Sí</button>
                         <button type="button"
                             className={generalData.alignsWithPNIorODS === 0 ? 
                             'bg-[#5CB7E6] border-none rounded-lg text-white text-lg font-medium cursor-pointer shadow-md w-[40%] min-w-[100px] hover:bg-[#4CA6D5] transition-colors duration-300'

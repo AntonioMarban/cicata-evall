@@ -29,7 +29,7 @@ const DeletePopUp = ({ handleDeleteFile, index, nameArray, value }) => {
                                     setIsOpen(false);
                                 }}
                             >
-                                Si
+                                Sí
                             </button>
                             <button 
                                 type="button" 

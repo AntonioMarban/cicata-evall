@@ -1,5 +1,5 @@
 import "../styles/dashboard.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLocation } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardCards from "./DashboardCards";
 import NOTIFICATION from "../assets/Notification.svg"
@@ -16,6 +16,7 @@ function formatFecha(fechaISO) {
 }
 
 function Dashboard({ projectCards }) {
+  const location = useLocation();
   const [userFullName, setUserFullName] = useState("");
   const [userType, setUserType] = useState(null);
   const navigate = useNavigate(); 
@@ -66,7 +67,7 @@ function Dashboard({ projectCards }) {
     <main className="dashboard-main">
       <div id="header" className="dashboard-header flex justify-between items-center">
         <h1 className="dashboard-title">¡Hola, {userFullName}!</h1>
-        { userType === 1 && (
+        { userType === 1 && location.pathname !== "/ProyectosFinalizados" && (
           <button
             className="dashboard-button text-white rounded-lg cursor-pointer p-3! bg-[#5CB7E6] hover:bg-[#1591D1]"
             onClick={() => navigate("/CrearProyecto")}
