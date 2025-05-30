@@ -1,5 +1,5 @@
 import "../styles/dashboard.css";
-import { useEffect, useState, useLocation } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardCards from "./DashboardCards";
 import NOTIFICATION from "../assets/Notification.svg";
@@ -29,7 +29,7 @@ function Dashboard({ projectCards }) {
     setUserType(typeFromStorage);
   }, []);
 
-  const isFinalizados = location.pathname === "/ProyectosFinalizados";
+  const isFinalizados = window.location.pathname === "/ProyectosFinalizados";
 
   const getTitleMessage = () => {
     if (isFinalizados) {
