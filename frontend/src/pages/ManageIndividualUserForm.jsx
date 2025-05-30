@@ -13,8 +13,7 @@ const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, 
             <input
                 type={type || "text"}
                 id={id}
-                className={`border rounded-lg w-full ${error ? 'border-red-500' : 'border-gray-300'}`}
-                style={{ padding: '15px' }}
+                className={`border rounded-lg w-full p-3! ${error ? 'border-red-500' : 'border-gray-300'}`}
                 placeholder={placeholder}
                 value={value || ""}
                 onChange={onChange}
@@ -28,7 +27,7 @@ const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, 
 
 const yesNoInput = (label, id, value, onChange, error) => {
     return (
-        <div className="flex flex-col gap-2 mb-4! basis-1/3 min-w-[250px]" style={{ boxSizing: 'border-box', padding: '0 1%', margin: '1% 0' }}>
+        <div className="flex flex-col gap-2! mb-4! basis-1/3 min-w-[250px]" style={{ boxSizing: 'border-box', padding: '0 1%', margin: '1% 0' }}>
             <label htmlFor={id} className="text-xl font-semibold">
                 {label}
                 <span className="text-[#FF4D4D] text-lg"> *</span>
@@ -45,6 +44,32 @@ const yesNoInput = (label, id, value, onChange, error) => {
                 </button>
             ))}
             </div>
+            {error && <span className="text-red-500 text-sm">{error}</span>}
+        </div>
+    );
+};
+
+const userSelectInput = (label, id, options, value, onChange, error) => {
+    return (
+        <div className="flex flex-col gap-2! my-4! px-4! basis-1/3 min-w-[250px] items-start" style={{ boxSizing: 'border-box', padding: '0 1%', margin: '1% 0' }}>
+            <label htmlFor={id} className="text-xl font-semibold">
+                {label}:
+            </label>
+            <select
+
+                id={id}
+                className={`border rounded-lg w-full p-3! ${error ? 'border-red-500' : 'border-gray-300'}`}
+                value={value || ""}
+                onChange={(e) => onChange(e.target.value)}
+                onBlur={() => onChange(value)}
+            >
+                <option value="" disabled>Selecciona una opción</option>
+                {options.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                    </option>
+                ))}
+            </select>
             {error && <span className="text-red-500 text-sm">{error}</span>}
         </div>
     );
@@ -101,8 +126,10 @@ const ManageIndividualUserForm = () => {
                 setIsInResearchNetwork(data.researchNetwork === 1);
                 setResearchNetworkName(data.researchNetworkName || "");
                 setAcademicDegree(data.academicDegree || "");
-                setLevelName(data.levelName || "");
-                setLevelNum(data.levelNum ? data.levelNum.toString() : "");
+                setLevelSNII(data.levelSNII || "");
+                setLevelCOFFA(data.levelCOFFA || "");
+                setLevelEDI(data.levelEDI || "");
+
             } catch (error) {
                 console.error('Error al obtener los datos del usuario:', error);
                 alert("Error al cargar los datos del usuario. Por favor, inténtalo de nuevo.");
@@ -128,7 +155,7 @@ const ManageIndividualUserForm = () => {
             fName,
             lastName1,
             lastName2,
-            email,
+            email: email.toLowerCase(),
             phone,
             password,
             institution,
@@ -136,8 +163,9 @@ const ManageIndividualUserForm = () => {
             researchNetwork: isInResearchNetwork ? 1 : 0,
             researchNetworkName: isInResearchNetwork ? researchNetworkName : "",
             academicDegree,
-            levelName,
-            levelNum: parseInt(levelNum),
+            levelSNII,
+            levelCOFFA,
+            levelEDI
         };
 
         try {
@@ -191,7 +219,7 @@ const ManageIndividualUserForm = () => {
             fName,
             lastName1,
             lastName2,
-            email,
+            email: email.toLowerCase(),
             phone,
             password,
             institution,
@@ -199,8 +227,9 @@ const ManageIndividualUserForm = () => {
             researchNetwork: isInResearchNetwork ? 1 : 0,
             researchNetworkName: isInResearchNetwork ? researchNetworkName : "",
             academicDegree,
-            levelName,
-            levelNum: parseInt(levelNum),
+            levelSNII,
+            levelCOFFA,
+            levelEDI
         }
 
         try {
@@ -239,8 +268,9 @@ const ManageIndividualUserForm = () => {
     const [isInResearchNetwork, setIsInResearchNetwork] = useState(null);
     const [researchNetworkName, setResearchNetworkName] = useState("");
     const [academicDegree, setAcademicDegree] = useState("");
-    const [levelName, setLevelName] = useState("");
-    const [levelNum, setLevelNum] = useState("");
+    const [levelSNII, setLevelSNII] = useState("");
+    const [levelCOFFA, setLevelCOFFA] = useState("");
+    const [levelEDI, setLevelEDI] = useState("");
 
     const [errors, setErrors] = useState({});
 
@@ -282,11 +312,6 @@ const ManageIndividualUserForm = () => {
         return regex.test(pass);
     };
 
-    const isValidID = (num) => {
-        const n = parseInt(num);
-        return !isNaN(n) && n >= 1 && n <= 5;
-    };
-
     const validateForm = () => {
         const newErrors = {};
 
@@ -308,9 +333,6 @@ const ManageIndividualUserForm = () => {
         if (isInResearchNetwork && !isValidName(researchNetworkName)) newErrors.researchNetworkName = "El nombre de la red de investigación debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
         
         if (!isValidName(academicDegree)) newErrors.academicDegree = "El grado académico debe tener entre 3 y 30 letras, sin caracteres especiales.";
-        if (!isValidName(levelName)) newErrors.levelName = "El nivel académico debe tener entre 3 y 30 letras, sin caracteres especiales.";
-
-        if(!isValidID(levelNum)) newErrors.levelNum = "El número de cédula debe ser un número entre 1 y 5.";
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -339,9 +361,6 @@ const ManageIndividualUserForm = () => {
                 break;
             case "confirmPassword":
                 if (value !== password) return "Las contraseñas no coinciden.";
-                break;
-            case "levelNum":
-                if (!isValidID(value)) return "El número debe ser un valor entre 1 y 5.";
                 break;
             default:
                 return null;
@@ -416,6 +435,10 @@ const ManageIndividualUserForm = () => {
                                 (e) => handleFieldChange("positionWork", e.target.value, setPositionWork),
                                 () => setErrors(prev => ({ ...prev, positionWork: validateField("positionWork", positionWork) })),
                                 errors.positionWork)}
+                            {userTextInput("Grado académico", "academicDegree", "text", "Grado académico del usuario", "Ej. Doctorado, Maestría, Licenciatura", academicDegree,
+                                (e) => handleFieldChange("academicDegree", e.target.value, setAcademicDegree),
+                                () => setErrors(prev => ({ ...prev, academicDegree: validateField("academicDegree", academicDegree) })),
+                                errors.academicDegree)}
                         </div>
 
                         <div id="investigationNetworkContainer" className="flex flex-row items-center mb-6 flex-wrap justify-start items-start">
@@ -429,19 +452,39 @@ const ManageIndividualUserForm = () => {
                                 errors.researchNetworkName)}
                         </div>
 
-                        <div id="userAcademicDegree" className="flex flex-row items-center mb-6 flex-wrap justify-start items-start">
-                            {userTextInput("Grado académico", "academicDegree", "text", "Grado académico del usuario", "Ej. Doctorado, Maestría, Licenciatura", academicDegree,
-                                (e) => handleFieldChange("academicDegree", e.target.value, setAcademicDegree),
-                                () => setErrors(prev => ({ ...prev, academicDegree: validateField("academicDegree", academicDegree) })),
-                                errors.academicDegree)}
-                            {userTextInput("Nivel académico", "levelName", "text", "Nivel académico del usuario", "Ej. SNII, COFFA, EDI, etc.", levelName,
-                                (e) => handleFieldChange("levelName", e.target.value, setLevelName),
-                                () => setErrors(prev => ({ ...prev, levelName: validateField("levelName", levelName) })),
-                                errors.levelName)}
-                            {userTextInput("Número de cédula", "levelNum", "number", "Número de cédula del usuario", "Ej. 1, 2, 3, etc.", levelNum,
-                                (e) => handleFieldChange("levelNum", e.target.value, setLevelNum),
-                                () => setErrors(prev => ({ ...prev, levelNum: validateField("levelNum", levelNum) })),
-                                errors.levelNum)}
+                        <div id="userLevel" className="flex flex-row items-center mb-6 flex-wrap justify-start items-start">
+                            {userSelectInput("Nivel SNI", "levelSNII", [
+                                { value: "Candidato", label: "Candidato" },
+                                { value: "I", label: "I" },
+                                { value: "II", label: "II" },
+                                { value: "III", label: "III" },
+                                { value: "Emérito", label: "Emérito" }
+                            ], levelSNII,
+                            (val) => handleFieldChange("levelSNII", val, setLevelSNII),
+                            errors.levelSNII)}
+
+                            {userSelectInput("Nivel COFFA", "levelCOFFA", [
+                                { value: "I", label: "I" },
+                                { value: "II", label: "II" },
+                                { value: "III", label: "III" },
+                                { value: "IV", label: "IV" },
+                                { value: "V", label: "V" }
+                            ], levelCOFFA,
+                            (val) => handleFieldChange("levelCOFFA", val, setLevelCOFFA),
+                            errors.levelCOFFA)}
+                            {userSelectInput("Nivel EDI", "levelEDI", [
+                                { value: "I", label: "I" },
+                                { value: "II", label: "II" },
+                                { value: "III", label: "III" },
+                                { value: "IV", label: "IV" },
+                                { value: "V", label: "V" },
+                                { value: "VI", label: "VI" },
+                                { value: "VII", label: "VII" },
+                                { value: "VIII", label: "VIII" },
+                                { value: "IX", label: "IX" }
+                            ], levelEDI,
+                            (val) => handleFieldChange("levelEDI", val, setLevelEDI),
+                            errors.levelEDI)}
                         </div>
 
                     </div>

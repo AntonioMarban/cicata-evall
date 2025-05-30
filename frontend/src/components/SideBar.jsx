@@ -1,4 +1,4 @@
-import { Home, FileBadge, LogOut, Users } from "lucide-react";
+import { Home, FileBadge, LogOut, Users, ClipboardList } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import CICATA from "../assets/cicatam.png";
 import { useState } from "react";
@@ -50,6 +50,13 @@ function Sidebar() {
           <Link to="/Cuentas" className="w-full">
             <Button className="flex gap-2 items-center justify-start whitespace-normal">
               <Users /> Cuentas
+            </Button>
+          </Link>
+        )}
+        {(userType === "3" || userType === "4") && (
+          <Link to="/EditarRubrica" className="w-full">
+            <Button className="flex gap-2 items-center justify-start whitespace-normal">
+              <ClipboardList /> Rubrica de comité
             </Button>
           </Link>
         )}
