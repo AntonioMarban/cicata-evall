@@ -298,7 +298,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             <>
                             <div className="participant-form-rows">
                                 <div className="participant-button-degree">
-                                    <p >Tipo investigador
+                                    <p >Nivel del investigador
                                         {newErrors.levelName && (
                                             <>
                                                 {newErrors.levelName !== '*' && <br />}

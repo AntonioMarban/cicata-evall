@@ -154,6 +154,19 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
                 ))}
             </tbody>
         </table>
+
+        <table className='BackgroundTable'>
+            <thead className='table-form-header'>
+                <tr>
+                    <th>Referencias</th>
+                </tr>
+            </thead>
+            <tbody className='table-form-body'>
+                <tr>
+                    <td className='italic'>dasdas{desglose.referenceText || ""}</td>
+                </tr>
+            </tbody>
+        </table>
     </>
   );
 };

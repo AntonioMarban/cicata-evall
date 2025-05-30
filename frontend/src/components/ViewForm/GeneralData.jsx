@@ -29,7 +29,7 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
                 <th rowSpan={2}>Periodo del proyecto</th>
                 <th>Mes y año de inicio</th>
                 <th>Mes y año de fin</th>
-                <th>Años totales (Días totales)</th>
+                <th>Periodo total en meses</th>
             </tr>
             <tr className='second-table-form-body'>
                 <td>{generalData.startDate}</td>
@@ -37,9 +37,10 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
                 <td>{(() => {
                         const start = new Date(generalData.startDate);
                         const end = new Date(generalData.endDate);
-                        const diffInMs = end - start;
-                        const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-                        return diffInDays;
+                        const years = end.getFullYear() - start.getFullYear();
+                        const months = end.getMonth() - start.getMonth();
+                        const totalMonths = years * 12 + months;
+                        return totalMonths;
                     })()} 
                 </td>
             </tr>

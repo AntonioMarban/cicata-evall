@@ -241,6 +241,10 @@ export default function ProjectProgress({ projectId,status }) {
                     )}
                 </div>
             )}
+            <div className="footer-comments">
+                    <button onClick={checkForms} className="info-button" >Continuar con correcciones</button>
+                    <button onClick={(e)=>{navigateToForms(files,e)}} className="info-button">Realizar correcciones</button>
+                </div>
         </div>
     </main>
     );
