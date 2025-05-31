@@ -68,7 +68,7 @@ export default function ProjectHeader({
   };
 
   const handleInfoClick = () => {
-    navigate(`/VerFormulario/${projectId}`);
+    navigate('/VerFormulario', { state: { projectId: projectId } });
   };
 
   const handleEvaluateClick = () => {

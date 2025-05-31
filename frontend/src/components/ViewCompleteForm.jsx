@@ -12,16 +12,23 @@ import Contributions from './ViewForm/Contributions';
 import ConflictInterest from './ViewForm/ConflictInterest';
 import Header from './ViewForm/Header';
 import Budget from './ViewForm/Budget'
-import { useParams  } from 'react-router-dom'
+import { useLocation  } from 'react-router-dom'
 import Files from './ViewForm/Files';
 import Annexes from './ViewForm/Annexes';
 const ViewCompleteForms = () => {  
-    const { id }  = useParams();
+    const { state } = useLocation();
+    const id = state?.projectId
     const apiUrl = import.meta.env.VITE_API_URL;
     const [completeForm, setCompleteForm] = useState(null);
     const [files, setFiles] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    if (!id) {
+        console.error("ID del proyecto no proporcionado. Redirigiendo a /Inicio.");
+        window.location.href = "/Inicio";
+        return null;
+    }
 
     const handlePrint = () => {
         alert("Por favor, marca 'Encabezados y pies de página y gráficos de fondo' en las opciones de impresión para una mejor visualización.");

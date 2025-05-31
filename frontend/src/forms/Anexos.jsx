@@ -140,7 +140,7 @@ const  Anexos = ({option,setOption}) => {
                             }
                         }
                         await new Promise(resolve => setTimeout(resolve, 1000));
-                        navigate(`/VerFormulario/${data.projectId}`);
+                        navigate('/VerFormulario', { state: { projectId: data.projectId } });
                         indexedDB.deleteDatabase('Cicata');
                     } catch (uploadError) {
                         console.error("Error uploading file:", uploadError);
@@ -148,7 +148,7 @@ const  Anexos = ({option,setOption}) => {
                     }
                 } else {
                     await new Promise(resolve => setTimeout(resolve, 1000));
-                    navigate(`/VerFormulario/${data.projectId}`);
+                    navigate('/VerFormulario', { state: { projectId: data.projectId } });
                     indexedDB.deleteDatabase('Cicata');
                 }
             } else {
