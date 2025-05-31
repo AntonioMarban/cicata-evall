@@ -2567,3 +2567,16 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Funcion para mandar un proyecto a "En revision"
+-- @param projectId: Id del proyecto
+-- @returns: Mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE setProjectToRevision(
+    IN p_projectId INT
+)
+BEGIN
+    UPDATE projects
+    SET status = 'En revision'
+    WHERE projectId = p_projectId;
+END //
+DELIMITER ;

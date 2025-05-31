@@ -459,6 +459,27 @@ const createDictum = async (req, res) => {
   })
 }
 
+/*
+Funcion para mandar un proyecto a "En revision"
+Se hace uso de un procedimiento almacenado setProjectToRevision
+@param projectId: Id del proyecto
+*/
+const setProjectStatusToRevision = (req, res) => {
+    const projectId = req.params.projectId;
+
+    const query = `CALL setProjectToRevision(?)`;
+
+    pool.query(query, [projectId], (err, result) => {
+        if (err) {
+            console.error('Error al ejecutar el procedimiento:', err);
+            return res.status(500).json({ error: 'Error al cambiar el estado del proyecto' });
+        }
+
+        res.status(200).json({ message: 'El estado del proyecto se cambió a "En revisión"' });
+    });
+};
+
+
 module.exports = {
   getUsersByRole,
   createUser,
@@ -475,5 +496,6 @@ module.exports = {
   createSecondStageEvaluations,
   getResultThirdStage,
   sendEvaluationResult,
-  createDictum
+  createDictum,
+  setProjectStatusToRevision
 };
