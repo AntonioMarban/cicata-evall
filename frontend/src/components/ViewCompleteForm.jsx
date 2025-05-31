@@ -24,29 +24,6 @@ const ViewCompleteForms = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    if (!id) {
-        console.error("ID del proyecto no proporcionado. Redirigiendo a /Inicio.");
-        window.location.href = "/Inicio";
-        return null;
-    }
-
-    const handlePrint = () => {
-        alert("Por favor, marca 'Encabezados y pies de página y gráficos de fondo' en las opciones de impresión para una mejor visualización.");
-        window.print();
-    };
-    const handlePrint2 = () => {
-    if (Array.isArray(files.documents)) {
-        files.documents.forEach((file) => {
-        const link = document.createElement('a');
-        link.href = `data:application/octet-stream;base64,${file.document}`;
-        link.download = file.name || `archivo-${file.annexeId}.pdf`; // ajusta el nombre o extensión si sabes el tipo
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        });
-    }
-    };
-
     useEffect(() => {
         const fetchAll = async () => {
             try {
@@ -90,7 +67,29 @@ const ViewCompleteForms = () => {
         fetchAll();
     }, [id, apiUrl]);
 
-    console.log(files)
+    if (!id) {
+        console.error("ID del proyecto no proporcionado. Redirigiendo a /Inicio.");
+        window.location.href = "/Inicio";
+        return null;
+    }
+
+    const handlePrint = () => {
+        alert("Por favor, marca 'Encabezados y pies de página y gráficos de fondo' en las opciones de impresión para una mejor visualización.");
+        window.print();
+    };
+    const handlePrint2 = () => {
+    if (Array.isArray(files.documents)) {
+        files.documents.forEach((file) => {
+        const link = document.createElement('a');
+        link.href = `data:application/octet-stream;base64,${file.document}`;
+        link.download = file.name || `archivo-${file.annexeId}.pdf`; // ajusta el nombre o extensión si sabes el tipo
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        });
+    }
+    };
+
     if (loading) {
         return <p>Cargando...</p>;
     }
