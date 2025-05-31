@@ -57,7 +57,7 @@ const EvaluateProjectForm = ({ projectId }) => {
         }
 
         const payload = {
-            score: totalScore === "N/A" ? "N/A" : totalScore,
+            score: totalScore === "N/A" ? null : totalScore,
             results: evaluationResult,
             comments: evaluationComments,
         };

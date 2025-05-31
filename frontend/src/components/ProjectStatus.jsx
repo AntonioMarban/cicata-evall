@@ -267,7 +267,7 @@ export default function ProjectStatus({ projectId }) {
                       className={
                         evaluation.result === "Aprobado"
                           ? "approved"
-                          : evaluation.result === "Pendiente de correcciones" ||
+                          : evaluation.result === "Pendiente de aprobación" ||
                             evaluation.result === "No aprobado"
                           ? "not-approved"
                           : "pending"

@@ -85,11 +85,11 @@ const Members = ({members ,investigator}) => {
             </div>
             <div className='participant-data'>
                 <div className='participant-data-subname'>
-                    <p className='participant-tag'>Datos del contacto</p>
+                    <p className='participant-tag'>Datos de contacto</p>
                 </div>
                 <div className='participant-row'>
                     <p>{investigator.email}</p>
-                    <p className='participant-label'>email</p>
+                    <p className='participant-label'>Email</p>
                 </div>
                 <div>
                     <p>{investigator.phone === null ? 'Sin número' : investigator.phone}</p>
@@ -190,15 +190,15 @@ const Members = ({members ,investigator}) => {
                 </div>
                 <div className='participant-data'>
                     <div className='participant-data-subname'>
-                        <p className='participant-tag'>Datos del contacto</p>
+                        <p className='participant-tag'>Datos de contacto</p>
                     </div>
                     <div>
                         <p>{member.email}</p>
-                        <p className='participant-label'>email</p>
+                        <p className='participant-label'>Email</p>
                     </div>
                     <div>
                         <p>{member.phone}</p>
-                        <p className='participant-label'>teléfono</p>
+                        <p className='participant-label'>Teléfono</p>
                     </div>
                 </div>
             </div>

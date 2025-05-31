@@ -228,7 +228,7 @@ BEGIN
         p_otherTypeResearch, p_alignsWithPNIorODS, p_hasCollaboration, p_collaborationJustification,
         '03', 'septiembre 2025', 'Leslie Olmedo Nieva', 'Leslie Olmedo Nieva', 'Paul Mondragón Terán',
         '2024-06-01', '2024-07-08', '2024-11-04', p_otherEducationalDeliverable, p_otherDiffusionDeliverable,
-        p_otherCurrentBudget, p_otherInvestmentBudget, TRUE, 0, 'ninguno'
+        p_otherCurrentBudget, p_otherInvestmentBudget, TRUE, 0, 'Ninguno'
 
     );
 
@@ -1269,7 +1269,7 @@ CREATE PROCEDURE sendCommitteeEvaluationResult(
     IN p_userId INT,
     IN p_project_id INT,
     IN p_result VARCHAR(50),
-    IN p_comments VARCHAR(100)
+    IN p_comments TEXT
 )
 BEGIN
     DECLARE v_presidentId INT;

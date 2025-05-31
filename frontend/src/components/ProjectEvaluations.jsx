@@ -123,10 +123,10 @@ export default function ProjectEvaluations({ projectId }) {
                     <table className="table">
                     <thead>
                         <tr>
-                        <th>Evaluador</th>
-                        <th>Puntaje</th>
-                        <th>Resultado de la evaluación</th>
-                        <th>Comentarios</th>
+                        <th className="w-[250px]">Evaluador</th>
+                        <th className="w-[100px] text-center">Puntaje</th>
+                        <th className="w-[150px] text-center">Resultado</th>
+                        <th className="w-full">Comentarios</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -135,15 +135,19 @@ export default function ProjectEvaluations({ projectId }) {
                             <td>{evaluation.fullName}</td>
                             <td>{evaluation.score !== null ? evaluation.score : "—"}</td>
                             <td className={
-                            evaluation.result === "Aprobado"
+                                evaluation.result === "Aprobado"
                                 ? "result-approved"
-                                : evaluation.result === "No aprobado"
+                                : evaluation.result === "Pendiente de aprobación" ||
+                                    evaluation.result === "No aprobado"
                                 ? "result-not-approved"
-                                : ""
+                                : "pending"
                             }>
                             {evaluation.result || "—"}
+                            </td> 
+                            {/* Add classname with taiwind to make the comments span multiple lines if too long to fit space */}
+                            <td className="break-words">
+                                {evaluation.comments || "—"}
                             </td>
-                            <td>{evaluation.comments || "—"}</td>
                         </tr>
                         ))}
                     </tbody>

@@ -173,7 +173,7 @@ CREATE TABLE `evaluationTypes` (
 
 CREATE TABLE `evaluations` (
   `evaluationId` integer PRIMARY KEY AUTO_INCREMENT,
-  `comments` varchar(255),
+  `comments` TEXT,
   `score` integer,
   `result` varchar(50),
   `evaluation_type_id` integer,
