@@ -88,7 +88,7 @@ const createProject = async (req, res) => {
     const budgetsJSON = JSON.stringify(budgets); 
     const goalsJSON = JSON.stringify(goals);
     const methodologiesJSON = JSON.stringify(methodologies);
-    const referencesJSON = JSON.stringify(references);
+    const referencesText = references; // Ya no es arreglo
     const extras1JSON = JSON.stringify(extras1);
     const extras2JSON = JSON.stringify(extras2);
     const extras3JSON = JSON.stringify(extras3);
@@ -133,7 +133,7 @@ const createProject = async (req, res) => {
             budgetsJSON,
             goalsJSON,
             methodologiesJSON,
-            referencesJSON,
+            referencesText,
             extras1JSON,
             extras2JSON,
             extras3JSON,
@@ -315,7 +315,7 @@ const updateProject = (req, res) => {
     budgets ? JSON.stringify(budgets) : null,
     goals ? JSON.stringify(goals) : null,
     methodologies ? JSON.stringify(methodologies) : null,
-    references ? JSON.stringify(references) : null,
+    references,
     specificObjectives ? JSON.stringify(specificObjectives) : null,
     extras1 ? JSON.stringify(extras1) : null,
     extras2 ? JSON.stringify(extras2) : null,

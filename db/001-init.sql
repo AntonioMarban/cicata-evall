@@ -188,7 +188,8 @@ CREATE PROCEDURE createProject(
     IN p_budgetsJSON JSON,
     IN p_goalsJSON JSON,
     IN p_methodologiesJSON JSON,
-    IN p_referencesJSON JSON,
+    IN p_reference TEXT, -- Ya no es arreglo
+
 
     -- Extras para los entregabels
     IN p_extras1JSON JSON,
@@ -380,16 +381,9 @@ BEGIN
     END WHILE;
 
     -- p_references
-    SET i = 0;
-    SET total = JSON_LENGTH(p_referencesJSON);
-    WHILE i < total DO
-        INSERT INTO p_references (reference, project_id)
-        VALUES (
-            JSON_UNQUOTE(JSON_EXTRACT(p_referencesJSON, CONCAT('$[', i, '].reference'))),
-            v_projectId
-        );
-        SET i = i + 1;
-    END WHILE;
+    IF p_reference IS NOT NULL AND p_reference <> '' THEN
+        INSERT INTO p_references (reference, project_id) VALUES (p_reference, v_projectId);
+    END IF;
 
     -- Relación con usuario
     INSERT INTO usersProjects (user_id, project_id)
@@ -686,7 +680,7 @@ CREATE PROCEDURE updateProject(
     IN p_budgetsJSON JSON,
     IN p_goalsJSON JSON,
     IN p_methodologiesJSON JSON,
-    IN p_referencesJSON JSON,
+    IN p_reference TEXT, -- Ya no es arreglo
     IN p_specificObjectivesJSON JSON,
     IN p_extras1JSON JSON,
     IN p_extras2JSON JSON,
@@ -893,18 +887,9 @@ BEGIN
     END IF;
 
     -- references
-    SET i = 0;
-    IF p_referencesJSON IS NOT NULL THEN
-        DELETE FROM p_references WHERE project_id = p_projectId;
-        SET total = JSON_LENGTH(p_referencesJSON);
-        WHILE i < total DO
-            INSERT INTO p_references (reference, project_id)
-            VALUES (
-                JSON_UNQUOTE(JSON_EXTRACT(p_referencesJSON, CONCAT('$[', i, '].reference'))),
-                p_projectId
-            );
-            SET i = i + 1;
-        END WHILE;
+    DELETE FROM p_references WHERE project_id = p_projectId;
+    IF p_reference IS NOT NULL AND p_reference <> '' THEN
+        INSERT INTO p_references (reference, project_id) VALUES (p_reference, p_projectId);
     END IF;
 
     -- specificObjectives
