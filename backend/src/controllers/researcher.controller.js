@@ -110,11 +110,13 @@ const createProject = async (req, res) => {
         const consecutivo = String(count).padStart(4, '0');
         const folio = `CICATAMOR/SICIT/${year}/${month}/${consecutivo}`;
 
+        const emptyEndDate = endDate === '' ? null : endDate;
+
         const query = `CALL createProject(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
         const values = [
             // Proyecto
-            title, startDate, endDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary,
+            title, startDate, emptyEndDate, typeResearch, topic, subtopic, alignmentPNIorODS, summary,
             introduction, background, statementOfProblem, justification, hypothesis, generalObjective,
             ethicalAspects, workWithHumans, workWithAnimals, biosecurityConsiderations,
             contributionsToIPNandCICATA, conflictOfInterest, aditionalComments, folio,

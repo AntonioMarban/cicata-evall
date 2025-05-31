@@ -327,6 +327,8 @@ ADD COLUMN firstEvaluation BOOLEAN DEFAULT TRUE,
 ADD COLUMN reevaluation INT DEFAULT 0,
 ADD COLUMN committiesModify TEXT;
 
+ALTER TABLE projects MODIFY COLUMN endDate DATE NULL;
+
 -- Datos estaticos para la parte superior del formulario
 ALTER TABLE projects
 ADD COLUMN formVersion VARCHAR(10) DEFAULT '03',
