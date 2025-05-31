@@ -230,7 +230,6 @@ BEGIN
         '03', 'septiembre 2025', 'Leslie Olmedo Nieva', 'Leslie Olmedo Nieva', 'Paul Mondragón Terán',
         '2024-06-01', '2024-07-08', '2024-11-04', p_otherEducationalDeliverable, p_otherDiffusionDeliverable,
         p_otherCurrentBudget, p_otherInvestmentBudget, TRUE, 0, 'Ninguno'
-
     );
 
     SET v_projectId = LAST_INSERT_ID();
@@ -495,7 +494,13 @@ BEGIN
         p.otherInvestmentBudget, 
         p.firstEvaluation,
         p.reevaluation,
-        p.committiesModify
+        IFNULL((
+        SELECT GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ')
+        FROM evaluations e
+        JOIN committeeUsers cu ON cu.userId = e.user_id
+        JOIN committees c ON c.committeeId = cu.committeeId
+        WHERE e.project_id = p.projectId AND e.result = 'Pendiente de correcciones'
+        ), 'Ninguno') AS committiesModify
     FROM projects p
     WHERE p.projectId = p_projectId;
 
@@ -729,7 +734,10 @@ BEGIN
         otherDiffusionDeliverable = IFNULL(p_otherDiffusionDeliverable, otherDiffusionDeliverable),
         otherCurrentBudget = IFNULL(p_otherCurrentBudget, otherCurrentBudget),
         otherInvestmentBudget = IFNULL(p_otherInvestmentBudget, otherInvestmentBudget),
-        status = 'En revision'
+        status = 'En revision',
+        firstEvaluation = FALSE,
+        reevaluation = reevaluation + 1
+
     WHERE projectId = p_projectId;
 
     -- Reemplazar secciones si son enviadas
