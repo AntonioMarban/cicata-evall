@@ -123,7 +123,7 @@ const groupDeliverables = (deliverables) => {
 
         if (!group) return;
 
-        const key = item.deliverableId;
+        const key = item.id;
 
         if (!grouped[group].has(key)) {
             grouped[group].set(key, {
