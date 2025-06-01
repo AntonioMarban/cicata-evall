@@ -73,7 +73,7 @@ const Members = ({members ,investigator}) => {
                         <p className='participant-tag'>Nivel</p>
                     </div>
                     <div className='participant-tag-data'>
-                        <p>SNI - {investigator.levelSNI}</p>  
+                        <p>SNII - {investigator.levelSNI}</p>  
                     </div>              
                     <div className='participant-tag-data'>
                         <p>COFFA - {investigator.levelCOFFA}</p>  
@@ -179,14 +179,22 @@ const Members = ({members ,investigator}) => {
                             <p>{member.academicDegree}</p>
                         </div>
                     </div>
+                    {member.positionWork != "Estudiante" && (
                     <div className='participant-institution-inner'>
                         <div>
                             <p className='participant-tag'>Nivel</p>
                         </div>
                         <div className='participant-tag-data'>
-                            <p>{member.levelName} - {member.levelNum}</p>
-                        </div>                        
+                            <p>SNII - {member.levelSNI}</p>  
+                        </div>              
+                        <div className='participant-tag-data'>
+                            <p>COFFA - {member.levelCOFFA}</p>  
+                        </div>    
+                        <div className='participant-tag-data'>
+                            <p>EDI -{member.levelEDI}</p>  
+                        </div>                          
                     </div>
+                    )}
                 </div>
                 <div className='participant-data'>
                     <div className='participant-data-subname'>

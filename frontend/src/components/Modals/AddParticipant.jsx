@@ -109,8 +109,9 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             delete newErrorsF["researchNetworkName"]
         }
         if (participant.positionWork == "Estudiante"){
-            delete newErrorsF["levelNum"]
-            delete newErrorsF["levelName"]
+            delete newErrorsF["levelNumCOFFA"]
+            delete newErrorsF["levelNumEDI"]
+            delete newErrorsF["levelNumSNI"]
         }
         if (participant.positionWork != "Estudiante"){
             delete newErrorsF["tutorName"]
@@ -286,7 +287,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             <>
                             <div className="participant-form-rows">
                                 <div className="participant-button-degree">
-                                    <p>Investigador SNI
+                                    <p>Investigador SNII
                                     </p>
                                     <select name="levelNumSNI" 
                                         value={participant.levelNumSNI}

@@ -46,6 +46,7 @@
 .table-form-body tr td{
     border: 1px solid black;
     text-align: center;
+        padding: 5px;
 }
 
 .second-table-form-header{
@@ -130,6 +131,10 @@
 .participant-tag{
     font-weight: 600;
     padding: 10px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
 }
 .participant-tag-title{
     font-weight: 600;
@@ -277,8 +282,9 @@ td {
 .text-soli{
     margin-top: 20px;
     text-align: center;
-    width: 50%;
+    width: 90%;
     font-weight: 600;
+    margin-bottom: 20px;
 }
 .table-form-title-bold td{
     font-weight: 600;
@@ -286,5 +292,8 @@ td {
 @media print {
     .div-button {
       display: none !important;
+    }
+    .files-no-print{
+        display: none !important;
     }
 }
