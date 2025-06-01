@@ -73,7 +73,7 @@ const Members = ({members ,investigator}) => {
                         <p className='participant-tag'>Nivel</p>
                     </div>
                     <div className='participant-tag-data'>
-                        <p>SNII - {investigator.levelSNI}</p>  
+                        <p>SNII - {investigator.levelSNII}</p>  
                     </div>              
                     <div className='participant-tag-data'>
                         <p>COFFA - {investigator.levelCOFFA}</p>  
@@ -185,7 +185,7 @@ const Members = ({members ,investigator}) => {
                             <p className='participant-tag'>Nivel</p>
                         </div>
                         <div className='participant-tag-data'>
-                            <p>SNII - {member.levelSNI}</p>  
+                            <p>SNII - {member.levelSNII}</p>  
                         </div>              
                         <div className='participant-tag-data'>
                             <p>COFFA - {member.levelCOFFA}</p>  

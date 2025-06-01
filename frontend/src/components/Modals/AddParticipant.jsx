@@ -14,7 +14,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         positionWork: "",
         academicDegree: "",
         tutorName: "",
-        levelNumSNI: "",
+        levelNumSNII: "",
         levelNumCOFFA: "",
         levelNumEDI: "",
         email: "",
@@ -36,7 +36,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
     } 
     const [newErrors,setNewErrors] =  useState(ArrayNewErrors);
     const [participant, setParticipant] = useState(initialParticipant);
-    const [levelSNI, setLevelSNI] = useState(["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]);
+    const [levelSNII, setLevelSNII] = useState(["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]);
     const [levelCOFFA, setLevelCOFFA] = useState(["I", "II", "IV", "V"]);
     const [levelEDI, setLevelEDI] = useState(["Candidato", "I", "II", "III", "Emerito"]);
     const memberType = ["Investigador","Investigador post doctoral","Estudiante"]
@@ -111,7 +111,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         if (participant.positionWork == "Estudiante"){
             delete newErrorsF["levelNumCOFFA"]
             delete newErrorsF["levelNumEDI"]
-            delete newErrorsF["levelNumSNI"]
+            delete newErrorsF["levelNumSNII"]
         }
         if (participant.positionWork != "Estudiante"){
             delete newErrorsF["tutorName"]
@@ -137,7 +137,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                 ...prev,
                 levelNumCOFFA: "",
                 levelNumEDI: "",
-                levelNumSNI: "",
+                levelNumSNII: "",
                 researchNetwork: 0
 
             })
@@ -289,11 +289,11 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                 <div className="participant-button-degree">
                                     <p>Investigador SNII
                                     </p>
-                                    <select name="levelNumSNI" 
-                                        value={participant.levelNumSNI}
+                                    <select name="levelNumSNII" 
+                                        value={participant.levelNumSNII}
                                         onChange={handleInputChange}>
                                         <option value="" disabled>Selecciona una opción</option>
-                                        {Array.isArray(levelSNI) && levelSNI.map((name, index) => (
+                                        {Array.isArray(levelSNII) && levelSNII.map((name, index) => (
                                             <option key={index} value={name}>{name}</option>
                                         ))}
                                     </select>

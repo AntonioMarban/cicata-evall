@@ -245,7 +245,7 @@ const getCommitteeMember = (req, res) => {
   @param researchNetwork: Red de investigación del usuario
   @param researchNetworkName: Nombre de la red de investigación del usuario
   @param academicDegree: Grado académico del usuario
-  @param levelNumSNII: Nivel SNI del usuario
+  @param levelNumSNII: Nivel SNII del usuario
   @param levelNumCOFFA: Nivel COFFA del usuario
   @param levelNumEDI: Nivel EDI del usuario
   @returns: Mensaje de éxito o error
@@ -317,7 +317,7 @@ const createCommitteeMember = (req, res) => {
   @param researchNetwork: Red de investigación del usuario
   @param researchNetworkName: Nombre de la red de investigación del usuario
   @param academicDegree: Grado académico del usuario
-  @param levelNumSNII: Nivel SNI del usuario
+  @param levelNumSNII: Nivel SNII del usuario
   @param levelNumCOFFA: Nivel COFFA del usuario
   @param levelNumEDI: Nivel EDI del usuario
   @returns: Mensaje de éxito o error

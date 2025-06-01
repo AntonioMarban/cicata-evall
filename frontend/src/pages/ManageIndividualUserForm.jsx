@@ -126,7 +126,7 @@ const ManageIndividualUserForm = () => {
                 setIsInResearchNetwork(data.researchNetwork === 1);
                 setResearchNetworkName(data.researchNetworkName || "");
                 setAcademicDegree(data.academicDegree || "");
-                setLevelNumSNI(data.levelNumSNI || "");
+                setLevelNumSNII(data.levelNumSNII || "");
                 setLevelNumCOFFA(data.levelNumCOFFA || "");
                 setLevelNumEDI(data.levelNumEDI || "");
 
@@ -163,7 +163,7 @@ const ManageIndividualUserForm = () => {
             researchNetwork: isInResearchNetwork ? 1 : 0,
             researchNetworkName: isInResearchNetwork ? researchNetworkName : "",
             academicDegree,
-            levelNumSNI,
+            levelNumSNII,
             levelNumCOFFA,
             levelNumEDI
         };
@@ -229,7 +229,7 @@ const ManageIndividualUserForm = () => {
             researchNetwork: isInResearchNetwork ? 1 : 0,
             researchNetworkName: isInResearchNetwork ? researchNetworkName : "",
             academicDegree,
-            levelNumSNI,
+            levelNumSNII,
             levelNumCOFFA,
             levelNumEDI
         }
@@ -272,7 +272,7 @@ const ManageIndividualUserForm = () => {
     const [isInResearchNetwork, setIsInResearchNetwork] = useState(null);
     const [researchNetworkName, setResearchNetworkName] = useState("");
     const [academicDegree, setAcademicDegree] = useState("");
-    const [levelNumSNI, setLevelNumSNI] = useState("");
+    const [levelNumSNII, setLevelNumSNII] = useState("");
     const [levelNumCOFFA, setLevelNumCOFFA] = useState("");
     const [levelNumEDI, setLevelNumEDI] = useState("");
 
@@ -456,15 +456,15 @@ const ManageIndividualUserForm = () => {
                         </div>
 
                         <div id="userLevel" className="flex flex-row items-center mb-6 flex-wrap justify-start items-start">
-                            {userSelectInput("Nivel SNII", "levelNumSNI", [
+                            {userSelectInput("Nivel SNII", "levelNumSNII", [
                                 { value: "Candidato", label: "Candidato" },
                                 { value: "I", label: "I" },
                                 { value: "II", label: "II" },
                                 { value: "III", label: "III" },
                                 { value: "Emérito", label: "Emérito" }
-                            ], levelNumSNI,
-                            (val) => handleFieldChange("levelNumSNI", val, setLevelNumSNI),
-                            errors.levelNumSNI)}
+                            ], levelNumSNII,
+                            (val) => handleFieldChange("levelNumSNII", val, setLevelNumSNII),
+                            errors.levelNumSNII)}
 
                             {userSelectInput("Nivel COFFA", "levelNumCOFFA", [
                                 { value: "I", label: "I" },

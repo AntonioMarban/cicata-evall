@@ -125,7 +125,7 @@ const getUser = async (req, res) => {
   @param researchNetwork: Red de investigación del usuario
   @param researchNetworkName: Nombre de la red de investigación del usuario
   @param academicDegree: Grado académico del usuario
-  @param levelNumSNII: Nivel del SNI del usuario
+  @param levelNumSNII: Nivel del SNII del usuario
   @param levelNumCOFFA: Nivel del COFFA del usuario
   @param levelNumEDI: Nivel del EDI del usuario
   @return message: Mensaje de éxito o error
