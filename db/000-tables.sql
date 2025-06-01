@@ -24,8 +24,9 @@ CREATE TABLE `users` (
   `researchNetwork` bool,
   `researchNetworkName` varchar(50),
   `academicDegree` varchar(50),
-  `levelName` varchar(50),
-  `levelNum` integer,
+  `levelNumSNI` varchar(50),
+  `levelNumCOFFA` varchar(50),
+  `levelNumEDI` varchar(50),
   `userType_id` integer,
   `active` bool default true
 );

@@ -56,12 +56,13 @@ const createUser = async (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum,
+    levelNumSNI,
+    levelNumCOFFA,
+    levelNumEDI,
     userType_id,
   } = req.body;
 
-  const query = "CALL createUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const query = "CALL createUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     fName,
     lastName1,
@@ -74,8 +75,9 @@ const createUser = async (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum,
+    levelNumSNI,
+    levelNumCOFFA,
+    levelNumEDI,
     userType_id,
   ];
 
@@ -141,11 +143,12 @@ const updateUser = async (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum,
+    levelNumSNI,
+    levelNumCOFFA,
+    levelNumEDI
   } = req.body;
   const query =
-    "CALL updateUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "CALL updateUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     userId,
     fName,
@@ -159,8 +162,9 @@ const updateUser = async (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum,
+    levelNumSNI,
+    levelNumCOFFA,
+    levelNumEDI
   ];
   pool.query(query, values, (error, results) => {
     if (error) {

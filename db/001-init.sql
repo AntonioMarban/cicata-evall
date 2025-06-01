@@ -1352,12 +1352,14 @@ BEGIN
         u.researchNetwork,
         u.researchNetworkName,
         u.academicDegree,
-        u.levelName,
-        u.levelNum
+        u.levelNumSNI,
+        u.levelNumCOFFA,
+        u.levelNumEDI
     FROM users u
     JOIN committeeUsers cu ON u.userId = cu.userId
     WHERE cu.committeeId = p_committeeId AND u.userId = p_memberId AND u.userType_id = 5;
 END //
+
 DELIMITER ;
 
 -- Función para crear un nuevo integrante de comité
@@ -1381,8 +1383,9 @@ CREATE PROCEDURE createCommitteeMember(
     IN p_researchNetwork BOOLEAN,
     IN p_researchNetworkName varchar(50),
     IN p_academicDegree varchar(50),
-    IN p_levelName varchar(50),
-    IN p_levelNum INT
+    IN p_levelNumSNI varchar(50),
+    IN p_levelNumCOFFA varchar(50),
+    IN p_levelNumEDI varchar(50)
 )
 BEGIN
     DECLARE newUserId INT;
@@ -1406,8 +1409,9 @@ BEGIN
             researchNetwork,
             researchNetworkName,
             academicDegree,
-            levelName,
-            levelNum,
+            levelNumSNI,
+            levelNumCOFFA,
+            levelNumEDI,
             userType_id
         ) VALUES (
             p_fName,
@@ -1421,8 +1425,9 @@ BEGIN
             p_researchNetwork,
             p_researchNetworkName,
             p_academicDegree,
-            p_levelName,
-            p_levelNum,
+            p_levelNumSNI,
+            p_levelNumCOFFA,
+            p_levelNumEDI,
             5
         );
 
@@ -1434,7 +1439,6 @@ BEGIN
 
 END //
 DELIMITER ;
-
 
 DELIMITER //
 CREATE PROCEDURE updateCommitteeMember(
@@ -1453,8 +1457,9 @@ CREATE PROCEDURE updateCommitteeMember(
     IN p_researchNetwork BOOLEAN,
     IN p_researchNetworkName VARCHAR(50),
     IN p_academicDegree VARCHAR(50),
-    IN p_levelName VARCHAR(50),
-    IN p_levelNum INT
+    IN p_levelNumSNI VARCHAR(50),
+    IN p_levelNumCOFFA VARCHAR(50),
+    IN p_levelNumEDI VARCHAR(50)
 )
 BEGIN
     -- Validar que el usuario pertenece al comité
@@ -1519,12 +1524,16 @@ BEGIN
         UPDATE users SET academicDegree = p_academicDegree WHERE userId = p_memberId;
     END IF;
 
-    IF p_levelName IS NOT NULL THEN
-        UPDATE users SET levelName = p_levelName WHERE userId = p_memberId;
+    IF p_levelNumSNI IS NOT NULL THEN
+        UPDATE users SET levelNumSNI = p_levelNumSNI WHERE userId = p_memberId;
     END IF;
 
-    IF p_levelNum IS NOT NULL THEN
-        UPDATE users SET levelNum = p_levelNum WHERE userId = p_memberId;
+    IF p_levelNumCOFFA IS NOT NULL THEN
+        UPDATE users SET levelNumCOFFA = p_levelNumCOFFA WHERE userId = p_memberId;
+    END IF;
+
+    IF p_levelNumEDI IS NOT NULL THEN
+        UPDATE users SET levelNumEDI = p_levelNumEDI WHERE userId = p_memberId;
     END IF;
 END //
 DELIMITER ;
@@ -1591,7 +1600,7 @@ BEGIN
     LIMIT 1;
     RETURN v_secretaryId;
 END //
-    DELIMITER ;
+DELIMITER ;
 
 -- Función para crear un nuevo usuario
 -- @param fName: Nombre del usuario
@@ -1621,8 +1630,9 @@ CREATE PROCEDURE createUser (
   IN p_researchNetwork BOOLEAN,
   IN p_researchNetworkName VARCHAR(50),
   IN p_academicDegree VARCHAR(50),
-  IN p_levelName VARCHAR(50),
-  IN p_levelNum INT,
+    IN p_levelNumSNI VARCHAR(50),
+    IN p_levelNumCOFFA VARCHAR(50),
+    IN p_levelNumEDI VARCHAR(50),
   IN p_userType_id INT
 )
 BEGIN
@@ -1638,8 +1648,9 @@ BEGIN
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum,
+    levelNumSNI,
+    levelNumCOFFA,
+    levelNumEDI,
     userType_id
   ) VALUES (
     p_fName,
@@ -1653,8 +1664,9 @@ BEGIN
     p_researchNetwork,
     p_researchNetworkName,
     p_academicDegree,
-    p_levelName,
-    p_levelNum,
+    p_levelNumSNI,
+    p_levelNumCOFFA,
+    p_levelNumEDI,
     p_userType_id
   );
 END //
@@ -1693,8 +1705,9 @@ BEGIN
         u.researchNetwork,
         u.researchNetworkName,
         u.academicDegree,
-        u.levelName,
-        u.levelNum
+        u.levelNumSNI,
+        u.levelNumCOFFA,
+        u.levelNumEDI
     FROM users u
     WHERE userId = p_userId;
 END //
@@ -1730,8 +1743,9 @@ CREATE PROCEDURE updateUser (
   IN p_researchNetwork BOOLEAN,
   IN p_researchNetworkName VARCHAR(50),
   IN p_academicDegree VARCHAR(50),
-  IN p_levelName VARCHAR(50),
-  IN p_levelNum INT
+  IN p_levelNumSNI VARCHAR(50),
+  IN p_levelNumCOFFA VARCHAR(50),
+    IN p_levelNumEDI VARCHAR(50)
 )
 BEGIN
     IF NOT EXISTS (
@@ -1786,15 +1800,19 @@ BEGIN
         UPDATE users SET academicDegree = p_academicDegree WHERE userId = p_userId;
     END IF;
 
-    IF p_levelName IS NOT NULL THEN
-        UPDATE users SET levelName = p_levelName WHERE userId = p_userId;
+    IF p_levelNumSNI IS NOT NULL THEN
+        UPDATE users SET levelNumSNI = p_levelNumSNI WHERE userId = p_userId;
     END IF;
 
-    IF p_levelNum IS NOT NULL THEN
-        UPDATE users SET levelNum = p_levelNum WHERE userId = p_userId;
+    IF p_levelNumCOFFA IS NOT NULL THEN
+        UPDATE users SET levelNumCOFFA = p_levelNumCOFFA WHERE userId = p_userId;
+    END IF;
+
+    IF p_levelNumEDI IS NOT NULL THEN
+        UPDATE users SET levelNumEDI = p_levelNumEDI WHERE userId = p_userId;
     END IF;
 END //
-
+DELIMITER ;
 -- Función para simular la eliminación de un usuario
 -- modificando su estado a inactivo
 -- @param userId: Id del usuario
