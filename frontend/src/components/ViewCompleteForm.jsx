@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import "../styles/viewcompleteforms.css"
 import ViewGeneralData from './ViewForm/GeneralData';
 import Members from './ViewForm/Members';
@@ -15,6 +15,8 @@ import Budget from './ViewForm/Budget'
 import { useLocation  } from 'react-router-dom'
 import Files from './ViewForm/Files';
 import Annexes from './ViewForm/Annexes';
+
+
 const ViewCompleteForms = () => {  
     const { state } = useLocation();
     const id = state?.projectId
@@ -150,7 +152,9 @@ const ViewCompleteForms = () => {
 
             <h1>12. ANEXOS</h1>
             <Annexes Annexes={completeForm.idf33.aditionalComments}/>
-            <Files files={files}/> 
+            <div className='files-no-print'>
+                <Files files={files}/> 
+            </div>  
         </div>
         )
         :
