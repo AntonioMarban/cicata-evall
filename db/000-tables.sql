@@ -147,7 +147,7 @@ CREATE TABLE `members` (
   `researchNetwork` bool,
   `researchNetworkName` varchar(50),
   `academicDegree` varchar(50),
-  `levelNumSNI` varchar(50),
+  `levelNumSNII` varchar(50),
   `levelNumCOFFA` varchar(50),
   `levelNumEDI` varchar(50),
   `tutorName` varchar(100),

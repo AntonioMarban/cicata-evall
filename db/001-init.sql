@@ -256,7 +256,7 @@ BEGIN
     WHILE i < total DO
         INSERT INTO members (
             fName, lastName1, lastName2, email, phone, institution, positionWork, researchNetwork, researchNetworkName,
-            academicDegree, levelNumSNI, levelNumCOFFA, levelNumEDI, tutorName, project_id
+            academicDegree, levelNumSNII, levelNumCOFFA, levelNumEDI, tutorName, project_id
         )
         VALUES (
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].fName'))),
@@ -269,7 +269,7 @@ BEGIN
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetwork'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetworkName'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].academicDegree'))),
-            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumSNI'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumSNII'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumCOFFA'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumEDI'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].tutorName'))),
@@ -516,7 +516,7 @@ BEGIN
     -- members
     SELECT
         fName, lastName1, lastName2, email, phone, institution, positionWork, researchNetwork,
-        researchNetworkName, academicDegree, levelNumSNI, levelNumCOFFA, levelNumEDI, tutorName
+        researchNetworkName, academicDegree, levelNumSNII, levelNumCOFFA, levelNumEDI, tutorName
     FROM members
     WHERE project_id = p_projectId;
 
@@ -768,7 +768,7 @@ BEGIN
         WHILE i < total DO
             INSERT INTO members (
                 fName, lastName1, lastName2, email, phone, institution, positionWork, researchNetwork, researchNetworkName,
-                academicDegree, levelNumSNI, levelNumCOFFA, levelNumEDI, tutorName, project_id
+                academicDegree, levelNumSNII, levelNumCOFFA, levelNumEDI, tutorName, project_id
             )
             VALUES (
                 JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].fName'))),
@@ -781,7 +781,7 @@ BEGIN
                 JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetwork'))),
                 JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetworkName'))),
                 JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].academicDegree'))),
-                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumSNI'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumSNII'))),
                 JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumCOFFA'))),
                 JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumEDI'))),
                 JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].tutorName'))),

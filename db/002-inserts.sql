@@ -538,7 +538,7 @@ INSERT INTO budgetTypes (type_name, budgetSectionId) VALUES
 
 
 -- members
-INSERT INTO members (fName, lastName1, lastName2, email, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelNumSNI, levelNumCOFFA, levelNumEDI, tutorName, project_id)
+INSERT INTO members (fName, lastName1, lastName2, email, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelNumSNII, levelNumCOFFA, levelNumEDI, tutorName, project_id)
 VALUES 
 ('Carlos', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', '0', '0', '0', 'Ana Pérez', 1),
 ('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', '0', '0', '0', 'Ana Pérez', 2),
