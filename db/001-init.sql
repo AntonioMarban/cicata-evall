@@ -1352,7 +1352,7 @@ BEGIN
         u.researchNetwork,
         u.researchNetworkName,
         u.academicDegree,
-        u.levelNumSNI,
+        u.levelNumSNII,
         u.levelNumCOFFA,
         u.levelNumEDI
     FROM users u
@@ -1383,7 +1383,7 @@ CREATE PROCEDURE createCommitteeMember(
     IN p_researchNetwork BOOLEAN,
     IN p_researchNetworkName varchar(50),
     IN p_academicDegree varchar(50),
-    IN p_levelNumSNI varchar(50),
+    IN p_levelNumSNII varchar(50),
     IN p_levelNumCOFFA varchar(50),
     IN p_levelNumEDI varchar(50)
 )
@@ -1409,7 +1409,7 @@ BEGIN
             researchNetwork,
             researchNetworkName,
             academicDegree,
-            levelNumSNI,
+            levelNumSNII,
             levelNumCOFFA,
             levelNumEDI,
             userType_id
@@ -1425,7 +1425,7 @@ BEGIN
             p_researchNetwork,
             p_researchNetworkName,
             p_academicDegree,
-            p_levelNumSNI,
+            p_levelNumSNII,
             p_levelNumCOFFA,
             p_levelNumEDI,
             5
@@ -1457,7 +1457,7 @@ CREATE PROCEDURE updateCommitteeMember(
     IN p_researchNetwork BOOLEAN,
     IN p_researchNetworkName VARCHAR(50),
     IN p_academicDegree VARCHAR(50),
-    IN p_levelNumSNI VARCHAR(50),
+    IN p_levelNumSNII VARCHAR(50),
     IN p_levelNumCOFFA VARCHAR(50),
     IN p_levelNumEDI VARCHAR(50)
 )
@@ -1524,8 +1524,8 @@ BEGIN
         UPDATE users SET academicDegree = p_academicDegree WHERE userId = p_memberId;
     END IF;
 
-    IF p_levelNumSNI IS NOT NULL THEN
-        UPDATE users SET levelNumSNI = p_levelNumSNI WHERE userId = p_memberId;
+    IF p_levelNumSNII IS NOT NULL THEN
+        UPDATE users SET levelNumSNII = p_levelNumSNII WHERE userId = p_memberId;
     END IF;
 
     IF p_levelNumCOFFA IS NOT NULL THEN
@@ -1630,7 +1630,7 @@ CREATE PROCEDURE createUser (
   IN p_researchNetwork BOOLEAN,
   IN p_researchNetworkName VARCHAR(50),
   IN p_academicDegree VARCHAR(50),
-    IN p_levelNumSNI VARCHAR(50),
+    IN p_levelNumSNII VARCHAR(50),
     IN p_levelNumCOFFA VARCHAR(50),
     IN p_levelNumEDI VARCHAR(50),
   IN p_userType_id INT
@@ -1648,7 +1648,7 @@ BEGIN
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelNumSNI,
+    levelNumSNII,
     levelNumCOFFA,
     levelNumEDI,
     userType_id
@@ -1664,7 +1664,7 @@ BEGIN
     p_researchNetwork,
     p_researchNetworkName,
     p_academicDegree,
-    p_levelNumSNI,
+    p_levelNumSNII,
     p_levelNumCOFFA,
     p_levelNumEDI,
     p_userType_id
@@ -1705,7 +1705,7 @@ BEGIN
         u.researchNetwork,
         u.researchNetworkName,
         u.academicDegree,
-        u.levelNumSNI,
+        u.levelNumSNII,
         u.levelNumCOFFA,
         u.levelNumEDI
     FROM users u
@@ -1743,7 +1743,7 @@ CREATE PROCEDURE updateUser (
   IN p_researchNetwork BOOLEAN,
   IN p_researchNetworkName VARCHAR(50),
   IN p_academicDegree VARCHAR(50),
-  IN p_levelNumSNI VARCHAR(50),
+  IN p_levelNumSNII VARCHAR(50),
   IN p_levelNumCOFFA VARCHAR(50),
     IN p_levelNumEDI VARCHAR(50)
 )
@@ -1800,8 +1800,8 @@ BEGIN
         UPDATE users SET academicDegree = p_academicDegree WHERE userId = p_userId;
     END IF;
 
-    IF p_levelNumSNI IS NOT NULL THEN
-        UPDATE users SET levelNumSNI = p_levelNumSNI WHERE userId = p_userId;
+    IF p_levelNumSNII IS NOT NULL THEN
+        UPDATE users SET levelNumSNII = p_levelNumSNII WHERE userId = p_userId;
     END IF;
 
     IF p_levelNumCOFFA IS NOT NULL THEN

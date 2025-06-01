@@ -56,7 +56,7 @@ const createUser = async (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelNumSNI,
+    levelNumSNII,
     levelNumCOFFA,
     levelNumEDI,
     userType_id,
@@ -75,7 +75,7 @@ const createUser = async (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelNumSNI,
+    levelNumSNII,
     levelNumCOFFA,
     levelNumEDI,
     userType_id,
@@ -125,8 +125,9 @@ const getUser = async (req, res) => {
   @param researchNetwork: Red de investigación del usuario
   @param researchNetworkName: Nombre de la red de investigación del usuario
   @param academicDegree: Grado académico del usuario
-  @param levelName: Nombre del nivel del usuario
-  @param levelNum: Número del nivel del usuario
+  @param levelNumSNII: Nivel del SNI del usuario
+  @param levelNumCOFFA: Nivel del COFFA del usuario
+  @param levelNumEDI: Nivel del EDI del usuario
   @return message: Mensaje de éxito o error
 */
 const updateUser = async (req, res) => {
@@ -143,7 +144,7 @@ const updateUser = async (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelNumSNI,
+    levelNumSNII,
     levelNumCOFFA,
     levelNumEDI
   } = req.body;
@@ -162,7 +163,7 @@ const updateUser = async (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelNumSNI,
+    levelNumSNII,
     levelNumCOFFA,
     levelNumEDI
   ];

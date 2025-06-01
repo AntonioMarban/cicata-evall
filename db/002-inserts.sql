@@ -13,7 +13,7 @@ VALUES
 ;
 
 -- =============== INSERTS USERS ===============
-INSERT INTO users (fName, lastName1, lastName2, email, password, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelNumSNI, levelNumCOFFA, levelNumEDI, userType_id)
+INSERT INTO users (fName, lastName1, lastName2, email, password, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelNumSNII, levelNumCOFFA, levelNumEDI, userType_id)
 VALUES 
 -- Usuarios de tipo investigador con Id 1 y 2
 ('Luis', 'Navarro', 'Vivas','investigador1@gmail.com', SHA2('investigador', 256), 'IPN', 'Blood Spatter', TRUE, 'Forensics', 'Licenciatura', "II", "I", "II", 1),
@@ -56,7 +56,7 @@ VALUES
 -- Usuario de tipo integrante de comité con Id 18
 ('Lucía', 'Ramírez', 'Díaz', 'integranteCICUAL@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', "II", "I", "II", 5);
 
-INSERT INTO users (fName, lastName1, lastName2, email, password, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelNumSNI, levelNumCOFFA, levelNumEDI, userType_id, active)
+INSERT INTO users (fName, lastName1, lastName2, email, password, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelNumSNII, levelNumCOFFA, levelNumEDI, userType_id, active)
 -- Usuario de tipo integrante de comité con Id 19, usuario inactivo
 VALUES
 ('Rodolfo', 'Chávez', 'Pérez', 'integrante2CIQUAL@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', "II", "I", "II", 5, FALSE);
