@@ -14,6 +14,7 @@
 
     #project-dictum {
         font-size: 9pt;
+        padding: 2.5rem 0;
     }
 
     .text-small {
@@ -22,5 +23,49 @@
 
     .text-tiny {
         font-size: 6pt;
+    }
+
+    /* Fix header on top of every printed page */
+    .dictum-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 2.5rem 2.5rem 0 2.5rem;
+        z-index: 10;
+    }
+
+    .dictum-header-spacer {
+        height: 250px;
+    }
+
+    .dictum-header-spacer2 {
+        height: 290px;
+    }
+
+    .dictum-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0 2.5rem 2.5rem 2.5rem;
+        z-index: 10;
+    }
+
+    .page-break {
+        page-break-before: always;
+        break-before: page;
+    }
+
+    .dictum-footer-spacer {
+        height: 100px;
+    }
+
+    .second-page-spacer {
+        height: 300px;
+    }
+
+    .farewell-text {
+        padding-top: 400px;
     }
 }

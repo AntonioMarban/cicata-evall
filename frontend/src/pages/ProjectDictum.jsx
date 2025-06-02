@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import DictumApprovedBody from "../components/ProjectDictum/DictumApprovedBody";
 import DictumSecondPage from "../components/ProjectDictum/DictumSecondPage";
 import DictumFooter from "../components/ProjectDictum/DictumFooter";
+import DictumAddress from "../components/ProjectDictum/DictumAddress";
 
 export default function ProjectDictum() {
   const projectId = 3; //TODO: CAMBIAR POR STATE
@@ -39,28 +40,41 @@ export default function ProjectDictum() {
         <div id="project-dictum" className="flex flex-col p-10! min-h-screen noto-sans">
         {dictumData ? (
             <>
-            <div className="header-print">
-                <DictumHeader
-                    folio={dictumData.dictumFolio}
-                    projectId={dictumData.projectFolio}
+                <div className="dictum-header">
+                    <DictumHeader
+                        folio={dictumData.dictumFolio}
+                        projectId={dictumData.projectFolio}
+                    />
+                </div>
+                <div className="dictum-header-spacer"></div>
+                <DictumAddress 
                     projectOwner={dictumData.projectOwner}
                     projectOwnerAcademicDegree={dictumData.projectOwnerAcademicDegree}
                     authorizationDate={dictumData.authorizationDate}
                 />
-            </div>
-            {dictumData.decision === "Aprobado" &&
-            <DictumApprovedBody
-                projectTitle={dictumData.projectTitle}
-                projectFolio={dictumData.projectFolio}
-            />
-            }
-            <DictumSecondPage
-                authorizerName={dictumData.authorizerName}
-                authorizerAcademicDegree={dictumData.authorizerAcademicDegree}
-                authorizerPositionWork={dictumData.authorizerPositionWork}
-                authorizerInstitution={dictumData.authorizerInstitution}
-            />
-            <DictumFooter />
+                {dictumData.decision === "Aprobado" &&
+                <DictumApprovedBody
+                    projectTitle={dictumData.projectTitle}
+                    projectFolio={dictumData.projectFolio}
+                />
+                }
+                <div className="page-break" />
+                <div className="dictum-header">
+                    <DictumHeader
+                        folio={dictumData.dictumFolio}
+                        projectId={dictumData.projectFolio}
+                    />
+                </div>
+                <div className="dictum-header-spacer2"></div>
+                <DictumSecondPage
+                    authorizerName={dictumData.authorizerName}
+                    authorizerAcademicDegree={dictumData.authorizerAcademicDegree}
+                    authorizerPositionWork={dictumData.authorizerPositionWork}
+                    authorizerInstitution={dictumData.authorizerInstitution}
+                />
+                <div className="dictum-footer">
+                    <DictumFooter />
+                </div>
             </>
         ) : (
             <p className="text-center text-gray-500 p-10!">Cargando dictamen...</p>
