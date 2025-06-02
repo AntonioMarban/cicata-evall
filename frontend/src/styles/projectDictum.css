@@ -6,6 +6,10 @@
     font-size: 10pt;
 }
 
+.header-second-page {
+    display: none;
+}
+
 @media print {
     @page {
         size: Letter;
@@ -25,7 +29,6 @@
         font-size: 6pt;
     }
 
-    /* Fix header on top of every printed page */
     .dictum-header {
         position: fixed;
         top: 0;
@@ -41,6 +44,11 @@
 
     .dictum-header-spacer2 {
         height: 290px;
+    }
+
+    .header-second-page {
+        display: block;
+        position: fixed;
     }
 
     .dictum-footer {

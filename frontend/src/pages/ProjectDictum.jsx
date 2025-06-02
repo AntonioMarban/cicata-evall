@@ -59,13 +59,15 @@ export default function ProjectDictum() {
                 />
                 }
                 <div className="page-break" />
-                <div className="dictum-header">
+
+                <div className="dictum-header header-second-page">
                     <DictumHeader
                         folio={dictumData.dictumFolio}
                         projectId={dictumData.projectFolio}
                     />
                 </div>
                 <div className="dictum-header-spacer2"></div>
+                
                 <DictumSecondPage
                     authorizerName={dictumData.authorizerName}
                     authorizerAcademicDegree={dictumData.authorizerAcademicDegree}
