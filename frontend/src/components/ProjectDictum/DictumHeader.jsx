@@ -1,6 +1,4 @@
 export default function DictumHeader({ folio, projectId, projectOwner, projectOwnerAcademicDegree, authorizationDate }) {
-    
-    // Formatear fecha a formato "02 de abril de 2025"
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -26,7 +24,7 @@ export default function DictumHeader({ folio, projectId, projectOwner, projectOw
                 className="max-w-[20%] h-auto object-contain"
             />
         </div>
-        <div id="dictum-header-text" className="flex flex-col justify-between mt-10!">
+        <div id="dictum-header-text" className="flex flex-col justify-between mt-5!">
             <div className="flex justify-between gap-2 items-end">
                 <div className="flex flex-col items-start w-[45%]">
                     <p className="font-bold">Folio</p>
@@ -38,7 +36,7 @@ export default function DictumHeader({ folio, projectId, projectOwner, projectOw
                 </div>
             </div>
 
-            <div className="flex justify-between gap-2 items-start mt-10!">
+            <div className="flex justify-between gap-2 items-start mt-5!">
                 <div className="flex flex-col items-start w-[45%]">
                     <p className="font-bold">Asunto</p>
                     <p>Dictamen global de proyecto {projectId}</p>
@@ -52,7 +50,7 @@ export default function DictumHeader({ folio, projectId, projectOwner, projectOw
                 </div>
             </div>
 
-            <div className="flex justify-between gap-2 items-start mt-10!">
+            <div className="flex justify-between gap-2 items-start mt-5!">
                 <div className="flex flex-col items-start font-bold w-[45%]">
                     <p>{projectOwner}, {projectOwnerAcademicDegree}</p>
                     <p>Investigador(a) Titular</p>
