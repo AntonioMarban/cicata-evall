@@ -20,17 +20,17 @@ export default function DictumHeader({ folio, projectId, projectOwner, projectOw
             />
             <img
                 src="src/assets/dictums/imagen-mujer-b&n.png"
-                alt="Dictum Header 2"
-                className="max-w-[20%] h-auto object-contain"
+                alt="Imagen de mujer en blanco y negro"
+                className="max-w-[15%] h-auto object-contain"
             />
         </div>
-        <div id="dictum-header-text" className="flex flex-col justify-between mt-5!">
+        <div id="dictum-header-text" className="flex flex-col justify-between mt-5! text-xs">
             <div className="flex justify-between gap-2 items-end">
                 <div className="flex flex-col items-start w-[45%]">
                     <p className="font-bold">Folio</p>
                     <p>{folio} ASDASD</p>
                 </div>
-                <div className="flex flex-col items-end justify-end font-bold w-[45%] text-right text-sm gap-2">
+                <div className="flex flex-col items-end justify-end font-bold w-[45%] text-right gap-2">
                     <p>Centro de Investigación en Ciencia Aplicada y Tecnología Avanzada Unidad Morelos</p>
                     <p>Subdirección de Investigación Científica e Innovación Tecnológica</p>
                 </div>

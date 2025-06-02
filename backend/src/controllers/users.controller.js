@@ -173,6 +173,8 @@ const getDictum = (req, res) => {
             authorizationDate: results[0][0].authorizationDate,
             authorizerAcademicDegree: results[0][0].authorizerAcademicDegree,
             authorizerName: results[0][0].authorizerName,
+            authorizerPositionWork: results[0][0].authorizerPositionWork,
+            authorizerInstitution: results[0][0].authorizerInstitution,
             projectFolio: results[1][0].projectFolio,
             projectTitle: results[1][0].projectTitle,
             projectOwnerAcademicDegree: results[1][0].projectOwnerAcademicDegree,

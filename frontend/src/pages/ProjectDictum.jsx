@@ -2,6 +2,8 @@ import "../styles/projectdictum.css";
 import DictumHeader from "../components/ProjectDictum/DictumHeader";
 import { useEffect, useState } from "react";
 import DictumApprovedBody from "../components/ProjectDictum/DictumApprovedBody";
+import DictumSecondPage from "../components/ProjectDictum/DictumSecondPage";
+import DictumFooter from "../components/ProjectDictum/DictumFooter";
 
 export default function ProjectDictum() {
   const projectId = 3; //TODO: CAMBIAR POR STATE
@@ -23,7 +25,9 @@ export default function ProjectDictum() {
     };
 
     fetchDictum();
-  }, []);
+  }, [ apiUrl, projectId ]);
+
+  console.log("Dictum Data:", dictumData);
 
   return (
     <div id="project-dictum" className="flex flex-col p-10! min-h-screen noto-sans">
@@ -42,6 +46,13 @@ export default function ProjectDictum() {
             projectFolio={dictumData.projectFolio}
           />
           }
+          <DictumSecondPage
+            authorizerName={dictumData.authorizerName}
+            authorizerAcademicDegree={dictumData.authorizerAcademicDegree}
+            authorizerPositionWork={dictumData.authorizerPositionWork}
+            authorizerInstitution={dictumData.authorizerInstitution}
+          />
+          <DictumFooter />
         </>
       ) : (
         <p className="text-center text-gray-500 p-10!">Cargando dictamen...</p>

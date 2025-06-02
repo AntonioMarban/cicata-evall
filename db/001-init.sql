@@ -86,6 +86,8 @@ BEGIN
         d.decision,
         d.date as authorizationDate,
         CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS authorizerName,
+        u.positionWork as authorizerPositionWork,
+        u.institution as authorizerInstitution,
         u.academicDegree as authorizerAcademicDegree
     FROM dictums d
     JOIN projects p ON d.project_id = p.projectId
