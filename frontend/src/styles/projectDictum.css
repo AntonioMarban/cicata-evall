@@ -1,0 +1,79 @@
+#project-dictum * {
+    font-family: 'Noto Sans', sans-serif !important;
+}
+
+.text-tiny {
+    font-size: 10pt;
+}
+
+.header-second-page {
+    display: none;
+}
+
+@media print {
+    @page {
+        size: Letter;
+        margin: 0;
+    }
+
+    #project-dictum {
+        font-size: 9pt;
+        padding: 2.5rem 0;
+    }
+
+    .text-small {
+        font-size: 8pt;
+    }
+
+    .text-tiny {
+        font-size: 6pt;
+    }
+
+    .dictum-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 2.5rem 2.5rem 0 2.5rem;
+        z-index: 10;
+    }
+
+    .dictum-header-spacer {
+        height: 250px;
+    }
+
+    .dictum-header-spacer2 {
+        height: 290px;
+    }
+
+    .header-second-page {
+        display: block;
+        position: fixed;
+    }
+
+    .dictum-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0 2.5rem 2.5rem 2.5rem;
+        z-index: 10;
+    }
+
+    .page-break {
+        page-break-before: always;
+        break-before: page;
+    }
+
+    .dictum-footer-spacer {
+        height: 100px;
+    }
+
+    .second-page-spacer {
+        height: 300px;
+    }
+
+    .farewell-text {
+        padding-top: 400px;
+    }
+}

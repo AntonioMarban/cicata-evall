@@ -1,4 +1,3 @@
-import React from 'react';
 import "../../styles/viewcompleteforms.css"
 const ViewGeneralData = ({generalData,associatedProjects}) => {
     return (
@@ -34,14 +33,15 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
             <tr className='second-table-form-body'>
                 <td>{generalData.startDate}</td>
                 <td>{generalData.endDate}</td>
-                <td>{(() => {
+                <td>  
+                    {(() => {
                         const start = new Date(generalData.startDate);
                         const end = new Date(generalData.endDate);
                         const years = end.getFullYear() - start.getFullYear();
                         const months = end.getMonth() - start.getMonth();
                         const totalMonths = years * 12 + months;
-                        return totalMonths;
-                    })()} 
+                        return isNaN(totalMonths) ? '' : totalMonths;
+                    })()}
                 </td>
             </tr>
         </tbody>

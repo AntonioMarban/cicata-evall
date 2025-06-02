@@ -139,15 +139,16 @@ const  Anexos = ({option,setOption}) => {
                                 console.warn("Upload succeeded but no confirmation message:", uploadData);
                             }
                         }
-                        
-                        navigate(`/VerFormulario/${data.projectId}`);
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                        navigate('/VerFormulario', { state: { projectId: data.projectId } });
                         indexedDB.deleteDatabase('Cicata');
                     } catch (uploadError) {
                         console.error("Error uploading file:", uploadError);
                         toast.error("El proyecto se creó, pero hubo un error al subir el archivo.");
                     }
                 } else {
-                    navigate(`/VerFormulario/${data.projectId}`);
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    navigate('/VerFormulario', { state: { projectId: data.projectId } });
                     indexedDB.deleteDatabase('Cicata');
                 }
             } else {

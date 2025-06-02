@@ -14,8 +14,9 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         positionWork: "",
         academicDegree: "",
         tutorName: "",
-        levelName: "",
-        levelNum: "",
+        levelNumSNII: "",
+        levelNumCOFFA: "",
+        levelNumEDI: "",
         email: "",
         phone: "",
         researchNetworkName: "",
@@ -28,8 +29,6 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         institution: "*",
         positionWork: "*",
         academicDegree: "*",
-        levelName: "*",
-        levelNum: "*",
         email: "*",
         phone: "*",
         researchNetworkName: "*",
@@ -37,8 +36,9 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
     } 
     const [newErrors,setNewErrors] =  useState(ArrayNewErrors);
     const [participant, setParticipant] = useState(initialParticipant);
-    const levels = ["EDI","COFAA","SNI"]
-    const [levelsToShow,setLevelToShow]= useState([])
+    const [levelSNII, setLevelSNII] = useState(["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]);
+    const [levelCOFFA, setLevelCOFFA] = useState(["I", "II", "IV", "V"]);
+    const [levelEDI, setLevelEDI] = useState(["Candidato", "I", "II", "III", "Emerito"]);
     const memberType = ["Investigador","Investigador post doctoral","Estudiante"]
     const handleChangeButton = (key, value) => {
         setParticipant((prevState) => ({
@@ -108,10 +108,10 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         if (participant.researchNetwork === 0 ){
             delete newErrorsF["researchNetworkName"]
         }
-        console.log(participant.positionWork)
         if (participant.positionWork == "Estudiante"){
-            delete newErrorsF["levelNum"]
-            delete newErrorsF["levelName"]
+            delete newErrorsF["levelNumCOFFA"]
+            delete newErrorsF["levelNumEDI"]
+            delete newErrorsF["levelNumSNII"]
         }
         if (participant.positionWork != "Estudiante"){
             delete newErrorsF["tutorName"]
@@ -122,18 +122,6 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             handleParticipantSubmit(e, participant, participantToEdit ? participantToEdit.index : undefined);
         }
     };
-
-    useEffect(()=>{
-        if(participant.levelName === "EDI"){
-            setLevelToShow(["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"])
-        }
-        else if(participant.levelName === "COFAA"){
-            setLevelToShow(["I","II","IV","V"])
-        }
-        else if(participant.levelName === "SNI"){
-            setLevelToShow(["Candidato","I","II","III","Emerito"])
-        }
-    },[participant.levelName])
     useEffect(()=>{
         if(participant.researchNetwork===0){
             setParticipant(prev=>({
@@ -147,8 +135,9 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         if(participant.positionWork==="Estudiante"){
             setParticipant(prev=>({
                 ...prev,
-                levelName: "",
-                levelNum: "",
+                levelNumCOFFA: "",
+                levelNumEDI: "",
+                levelNumSNII: "",
                 researchNetwork: 0
 
             })
@@ -298,37 +287,37 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             <>
                             <div className="participant-form-rows">
                                 <div className="participant-button-degree">
-                                    <p >Nivel del investigador
-                                        {newErrors.levelName && (
-                                            <>
-                                                {newErrors.levelName !== '*' && <br />}
-                                                <span className="text-red-600"> {newErrors.levelName}</span>
-                                            </>
-                                        )}
+                                    <p>Investigador SNII
                                     </p>
-                                    <select name="levelName" 
-                                        value={participant.levelName}
+                                    <select name="levelNumSNII" 
+                                        value={participant.levelNumSNII}
                                         onChange={handleInputChange}>
-                                        <option value="">Selecciona una opción</option>
-                                        {Array.isArray(levels) && levels.map((name, index) => (
+                                        <option value="" disabled>Selecciona una opción</option>
+                                        {Array.isArray(levelSNII) && levelSNII.map((name, index) => (
                                             <option key={index} value={name}>{name}</option>
                                         ))}
                                     </select>
                                 </div>
                                 <div className="participant-button-degree">
-                                    <p>Nivel
-                                        {newErrors.levelNum && (
-                                            <>
-                                                {newErrors.levelNum !== '*' && <br />}
-                                                <span className="text-red-600"> {newErrors.levelNum}</span>
-                                            </>
-                                        )}
+                                    <p>Investigador COFFA
                                     </p>
-                                    <select name="levelNum" 
-                                        value={participant.levelNum}
+                                    <select name="levelNumCOFFA" 
+                                        value={participant.levelNumCOFFA}
                                         onChange={handleInputChange}>
-                                        <option value="">Selecciona una opción</option>
-                                        {Array.isArray(levelsToShow) && levelsToShow.map((name, index) => (
+                                        <option value=""  disabled>Selecciona una opción</option>
+                                        {Array.isArray(levelCOFFA) && levelCOFFA.map((name, index) => (
+                                            <option key={index} value={name}>{name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="participant-button-degree">
+                                    <p>Investigador EDI
+                                    </p>
+                                    <select name="levelNumEDI" 
+                                        value={participant.levelNumEDI}
+                                        onChange={handleInputChange}>
+                                        <option value=""  disabled>Selecciona una opción</option>
+                                        {Array.isArray(levelEDI) && levelEDI.map((name, index) => (
                                             <option key={index} value={name}>{name}</option>
                                         ))}
                                     </select>

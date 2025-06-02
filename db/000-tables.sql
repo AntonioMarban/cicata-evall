@@ -24,8 +24,9 @@ CREATE TABLE `users` (
   `researchNetwork` bool,
   `researchNetworkName` varchar(50),
   `academicDegree` varchar(50),
-  `levelName` varchar(50),
-  `levelNum` integer,
+  `levelNumSNII` varchar(50),
+  `levelNumCOFFA` varchar(50),
+  `levelNumEDI` varchar(50),
   `userType_id` integer,
   `active` bool default true
 );
@@ -146,8 +147,9 @@ CREATE TABLE `members` (
   `researchNetwork` bool,
   `researchNetworkName` varchar(50),
   `academicDegree` varchar(50),
-  `levelName` varchar(50),
-  `levelNum` varchar(50),
+  `levelNumSNII` varchar(50),
+  `levelNumCOFFA` varchar(50),
+  `levelNumEDI` varchar(50),
   `tutorName` varchar(100),
   `project_id` integer
 );
@@ -173,7 +175,7 @@ CREATE TABLE `evaluationTypes` (
 
 CREATE TABLE `evaluations` (
   `evaluationId` integer PRIMARY KEY AUTO_INCREMENT,
-  `comments` varchar(255),
+  `comments` TEXT,
   `score` integer,
   `result` varchar(50),
   `evaluation_type_id` integer,
@@ -326,6 +328,8 @@ ALTER TABLE projects
 ADD COLUMN firstEvaluation BOOLEAN DEFAULT TRUE,
 ADD COLUMN reevaluation INT DEFAULT 0,
 ADD COLUMN committiesModify TEXT;
+
+ALTER TABLE projects MODIFY COLUMN endDate DATE NULL;
 
 -- Datos estaticos para la parte superior del formulario
 ALTER TABLE projects

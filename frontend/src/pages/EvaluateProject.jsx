@@ -74,8 +74,7 @@ const EvaluateProject = () => {
                 </div>
 
                 {currentView === "information" ? (
-                    // <ViewCompleteForms />
-                    <p>Hola!</p>
+                    <ViewCompleteForms />
                 ) : (
                     <EvaluateProjectForm projectId={projectId}/>
                 )}

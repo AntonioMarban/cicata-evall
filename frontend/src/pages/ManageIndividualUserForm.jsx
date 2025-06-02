@@ -126,9 +126,9 @@ const ManageIndividualUserForm = () => {
                 setIsInResearchNetwork(data.researchNetwork === 1);
                 setResearchNetworkName(data.researchNetworkName || "");
                 setAcademicDegree(data.academicDegree || "");
-                setLevelSNII(data.levelSNII || "");
-                setLevelCOFFA(data.levelCOFFA || "");
-                setLevelEDI(data.levelEDI || "");
+                setLevelNumSNII(data.levelNumSNII || "");
+                setLevelNumCOFFA(data.levelNumCOFFA || "");
+                setLevelNumEDI(data.levelNumEDI || "");
 
             } catch (error) {
                 console.error('Error al obtener los datos del usuario:', error);
@@ -163,10 +163,12 @@ const ManageIndividualUserForm = () => {
             researchNetwork: isInResearchNetwork ? 1 : 0,
             researchNetworkName: isInResearchNetwork ? researchNetworkName : "",
             academicDegree,
-            levelSNII,
-            levelCOFFA,
-            levelEDI
+            levelNumSNII,
+            levelNumCOFFA,
+            levelNumEDI
         };
+
+        console.log(commonBody);
 
         try {
             let response;
@@ -227,10 +229,12 @@ const ManageIndividualUserForm = () => {
             researchNetwork: isInResearchNetwork ? 1 : 0,
             researchNetworkName: isInResearchNetwork ? researchNetworkName : "",
             academicDegree,
-            levelSNII,
-            levelCOFFA,
-            levelEDI
+            levelNumSNII,
+            levelNumCOFFA,
+            levelNumEDI
         }
+
+        console.log(body)
 
         try {
             const response = await fetch(`${apiUrl}/subdirectorade/users/${userId}`, {
@@ -268,9 +272,9 @@ const ManageIndividualUserForm = () => {
     const [isInResearchNetwork, setIsInResearchNetwork] = useState(null);
     const [researchNetworkName, setResearchNetworkName] = useState("");
     const [academicDegree, setAcademicDegree] = useState("");
-    const [levelSNII, setLevelSNII] = useState("");
-    const [levelCOFFA, setLevelCOFFA] = useState("");
-    const [levelEDI, setLevelEDI] = useState("");
+    const [levelNumSNII, setLevelNumSNII] = useState("");
+    const [levelNumCOFFA, setLevelNumCOFFA] = useState("");
+    const [levelNumEDI, setLevelNumEDI] = useState("");
 
     const [errors, setErrors] = useState({});
 
@@ -347,7 +351,6 @@ const ManageIndividualUserForm = () => {
             case "positionWork":
             case "researchNetworkName":
             case "academicDegree":
-            case "levelName":
                 if (!isValidName(value)) return "Debe tener entre 3 y 30 letras, sin caracteres especiales.";
                 break;
             case "email":
@@ -453,26 +456,26 @@ const ManageIndividualUserForm = () => {
                         </div>
 
                         <div id="userLevel" className="flex flex-row items-center mb-6 flex-wrap justify-start items-start">
-                            {userSelectInput("Nivel SNI", "levelSNII", [
+                            {userSelectInput("Nivel SNII", "levelNumSNII", [
                                 { value: "Candidato", label: "Candidato" },
                                 { value: "I", label: "I" },
                                 { value: "II", label: "II" },
                                 { value: "III", label: "III" },
                                 { value: "Emérito", label: "Emérito" }
-                            ], levelSNII,
-                            (val) => handleFieldChange("levelSNII", val, setLevelSNII),
-                            errors.levelSNII)}
+                            ], levelNumSNII,
+                            (val) => handleFieldChange("levelNumSNII", val, setLevelNumSNII),
+                            errors.levelNumSNII)}
 
-                            {userSelectInput("Nivel COFFA", "levelCOFFA", [
+                            {userSelectInput("Nivel COFFA", "levelNumCOFFA", [
                                 { value: "I", label: "I" },
                                 { value: "II", label: "II" },
                                 { value: "III", label: "III" },
                                 { value: "IV", label: "IV" },
                                 { value: "V", label: "V" }
-                            ], levelCOFFA,
-                            (val) => handleFieldChange("levelCOFFA", val, setLevelCOFFA),
-                            errors.levelCOFFA)}
-                            {userSelectInput("Nivel EDI", "levelEDI", [
+                            ], levelNumCOFFA,
+                            (val) => handleFieldChange("levelNumCOFFA", val, setLevelNumCOFFA),
+                            errors.levelNumCOFFA)}
+                            {userSelectInput("Nivel EDI", "levelNumEDI", [
                                 { value: "I", label: "I" },
                                 { value: "II", label: "II" },
                                 { value: "III", label: "III" },
@@ -482,9 +485,9 @@ const ManageIndividualUserForm = () => {
                                 { value: "VII", label: "VII" },
                                 { value: "VIII", label: "VIII" },
                                 { value: "IX", label: "IX" }
-                            ], levelEDI,
-                            (val) => handleFieldChange("levelEDI", val, setLevelEDI),
-                            errors.levelEDI)}
+                            ], levelNumEDI,
+                            (val) => handleFieldChange("levelNumEDI", val, setLevelNumEDI),
+                            errors.levelNumEDI)}
                         </div>
 
                     </div>

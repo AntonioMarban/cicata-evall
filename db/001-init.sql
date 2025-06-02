@@ -86,6 +86,8 @@ BEGIN
         d.decision,
         d.date as authorizationDate,
         CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS authorizerName,
+        u.positionWork as authorizerPositionWork,
+        u.institution as authorizerInstitution,
         u.academicDegree as authorizerAcademicDegree
     FROM dictums d
     JOIN projects p ON d.project_id = p.projectId
@@ -188,7 +190,8 @@ CREATE PROCEDURE createProject(
     IN p_budgetsJSON JSON,
     IN p_goalsJSON JSON,
     IN p_methodologiesJSON JSON,
-    IN p_referencesJSON JSON,
+    IN p_reference TEXT, -- Ya no es arreglo
+
 
     -- Extras para los entregabels
     IN p_extras1JSON JSON,
@@ -228,8 +231,7 @@ BEGIN
         p_otherTypeResearch, p_alignsWithPNIorODS, p_hasCollaboration, p_collaborationJustification,
         '03', 'septiembre 2025', 'Leslie Olmedo Nieva', 'Leslie Olmedo Nieva', 'Paul Mondragón Terán',
         '2024-06-01', '2024-07-08', '2024-11-04', p_otherEducationalDeliverable, p_otherDiffusionDeliverable,
-        p_otherCurrentBudget, p_otherInvestmentBudget, TRUE, 0, 'ninguno'
-
+        p_otherCurrentBudget, p_otherInvestmentBudget, TRUE, 0, 'Ninguno'
     );
 
     SET v_projectId = LAST_INSERT_ID();
@@ -256,7 +258,7 @@ BEGIN
     WHILE i < total DO
         INSERT INTO members (
             fName, lastName1, lastName2, email, phone, institution, positionWork, researchNetwork, researchNetworkName,
-            academicDegree, levelName, levelNum, tutorName, project_id
+            academicDegree, levelNumSNII, levelNumCOFFA, levelNumEDI, tutorName, project_id
         )
         VALUES (
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].fName'))),
@@ -269,8 +271,9 @@ BEGIN
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetwork'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetworkName'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].academicDegree'))),
-            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelName'))),
-            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNum'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumSNII'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumCOFFA'))),
+            JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumEDI'))),
             JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].tutorName'))),
             v_projectId
         );
@@ -380,16 +383,9 @@ BEGIN
     END WHILE;
 
     -- p_references
-    SET i = 0;
-    SET total = JSON_LENGTH(p_referencesJSON);
-    WHILE i < total DO
-        INSERT INTO p_references (reference, project_id)
-        VALUES (
-            JSON_UNQUOTE(JSON_EXTRACT(p_referencesJSON, CONCAT('$[', i, '].reference'))),
-            v_projectId
-        );
-        SET i = i + 1;
-    END WHILE;
+    IF p_reference IS NOT NULL AND p_reference <> '' THEN
+        INSERT INTO p_references (reference, project_id) VALUES (p_reference, v_projectId);
+    END IF;
 
     -- Relación con usuario
     INSERT INTO usersProjects (user_id, project_id)
@@ -501,7 +497,13 @@ BEGIN
         p.otherInvestmentBudget, 
         p.firstEvaluation,
         p.reevaluation,
-        p.committiesModify
+        IFNULL((
+        SELECT GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ')
+        FROM evaluations e
+        JOIN committeeUsers cu ON cu.userId = e.user_id
+        JOIN committees c ON c.committeeId = cu.committeeId
+        WHERE e.project_id = p.projectId AND e.result = 'Pendiente de correcciones'
+        ), 'Ninguno') AS committiesModify
     FROM projects p
     WHERE p.projectId = p_projectId;
 
@@ -516,7 +518,7 @@ BEGIN
     -- members
     SELECT
         fName, lastName1, lastName2, email, phone, institution, positionWork, researchNetwork,
-        researchNetworkName, academicDegree, levelName, levelNum, tutorName
+        researchNetworkName, academicDegree, levelNumSNII, levelNumCOFFA, levelNumEDI, tutorName
     FROM members
     WHERE project_id = p_projectId;
 
@@ -591,7 +593,7 @@ BEGIN
 
     -- investigador (usuario que registró el proyecto)
     SELECT u.fName, u.lastName1, u.lastName2, u.email, u.phone, u.institution, u.positionWork, u.researchNetwork,
-        u.researchNetworkName, u.academicDegree, u.levelName, u.levelNum
+        u.researchNetworkName, u.academicDegree, u.levelNumSNII, u.levelNumCOFFA, u.levelNumEDI
     FROM usersProjects up
     JOIN users u ON up.user_id = u.userId
     WHERE up.project_id = p_projectId;
@@ -686,7 +688,7 @@ CREATE PROCEDURE updateProject(
     IN p_budgetsJSON JSON,
     IN p_goalsJSON JSON,
     IN p_methodologiesJSON JSON,
-    IN p_referencesJSON JSON,
+    IN p_reference TEXT, -- Ya no es arreglo
     IN p_specificObjectivesJSON JSON,
     IN p_extras1JSON JSON,
     IN p_extras2JSON JSON,
@@ -735,7 +737,10 @@ BEGIN
         otherDiffusionDeliverable = IFNULL(p_otherDiffusionDeliverable, otherDiffusionDeliverable),
         otherCurrentBudget = IFNULL(p_otherCurrentBudget, otherCurrentBudget),
         otherInvestmentBudget = IFNULL(p_otherInvestmentBudget, otherInvestmentBudget),
-        status = 'En revision'
+        status = 'En revision',
+        firstEvaluation = FALSE,
+        reevaluation = reevaluation + 1
+
     WHERE projectId = p_projectId;
 
     -- Reemplazar secciones si son enviadas
@@ -765,7 +770,7 @@ BEGIN
         WHILE i < total DO
             INSERT INTO members (
                 fName, lastName1, lastName2, email, phone, institution, positionWork, researchNetwork, researchNetworkName,
-                academicDegree, levelName, levelNum, tutorName, project_id
+                academicDegree, levelNumSNII, levelNumCOFFA, levelNumEDI, tutorName, project_id
             )
             VALUES (
                 JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].fName'))),
@@ -778,8 +783,9 @@ BEGIN
                 JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetwork'))),
                 JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].researchNetworkName'))),
                 JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].academicDegree'))),
-                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelName'))),
-                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNum'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumSNII'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumCOFFA'))),
+                JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].levelNumEDI'))),
                 JSON_UNQUOTE(JSON_EXTRACT(p_membersJSON, CONCAT('$[', i, '].tutorName'))),
                 p_projectId
             );
@@ -893,18 +899,9 @@ BEGIN
     END IF;
 
     -- references
-    SET i = 0;
-    IF p_referencesJSON IS NOT NULL THEN
-        DELETE FROM p_references WHERE project_id = p_projectId;
-        SET total = JSON_LENGTH(p_referencesJSON);
-        WHILE i < total DO
-            INSERT INTO p_references (reference, project_id)
-            VALUES (
-                JSON_UNQUOTE(JSON_EXTRACT(p_referencesJSON, CONCAT('$[', i, '].reference'))),
-                p_projectId
-            );
-            SET i = i + 1;
-        END WHILE;
+    DELETE FROM p_references WHERE project_id = p_projectId;
+    IF p_reference IS NOT NULL AND p_reference <> '' THEN
+        INSERT INTO p_references (reference, project_id) VALUES (p_reference, p_projectId);
     END IF;
 
     -- specificObjectives
@@ -1269,7 +1266,7 @@ CREATE PROCEDURE sendCommitteeEvaluationResult(
     IN p_userId INT,
     IN p_project_id INT,
     IN p_result VARCHAR(50),
-    IN p_comments VARCHAR(100)
+    IN p_comments TEXT
 )
 BEGIN
     DECLARE v_presidentId INT;
@@ -1357,12 +1354,14 @@ BEGIN
         u.researchNetwork,
         u.researchNetworkName,
         u.academicDegree,
-        u.levelName,
-        u.levelNum
+        u.levelNumSNII,
+        u.levelNumCOFFA,
+        u.levelNumEDI
     FROM users u
     JOIN committeeUsers cu ON u.userId = cu.userId
     WHERE cu.committeeId = p_committeeId AND u.userId = p_memberId AND u.userType_id = 5;
 END //
+
 DELIMITER ;
 
 -- Función para crear un nuevo integrante de comité
@@ -1386,8 +1385,9 @@ CREATE PROCEDURE createCommitteeMember(
     IN p_researchNetwork BOOLEAN,
     IN p_researchNetworkName varchar(50),
     IN p_academicDegree varchar(50),
-    IN p_levelName varchar(50),
-    IN p_levelNum INT
+    IN p_levelNumSNII varchar(50),
+    IN p_levelNumCOFFA varchar(50),
+    IN p_levelNumEDI varchar(50)
 )
 BEGIN
     DECLARE newUserId INT;
@@ -1411,8 +1411,9 @@ BEGIN
             researchNetwork,
             researchNetworkName,
             academicDegree,
-            levelName,
-            levelNum,
+            levelNumSNII,
+            levelNumCOFFA,
+            levelNumEDI,
             userType_id
         ) VALUES (
             p_fName,
@@ -1426,8 +1427,9 @@ BEGIN
             p_researchNetwork,
             p_researchNetworkName,
             p_academicDegree,
-            p_levelName,
-            p_levelNum,
+            p_levelNumSNII,
+            p_levelNumCOFFA,
+            p_levelNumEDI,
             5
         );
 
@@ -1439,7 +1441,6 @@ BEGIN
 
 END //
 DELIMITER ;
-
 
 DELIMITER //
 CREATE PROCEDURE updateCommitteeMember(
@@ -1458,8 +1459,9 @@ CREATE PROCEDURE updateCommitteeMember(
     IN p_researchNetwork BOOLEAN,
     IN p_researchNetworkName VARCHAR(50),
     IN p_academicDegree VARCHAR(50),
-    IN p_levelName VARCHAR(50),
-    IN p_levelNum INT
+    IN p_levelNumSNII VARCHAR(50),
+    IN p_levelNumCOFFA VARCHAR(50),
+    IN p_levelNumEDI VARCHAR(50)
 )
 BEGIN
     -- Validar que el usuario pertenece al comité
@@ -1524,12 +1526,16 @@ BEGIN
         UPDATE users SET academicDegree = p_academicDegree WHERE userId = p_memberId;
     END IF;
 
-    IF p_levelName IS NOT NULL THEN
-        UPDATE users SET levelName = p_levelName WHERE userId = p_memberId;
+    IF p_levelNumSNII IS NOT NULL THEN
+        UPDATE users SET levelNumSNII = p_levelNumSNII WHERE userId = p_memberId;
     END IF;
 
-    IF p_levelNum IS NOT NULL THEN
-        UPDATE users SET levelNum = p_levelNum WHERE userId = p_memberId;
+    IF p_levelNumCOFFA IS NOT NULL THEN
+        UPDATE users SET levelNumCOFFA = p_levelNumCOFFA WHERE userId = p_memberId;
+    END IF;
+
+    IF p_levelNumEDI IS NOT NULL THEN
+        UPDATE users SET levelNumEDI = p_levelNumEDI WHERE userId = p_memberId;
     END IF;
 END //
 DELIMITER ;
@@ -1596,7 +1602,7 @@ BEGIN
     LIMIT 1;
     RETURN v_secretaryId;
 END //
-    DELIMITER ;
+DELIMITER ;
 
 -- Función para crear un nuevo usuario
 -- @param fName: Nombre del usuario
@@ -1626,8 +1632,9 @@ CREATE PROCEDURE createUser (
   IN p_researchNetwork BOOLEAN,
   IN p_researchNetworkName VARCHAR(50),
   IN p_academicDegree VARCHAR(50),
-  IN p_levelName VARCHAR(50),
-  IN p_levelNum INT,
+    IN p_levelNumSNII VARCHAR(50),
+    IN p_levelNumCOFFA VARCHAR(50),
+    IN p_levelNumEDI VARCHAR(50),
   IN p_userType_id INT
 )
 BEGIN
@@ -1643,8 +1650,9 @@ BEGIN
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum,
+    levelNumSNII,
+    levelNumCOFFA,
+    levelNumEDI,
     userType_id
   ) VALUES (
     p_fName,
@@ -1658,8 +1666,9 @@ BEGIN
     p_researchNetwork,
     p_researchNetworkName,
     p_academicDegree,
-    p_levelName,
-    p_levelNum,
+    p_levelNumSNII,
+    p_levelNumCOFFA,
+    p_levelNumEDI,
     p_userType_id
   );
 END //
@@ -1698,8 +1707,9 @@ BEGIN
         u.researchNetwork,
         u.researchNetworkName,
         u.academicDegree,
-        u.levelName,
-        u.levelNum
+        u.levelNumSNII,
+        u.levelNumCOFFA,
+        u.levelNumEDI
     FROM users u
     WHERE userId = p_userId;
 END //
@@ -1735,8 +1745,9 @@ CREATE PROCEDURE updateUser (
   IN p_researchNetwork BOOLEAN,
   IN p_researchNetworkName VARCHAR(50),
   IN p_academicDegree VARCHAR(50),
-  IN p_levelName VARCHAR(50),
-  IN p_levelNum INT
+  IN p_levelNumSNII VARCHAR(50),
+  IN p_levelNumCOFFA VARCHAR(50),
+    IN p_levelNumEDI VARCHAR(50)
 )
 BEGIN
     IF NOT EXISTS (
@@ -1791,15 +1802,19 @@ BEGIN
         UPDATE users SET academicDegree = p_academicDegree WHERE userId = p_userId;
     END IF;
 
-    IF p_levelName IS NOT NULL THEN
-        UPDATE users SET levelName = p_levelName WHERE userId = p_userId;
+    IF p_levelNumSNII IS NOT NULL THEN
+        UPDATE users SET levelNumSNII = p_levelNumSNII WHERE userId = p_userId;
     END IF;
 
-    IF p_levelNum IS NOT NULL THEN
-        UPDATE users SET levelNum = p_levelNum WHERE userId = p_userId;
+    IF p_levelNumCOFFA IS NOT NULL THEN
+        UPDATE users SET levelNumCOFFA = p_levelNumCOFFA WHERE userId = p_userId;
+    END IF;
+
+    IF p_levelNumEDI IS NOT NULL THEN
+        UPDATE users SET levelNumEDI = p_levelNumEDI WHERE userId = p_userId;
     END IF;
 END //
-
+DELIMITER ;
 -- Función para simular la eliminación de un usuario
 -- modificando su estado a inactivo
 -- @param userId: Id del usuario
@@ -2567,3 +2582,16 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Funcion para mandar un proyecto a "En revision"
+-- @param projectId: Id del proyecto
+-- @returns: Mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE setProjectToRevision(
+    IN p_projectId INT
+)
+BEGIN
+    UPDATE projects
+    SET status = 'En revision'
+    WHERE projectId = p_projectId;
+END //
+DELIMITER ;

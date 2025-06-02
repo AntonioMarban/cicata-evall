@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import "../styles/viewcompleteforms.css"
 import ViewGeneralData from './ViewForm/GeneralData';
 import Members from './ViewForm/Members';
@@ -12,27 +12,68 @@ import Contributions from './ViewForm/Contributions';
 import ConflictInterest from './ViewForm/ConflictInterest';
 import Header from './ViewForm/Header';
 import Budget from './ViewForm/Budget'
-import { useParams  } from 'react-router-dom'
+import { useLocation  } from 'react-router-dom'
 import Files from './ViewForm/Files';
 import Annexes from './ViewForm/Annexes';
+
+
 const ViewCompleteForms = () => {  
-    const { id }  = useParams();
+    const { state } = useLocation();
+    const id = state?.projectId
     const apiUrl = import.meta.env.VITE_API_URL;
     const [completeForm, setCompleteForm] = useState(null);
-    const [files, setFiles] = useState([]);
-    const fetchData = (url,setData) =>{
-        fetch(url,{
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("token") || ""}`,
-            },
-        })
-        .then(data => data.json())
-        .then((data) => {
-            setData(data);
-        });
-    };
+    const [files, setFiles] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchAll = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                
+                const [formRes, filesRes] = await Promise.all([
+                    fetch(`${apiUrl}/users/projects/${id}`, { 
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token") || ""}`,
+                        }, 
+                    }),
+                    fetch(`${apiUrl}/researchers/projects/${id}/documents`, { 
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token") || ""}`,
+                        }, 
+                    }),
+                ]);
+
+                if (!formRes.ok || !filesRes.ok) {
+                    throw new Error('Error al cargar los datos');
+                }
+
+                const completeForm = await formRes.json();
+                const files = await filesRes.json();
+                
+                setCompleteForm(completeForm);
+                setFiles(files);
+            } catch (err) {
+                console.error(err);
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAll();
+    }, [id, apiUrl]);
+
+    if (!id) {
+        console.error("ID del proyecto no proporcionado. Redirigiendo a /Inicio.");
+        window.location.href = "/Inicio";
+        return null;
+    }
 
     const handlePrint = () => {
         alert("Por favor, marca 'Encabezados y pies de página y gráficos de fondo' en las opciones de impresión para una mejor visualización.");
@@ -51,12 +92,13 @@ const ViewCompleteForms = () => {
     }
     };
 
-    useEffect(()=>{
-        fetchData(`${apiUrl}/users/projects/${id}`,setCompleteForm);
-        fetchData(`${apiUrl}/researchers/projects/${id}/documents`,setFiles);
-    },[]);
+    if (loading) {
+        return <p>Cargando...</p>;
+    }
 
-    console.log(completeForm)
+    if (error) {
+        return <p>Error: {error}</p>;
+    }
     return (
     <div className='fullTable-background'>
         <div className='div-button'>
@@ -110,7 +152,9 @@ const ViewCompleteForms = () => {
 
             <h1>12. ANEXOS</h1>
             <Annexes Annexes={completeForm.idf33.aditionalComments}/>
-            <Files files={files}/> 
+            <div className='files-no-print'>
+                <Files files={files}/> 
+            </div>  
         </div>
         )
         :

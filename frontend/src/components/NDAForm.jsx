@@ -60,7 +60,15 @@ function NDAForm() {
           setAgreementData(agreement);
 
           if (agreement.agreed === 1) {
-            navigate(`/Proyecto?projectId=${projectId}`);
+
+            if (userType === 3 || userType === 4) {
+              navigate(`/Proyecto?projectId=${projectId}`);
+            } else if (userType === 5) {
+              navigate('/EvaluarProyecto', { state: { projectId: projectId } });
+            } else {
+              console.error("Tipo de usuario no autorizado. Redirigiendo a /Inicio.");
+              navigate("/Inicio");
+            }
           }
         }
       } catch (error) {
@@ -140,6 +148,7 @@ ${userFullName}
 
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
+    const userType = Number(localStorage.getItem("userType"));
 
     if (!token || !userId || !projectId) {
       setError(
@@ -167,7 +176,11 @@ ${userFullName}
         throw new Error("Error al firmar el acuerdo.");
       }
 
-      navigate(`/Proyecto?projectId=${projectId}`);
+      if (userType === 3 || userType === 4) {
+        navigate(`/Proyecto?projectId=${projectId}`);
+      } else if (userType === 5) {
+        navigate('/EvaluarProyecto', { state: { projectId: projectId } });
+      }
     } catch (err) {
       setError(err.message);
     } finally {

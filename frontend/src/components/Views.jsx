@@ -11,6 +11,7 @@ import EvaluateProject from "../pages/EvaluateProject";
 import ViewCompleteForm from "./ViewCompleteForm";
 import Project from "../pages/Project";
 import FinishedProjects from "../pages/FinishedProjects";
+import ProjectDictum from "../pages/ProjectDictum";
 const Views = () => {
   return (
   <Routes>
@@ -23,9 +24,10 @@ const Views = () => {
     <Route path = "/EditarRubrica" element={<EditRubric/>}></Route>
     <Route path = "/editar-proyecto" element={<EditProject/>}></Route>
     <Route path = "/EvaluarProyecto" element={<EvaluateProject/>}></Route>
-    <Route path = "/VerFormulario/:id" element={<ViewCompleteForm/>}></Route>
+    <Route path = "/VerFormulario" element={<ViewCompleteForm/>}></Route>
     <Route path = "/Proyecto" element={<Project/>}></Route>
     <Route path = "/ProyectosFinalizados" element={<FinishedProjects/>}></Route>
+    <Route path = "/Dictamen" element= {<ProjectDictum/>}></Route>
     <Route
         path = "*"
         element={<Navigate to="/Inicio" replace/>} ></Route>

@@ -68,7 +68,7 @@ export default function ProjectHeader({
   };
 
   const handleInfoClick = () => {
-    navigate(`/VerFormulario/${projectId}`);
+    navigate('/VerFormulario', { state: { projectId: projectId } });
   };
 
   const handleEvaluateClick = () => {
@@ -109,6 +109,11 @@ export default function ProjectHeader({
         {isEvaluator && (
           <button className="info-button" onClick={handleEvaluateClick}>
             Evaluar
+          </button>
+        )}
+        { (status === "Aprobado" || status === "No aprobado") && (
+          <button className="info-button" onClick={() => console.log("Ver proyecto")}>
+            Dictámen del proyecto
           </button>
         )}
       </div>

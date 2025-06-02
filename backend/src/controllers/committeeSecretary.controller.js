@@ -245,8 +245,9 @@ const getCommitteeMember = (req, res) => {
   @param researchNetwork: Red de investigación del usuario
   @param researchNetworkName: Nombre de la red de investigación del usuario
   @param academicDegree: Grado académico del usuario
-  @param levelName: Nombre del nivel del usuario
-  @param levelNum: Número del nivel del usuario
+  @param levelNumSNII: Nivel SNII del usuario
+  @param levelNumCOFFA: Nivel COFFA del usuario
+  @param levelNumEDI: Nivel EDI del usuario
   @returns: Mensaje de éxito o error
 */
 const createCommitteeMember = (req, res) => {
@@ -263,11 +264,12 @@ const createCommitteeMember = (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum
+    levelNumSNII,
+    levelNumCOFFA,
+    levelNumEDI
   } = req.body;
 
-  const sql = `CALL createCommitteeMember(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `CALL createCommitteeMember(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   const values = [
     userId,
     committeeId,
@@ -282,8 +284,9 @@ const createCommitteeMember = (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum
+    levelNumSNII,
+    levelNumCOFFA,
+    levelNumEDI
   ];
   pool.query(sql, values, (err, results) => {
     if (err) {
@@ -314,8 +317,9 @@ const createCommitteeMember = (req, res) => {
   @param researchNetwork: Red de investigación del usuario
   @param researchNetworkName: Nombre de la red de investigación del usuario
   @param academicDegree: Grado académico del usuario
-  @param levelName: Nombre del nivel del usuario
-  @param levelNum: Número del nivel del usuario
+  @param levelNumSNII: Nivel SNII del usuario
+  @param levelNumCOFFA: Nivel COFFA del usuario
+  @param levelNumEDI: Nivel EDI del usuario
   @returns: Mensaje de éxito o error
 */
 const updateCommitteeMember = (req, res) => {
@@ -332,11 +336,12 @@ const updateCommitteeMember = (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum
+    levelNumSNII,
+    levelNumCOFFA,
+    levelNumEDI
   } = req.body;
 
-  const sql = `CALL updateCommitteeMember(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `CALL updateCommitteeMember(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   const values = [
     userId,
     committeeId,
@@ -352,8 +357,9 @@ const updateCommitteeMember = (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum
+    levelNumSNII,
+    levelNumCOFFA,
+    levelNumEDI
   ];
   pool.query(sql, values, (err, results) => {
     if (err) {

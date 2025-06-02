@@ -73,7 +73,6 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
             budgetForm.investmentExpenditure.idType != 3){
             delete newErrorsF['budgetDate']
         }
-        console.log(newErrorsF)
         setNewErrors(newErrorsF)
         function flattenObject(obj, parentKey = '', result = {}) {
         for (let key in obj) {

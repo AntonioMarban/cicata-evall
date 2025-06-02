@@ -38,8 +38,9 @@ const getUsersByRole = async (req, res) => {
     @param researchNetwork: Red de investigación del usuario
     @param researchNetworkName: Nombre de la red de investigación del usuario
     @param academicDegree: Grado académico del usuario
-    @param levelName: Nombre del nivel del usuario
-    @param levelNum: Número del nivel del usuario
+    @param levelNumSNII: Nivel del SNII del usuario
+    @param levelNumCOFFA: Nivel del COFFA del usuario
+    @param levelNumEDI: Nivel del EDI del usuario
     @param userType_id: Id del rol de usuario
     @return message: Mensaje de éxito o error
 */
@@ -56,12 +57,13 @@ const createUser = async (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum,
+    levelNumSNII,
+    levelNumCOFFA,
+    levelNumEDI,
     userType_id,
   } = req.body;
 
-  const query = "CALL createUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const query = "CALL createUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     fName,
     lastName1,
@@ -74,8 +76,9 @@ const createUser = async (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum,
+    levelNumSNII,
+    levelNumCOFFA,
+    levelNumEDI,
     userType_id,
   ];
 
@@ -123,8 +126,9 @@ const getUser = async (req, res) => {
   @param researchNetwork: Red de investigación del usuario
   @param researchNetworkName: Nombre de la red de investigación del usuario
   @param academicDegree: Grado académico del usuario
-  @param levelName: Nombre del nivel del usuario
-  @param levelNum: Número del nivel del usuario
+  @param levelNumSNII: Nivel del SNII del usuario
+  @param levelNumCOFFA: Nivel del COFFA del usuario
+  @param levelNumEDI: Nivel del EDI del usuario
   @return message: Mensaje de éxito o error
 */
 const updateUser = async (req, res) => {
@@ -141,11 +145,12 @@ const updateUser = async (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum,
+    levelNumSNII,
+    levelNumCOFFA,
+    levelNumEDI
   } = req.body;
   const query =
-    "CALL updateUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "CALL updateUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     userId,
     fName,
@@ -159,8 +164,9 @@ const updateUser = async (req, res) => {
     researchNetwork,
     researchNetworkName,
     academicDegree,
-    levelName,
-    levelNum,
+    levelNumSNII,
+    levelNumCOFFA,
+    levelNumEDI
   ];
   pool.query(query, values, (error, results) => {
     if (error) {
@@ -459,6 +465,27 @@ const createDictum = async (req, res) => {
   })
 }
 
+/*
+Funcion para mandar un proyecto a "En revision"
+Se hace uso de un procedimiento almacenado setProjectToRevision
+@param projectId: Id del proyecto
+*/
+const setProjectStatusToRevision = (req, res) => {
+    const projectId = req.params.projectId;
+
+    const query = `CALL setProjectToRevision(?)`;
+
+    pool.query(query, [projectId], (err, result) => {
+        if (err) {
+            console.error('Error al ejecutar el procedimiento:', err);
+            return res.status(500).json({ error: 'Error al cambiar el estado del proyecto' });
+        }
+
+        res.status(200).json({ message: 'El estado del proyecto se cambió a "En revisión"' });
+    });
+};
+
+
 module.exports = {
   getUsersByRole,
   createUser,
@@ -475,5 +502,6 @@ module.exports = {
   createSecondStageEvaluations,
   getResultThirdStage,
   sendEvaluationResult,
-  createDictum
+  createDictum,
+  setProjectStatusToRevision
 };

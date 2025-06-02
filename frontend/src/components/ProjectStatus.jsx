@@ -44,7 +44,7 @@ export default function ProjectStatus({ projectId }) {
     } catch (error) {
       console.error("Error fetching stage 1 evaluations:", error);
     }
-  }, [projectId]);
+  }, [projectId, apiUrl]);
 
   const fetchStage2Evaluations = useCallback(async () => {
     try {
@@ -63,7 +63,7 @@ export default function ProjectStatus({ projectId }) {
     } catch (error) {
       console.error("Error fetching stage 2 evaluations:", error);
     }
-  }, [projectId]);
+  }, [projectId, apiUrl]);
 
   const fetchStage3 = useCallback(async () => {
     try {
@@ -80,7 +80,7 @@ export default function ProjectStatus({ projectId }) {
     } catch (error) {
       console.error("Error fetching stage 3:", error);
     }
-  }, [projectId]);
+  }, [projectId, apiUrl]);
 
   useEffect(() => {
     async function fetchProject() {
@@ -101,7 +101,7 @@ export default function ProjectStatus({ projectId }) {
     }
 
     fetchProject();
-  }, [projectId]);
+  }, [projectId, apiUrl]);
 
   useEffect(() => {
     fetchStage1Evaluations();
@@ -269,7 +269,7 @@ export default function ProjectStatus({ projectId }) {
                       className={
                         evaluation.result === "Aprobado"
                           ? "approved"
-                          : evaluation.result === "Pendiente de correcciones" ||
+                          : evaluation.result === "Pendiente de aprobación" ||
                             evaluation.result === "No aprobado"
                           ? "not-approved"
                           : "pending"

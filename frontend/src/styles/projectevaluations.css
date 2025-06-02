@@ -56,6 +56,11 @@
   font-weight: bold;
 }
 
+.pending {
+  color: #ff9800;
+  font-style: italic;
+}
+
 .evaluations-buttons button:hover {
   background-color: #47a2d3;
 }

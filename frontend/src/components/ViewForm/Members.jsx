@@ -73,17 +73,23 @@ const Members = ({members ,investigator}) => {
                         <p className='participant-tag'>Nivel</p>
                     </div>
                     <div className='participant-tag-data'>
-                        <p>{investigator.levelName} - {investigator.levelNum}</p>  
-                    </div>                        
+                        <p>SNII - {investigator.levelSNII}</p>  
+                    </div>              
+                    <div className='participant-tag-data'>
+                        <p>COFFA - {investigator.levelCOFFA}</p>  
+                    </div>    
+                    <div className='participant-tag-data'>
+                        <p>EDI -{investigator.levelEDI}</p>  
+                    </div>              
                 </div>
             </div>
             <div className='participant-data'>
                 <div className='participant-data-subname'>
-                    <p className='participant-tag'>Datos del contacto</p>
+                    <p className='participant-tag'>Datos de contacto</p>
                 </div>
                 <div className='participant-row'>
                     <p>{investigator.email}</p>
-                    <p className='participant-label'>email</p>
+                    <p className='participant-label'>Email</p>
                 </div>
                 <div>
                     <p>{investigator.phone === null ? 'Sin número' : investigator.phone}</p>
@@ -173,26 +179,34 @@ const Members = ({members ,investigator}) => {
                             <p>{member.academicDegree}</p>
                         </div>
                     </div>
+                    {member.positionWork != "Estudiante" && (
                     <div className='participant-institution-inner'>
                         <div>
                             <p className='participant-tag'>Nivel</p>
                         </div>
                         <div className='participant-tag-data'>
-                            <p>{member.levelName} - {member.levelNum}</p>
-                        </div>                        
+                            <p>SNII - {member.levelSNII}</p>  
+                        </div>              
+                        <div className='participant-tag-data'>
+                            <p>COFFA - {member.levelCOFFA}</p>  
+                        </div>    
+                        <div className='participant-tag-data'>
+                            <p>EDI -{member.levelEDI}</p>  
+                        </div>                          
                     </div>
+                    )}
                 </div>
                 <div className='participant-data'>
                     <div className='participant-data-subname'>
-                        <p className='participant-tag'>Datos del contacto</p>
+                        <p className='participant-tag'>Datos de contacto</p>
                     </div>
                     <div>
                         <p>{member.email}</p>
-                        <p className='participant-label'>email</p>
+                        <p className='participant-label'>Email</p>
                     </div>
                     <div>
                         <p>{member.phone}</p>
-                        <p className='participant-label'>teléfono</p>
+                        <p className='participant-label'>Teléfono</p>
                     </div>
                 </div>
             </div>

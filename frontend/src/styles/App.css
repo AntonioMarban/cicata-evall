@@ -7,21 +7,13 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif; /* Ensure the font name is correctly capitalized */
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Montserrat', sans-serif; /* Also set the body font-family */
-}
-
-
-.jost {
-  font-family: "Jost", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: normal;
-  font-style: normal;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .montserrat {
@@ -30,6 +22,7 @@ body {
   font-weight: normal;
   font-style: normal;
 }
+
 @media print {
   .SideBar-noPrint {
     display: none !important;

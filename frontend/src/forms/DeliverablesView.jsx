@@ -50,7 +50,6 @@ const DeliverablesView = ({ option, setOption }) => {
             [arrayKey]: (prev[arrayKey] || []).filter((_, i) => i !== index)
         }));
     };
-    console.log(deliverables.extras1)
     const createNewItem = (extraKey) => {
         const baseItems = deliverables[extraKey] || [];
         const newId = baseItems.length > 0 

@@ -189,7 +189,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         placeholder="Nombre del entregable"
                         onChange={(e) => handleInputChange(e, 'extras1', 'name')}
                         value={deliverable.name}
-                        data-id={index+1}
+                         data-id={deliverable.id}
                     ></input>
                     <button className="cursor-pointer" onClick={()=>{handleDelete('extras1',index)}}><img src={TRASH}></img></button>
                 </td>
@@ -255,7 +255,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         onChange={(e) => handleInputChange(e, 'extras2', 'name')}
                         name="name" 
                         value={deliverable.name}
-                        data-id={index+1}
+                         data-id={deliverable.id}
                     ></input>
                     <button className="cursor-pointer" onClick={()=>{handleDelete('extras2',index)}}><img src={TRASH}></img></button>
                 </td>
@@ -320,7 +320,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         onChange={(e) => handleInputChange(e, 'extras3', 'name')}
                         name="name" 
                         value={deliverable.name}
-                        data-id={index+1}
+                         data-id={deliverable.id}
                     ></input>
                      <button className="cursor-pointer" onClick={()=>{handleDelete('extras3',index)}}><img src={TRASH}></img></button>
                 </td>

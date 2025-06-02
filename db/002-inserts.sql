@@ -13,53 +13,53 @@ VALUES
 ;
 
 -- =============== INSERTS USERS ===============
-INSERT INTO users (fName, lastName1, lastName2, email, password, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelName, levelNum, userType_id)
+INSERT INTO users (fName, lastName1, lastName2, email, password, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelNumSNII, levelNumCOFFA, levelNumEDI, userType_id)
 VALUES 
 -- Usuarios de tipo investigador con Id 1 y 2
-('Luis', 'Navarro', 'Vivas','investigador1@gmail.com', SHA2('investigador', 256), 'IPN', 'Blood Spatter', TRUE, 'Forensics', 'Licenciatura', 'The bullet', 1, 1),
-('Carolina', 'Figueroa', 'Orihuela','investigador2@gmail.com', SHA2('investigador', 256), 'IPN', 'Blood Spatter', TRUE, 'Forensics', 'Licenciatura', 'The bullet', 1, 1),
+('Luis', 'Navarro', 'Vivas','investigador1@gmail.com', SHA2('investigador', 256), 'IPN', 'Blood Spatter', TRUE, 'Forensics', 'Licenciatura', "II", "I", "II", 1),
+('Carolina', 'Figueroa', 'Orihuela','investigador2@gmail.com', SHA2('investigador', 256), 'IPN', 'Blood Spatter', TRUE, 'Forensics', 'Licenciatura', "II", "I", "II", 1),
 -- Usuario de tipo administrador con Id 3
-('Ana', 'Pérez', 'López', 'admin@gmail.com', SHA2('admin123', 256), 'IPN', 'Profesor', TRUE, 'RedBio', 'Doctorado', 'SNI I', 1, 2),
+('Ana', 'Pérez', 'López', 'admin@gmail.com', SHA2('admin123', 256), 'IPN', 'Profesor', TRUE, 'RedBio', 'Doctorado', "II", "I", NULL, 2),
 -- --------------
 -- Usuario de tipo presidente de comité con Id 4
-('Luis', 'Martínez', 'Gómez', 'presidenteCIP@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+('Luis', 'Martínez', 'Gómez', 'presidenteCIP@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', "II", "I", "II", 3),
 -- Usuario de tipo secretario de comité con Id 5
-('Pablo', 'Martínez', 'Pérez', 'secretarioCIP@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+('Pablo', 'Martínez', 'Pérez', 'secretarioCIP@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', "II", "I", "II", 4),
 -- Usuario de tipo integrante de comité con Id 6
-('María', 'Ramírez', 'Díaz', 'integranteCIP@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
+('María', 'Ramírez', 'Díaz', 'integranteCIP@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', "II", "I", "II", 5),
 -- --------------
 -- Usuario de tipo presidente de comité con Id 7
-('José', 'Martínez', 'Gómez', 'presidenteCI@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+('José', 'Martínez', 'Gómez', 'presidenteCI@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', "II", "I", NULL, 3),
 -- Usuario de tipo secretario de comité con Id 8
-('Sebastián', 'Martínez', 'Pérez', 'secretarioCI@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+('Sebastián', 'Martínez', 'Pérez', 'secretarioCI@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', "II", "I", "II", 4),
 -- Usuario de tipo integrante de comité con Id 9
-('Carlos', 'Ramírez', 'Díaz', 'integranteCI@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
+('Carlos', 'Ramírez', 'Díaz', 'integranteCI@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', "II", "I", "II", 5),
 -- --------------
 -- Usuario de tipo presidente de comité con Id 10
-('Patricia', 'González', 'López', 'presidenteCEI@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+('Patricia', 'González', 'López', 'presidenteCEI@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', "II", "I", "II", 3),
 -- Usuario de tipo secretario de comité con Id 11
-('Fernando', 'González', 'Pérez', 'secretarioCEI@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+('Fernando', 'González', 'Pérez', 'secretarioCEI@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', NULL, "I", "II", 4),
 -- Usuario de tipo integrante de comité con Id 12
-('Sofía', 'Ramírez', 'Díaz', 'integranteCEI@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
+('Sofía', 'Ramírez', 'Díaz', 'integranteCEI@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', "II", "I", "II", 5),
 -- --------------
 -- Usuario de tipo presidente de comité con Id 13
-('Andrés', 'Hernández', 'Gómez', 'presidenteCB@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+('Andrés', 'Hernández', 'Gómez', 'presidenteCB@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', "II", "I", "II", 3),
 -- Usuario de tipo secretario de comité con Id 14
-('Valeria', 'Hernández', 'Pérez', 'secretarioCB@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+('Valeria', 'Hernández', 'Pérez', 'secretarioCB@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', "II", "I", "II", 4),
 -- Usuario de tipo integrante de comité con Id 15
-('Diego', 'Ramírez', 'Díaz', 'integranteCB@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5),
+('Diego', 'Ramírez', 'Díaz', 'integranteCB@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', "II", NULL, "II", 5),
 -- --------------
 -- Usuario de tipo presidente de comité con Id 16
-('Isabel', 'García', 'López', 'presidenteCICUAL@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 3),
+('Isabel', 'García', 'López', 'presidenteCICUAL@gmail.com', SHA2('presidente', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', "II", "I", "II", 3),
 -- Usuario de tipo secretario de comité con Id 17
-('Javier', 'García', 'Pérez', 'secretarioCICUAL@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', 'SNI II', 2, 4),
+('Javier', 'García', 'Pérez', 'secretarioCICUAL@gmail.com', SHA2('secretario', 256), 'UNAM', 'Investigador', FALSE, '', 'Maestría', "II", "I", "II", 4),
 -- Usuario de tipo integrante de comité con Id 18
-('Lucía', 'Ramírez', 'Díaz', 'integranteCICUAL@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5);
+('Lucía', 'Ramírez', 'Díaz', 'integranteCICUAL@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinadora', TRUE, 'RedTec', 'Doctorado', "II", "I", "II", 5);
 
-INSERT INTO users (fName, lastName1, lastName2, email, password, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelName, levelNum, userType_id, active)
+INSERT INTO users (fName, lastName1, lastName2, email, password, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelNumSNII, levelNumCOFFA, levelNumEDI, userType_id, active)
 -- Usuario de tipo integrante de comité con Id 19, usuario inactivo
 VALUES
-('Rodolfo', 'Chávez', 'Pérez', 'integrante2CIQUAL@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', 'SNI III', 3, 5, FALSE);
+('Rodolfo', 'Chávez', 'Pérez', 'integrante2CIQUAL@gmail.com', SHA2('integrante', 256), 'CICATA', 'Coordinador', TRUE, 'RedTec', 'Doctorado', "II", "I", "II", 5, FALSE);
 
 
 -- =============== INSERTS PROJECTS ===============
@@ -538,16 +538,16 @@ INSERT INTO budgetTypes (type_name, budgetSectionId) VALUES
 
 
 -- members
-INSERT INTO members (fName, lastName1, lastName2, email, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelName, levelNum, tutorName, project_id)
+INSERT INTO members (fName, lastName1, lastName2, email, institution, positionWork, researchNetwork, researchNetworkName, academicDegree, levelNumSNII, levelNumCOFFA, levelNumEDI, tutorName, project_id)
 VALUES 
-('Carlos', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', 'NA', '0', 'Ana Pérez', 1),
-('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', 'NA', '0', 'Ana Pérez', 2),
-('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', 'NA', '0', 'Ana Pérez', 2),
-('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', 'NA', '0', 'Ana Pérez', 2),
-('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', 'NA', '0', 'Ana Pérez', 3),
-('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', 'NA', '0', 'Ana Pérez', 5),
-('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', 'NA', '0', 'Ana Pérez', 6),
-('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', 'NA', '0', 'Ana Pérez', 7);
+('Carlos', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', '0', '0', '0', 'Ana Pérez', 1),
+('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', '0', '0', '0', 'Ana Pérez', 2),
+('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', '0', '0', '0', 'Ana Pérez', 2),
+('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', '0', '0', '0', 'Ana Pérez', 2),
+('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', '0', '0', '0', 'Ana Pérez', 3),
+('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', '0', '0', '0', 'Ana Pérez', 5),
+('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', '0', '0', '0', 'Ana Pérez', 6),
+('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', '0', '0', '0', 'Ana Pérez', 7);
 
 
 -- annexes
