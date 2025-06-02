@@ -71,6 +71,7 @@ const GeneralData = ({option,setOption}) => {
         }
         delete newErrorsF['reevaluation'];
         delete newErrorsF['committiesModify'];
+        delete newErrorsF['firstEvaluation'];
         setNewErrors(newErrorsF)
         window.scrollTo({ top: 0, behavior: 'smooth' });
         if(!Object.keys(newErrorsF).length>0){

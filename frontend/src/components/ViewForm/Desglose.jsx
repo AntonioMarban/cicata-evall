@@ -120,7 +120,7 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
         </table>
 
         <table className='BackgroundTable'>
-                <caption className="table-form-caption">Metas</caption>
+                <caption className="table-form-caption">Metodologías</caption>
                 <thead className='table-form-header'>
                     <tr>
                         <th>No.</th>
@@ -137,24 +137,6 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
                 </tbody>
         </table>
 
-
-        <table className='BackgroundTable'>
-            <thead className='table-form-header'>
-                <tr>
-                    <th>No.</th>
-                    <th>Referencias</th>
-                </tr>
-            </thead>
-            <tbody className='table-form-body'>
-                {Array.isArray(references) && references.map((reference, index) => (
-                    <tr key={index}>
-                        <td>{index+1}</td>
-                        <td>{reference.reference}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-
         <table className='BackgroundTable'>
             <thead className='table-form-header'>
                 <tr>
@@ -163,7 +145,7 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td className='italic'>dasdas{desglose.referenceText || ""}</td>
+                    <td className='italic'>{references[0].reference || ""}</td>
                 </tr>
             </tbody>
         </table>

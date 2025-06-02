@@ -13,7 +13,7 @@ const Deliverables = ({Deliverables}) => {
     const categories2 = ["Medio", "Superior", "Posgrado"];
     return (
     <>
-      {(Deliverables.deliverables1 && Deliverables.extras1) && (
+      {(Deliverables.deliverables1.length > 0 || Deliverables.extras1.length > 0) && (
         <table className="table-form-show">
             <thead className='table-form-show-head'>
                 <tr>
@@ -48,7 +48,7 @@ const Deliverables = ({Deliverables}) => {
         </table>
         )}
         
-        {(Deliverables.deliverables2 && Deliverables.extras2) && (
+        {(Deliverables.deliverables2.length > 0 || Deliverables.extras2.length > 0) && (
           <table className="table-form-show">
               <thead className='table-form-show-head'>
                   <tr>
@@ -83,7 +83,7 @@ const Deliverables = ({Deliverables}) => {
           </table>
         )}
 
-        {(Deliverables.deliverables3 && Deliverables.extras3) && (
+        {(Deliverables.deliverables3.length > 0 && Deliverables.extras3.length > 0) && (
           <table className="table-form-show">
               <thead className='table-form-show-head'>
                   <tr>

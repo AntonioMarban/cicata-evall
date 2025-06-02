@@ -11,12 +11,12 @@ const  Goals = ({option,setOption}) => {
     
     const [desglose, setDesglose] = useState({   idF: 25,
             goals: [],
-            referencesText: "",
+            references: "",
             methodologies: []
         });
     const [newErrorsD,setNewErrorsD] = useState(
         {
-            referencesText: "*",
+            references: "*",
             methodologies: "*",
             goals: "*",
     });
@@ -29,11 +29,11 @@ const  Goals = ({option,setOption}) => {
         event.preventDefault();
         const newErrorsDF = {}
 
-        if(desglose.referencesText === ''){
-            newErrorsDF['referencesText'] = "* El campo es requerido"
+        if(desglose.references === ''){
+            newErrorsDF['references'] = "* El campo es requerido"
         }
         else{
-            delete newErrorsDF['referencesText']
+            delete newErrorsDF['references']
         }
         if(desglose.goals.length<1){
             newErrorsDF['goals'] = `* Debe haber al menos una meta`;
@@ -130,11 +130,11 @@ const  Goals = ({option,setOption}) => {
                                 />
                         </div>
                         <div className="flex-1">
-                            <p className="!mt-2 text-xl">Referencias {newErrorsD.referencesText && <span className="text-red-600">{newErrorsD.referencesText}</span>}</p>
+                            <p className="!mt-2 text-xl">Referencias {newErrorsD.references && <span className="text-red-600">{newErrorsD.references}</span>}</p>
                             <textarea  
                             className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] hover:border-[#5CB7E6] transition-colors duration-300 text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
-                            name="referencesText"
-                            value={desglose.referencesText}
+                            name="references"
+                            value={desglose.references}
                             onChange={handleChange} 
                             placeholder="Escribe las referencias del proyecto..."></textarea>
                         </div>

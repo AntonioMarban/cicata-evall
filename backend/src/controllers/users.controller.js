@@ -294,7 +294,6 @@ const getProjectDetails = (req, res) => {
             investigator,
             annexes
         ] = results;
-
         // todo se obtiene como arreglos de objetos(esto de los arreglos le ahorraba tiempo a Gordinho)
         const grouped = groupDeliverables(deliverables || []);
         const groupedBudgets = groupBudgets(budgets || []);
@@ -345,7 +344,7 @@ const getProjectDetails = (req, res) => {
             idf25: {
                 idF: 25,
                 goals: goals || [],
-                references: references || [],
+                references: references[0]?.reference || '',
                 methodologies: methodologies || []
             },
             idf26: {

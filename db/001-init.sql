@@ -530,7 +530,7 @@ BEGIN
 
     -- specificObjectives
     SELECT
-        objectiveName, objectiveDescription 
+        objectiveName 
     FROM specificObjectives
     WHERE project_id = p_projectId;
 

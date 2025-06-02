@@ -85,8 +85,8 @@ const  Anexos = ({option,setOption}) => {
                         
                         const appendFiles = (filesArray) => {
                             filesArray.forEach(file => {
-                                if (file.content && file.name && file.type) {
-                                    const realFile = base64ToFile(file.content, file.name, file.type);
+                                if (file.content && file.name) {
+                                    const realFile = base64ToFile(file.content, file.name, 'application/pdf');
                                     formDataFiles.append('documents', realFile);
                                 } else if (file.document && file.filename) {
                                     const realFile = base64ToFile(file.document, file.filename, 'application/pdf');
@@ -122,8 +122,8 @@ const  Anexos = ({option,setOption}) => {
                         const formDataEFiles = new FormData();
                         const appendFiles2 = (filesArray) => {
                             filesArray.forEach(file => {
-                                if (file.content && file.name && file.type) {
-                                    const realFile = base64ToFile(file.content, file.name, file.type);
+                                if (file.content && file.name) {
+                                    const realFile = base64ToFile(file.content, file.name, 'application/pdf');
                                     formDataEFiles.append('documents', realFile);
                                 } else if (file.document && file.filename) {
                                     const realFile = base64ToFile(file.document, file.filename, 'application/pdf');

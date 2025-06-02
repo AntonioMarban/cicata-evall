@@ -1,7 +1,6 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
 const CollaborativeInstitutions = ({collaborativeInstitutions}) => {  
-    console.log(collaborativeInstitutions)
     return (
     <>
     {collaborativeInstitutions.hasCollaboration===1 ? (

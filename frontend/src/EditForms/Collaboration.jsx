@@ -1,6 +1,6 @@
 import AddCollaboration from "../components/Modals/AddCollaboration";
 import useLoadFormData from "../hooks/useLoadFormData";
-import ShowCards from "../components/ShowCards";
+import ShowCards from "../components/ShowCardsCollab";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
 import useSubmitFormBack from "../hooks/useSubmitFormBack";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
@@ -16,7 +16,8 @@ const  Collaboration = ({option,setOption}) => {
         collaborationJustification:"", 
         collaborativeInstitutions: [] });
     const [newErrors,setNewErrors] = useState({
-            collaborationJustification:"*"
+            collaborationJustification:"*",
+            collaborativeInstitutions:"*"
     });
     const [collaborationToEdit, setCollaborationToEdit] = useState(null);
 
@@ -78,6 +79,9 @@ const  Collaboration = ({option,setOption}) => {
         if(collaborations.hasCollaboration===0 && (collaborations.collaborationJustification === 'string' || collaborations.collaborationJustification.trim() === '')){
             newErrorsF['collaborationJustification'] = "* El campo es requerido"
         }
+        if(collaborations.hasCollaboration && !collaborations.collaborativeInstitutions.length>=1){
+            newErrorsF['collaborativeInstitutions'] = "* Se requiere mínimo una colaboración"
+        }
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){
             handleOnSubmitForm(event); 
@@ -108,6 +112,7 @@ const  Collaboration = ({option,setOption}) => {
                 </div>
                 {collaborations.hasCollaboration ? (
                 <>
+                    <p className="text-red-600">{newErrors.collaborativeInstitutions}</p>
                     <div className="rounded-lg p-0 w-full">
                         <div className="flex justify-between !p-2">
                             <p className="flex-1">Institución</p>
