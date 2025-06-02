@@ -27,36 +27,45 @@ export default function ProjectDictum() {
     fetchDictum();
   }, [ apiUrl, projectId ]);
 
-  console.log("Dictum Data:", dictumData);
+  const handlePrint = () => {
+      window.print();
+ };
 
   return (
-    <div id="project-dictum" className="flex flex-col p-10! min-h-screen noto-sans">
-      {dictumData ? (
-        <>
-          <DictumHeader
-            folio={dictumData.dictumFolio}
-            projectId={dictumData.projectFolio}
-            projectOwner={dictumData.projectOwner}
-            projectOwnerAcademicDegree={dictumData.projectOwnerAcademicDegree}
-            authorizationDate={dictumData.authorizationDate}
-          />
-          {dictumData.decision === "Aprobado" &&
-          <DictumApprovedBody
-            projectTitle={dictumData.projectTitle}
-            projectFolio={dictumData.projectFolio}
-          />
-          }
-          <DictumSecondPage
-            authorizerName={dictumData.authorizerName}
-            authorizerAcademicDegree={dictumData.authorizerAcademicDegree}
-            authorizerPositionWork={dictumData.authorizerPositionWork}
-            authorizerInstitution={dictumData.authorizerInstitution}
-          />
-          <DictumFooter />
-        </>
-      ) : (
-        <p className="text-center text-gray-500 p-10!">Cargando dictamen...</p>
-      )}
-    </div>
+    <>
+        <div className='div-button flex justify-end pt-5!'>
+            <button onClick={handlePrint}>Descargar dictamen</button>
+        </div>
+        <div id="project-dictum" className="flex flex-col p-10! min-h-screen noto-sans">
+        {dictumData ? (
+            <>
+            <div className="header-print">
+                <DictumHeader
+                    folio={dictumData.dictumFolio}
+                    projectId={dictumData.projectFolio}
+                    projectOwner={dictumData.projectOwner}
+                    projectOwnerAcademicDegree={dictumData.projectOwnerAcademicDegree}
+                    authorizationDate={dictumData.authorizationDate}
+                />
+            </div>
+            {dictumData.decision === "Aprobado" &&
+            <DictumApprovedBody
+                projectTitle={dictumData.projectTitle}
+                projectFolio={dictumData.projectFolio}
+            />
+            }
+            <DictumSecondPage
+                authorizerName={dictumData.authorizerName}
+                authorizerAcademicDegree={dictumData.authorizerAcademicDegree}
+                authorizerPositionWork={dictumData.authorizerPositionWork}
+                authorizerInstitution={dictumData.authorizerInstitution}
+            />
+            <DictumFooter />
+            </>
+        ) : (
+            <p className="text-center text-gray-500 p-10!">Cargando dictamen...</p>
+        )}
+        </div>
+    </>
   );
 }

@@ -2,7 +2,7 @@ export default function DictumSecondPage({ authorizerName, authorizerAcademicDeg
 
   return (
     <>
-      <div id="dictum-second-page" className="flex flex-col justify-between mt-5! text-xs">
+      <div id="dictum-second-page" className="flex flex-col justify-between mt-5!">
         <p className="text-justify">
           Las autoridades del Centro de Investigación en Ciencia Aplicada y Tecnología Avanzada Unidad Morelos están comprometidas
           con impulsar la investigación bajo los más estrictos estándares científicos y éticos contemplados en la legislación

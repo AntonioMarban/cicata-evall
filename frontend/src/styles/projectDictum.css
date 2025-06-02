@@ -1,3 +1,26 @@
 #project-dictum * {
     font-family: 'Noto Sans', sans-serif !important;
 }
+
+.text-tiny {
+    font-size: 10pt;
+}
+
+@media print {
+    @page {
+        size: Letter;
+        margin: 0;
+    }
+
+    #project-dictum {
+        font-size: 9pt;
+    }
+
+    .text-small {
+        font-size: 8pt;
+    }
+
+    .text-tiny {
+        font-size: 6pt;
+    }
+}

@@ -2,7 +2,7 @@ export default function DictumApprovedBody({ projectTitle, projectFolio }) {
 
   return (
     <>
-      <div id="dictum-body" className="flex flex-col justify-between mt-10! text-xs">
+      <div id="dictum-body" className="flex flex-col justify-between mt-7!">
         <p className="text-justify">
           Por este medio le informo que su propuesta de proyecto de investigación titulado:
           <span className="font-bold"> "{projectTitle}”</span>,
