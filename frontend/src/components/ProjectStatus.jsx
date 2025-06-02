@@ -117,7 +117,7 @@ export default function ProjectStatus({ projectId }) {
     if (stage2Completed === 1 || jumpThirdStage === 1) {
       fetchStage3();
     }
-  }, [stage2Completed, fetchStage3]);
+  }, [stage2Completed, jumpThirdStage, fetchStage3]);
 
   if (loading) {
     return <main className="projectstatus-main">Cargando...</main>;
@@ -375,7 +375,7 @@ export default function ProjectStatus({ projectId }) {
               ? "El resultado final de este proyecto ya fue enviado al investigador."
               : "El último estado de este proyecto ya fue enviado al investigador"}
           </p>
-          {createDictum === 1 && sendingPendingResearcher === 1 && jumpThirdStage === 1 (
+          {createDictum === 1 && sendingPendingResearcher === 1 && jumpThirdStage === 1 && (
             <div className="dictum-input-form">
               <label htmlFor="folio-dictamen">Folio de dictamen final:</label>
               <input
