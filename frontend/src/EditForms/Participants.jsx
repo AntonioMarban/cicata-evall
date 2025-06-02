@@ -39,10 +39,10 @@ const  Participants = ({option,setOption}) => {
                 <div className="rounded-lg p-0 w-full">
                     <div className="flex justify-between !p-2">
                         <p className="flex-1">Nombre</p>
-                        <p className="flex-1">Apellido Paterno</p>
-                        <p className="flex-1">Apellido Materno</p>
-                        <p className="flex-1">Institución perteneciente</p>
-                        <p className="flex-1">Puesto que desempeña</p>
+                        <p className="flex-1">Apellido paterno</p>
+                        <p className="flex-1">Apellido materno</p>
+                        <p className="flex-1">Institución</p>
+                        <p className="flex-1">Puesto</p>
                         <p className="flex-1"></p>
                     </div>
                 </div>
@@ -50,7 +50,8 @@ const  Participants = ({option,setOption}) => {
                     cards={participants.members} 
                     handleDeleteFile={handleDeleteArray}
                     handleEditModal={handleEditModal}
-                    slice={5}/>
+                    fieldsToShow= {['fName', 'lastName1', 'lastName2','institution','positionWork']}
+                    />
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
                         <AddParticipant 

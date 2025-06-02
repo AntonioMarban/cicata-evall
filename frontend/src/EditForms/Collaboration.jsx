@@ -1,6 +1,6 @@
 import AddCollaboration from "../components/Modals/AddCollaboration";
 import useLoadFormData from "../hooks/useLoadFormData";
-import ShowCards from "../components/ShowCardsCollab";
+import ShowCards from "../components/ShowCards";
 import { removeItemByIndex } from "../hooks/removeItemByIndex";
 import useSubmitFormBack from "../hooks/useSubmitFormBack";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
@@ -118,14 +118,15 @@ const  Collaboration = ({option,setOption}) => {
                             <p className="flex-1">Institución</p>
                             <p className="flex-1">Convenio colaboración</p>
                             <p className="flex-1">Internacional / Nacional</p>
-                            <p className="flex-1 text-center">Número de convenio</p>
+                            <p className="flex-1 text-center">Número de covenio</p>
                             <p className="flex-1"></p>
                         </div>
                     </div>
                     <ShowCards cards={collaborations.collaborativeInstitutions} 
-                    handleDeleteFile={handleDeleteArray} 
-                    handleEditModal={handleEditModal}
-                    slice={4} />
+                                handleDeleteFile={handleDeleteArray} 
+                                handleEditModal={handleEditModal}
+                                fieldsToShow={['name','collaborationAgreement','agreementType','agreementNumber']} 
+                    />
                     <div className="!mt-5">
                         <div className="!flex items-center justify-center">
                             <AddCollaboration  

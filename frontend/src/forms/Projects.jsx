@@ -50,7 +50,8 @@ const  Projects = ({option,setOption}) => {
                 <ShowCards cards={projects.associatedProjects} 
                     handleDeleteFile={handleDeleteArray}
                     handleEditModal={handleEditModal}
-                    slice={5}/>
+                    fieldsToShow= {['name', 'associationDate', 'project_type', 'externalRegister','SIPRegister']}
+                    />
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
                         <AddProjects 

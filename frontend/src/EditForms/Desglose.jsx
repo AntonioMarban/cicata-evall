@@ -151,7 +151,7 @@ const  Desglose = ({option,setOption}) => {
                             <ShowCards cards={desglose.specificObjectives} 
                                 handleDeleteFile={handleDeleteArray}
                                 handleEditModal={handleEditModal}
-                                slice={2}/>
+                                fieldsToShow={['objectiveName']}/>
                         </div>
                         <div className="!flex items-center justify-center">
                                 <AddObjectivesSpe 

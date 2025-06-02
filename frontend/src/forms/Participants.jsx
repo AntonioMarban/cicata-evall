@@ -50,7 +50,8 @@ const  Participants = ({option,setOption}) => {
                     cards={participants.members} 
                     handleDeleteFile={handleDeleteArray}
                     handleEditModal={handleEditModal}
-                    slice={5}/>
+                    fieldsToShow= {['fName', 'lastName1', 'lastName2','institution','positionWork']}
+                    />
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
                         <AddParticipant 

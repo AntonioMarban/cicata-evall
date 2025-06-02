@@ -111,47 +111,52 @@ const ViewCompleteForms = () => {
             <Header generalData={completeForm.idf34}/>
 
             <h1>1. DATOS GENERALES DEL PROYECTO</h1>
-            
             <ViewGeneralData generalData={completeForm.idf20} associatedProjects={completeForm.idf21} />
+            <div className="page-break" />
 
             <h1>2. DATOS DE LOS PARTICIPANTES</h1>
-            
             <Members investigator={completeForm.investigator} members={completeForm.idf22}/>
+            <div className="page-break" />
+
             <h1>3. COLABORACIÓN CON OTRAS INSTITUCIONES</h1>
-
             <CollaborativeInstitutions collaborativeInstitutions={completeForm.idf23}/>
+            <div className="page-break" />
+
             <h1>4. DESGLOSE</h1>
-
             <Desglose references={completeForm.idf25.references} methodologies={completeForm.idf25.methodologies} goals={completeForm.idf25.goals} desglose={completeForm.idf24}/>
-            <h1>5. ASPECTOS ÉTICOS</h1>
-
-            <EthicalAspects EthicalAspects={completeForm.idf26}/>
-            <h1>6. CONSIDERACIONES DE BIOSEGURIDAD</h1>
-
-            <Biosecurity biosecurityConsiderations={completeForm.idf27}/>
+            <div className="page-break" />
             
-            <h1>7. CRONOGRAMA DE ACTIVIDADES</h1>
+            <h1>5. ASPECTOS ÉTICOS</h1>
+            <EthicalAspects EthicalAspects={completeForm.idf26}/>
+            <div className="page-break" />
+            
+            <h1>6. CONSIDERACIONES DE BIOSEGURIDAD</h1>
+            <Biosecurity biosecurityConsiderations={completeForm.idf27}/>
+            <div className="page-break" />
 
+            <h1>7. CRONOGRAMA DE ACTIVIDADES</h1>
             <Activities scheduleActivities={completeForm.idf28}/>
+            <div className="page-break" />
 
             <h1>8. ENTREGABLES</h1>
-
             <Deliverables Deliverables={completeForm.idf29}/>
+            <div className="page-break" />
 
             <h1>9. APORTACIONES</h1>
-
             <Contributions contributions={completeForm.idf30.contributionsToIPNandCICATA}/>
+            <div className="page-break" />
 
             <h1>10. DESCRIPCIÓN DE PRESUPUESTO REQUERIDO Y POSIBLES FUENTES DE OBTENCIÓN</h1>
-
             <Budget Budget={completeForm.idf31.budgets}/>
-            
+            <div className="page-break" />
+
             <h1>11. CONFLICTO DE INTERÉS</h1>
-            
             <ConflictInterest conflictOfInterest={completeForm.idf32.conflictOfInterest}/>
+            <div className="page-break" />
 
             <h1>12. ANEXOS</h1>
             <Annexes Annexes={completeForm.idf33.aditionalComments}/>
+
             <div className='files-no-print'>
                 <Files files={files}/> 
             </div>  

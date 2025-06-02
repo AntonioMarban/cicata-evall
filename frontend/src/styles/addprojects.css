@@ -102,7 +102,7 @@
 }
 .form-complete-row-div input{
   border-radius: 10px;
-  width: 50%;
+  width: 80%;
   border: 2px solid #E1E1E1;
   font-size: 13px;
   color: #6D7580;
@@ -175,6 +175,16 @@
 .modal-select{
   width: 60%;
   margin-top: 12px;
+  border-radius: 10px;
+  border: 2px solid #E1E1E1;
+  font-size: 13px;
+  color: #6D7580;
+  margin-top: 12px;
+  padding: 10px;
+  transition: border-color 0.3s ease;   
+}
+.modal-select:hover {
+  border-color: #5CB7E6;
 }
 .modal-delete{
   background-color: #B3DBEB;

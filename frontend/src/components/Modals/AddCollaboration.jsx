@@ -150,7 +150,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                                         value={collaboration.collaborationAgreement}
                                         onChange={handleInputChange}
                                         className="form-colab-input">
-                                        <option value="">Selecciona una opción</option>
+                                        <option value="" disabled>Selecciona una opción</option>
                                         {Array.isArray(collaborationTypes) && collaborationTypes.map((name, index) => (
                                             <option key={index} value={name}>{name}</option>
                                         ))}

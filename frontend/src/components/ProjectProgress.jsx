@@ -216,7 +216,7 @@ export default function ProjectProgress({ projectId,status }) {
     }
     return (
     <main className="w-[100%] flex justify-center">
-        <div className="w-[90%]">
+        <div className="w-[100%] !p-14">
             <div>
                 <h2 className="font-semibold text-lg !mb-10">Comentarios</h2>
                 {comments && comments.length > 0 ? (
@@ -231,15 +231,16 @@ export default function ProjectProgress({ projectId,status }) {
                 )}
             </div>
             {isEnabledButton && (
-                <div className="footer-comments">
+                <div className="flex w-full justify-end">
                     {isAvailableToModify &&(
-                    <button onClick={checkForms} className="info-button" disabled={!isEnabledButton}>Continuar con correcciones</button>
+                    <button onClick={checkForms} className="bg-[#5cb7e6] text-white border-none py-2.5 px-5 rounded-[10px] cursor-pointer text-base mr-5 hover:bg-[#47a2d3]">Continuar con correcciones</button>
                     )}
                     {!isAvailableToModify &&(
-                    <button onClick={(e)=>{navigateToForms(files,e)}} className="info-button"  disabled={!isEnabledButton}>Realizar correcciones</button>
+                    <button onClick={(e)=>{navigateToForms(files,e)}} className="bg-[#5cb7e6] text-white border-none py-2.5 px-5 rounded-[10px] cursor-pointer text-base mr-5 hover:bg-[#47a2d3]">Realizar correcciones</button>
                     )}
                 </div>
             )}
+            <button onClick={(e)=>{navigateToForms(files,e)}} className="bg-[#5cb7e6] text-white border-none py-2.5 px-5 rounded-[10px] cursor-pointer text-base mr-5 hover:bg-[#47a2d3]">Realizar correcciones</button>
         </div>
     </main>
     );

@@ -66,7 +66,7 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
                 Agregar metodología
             </button>
 
-            <Dialog open={isOpen} onClose={() => {}} className="dialog-overlay">
+            <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <p className="dialog-title">{methodologiesToEdit ? "Editar metodología" : "Agregar metodología"}</p>

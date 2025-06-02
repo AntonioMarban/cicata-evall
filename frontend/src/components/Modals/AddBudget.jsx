@@ -163,7 +163,7 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
             </button>
 
 
-            <Dialog open={isOpen} onClose={() => { }} className="dialog-overlay">
+            <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
                 <div className="dialog-container2">
                     <DialogPanel className="dialog-panel">
                         <p className="dialog-title">{budgetToEdit ? "Editar Presupuesto" : "Agregar Presupuesto"}</p>

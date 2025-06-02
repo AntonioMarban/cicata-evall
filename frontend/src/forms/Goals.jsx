@@ -96,7 +96,7 @@ const  Goals = ({option,setOption}) => {
                                 handleEditModal={handleEditModal}
                                 setData = {setGoalsToEdit}
                                 nameArray='goals'
-                                slice={1}/>
+                                fieldsToShow= {['goal']}/>
                         </div>
                         <div className="!flex items-center justify-center">
                                 <AddGoals 
@@ -119,7 +119,7 @@ const  Goals = ({option,setOption}) => {
                                 handleEditModal={handleEditModal}
                                 setData = {setMethodologiesToEdit}
                                 nameArray='methodologies'
-                                slice={1}/>
+                                fieldsToShow= {['methodology']}/>
                         </div>
                         <div className="!flex items-center justify-center">
                                 <AddMethodology 

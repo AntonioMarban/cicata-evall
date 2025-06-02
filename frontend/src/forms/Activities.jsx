@@ -50,7 +50,8 @@ const  Activities = ({option,setOption}) => {
                 <ShowCards cards={activities.scheduleActivities} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}
-                    slice={5}/>
+                    fieldsToShow={['goal','institution','responsibleMember','startDate','endDate']}
+                    />
                 <div className="!mt-5">
                     <div className="!flex items-center justify-center">
                         <AddActividades 

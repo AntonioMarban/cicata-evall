@@ -67,7 +67,7 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
             </button>
 
 
-            <Dialog open={isOpen} onClose={() => {}} className="dialog-overlay">
+            <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <p className="dialog-title">{goalsToEdit ? "Editar meta" : "Agregar meta"}</p>

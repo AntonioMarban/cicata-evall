@@ -82,7 +82,7 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                 Agregar proyecto
             </button>
 
-            <Dialog open={isOpen} onClose={() => {}}  className="dialog-overlay">
+            <Dialog open={isOpen} onClose={() => setIsOpen(false)}  className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <h1 className="dialog-title">{projectToEdit ? "Editar proyecto asociado" : "Agregar proyecto asociado"}</h1>

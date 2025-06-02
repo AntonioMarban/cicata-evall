@@ -128,7 +128,8 @@ const  Collaboration = ({option,setOption}) => {
                     <ShowCards cards={collaborations.collaborativeInstitutions} 
                     handleDeleteFile={handleDeleteArray} 
                     handleEditModal={handleEditModal}
-                    slice={4} />
+                    fieldsToShow={['name','collaborationAgreement','agreementType','agreementNumber']}
+                    />
                     <div className="!mt-5">
                         <div className="!flex items-center justify-center">
                             <AddCollaboration  
