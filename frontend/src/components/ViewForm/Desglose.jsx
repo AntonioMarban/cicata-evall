@@ -145,7 +145,7 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td className='italic'>{references[0].reference || ""}</td>
+                    <td className='italic'>{references.reference || ""}</td>
                 </tr>
             </tbody>
         </table>
