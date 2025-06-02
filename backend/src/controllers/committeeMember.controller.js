@@ -53,7 +53,6 @@ const getCommitteeRubric = (req, res) => {
         .status(400)
         .json({ error: "Invalid query parameters" });
     }
-    console.log("Results:", results);
     if (results[0].length === 0) {
       return res
         .status(404)
