@@ -117,7 +117,7 @@ export default function ProjectStatus({ projectId }) {
     if (stage2Completed === 1 || jumpThirdStage === 1) {
       fetchStage3();
     }
-  }, [stage2Completed, fetchStage3, jumpThirdStage]);
+  }, [stage2Completed, jumpThirdStage, fetchStage3]);
 
   if (loading) {
     return <main className="projectstatus-main">Cargando...</main>;

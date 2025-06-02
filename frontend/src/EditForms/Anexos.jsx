@@ -86,10 +86,16 @@ const  Anexos = ({option,setOption}) => {
                         const appendFiles = (filesArray) => {
                             filesArray.forEach(file => {
                                 if (file.content && file.name) {
+                                    // Caso: file tiene content y name
                                     const realFile = base64ToFile(file.content, file.name, 'application/pdf');
                                     formDataFiles.append('documents', realFile);
                                 } else if (file.document && file.filename) {
+                                    // Caso alternativo: file tiene document y filename
                                     const realFile = base64ToFile(file.document, file.filename, 'application/pdf');
+                                    formDataFiles.append('documents', realFile);
+                                } else if (file.document && file.name) {
+                                    // Nuevo caso: file tiene document y name
+                                    const realFile = base64ToFile(file.document, file.name, 'application/pdf');
                                     formDataFiles.append('documents', realFile);
                                 } else {
                                     console.warn('Archivo con formato no reconocido:', file);
@@ -107,15 +113,15 @@ const  Anexos = ({option,setOption}) => {
                                 method: 'POST',                    
                                 body: formDataFiles,
                             });
-
-                            if (!uploadResponse.ok) {
+                            console.log(uploadResponse)
+                            if (uploadResponse.status === 200) {
+                                console.warn("Upload succeeded but no confirmation message:");
+                            }
+                            else if (uploadResponse.status != 200) {
                                 throw new Error(`File upload failed: ${uploadResponse.status}`);
                             }
 
                             const uploadData = await uploadResponse.json();
-                            if (uploadData.message !== 'Documents uploaded successfully') {
-                                console.warn("Upload succeeded but no confirmation message:", uploadData);
-                            }
                         }
 
                         //console.log("aqui va")
@@ -123,10 +129,16 @@ const  Anexos = ({option,setOption}) => {
                         const appendFiles2 = (filesArray) => {
                             filesArray.forEach(file => {
                                 if (file.content && file.name) {
+                                    // Caso: file tiene content y name
                                     const realFile = base64ToFile(file.content, file.name, 'application/pdf');
                                     formDataEFiles.append('documents', realFile);
                                 } else if (file.document && file.filename) {
+                                    // Caso alternativo: file tiene document y filename
                                     const realFile = base64ToFile(file.document, file.filename, 'application/pdf');
+                                    formDataEFiles.append('documents', realFile);
+                                } else if (file.document && file.name) {
+                                    // Nuevo caso: file tiene document y name
+                                    const realFile = base64ToFile(file.document, file.name, 'application/pdf');
                                     formDataEFiles.append('documents', realFile);
                                 } else {
                                     console.warn('Archivo con formato no reconocido:', file);
@@ -143,8 +155,11 @@ const  Anexos = ({option,setOption}) => {
                                 method: 'POST',                    
                                 body: formDataEFiles,
                             });
-
-                            if (!uploadResponse.ok) {
+                            console.log(uploadResponse)
+                            if (uploadResponse.status === 200) {
+                                console.warn("Upload succeeded but no confirmation message:");
+                            }
+                            else if (uploadResponse.status != 200) {
                                 throw new Error(`File upload failed: ${uploadResponse.status}`);
                             }
 
