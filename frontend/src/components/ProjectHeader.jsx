@@ -79,6 +79,14 @@ export default function ProjectHeader({
     }
   }
 
+  const handleDictumClick = () => {
+    if (status === "Aprobado" || status === "No aprobado") {
+      navigate('/Dictamen', { state: { projectId: projectId } });
+    } else {
+      alert("El proyecto no tiene un dictamen disponible.");
+    }
+  }
+
   return (
     <div className="project-header">
       <div className="project-info">
@@ -112,7 +120,7 @@ export default function ProjectHeader({
           </button>
         )}
         { (status === "Aprobado" || status === "No aprobado") && (
-          <button className="info-button" onClick={() => console.log("Ver proyecto")}>
+          <button className="info-button" onClick={handleDictumClick}>
             Dictámen del proyecto
           </button>
         )}

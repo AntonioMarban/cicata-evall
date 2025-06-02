@@ -5,9 +5,21 @@ import DictumApprovedBody from "../components/ProjectDictum/DictumApprovedBody";
 import DictumSecondPage from "../components/ProjectDictum/DictumSecondPage";
 import DictumFooter from "../components/ProjectDictum/DictumFooter";
 import DictumAddress from "../components/ProjectDictum/DictumAddress";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function ProjectDictum() {
-  const projectId = 3; //TODO: CAMBIAR POR STATE
+  const navigate = useNavigate();
+
+  const { state } = useLocation();
+  const projectId = state?.projectId
+  
+  useEffect(() => {
+    if (!projectId) {
+      console.error("No project ID found in state");
+      navigate("/Inicio");
+    }
+  }, [projectId, navigate]);
+
   const apiUrl = import.meta.env.VITE_API_URL;
   const [dictumData, setDictumData] = useState(null);
 
