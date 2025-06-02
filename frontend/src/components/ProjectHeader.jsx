@@ -111,6 +111,11 @@ export default function ProjectHeader({
             Evaluar
           </button>
         )}
+        { (status === "Aprobado" || status === "No aprobado") && (
+          <button className="info-button" onClick={() => console.log("Ver proyecto")}>
+            Dictámen del proyecto
+          </button>
+        )}
       </div>
     </div>
   );

@@ -591,7 +591,7 @@ BEGIN
 
     -- investigador (usuario que registró el proyecto)
     SELECT u.fName, u.lastName1, u.lastName2, u.email, u.phone, u.institution, u.positionWork, u.researchNetwork,
-        u.researchNetworkName, u.academicDegree, u.levelName, u.levelNum
+        u.researchNetworkName, u.academicDegree, u.levelNumSNII, u.levelNumCOFFA, u.levelNumEDI
     FROM usersProjects up
     JOIN users u ON up.user_id = u.userId
     WHERE up.project_id = p_projectId;
