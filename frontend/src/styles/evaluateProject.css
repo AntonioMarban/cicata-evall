@@ -1,0 +1,13 @@
+#evaluate-container {
+    background-color: #F3F4F6;
+}
+
+@media print {
+    #evaluate-container {
+        background-color: #FFFFFF;
+    }
+
+    #header-evaluation {
+        display: none;
+    }
+}

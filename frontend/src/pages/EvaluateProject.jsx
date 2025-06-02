@@ -1,5 +1,6 @@
 import EvaluateProjectForm from "./EvaluateProjectForm";
 import ViewCompleteForms from "../components/ViewCompleteForm";
+import "../styles/evaluateProject.css";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -42,34 +43,37 @@ const EvaluateProject = () => {
 
     return (
         <>
-            <div className="flex flex-col h-screen bg-gray-100 p-10!">
-                <h1 className="text-4xl font-bold mb-6!">Evaluar proyecto</h1>
-                
-                <div className="w-full flex justify-center mb-6">
-                    <div className="relative flex mb-6! bg-[#E9EFF6] rounded-full p-1! w-max">
-                        <div
-                            className="absolute top-0 left-0 h-full bg-blue-500 rounded-full transition-all duration-300"
-                            style={sliderStyle}
-                        ></div>
+            <div id="evaluate-container" className="flex flex-col h-screen p-10!">
 
-                        <button
-                            ref={infoRef}
-                            onClick={() => setCurrentView("information")}
-                            className={`relative z-10 px-6! py-2! rounded-full font-semibold transition-all duration-300 ${
-                                currentView === "information" ? "text-white" : "text-gray-800"
-                            }`}
-                        >
-                            Información
-                        </button>
-                        <button
-                            ref={evalRef}
-                            onClick={() => setCurrentView("evaluation")}
-                            className={`relative z-10 px-6! py-2! rounded-full font-semibold transition-all duration-300 ${
-                                currentView === "evaluation" ? "text-white" : "text-gray-800"
-                            }`}
-                        >
-                            Evaluación
-                        </button>
+                <div id="header-evaluation">
+                    <h1 className="text-4xl font-bold mb-6!">Evaluar proyecto</h1>
+                
+                    <div className="w-full flex justify-center mb-6">
+                        <div className="relative flex mb-6! bg-[#E9EFF6] rounded-full p-1! w-max">
+                            <div
+                                className="absolute top-0 left-0 h-full bg-blue-500 rounded-full transition-all duration-300"
+                                style={sliderStyle}
+                            ></div>
+
+                            <button
+                                ref={infoRef}
+                                onClick={() => setCurrentView("information")}
+                                className={`relative z-10 px-6! py-2! rounded-full font-semibold transition-all duration-300 ${
+                                    currentView === "information" ? "text-white" : "text-gray-800"
+                                }`}
+                            >
+                                Información
+                            </button>
+                            <button
+                                ref={evalRef}
+                                onClick={() => setCurrentView("evaluation")}
+                                className={`relative z-10 px-6! py-2! rounded-full font-semibold transition-all duration-300 ${
+                                    currentView === "evaluation" ? "text-white" : "text-gray-800"
+                                }`}
+                            >
+                                Evaluación
+                            </button>
+                        </div>
                     </div>
                 </div>
 
