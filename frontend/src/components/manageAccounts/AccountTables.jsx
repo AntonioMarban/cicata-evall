@@ -43,6 +43,12 @@ const AccountTables = ({ users, showCommittee, role }) => {
             console.error('Error al eliminar el usuario:', error);
         }
         setIsLoading(false);
+
+        if (currentUserId === selectedUserId) {
+            localStorage.clear();
+            navigate('/');
+        }
+
         closeModal();
         window.location.reload();
     }
@@ -82,7 +88,7 @@ const AccountTables = ({ users, showCommittee, role }) => {
                                             </button>
                                             {/* Reglas para mostrar el botón Eliminar */}
                                             {(user.userType_id === 1 // Investigadores
-                                            || (user.userId === currentUserId && currentUserType === 2 && adminUsers.length > 1)) // Eliminarse a sí mismo como admin si hay más de uno
+                                            || (adminUsers.length > 1)) // Eliminarse a sí mismo como admin si hay más de uno
                                             || (currentUserType === 3 || currentUserType === 4) // Presidentes y secretarios de comité
                                             ? (
                                                 <button
