@@ -988,6 +988,8 @@ BEGIN
 
     DELETE FROM annexes WHERE projectId = p_projectId;
 
+    DELETE FROM evaluations WHERE evaluation_type_id = 2 AND result = "Pendiente de correcciones" AND project_id = p_projectId;
+
     SELECT 'Proyecto actualizado correctamente' AS message;
 END //
 DELIMITER ;
