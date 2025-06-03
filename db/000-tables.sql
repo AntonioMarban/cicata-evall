@@ -127,9 +127,9 @@ CREATE TABLE `scheduleActivities` (
 
 CREATE TABLE `budgets` (
   `budgetstId` integer PRIMARY KEY AUTO_INCREMENT,
-  `investmentExpenditure` integer,
+  `investmentExpenditure` DOUBLE,
   `name` varchar(50),
-  `expenditure` integer,
+  `expenditure` DOUBLE,
   `budgetDate` date,
   `otherName` varchar(50),
   `project_id` integer
