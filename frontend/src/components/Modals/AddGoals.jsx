@@ -87,11 +87,7 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
                                        value={goals.goal}
                                        onChange={handleInputChange}></textarea>
                             </div>
-                            <div className="dialog-actions">
-                                <button className="button-confirm">
-                                    {goalsToEdit ? "Guardar cambios" : "Guardar meta"}
-                                </button>
-                                
+                            <div className="dialog-actions">                                
                                 <button 
                                 type="button" 
                                 onClick={(e) => {
@@ -103,6 +99,10 @@ const  AddGoals = ({setDesglose, goalsToEdit = null, onEditComplete = null,setDa
                                 className="button-cancel"
                                 >
                                 Cancelar
+                                </button>
+
+                                <button className="button-confirm">
+                                    {goalsToEdit ? "Guardar cambios" : "Guardar meta"}
                                 </button>
                             </div>
                         </form>

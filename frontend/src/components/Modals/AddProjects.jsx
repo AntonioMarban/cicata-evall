@@ -167,10 +167,6 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                                 </div>
                             </div>
                             <div className="dialog-actions">
-                                <button className="button-confirm">
-                                    {projectToEdit ? "Guardar cambios" : "Guardar proyecto"}
-                                </button>
-                                
                                 <button 
                                 type="button" 
                                 onClick={(e) => {
@@ -184,6 +180,9 @@ const  AddProjects = ({ setProjects, projectToEdit = null, onEditComplete = null
                                 Cancelar
                                 </button>
 
+                                <button className="button-confirm">
+                                    {projectToEdit ? "Guardar cambios" : "Guardar proyecto"}
+                                </button>
                             </div>
                         </form>
                     </DialogPanel>

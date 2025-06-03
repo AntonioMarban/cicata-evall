@@ -70,7 +70,7 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
             <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p className="dialog-title">{referencesToEdit ? "Editar Referencia" : "Agregar Referencia"}</p>
+                        <p className="dialog-title">{referencesToEdit ? "Editar referencia" : "Agregar referencia"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Nombre de la referencia
@@ -88,9 +88,6 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
                                        onChange={handleInputChange}></textarea>
                             </div>
                             <div className="dialog-actions">
-                                <button className="button-confirm">
-                                    {referencesToEdit ? "Guardar cambios" : "Guardar referencia"}
-                                </button>
                                 <button 
                                 type="button" 
                                 onClick={(e) => {
@@ -102,6 +99,10 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
                                 className="button-cancel"
                                 >
                                 Cancelar
+                                </button>
+
+                                <button className="button-confirm">
+                                    {referencesToEdit ? "Guardar cambios" : "Guardar referencia"}
                                 </button>
                             </div>
                         </form>

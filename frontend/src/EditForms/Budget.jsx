@@ -40,7 +40,7 @@ const  Budget = ({option,setOption}) => {
                 </div>
                 <div className="rounded-lg p-0 w-full">
                     <div className="flex justify-between !p-2">
-                    <p className="flex-1">Tipo presupuesto</p>
+                    <p className="flex-1">Tipo de presupuesto</p>
                     <p className="flex-1 text-center">Nombre</p>
                     <p className="flex-1 text-end">Gasto $</p>
                     <p className="flex-1 text-start"></p>

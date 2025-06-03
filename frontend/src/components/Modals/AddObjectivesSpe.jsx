@@ -69,7 +69,7 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
             <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p className="dialog-title">{desgloseToEdit ? "Editar Objetivo Específico" : "Agregar Objetivo Específico"}</p>
+                        <p className="dialog-title">{desgloseToEdit ? "Editar objetivo específico" : "Agregar objetivo específico"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Objetivo específico
@@ -87,9 +87,6 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                                        onChange={handleInputChange}></input>
                             </div>
                             <div className="dialog-actions">
-                                <button className="button-confirm">
-                                    {desgloseToEdit ? "Guardar cambios" : "Guardar objetivo"}
-                                </button>
                                 <button 
                                 type="button" 
                                 onClick={(e) => {
@@ -101,6 +98,10 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                                 className="button-cancel"
                                 >
                                 Cancelar
+                                </button>
+
+                                <button className="button-confirm">
+                                    {desgloseToEdit ? "Guardar cambios" : "Guardar objetivo"}
                                 </button>
                             </div>
                         </form>

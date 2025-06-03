@@ -87,9 +87,6 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
                                        onChange={handleInputChange}></textarea>
                             </div>
                             <div className="dialog-actions">
-                                <button className="button-confirm">
-                                    {methodologiesToEdit ? "Guardar cambios" : "Guardar metodología"}
-                                </button>
                                 <button 
                                 type="button" 
                                 onClick={(e) => {
@@ -101,6 +98,10 @@ const  AddMethodology = ({setDesglose, methodologiesToEdit = null, onEditComplet
                                 className="button-cancel"
                                 >
                                 Cancelar
+                                </button>
+                        
+                                <button className="button-confirm">
+                                    {methodologiesToEdit ? "Guardar cambios" : "Guardar metodología"}
                                 </button>
                             </div>
                         </form>

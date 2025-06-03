@@ -98,19 +98,14 @@
   border-radius: 10px;
   width: 100%;
   border: 2px solid #E1E1E1;
-  font-size: 13px;
+  font-size: 14px;
   color: #6D7580;
   margin-top: 12px;
-  padding: 10px;
+  padding: 1rem;
+    transition: border-color 0.3s ease; 
 }
-.form-colab-input{
-  border-radius: 10px;
-  width: 100%;
-  border: 2px solid #E1E1E1;
-  font-size: 13px;
-  color: #6D7580;
-  margin-top: 12px;
-  padding: 10px;
+.form-colab-input:hover{
+    border-color: #5CB7E6; 
 }
 .modal-foot-pieza{
     display: flex;

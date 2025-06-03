@@ -283,9 +283,6 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                 </div>
                             </div>
                             <div className="dialog-actions">
-                                <button className="button-confirm">
-                                    {budgetToEdit ? "Guardar cambios" : "Guardar presupuesto"}
-                                </button>
                                 <button 
                                 type="button" 
                                 onClick={(e) => {
@@ -297,6 +294,10 @@ const  AddBudget = ({setBudget, budgetToEdit = null, onEditComplete = null}) => 
                                 className="button-cancel"
                                 >
                                     Cancelar
+                                </button>
+
+                                <button className="button-confirm">
+                                    {budgetToEdit ? "Guardar cambios" : "Guardar presupuesto"}
                                 </button>
                             </div>
                         </form>

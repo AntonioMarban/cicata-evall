@@ -6,7 +6,7 @@ import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 import { toast } from "sonner";
 
-const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete = null,Number,NumberDate }) => {
+const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete = null,Number,NumberDate,NumberGoal }) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const initialFormValues = {
@@ -26,8 +26,10 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
     const [activity, setActivity] = useState(initialFormValues)
     const [newErrors,setNewErrors] = useState(initialFormValuesErrors);
     const [responsable,setResponsable] = useState([]);
+    const [goal,setGoal] = useState([]);
     const [datesManage,setDatesManage] = useState([]);
     useLoadFormData(Number,setResponsable);
+    useLoadFormData(NumberGoal,setGoal);
     useLoadFormData(NumberDate,setDatesManage);
     useEffect(() => {
             if (activitesToEdit) {
@@ -91,7 +93,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
             <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
-                        <p className="dialog-title">{activitesToEdit ? "Editar Actividades" : "Agregar Actividades"}</p>
+                        <p className="dialog-title">{activitesToEdit ? "Editar actividades" : "Agregar actividades"}</p>
                         <form onSubmit={handleSubmit} className="form-pieza">
                             <div className="form-complete-row">
                                 <p>Meta
@@ -102,13 +104,18 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                                         </>
                                     )} 
                                 </p>
-                                <input 
-                                    name="goal" 
-                                    className="form-pieza-input" 
-                                    placeholder="Escribe la meta de la actividad..."
-                                    value={activity.goal}
-                                    onChange={handleInputChange}
-                                ></input>
+                                    <select 
+                                        name="goal" 
+                                        className="form-pieza-input" 
+                                        placeholder="Selecciona un tipo"
+                                        value={activity.goal}
+                                        onChange={handleInputChange}
+                                    >   
+                                    <option>Selecciona una meta</option>
+                                        {Array.isArray(goal.goals) && goal.goals.map((item, index) => (
+                                                <option key={index} value={`${item.goal}`}>{`${item.goal}`}</option>
+                                        ))}
+                                    </select>
                             </div>
                             <div className="form-rows">
                                 <div>
@@ -189,10 +196,6 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                                 </div>
                             </div>
                             <div className="dialog-actions">
-                                <button className="button-confirm">
-                                    {activitesToEdit ? "Guardar cambios" : "Guardar actividad"}
-                                </button>
-                               
                                 <button 
                                 type="button" 
                                 onClick={(e) => {
@@ -204,6 +207,10 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                                 className="button-cancel"
                                 >
                                 Cancelar
+                                </button>
+                                
+                                 <button className="button-confirm">
+                                    {activitesToEdit ? "Guardar cambios" : "Guardar actividad"}
                                 </button>
                             </div>
                         </form>

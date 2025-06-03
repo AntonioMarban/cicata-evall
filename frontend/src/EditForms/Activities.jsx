@@ -60,6 +60,7 @@ const  Activities = ({option,setOption}) => {
                             onEditComplete={handleEditComplete}
                             Number={22}
                             NumberDate={20}
+                            NumberGoal={25}
                             />
                     </div>
                 </div>

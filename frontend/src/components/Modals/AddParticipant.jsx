@@ -159,7 +159,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
             <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="participant-dialog-overlay">
                 <div className="participant-dialog-container">
                     <DialogPanel className="participant-dialog-panel">
-                        <p className="dialog-title">{participantToEdit ? "Editar Participante" : "Agregar Participante"}</p>
+                        <p className="dialog-title">{participantToEdit ? "Editar participante" : "Agregar participante"}</p>
                         <form onSubmit={handleSubmit} className="participant-form-participant">
                             <div className="participant-form-rows">
                                 <div>

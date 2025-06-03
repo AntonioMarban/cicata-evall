@@ -175,11 +175,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                                     </div>
                                 </div>
                             )}
-                            <div className="dialog-actions">
-                                <button className="button-confirm">
-                                    {collaborationToEdit ? "Guardar Cambios" : "Guardar colaboración"}
-                                </button>
-                                
+                            <div className="dialog-actions">                                
                                 <button 
                                 type="button" 
                                 onClick={(e) => {
@@ -193,7 +189,10 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                                 >
                                 Cancelar
                                 </button>
-                               
+
+                                <button className="button-confirm">
+                                    {collaborationToEdit ? "Guardar Cambios" : "Guardar colaboración"}
+                                </button>
                             </div>
                         </form>
                     </DialogPanel>
