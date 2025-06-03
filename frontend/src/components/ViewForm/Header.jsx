@@ -1,6 +1,6 @@
 import "../../styles/viewcompleteforms.css"
-import logoCICATA from "../../assets/logoCICATA.svg"
-import LOGOIPN from "../../assets/logoIPN.svg"
+import logoCICATA from "../../assets/logoCICATA.png"
+import LOGOIPN from "../../assets/logoIPN.png"
 const Header = ({generalData}) => {  
     return (
     <>
