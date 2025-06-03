@@ -117,6 +117,7 @@ const ManageIndividualUserForm = () => {
                 setFName(data.fName || "");
                 setLastName1(data.lastName1 || "");
                 setLastName2(data.lastName2 || "");
+                setPrefix(data.prefix || "");
                 setEmail(data.email || "");
                 setPhone(data.phone || "");
                 setPassword(data.password || "");
@@ -155,6 +156,7 @@ const ManageIndividualUserForm = () => {
             fName,
             lastName1,
             lastName2,
+            prefix,
             email: email.toLowerCase(),
             phone,
             password,
@@ -221,6 +223,7 @@ const ManageIndividualUserForm = () => {
             fName,
             lastName1,
             lastName2,
+            prefix,
             email: email.toLowerCase(),
             phone,
             password,
@@ -263,6 +266,7 @@ const ManageIndividualUserForm = () => {
     const [fName, setFName] = useState("");
     const [lastName1, setLastName1] = useState("");
     const [lastName2, setLastName2] = useState("");
+    const [prefix, setPrefix] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
@@ -300,6 +304,11 @@ const ManageIndividualUserForm = () => {
         return regex.test(text.trim()) && text === text.trim();
     };
 
+    const isValidPrefix = (text) => {
+        const regex = /^[A-Za-z. ]{1,10}$/;
+        return regex.test(text.trim()) && text === text.trim();
+    };
+
     const isValidEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
@@ -323,6 +332,7 @@ const ManageIndividualUserForm = () => {
         if (!isValidName(lastName1)) newErrors.lastName1 = "El apellido paterno debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
         if (!isValidName(lastName2)) newErrors.lastName2 = "El apellido materno debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
         
+        if (!isValidPrefix(prefix)) newErrors.prefix = "El prefijo debe tener entre 1 y 10 letras o puntos, sin números ni caracteres especiales.";
         if (!isValidEmail(email)) newErrors.email = "El correo no tiene un formato válido.";
         if (!isValidPhone(phone)) newErrors.phone = "El teléfono debe tener exactamente 10 dígitos sin guiones ni espacios.";
         
@@ -352,6 +362,9 @@ const ManageIndividualUserForm = () => {
             case "researchNetworkName":
             case "academicDegree":
                 if (!isValidName(value)) return "Debe tener entre 3 y 30 letras, sin caracteres especiales.";
+                break;
+            case "prefix":
+                if (!isValidPrefix(value)) return "Debe tener entre 1 y 10 letras o puntos, sin números ni caracteres especiales.";
                 break;
             case "email":
                 if (!isValidEmail(value)) return "El correo no tiene un formato válido.";
@@ -400,6 +413,10 @@ const ManageIndividualUserForm = () => {
                         </div>
 
                         <div id="userContactContainer" className="flex flex-row items-center mb-6 flex-wrap justify-start items-start">
+                            {userTextInput("Prefijo", "prefix", "text", "Prefijo del usuario (Dr., Mtro., Lic.)", null, prefix,
+                                (e) => handleFieldChange("prefix", e.target.value, setPrefix),
+                                () => setErrors(prev => ({ ...prev, prefix: validateField("prefix", prefix) })),
+                                errors.prefix)}
                             {userTextInput("Correo electrónico", "email", "email", "Correo electrónico del usuario", null, email,
                                 (e) => handleFieldChange("email", e.target.value, setEmail),
                                 () => setErrors(prev => ({ ...prev, email: validateField("email", email) })),
