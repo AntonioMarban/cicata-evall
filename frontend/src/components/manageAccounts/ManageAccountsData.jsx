@@ -114,7 +114,7 @@ const ManageAccountsData = ({ accountTypeToManage }) => {
         <>
             {accountTypeToManage && (
                 <>
-                    <div id="accountsToManageTitle" className="flex flex-col overflow-y-auto max-h-[80vh] mb-4!">
+                    <div id="accountsToManageTitle" className="flex flex-col overflow-y-auto max-h-[80vh] mb-4! bg-white p-4! rounded shadow">
                         <h2 className="text-xl font-bold mb-2">{title}</h2>
                         <p className="text-gray-600 mb-4">{subtitle}</p>
                     </div>

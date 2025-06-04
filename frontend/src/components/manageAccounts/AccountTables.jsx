@@ -62,8 +62,8 @@ const AccountTables = ({ users, showCommittee, role }) => {
                     <p className="text-sm">Agrega nuevos usuarios para poderse mostrar aquí.</p>
                 </div>
             ) : (
-                <div className="overflow-x-auto mb-6!">
-                    <table className="min-w-full ">
+                <div className="overflow-x-auto mb-6! bg-white p-4! rounded shadow">
+                    <table className="min-w-full justify-between">
                         <thead>
                             <tr className="text-gray-400">
                                 <th className="py-2! px-4! text-left">Nombre</th>
@@ -74,10 +74,10 @@ const AccountTables = ({ users, showCommittee, role }) => {
                         <tbody>
                             {users.map((user) => (
                                 <tr key={user.userId} className="hover:bg-gray-50">
-                                    <td className="py-2! px-4! text-left!">{user.prefix + " " + user.fullName}</td>
+                                    <td className="py-2! px-4! text-left!">{user.fullName}</td>
                                     <td className="py-2! px-4! text-left!">{user.email}</td>
                                     {showCommittee && <td className="py-2! px-4! text-left! max-w-[250px]">{user.committeeName}</td>}
-                                    <td className="py-2! px-4! text-left!">
+                                    <td className="py-2! px-4! text-left! flex justify-end gap-2">
                                             <button
                                                 className="text-white rounded-lg cursor-pointer px-3! py-1! mr-3! mb-1! bg-[#5CB7E6] hover:bg-[#1591D1]"
                                                 onClick={handleEdit(user.userId)}

@@ -89,7 +89,7 @@ export default function HomePage() {
     };
 
     fetchProjects();
-  }, []);
+  }, [userId, userType, committeeId, apiUrl]);
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-100">

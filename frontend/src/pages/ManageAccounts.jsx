@@ -66,18 +66,18 @@ const ManageAccounts = () => {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen" style={{ padding: "5%" }}>
+    <div className="flex flex-col min-h-screen bg-gray-100" style={{ padding: "5%" }}>
       <div
         id="manageAccountsHead"
         className="flex w-full max-w-4xl justify-between items-start flex-col mb-6"
       >
         <h1
-          className="text-4xl font-semibold"
+          className="text-2xl font-semibold"
           style={{ padding: "0 0 10px 0" }}
         >
           Administrar cuentas
         </h1>
-        <p className="text-gray-600 text-2xl mb-2!">
+        <p className="text-gray-600 text-xl mb-2! font-medium">
           Tu panel de administración de cuentas del sistema:
         </p>
       </div>
