@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { updateForm,getAllData,getFormsInRange } from "../db/index";
+import { updateForm,deleteFormsInRange,getFormsInRange } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
 import DragDrop from "../components/DragDrop";
 import { useNavigate  } from 'react-router-dom'
@@ -172,16 +172,29 @@ const  Anexos = ({option,setOption}) => {
                                 console.warn("Upload succeeded but no confirmation message:", uploadData);
                             }
                         }
-                        
+                        toast.promise(
+                        new Promise(resolve => setTimeout(resolve, 1000)),
+                        {
+                            loading: 'Actualizando formulario...',
+                            success: <b>¡Formulario actualizado!</b>,
+                        }
+                        );
                         navigate(`/Proyecto?projectId=${data.projectId}`);
-                        indexedDB.deleteDatabase('Cicata');
+                        deleteFormsInRange(20, 33)
                     } catch (uploadError) {
                         console.error("Error uploading file:", uploadError);
                         toast.error("El proyecto se creó, pero hubo un error al subir el archivo.");
                     }
                 } else {
+                    toast.promise(
+                    new Promise(resolve => setTimeout(resolve, 1000)),
+                    {
+                        loading: 'Actualizando formulario...',
+                        success: <b>¡Formulario actualizado!</b>,
+                    }
+                    );
                     navigate(`/Proyecto?projectId=${data.projectId}`);
-                    indexedDB.deleteDatabase('Cicata');
+                    deleteFormsInRange(20, 33)
                 }
             } else {
                 throw new Error("Missing projectId in server response.");

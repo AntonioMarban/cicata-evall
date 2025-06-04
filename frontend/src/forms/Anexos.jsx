@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { updateForm,getAllData,getFormsInRange } from "../db/index";
+import { updateForm,deleteFormsInRange,getFormsInRange } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
 import DragDrop from "../components/DragDrop";
 import { useNavigate  } from 'react-router-dom'
@@ -138,17 +138,39 @@ const  Anexos = ({option,setOption}) => {
                                 console.warn("Upload succeeded but no confirmation message:", uploadData);
                             }
                         }
-                        await new Promise(resolve => setTimeout(resolve, 1000));
-                        navigate('/VerFormulario', { state: { projectId: data.projectId } });
-                        indexedDB.deleteDatabase('Cicata');
+                        toast.promise(
+                        new Promise((resolve) => {
+                            setTimeout(() => {
+                            resolve();
+                            navigate('/VerFormulario', { state: { projectId: data.projectId } });
+                            deleteFormsInRange(1, 14)
+                            }, 1000);
+                        }),
+                        {
+                            loading: 'Creando formulario...',
+                            success: <b>¡Formulario creado! Redirigiendo...</b>,
+                            error: <b>Error al crear el formulario</b>
+                        }
+                        );
                     } catch (uploadError) {
                         console.error("Error uploading file:", uploadError);
                         toast.error("El proyecto se creó, pero hubo un error al subir el archivo.");
                     }
                 } else {
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    navigate('/VerFormulario', { state: { projectId: data.projectId } });
-                    indexedDB.deleteDatabase('Cicata');
+                    toast.promise(
+                        new Promise((resolve) => {
+                            setTimeout(() => {
+                            resolve();
+                            navigate('/VerFormulario', { state: { projectId: data.projectId } });
+                            deleteFormsInRange(1, 14)
+                            }, 1000);
+                        }),
+                        {
+                            loading: 'Creando formulario...',
+                            success: <b>¡Formulario creado! Redirigiendo...</b>,
+                            error: <b>Error al crear el formulario</b>
+                        }
+                    );
                 }
             } else {
                 throw new Error("Missing projectId in server response.");

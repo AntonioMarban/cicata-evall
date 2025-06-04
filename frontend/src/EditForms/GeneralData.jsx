@@ -67,6 +67,11 @@ const GeneralData = ({option,setOption}) => {
             delete newErrorsF['otherTypeResearch'];
         }
         if(generalData.alignsWithPNIorODS === 0 || generalData.alignsWithPNIorODS === ""){
+            setGeneralData(prev => ({
+                ...prev,
+                alignsWithPNIorODS: 0
+            }));
+            setalignsWithPNIorODS(0)
             delete newErrorsF['alignsWithPNIorODS']
         }
         delete newErrorsF['reevaluation'];
