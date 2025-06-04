@@ -56,7 +56,7 @@ function Sidebar() {
         {(userType === "3" || userType === "4") && (
           <Link to="/EditarRubrica" className="w-full">
             <Button className="flex gap-2 items-center justify-start whitespace-normal">
-              <ClipboardList /> Rubrica de comité
+              <ClipboardList /> Rúbrica de comité
             </Button>
           </Link>
         )}

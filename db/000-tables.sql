@@ -28,7 +28,8 @@ CREATE TABLE `users` (
   `levelNumCOFFA` varchar(50),
   `levelNumEDI` varchar(50),
   `userType_id` integer,
-  `active` bool default true
+  `active` bool default true,
+  FOREIGN KEY (`userType_id`) REFERENCES `userTypes` (`userTypeId`)
 );
 
 CREATE TABLE `committees` (
@@ -39,18 +40,22 @@ CREATE TABLE `committees` (
 CREATE TABLE `committeeUsers` (
   `committeeUserId` integer PRIMARY KEY AUTO_INCREMENT,
   `committeeId` integer,
-  `userId` integer
+  `userId` integer,
+  FOREIGN KEY (`committeeId`) REFERENCES `committees` (`committeeId`),
+  FOREIGN KEY (`userId`) REFERENCES `users` (`userId`)
 );
 
 CREATE TABLE `projects` (
   `projectId` integer PRIMARY KEY AUTO_INCREMENT,
   `title` varchar(100),
   `startDate` date,
-  `endDate` date,
-  `typeResearch` varchar(50),
+  `endDate` date NULL,
+  `typeResearch` varchar(50) NULL,
+  `otherTypeResearch` VARCHAR(100),
   `topic` varchar(50),
   `subtopic` varchar(50),
   `alignmentPNIorODS` TEXT,
+  `alignsWithPNIorODS` BOOLEAN DEFAULT NULL,
   `summary` TEXT,
   `introduction` TEXT,
   `background` TEXT,
@@ -66,7 +71,25 @@ CREATE TABLE `projects` (
   `conflictOfInterest` TEXT,
   `aditionalComments` TEXT,
   `folio` varchar(50),
-  `status` varchar(50) DEFAULT 'En revisión'
+  `status` varchar(50) DEFAULT 'En revisión',
+  `notification` BOOLEAN DEFAULT FALSE,
+  `hasCollaboration` BOOLEAN DEFAULT TRUE,
+  `collaborationJustification` TEXT,
+  `otherEducationalDeliverable` TEXT,
+  `otherDiffusionDeliverable` TEXT,
+  `otherCurrentBudget` TEXT,
+  `otherInvestmentBudget` TEXT,
+  `firstEvaluation` BOOLEAN DEFAULT TRUE,
+  `reevaluation` INT DEFAULT 0,
+  `committiesModify` TEXT,
+  `formVersion` VARCHAR(10) DEFAULT '03',
+  `nextReview` VARCHAR(20) DEFAULT 'septiembre 2025',
+  `preparedBy` VARCHAR(100) DEFAULT 'Leslie Olmedo Nieva',
+  `reviewedBy` VARCHAR(100) DEFAULT 'Leslie Olmedo Nieva',
+  `approvedBy` VARCHAR(100) DEFAULT 'Paul Mondragón Terán',
+  `preparedDate` DATE DEFAULT '2024-06-01',
+  `reviewedDate` DATE DEFAULT '2024-07-08',
+  `approvedDate` DATE DEFAULT '2024-11-04'
 );
 
 CREATE TABLE `deliverables` (
@@ -84,7 +107,20 @@ CREATE TABLE `deliverablesProjects` (
   `quantity` integer,
   `projectId` integer,
   `deliverableId` integer,
-  `deliverableTypeId` integer
+  `deliverableTypeId` integer,
+  FOREIGN KEY (`projectId`) REFERENCES `projects` (`projectId`),
+  FOREIGN KEY (`deliverableId`) REFERENCES `deliverables` (`deliverableId`),
+  FOREIGN KEY (`deliverableTypeId`) REFERENCES `deliverableTypes` (`deliverableTypeId`)
+);
+
+CREATE TABLE `customDeliverables` (
+  `customDeliverables_id` integer PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(255),
+  `quantity` INT,
+  `deliverableTypeId` INT,
+  `project_id` INT,
+  FOREIGN KEY (`deliverableTypeId`) REFERENCES `deliverableTypes` (`deliverableTypeId`),
+  FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`)
 );
 
 CREATE TABLE `associatedProjects` (
@@ -94,7 +130,8 @@ CREATE TABLE `associatedProjects` (
   `project_type` TEXT,
   `externalRegister` varchar(30),
   `SIPRegister` varchar(30),
-  `project_id` integer
+  `project_id` integer,
+  FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`)
 );
 
 CREATE TABLE `collaborativeInstitutions` (
@@ -104,14 +141,16 @@ CREATE TABLE `collaborativeInstitutions` (
   `collaborationAgreement` varchar(30),
   `agreementType` varchar(30),
   `agreementNumber` varchar(30),
-  `project_id` integer
+  `project_id` integer,
+  FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`)
 );
 
 CREATE TABLE `specificObjectives` (
   `specificObjectiveId` integer PRIMARY KEY AUTO_INCREMENT,
   `objectiveName` TEXT,
   `objectiveDescription` TEXT,
-  `project_id` integer
+  `project_id` integer,
+  FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`)
 );
 
 
@@ -122,7 +161,20 @@ CREATE TABLE `scheduleActivities` (
   `responsibleMember` varchar(100),
   `startDate` date,
   `endDate` date,
-  `project_id` integer
+  `project_id` integer,
+  FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`)
+);
+
+CREATE TABLE `budgetSections` (
+  `budgetSectionId` INT PRIMARY KEY AUTO_INCREMENT,
+  `name` VARCHAR(100)
+);
+
+CREATE TABLE `budgetTypes` (
+  `budgetTypeId` integer PRIMARY KEY AUTO_INCREMENT,
+  `type_name` varchar(150),
+  `budgetSectionId` INT,
+  FOREIGN KEY (`budgetSectionId`) REFERENCES `budgetSections` (`budgetSectionId`)
 );
 
 CREATE TABLE `budgets` (
@@ -132,7 +184,10 @@ CREATE TABLE `budgets` (
   `expenditure` DOUBLE,
   `budgetDate` date,
   `otherName` varchar(50),
-  `project_id` integer
+  `project_id` integer,
+  `budgetTypeId` INT,
+  FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`),
+  FOREIGN KEY (`budgetTypeId`) REFERENCES `budgetTypes` (`budgetTypeId`)
 );
 
 CREATE TABLE `members` (
@@ -151,20 +206,25 @@ CREATE TABLE `members` (
   `levelNumCOFFA` varchar(50),
   `levelNumEDI` varchar(50),
   `tutorName` varchar(100),
-  `project_id` integer
+  `project_id` integer,
+  FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`)
 );
 
 CREATE TABLE `usersProjects` (
   `userProjectId` integer PRIMARY KEY AUTO_INCREMENT,
   `project_id` integer,
-  `user_id` integer
+  `user_id` integer,
+  FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`userId`)
 );
 
 CREATE TABLE `annexes` (
   `annexeId` integer PRIMARY KEY AUTO_INCREMENT,
   `document` LONGBLOB,
   `filename` VARCHAR(255),
-  `projectId` integer
+  `tag` VARCHAR(100),
+  `projectId` integer,
+  FOREIGN KEY (`projectId`) REFERENCES `projects` (`projectId`)
 );
 
 CREATE TABLE `evaluationTypes` (
@@ -180,7 +240,12 @@ CREATE TABLE `evaluations` (
   `result` varchar(50),
   `evaluation_type_id` integer,
   `user_id` integer,
-  `project_id` integer
+  `project_id` integer,
+  `committee_id` INT,
+  FOREIGN KEY (`evaluation_type_id`) REFERENCES `evaluationTypes` (`evaluationTypeId`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`userId`),
+  FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`),
+  FOREIGN KEY (`committee_id`) REFERENCES `committees` (`committeeId`)
 );
 
 CREATE TABLE `dictums` (
@@ -189,7 +254,8 @@ CREATE TABLE `dictums` (
   `decision` varchar(50),
   `date` date,
   `authorizerId` integer,
-  `project_id` integer
+  `project_id` integer,
+  FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`)
 );
 
 CREATE TABLE `agreements` (
@@ -197,13 +263,16 @@ CREATE TABLE `agreements` (
   `date` date,
   `agreed` bool,
   `user_id` integer,
-  `project_id` integer
+  `project_id` integer,
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`userId`),
+  FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`)
 );
 
 CREATE TABLE `rubrics` (
   `rubric_id` integer PRIMARY KEY AUTO_INCREMENT,
   `rubric` longblob,
-  `committee_id` integer
+  `committee_id` integer,
+  FOREIGN KEY (`committee_id`) REFERENCES `committees` (`committeeId`)
 );
 
 CREATE TABLE `goals` (
@@ -223,121 +292,3 @@ CREATE TABLE `p_references` (
   `reference` TEXT,
   `project_id` integer
 );
-
-CREATE TABLE `budgetTypes` (
-  `budgetTypeId` integer PRIMARY KEY AUTO_INCREMENT,
-  `type_name` varchar(150),
-  `budgetSectionId` INT
-);
-
-CREATE TABLE `customDeliverables` (
-  `customDeliverables_id` integer PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(255)
-);
-
-CREATE TABLE budgetSections (
-  `budgetSectionId` INT PRIMARY KEY AUTO_INCREMENT,
-  `name` VARCHAR(100)
-);
-
-ALTER TABLE `users` ADD FOREIGN KEY (`userType_id`) REFERENCES `userTypes` (`userTypeId`);
-
-ALTER TABLE `committeeUsers` ADD FOREIGN KEY (`committeeId`) REFERENCES `committees` (`committeeId`);
-
-ALTER TABLE `committeeUsers` ADD FOREIGN KEY (`userId`) REFERENCES `users` (`userId`);
-
-ALTER TABLE `deliverablesProjects` ADD FOREIGN KEY (`projectId`) REFERENCES `projects` (`projectId`);
-
-ALTER TABLE `deliverablesProjects` ADD FOREIGN KEY (`deliverableId`) REFERENCES `deliverables` (`deliverableId`);
-
-ALTER TABLE `deliverablesProjects` ADD FOREIGN KEY (`deliverableTypeId`) REFERENCES `deliverableTypes` (`deliverableTypeId`);
-
-ALTER TABLE `associatedProjects` ADD FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`);
-
-ALTER TABLE `collaborativeInstitutions` ADD FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`);
-
-ALTER TABLE `specificObjectives` ADD FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`);
-
-ALTER TABLE `scheduleActivities` ADD FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`);
-
-ALTER TABLE `budgets` ADD FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`);
-
-ALTER TABLE `members` ADD FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`);
-
-ALTER TABLE `usersProjects` ADD FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`);
-
-ALTER TABLE `usersProjects` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`userId`);
-
-ALTER TABLE `annexes` ADD FOREIGN KEY (`projectId`) REFERENCES `projects` (`projectId`);
-
-ALTER TABLE `evaluations` ADD FOREIGN KEY (`evaluation_type_id`) REFERENCES `evaluationTypes` (`evaluationTypeId`);
-
-ALTER TABLE `evaluations` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`userId`);
-
-ALTER TABLE `evaluations` ADD FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`);
-
-ALTER TABLE `dictums` ADD FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`);
-
-ALTER TABLE `agreements` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`userId`);
-
-ALTER TABLE `agreements` ADD FOREIGN KEY (`project_id`) REFERENCES `projects` (`projectId`);
-
-ALTER TABLE `rubrics` ADD FOREIGN KEY (`committee_id`) REFERENCES `committees` (`committeeId`);
-
--- Modificaciones a tablas
-
--- Para la parte de notificaciones
-ALTER TABLE `projects` ADD COLUMN `notification` BOOLEAN DEFAULT FALSE;
-
--- Para cuando selecciona "Otro" en el tipo de investigación
-ALTER TABLE projects ADD COLUMN otherTypeResearch VARCHAR(100);
-ALTER TABLE projects MODIFY typeResearch VARCHAR(50) NULL;
-
--- Booleano para saber si el proyecto se alinea con el PNI o los ODS
-ALTER TABLE projects ADD COLUMN alignsWithPNIorODS BOOLEAN DEFAULT NULL;
-
--- En caso de que el proyecto no necesite colaboración, se agrega un campo para justificarlo
-ALTER TABLE projects ADD COLUMN hasCollaboration BOOLEAN DEFAULT TRUE, ADD COLUMN collaborationJustification TEXT;
-
--- Para la parte de presupuesto, se agrega un campo para el tipo de presupuesto
-ALTER TABLE budgets ADD COLUMN budgetTypeId INT, ADD CONSTRAINT fk_budgetType FOREIGN KEY (budgetTypeId) REFERENCES budgetTypes(budgetTypeId);
-
--- Se agrega id de comité a la tabla evaluaciones
-ALTER TABLE evaluations ADD COLUMN committee_id INT, ADD CONSTRAINT fk_committee FOREIGN KEY (committee_id) REFERENCES committees(committeeId);
-
-ALTER TABLE projects 
-ADD otherEducationalDeliverable TEXT,
-ADD otherDiffusionDeliverable TEXT;
-
-ALTER TABLE projects
-ADD COLUMN otherCurrentBudget TEXT,
-ADD COLUMN otherInvestmentBudget TEXT;
-
-ALTER TABLE customDeliverables 
-ADD COLUMN quantity INT,
-ADD COLUMN deliverableTypeId INT,
-ADD COLUMN project_id INT;
-
-ALTER TABLE budgetTypes
-ADD CONSTRAINT fk_budgetSections
-FOREIGN KEY (budgetSectionId) REFERENCES budgetSections(budgetSectionId);
-
-ALTER TABLE annexes ADD COLUMN tag VARCHAR(100);
-
-ALTER TABLE projects
-ADD COLUMN firstEvaluation BOOLEAN DEFAULT TRUE,
-ADD COLUMN reevaluation INT DEFAULT 0,
-ADD COLUMN committiesModify TEXT;
-
-ALTER TABLE projects MODIFY COLUMN endDate DATE NULL;
-
--- Datos estaticos para la parte superior del formulario
-ALTER TABLE projects
-ADD COLUMN formVersion VARCHAR(10) DEFAULT '03',
-ADD COLUMN nextReview VARCHAR(20) DEFAULT 'septiembre 2025',
-ADD COLUMN preparedBy VARCHAR(100) DEFAULT 'Leslie Olmedo Nieva',
-ADD COLUMN reviewedBy VARCHAR(100) DEFAULT 'Leslie Olmedo Nieva',
-ADD COLUMN approvedBy VARCHAR(100) DEFAULT 'Paul Mondragón Terán',
-ADD COLUMN preparedDate DATE DEFAULT '2024-06-01',
-ADD COLUMN reviewedDate DATE DEFAULT '2024-07-08',
-ADD COLUMN approvedDate DATE DEFAULT '2024-11-04';
