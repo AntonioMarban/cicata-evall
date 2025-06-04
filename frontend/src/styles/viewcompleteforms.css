@@ -302,6 +302,10 @@ td {
     page-break-before: always;
     break-before: page;
 }
+.tiptap p {
+  margin: 1em 0;
+  text-align: left;
+}
 @media print {
     .div-button {
       display: none !important;
@@ -314,8 +318,24 @@ td {
         break-inside: avoid;
     }
     .BackgroundTable {
+        margin-top: 1rem !important;
         page-break-inside: avoid;
         break-inside: avoid;       
+    }
+    .BackgroundTable {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .BackgroundTable {
+        page-break-before: auto;
+        margin-top: 1rem !important;
+    }
+    @page {
+        margin-top: 1rem !important;
+    }
+    .BackgroundTable:not(:first-child) {
+        margin-top: 2rem;
     }
     .backgroundParticipants{
         margin-top: 3rem;
@@ -323,6 +343,6 @@ td {
         break-inside: avoid;     
     }
     .fullTable-body h1{
-        margin-top: 5rem !important;
+        margin-top: 1rem !important;
     }
 }

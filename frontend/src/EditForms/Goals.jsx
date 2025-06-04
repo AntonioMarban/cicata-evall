@@ -5,7 +5,7 @@ import useSubmitFormNext from "../hooks/useSubmitFormNext";
 import ShowCards from "../components/ShowCards.jsx";
 import AddGoals from "../components/Modals/AddGoals";
 import AddMethodology from "../components/Modals/AddMethodology.jsx";
-
+import Editor from "../components/Editor.jsx"
 import { useState } from "react";
 const  Goals = ({option,setOption}) => {
     
@@ -74,6 +74,13 @@ const  Goals = ({option,setOption}) => {
         setData(null);
     };
 
+    const handleEditorUpdate = (newHtmlContent) => {
+        setDesglose(prev => ({
+        ...prev,
+        references: newHtmlContent
+        }))
+    };
+
     useLoadFormData(desglose.idF,setDesglose);
     return (
         <div>
@@ -133,12 +140,10 @@ const  Goals = ({option,setOption}) => {
                         </div>
                         <div className="flex-1">
                             <p className="!mt-2 text-xl">Referencias {newErrorsD.references && <span className="text-red-600">{newErrorsD.references}</span>}</p>
-                            <textarea  
-                            className="w-full h-full !p-2.5 rounded-lg border-2 border-[#E1E1E1] hover:border-[#5CB7E6] transition-colors duration-300 text-lg flex justify-start items-start text-[#6D7580] mt-3 min-w-[250px]"
-                            name="references"
-                            value={desglose.references}
-                            onChange={handleChange} 
-                            placeholder="Escribe las referencias del proyecto..."></textarea>
+                            <Editor 
+                                    content={desglose.references} 
+                                    onUpdate={handleEditorUpdate}
+                                />
                         </div>
                     </div>
                 </div>

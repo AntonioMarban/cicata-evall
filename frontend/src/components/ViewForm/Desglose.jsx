@@ -1,6 +1,16 @@
-import React from 'react';
 import "../../styles/viewcompleteforms.css"
+import { EditorContent, useEditor, Editor } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
 const Desglose = ({desglose, goals, methodologies, references}) => {  
+    const editor = new Editor({
+    editable: false,
+    extensions: [
+      StarterKit,
+    ],
+    content: references,
+    
+  })
+
     return (
     <>
         <table className='BackgroundTable'>
@@ -145,7 +155,9 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td className='italic'>{references || ""}</td>
+                    <td>
+                        <EditorContent editor={editor}/>
+                    </td>
                 </tr>
             </tbody>
         </table>
