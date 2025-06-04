@@ -24,7 +24,7 @@ const Deliverables = ({Deliverables}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>No se registro ningun entregable</td>
+                    <td>No se registro ningún entregable</td>
                 </tr>
             </tbody>
         </table>
