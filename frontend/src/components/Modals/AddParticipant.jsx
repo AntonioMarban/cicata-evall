@@ -116,6 +116,9 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
         if (participant.positionWork != "Estudiante"){
             delete newErrorsF["tutorName"]
         }
+        delete newErrorsF["levelNumCOFFA"]
+        delete newErrorsF["levelNumEDI"]
+        delete newErrorsF["levelNumSNII"]
         delete newErrorsF["index"];
         setNewErrors(newErrorsF)
         if(!Object.keys(newErrorsF).length>0){

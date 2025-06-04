@@ -121,7 +121,7 @@ const  Collaboration = ({option,setOption}) => {
                             <p className="flex-1">Institución</p>
                             <p className="flex-1">Convenio colaboración</p>
                             <p className="flex-1">Internacional / Nacional</p>
-                            <p className="flex-1 text-center">Número de covenio</p>
+                            <p className="flex-1">Número de covenio</p>
                             <p className="flex-1"></p>
                         </div>
                     </div>
