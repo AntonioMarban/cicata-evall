@@ -27,7 +27,19 @@ const getAgreementSignature = (req, res) => {
                     error: "Resource does not exist",
                 });
         }
-        return res.status(200).json(results[0]);
+        const response = {
+            date: results[0][0].date,
+            agreed: results[0][0].agreed,
+            evaluator: results[0][0].evaluator,
+            prefix: results[0][0].prefix,
+            positionWork: results[0][0].positionWork,
+            institution: results[0][0].institution,
+            email: results[0][0].email,
+            phone: results[0][0].phone,
+            projectTitle: results[1][0].projectTitle,
+            researcher: results[1][0].researcher
+        };
+        return res.status(200).json([response]);
     });
 };
 

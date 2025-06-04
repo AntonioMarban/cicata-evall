@@ -1094,8 +1094,12 @@ BEGIN
     SELECT
         DATE_FORMAT(a.date, '%Y-%m-%d') AS date,
         a.agreed,
-        p.title,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS evaluator,
+        u.prefix,
+        u.positionWork,
+        u.institution,
+        u.email,
+        u.phone
     FROM
         agreements a
     JOIN users u ON a.user_id = u.userId
@@ -1103,6 +1107,16 @@ BEGIN
     WHERE
         a.user_id = p_userId
         AND a.project_id = p_projectId;
+    
+    SELECT
+        p.title AS projectTitle,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher        
+    FROM
+        projects p
+    JOIN usersProjects up ON p.projectId = up.project_id
+    JOIN users u ON up.user_id = u.userId
+    WHERE
+        p.projectId = p_projectId;
 END //
 DELIMITER ;
 
