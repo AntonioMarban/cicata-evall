@@ -485,7 +485,7 @@ const setProjectStatusToRevision = (req, res) => {
             return res.status(500).json({ error: 'Error al cambiar el estado del proyecto' });
         }
 
-        res.status(200).json({ message: 'El estado del proyecto se cambió a "En revisión"' });
+        res.status(200).json({ message: 'El estado del proyecto se cambió' });
     });
 };
 
