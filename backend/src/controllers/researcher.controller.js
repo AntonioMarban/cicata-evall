@@ -272,11 +272,13 @@ const updateProject = (req, res) => {
     extras3 = null,
   } = req.body;
 
-    const transformDeliverables = (deliverablesArray) => {
+ const transformDeliverables = (deliverablesArray) => {
         return deliverablesArray.map(deliv => {
             const { id: deliverableId, values } = deliv;
             if (values && typeof values === 'object') {
-                return Object.entries(values).map(([deliverableTypeId, quantity]) => ({
+                return Object.entries(values)
+                .filter(([_, quantity]) => Number(quantity) > 0) //Si manda 0 en algun entregable no se guarda :D
+                .map(([deliverableTypeId, quantity]) => ({
                     deliverableId,
                     deliverableTypeId: Number(deliverableTypeId),
                     quantity
@@ -284,6 +286,26 @@ const updateProject = (req, res) => {
             }
             return [];
         }).flat();
+    };
+
+        const transformExtras = (extrasArray) => {
+        return extrasArray.map(extra => {
+            const cleanedValues = Object.entries(extra.values || {})
+                .filter(([_, quantity]) => Number(quantity) > 0)
+                .reduce((acc, [key, value]) => {
+                    acc[key] = value;
+                    return acc;
+                }, {});
+
+            if (Object.keys(cleanedValues).length > 0) { //Otra vez la validacion de los 0s, pero ahora para extras
+                return {
+                    name: extra.name,
+                    values: cleanedValues
+                };
+            }
+
+            return null;
+        }).filter(Boolean); //Elimina los null
     };
 
     // Combinar y transformar todos los deliverables
@@ -339,9 +361,9 @@ const updateProject = (req, res) => {
     methodologies ? JSON.stringify(methodologies) : null,
     references,
     specificObjectives ? JSON.stringify(specificObjectives) : null,
-    extras1 ? JSON.stringify(extras1) : null,
-    extras2 ? JSON.stringify(extras2) : null,
-    extras3 ? JSON.stringify(extras3) : null
+    extras1 ? JSON.stringify(transformExtras(extras1)) : null,
+    extras2 ? JSON.stringify(transformExtras(extras2)) : null,
+    extras3 ? JSON.stringify(transformExtras(extras3)) : null
   ];
 
   pool.query(sql, values, (err, results) => {
