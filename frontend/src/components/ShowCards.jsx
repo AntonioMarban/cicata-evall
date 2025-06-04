@@ -11,7 +11,7 @@ const ShowCards = ({cards,handleDeleteFile,handleEditModal,nameArray,setData, fi
             {Array.isArray(cards) && cards.map((card, index) => (
                 <div className="!p-2 m-5 flex justify-between items-center w-full" key={index}>
                     {fieldsToShow.map((field) => (
-                        <p className="flex-1 overflow-auto" key={field}>
+                        <p className="flex-1 justify-end overflow-auto" key={field}>
                             {card[field] || '-'}
                         </p>
                     ))}

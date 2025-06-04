@@ -101,7 +101,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
         <>
             <button className='modalAddColaboration' onClick={() => setIsOpen(true)}>Agregar colaboración</button>
 
-            <Dialog open={isOpen} onClose={() => {}} className="dialog-overlay">
+            <Dialog open={isOpen}  onClose={() => {setIsOpen(false); setCollaboration(initialCollaboration)}} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <p className="dialog-title">{collaborationToEdit ? "Editar colaboración" : "Agregar colaboración"}</p>
@@ -156,7 +156,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                                         ))}
                                 </select>
                             </div>
-                            {collaboration.collaborationAgreement != "No se cuenta con convenio" &&(
+                            {(collaboration.collaborationAgreement === "General" || collaboration.collaborationAgreement === "Específico") &&(
                                 <div className="form-rows">
                                     <div>
                                         <p>¿El convenio es nacional o internacional?</p>

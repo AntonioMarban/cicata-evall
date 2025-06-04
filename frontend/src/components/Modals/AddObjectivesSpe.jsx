@@ -66,7 +66,7 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                 Agregar objetivo
             </button>
 
-            <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
+            <Dialog open={isOpen} onClose={() => {setIsOpen(false); setObjectiveSpe(initialValues)}} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <p className="dialog-title">{desgloseToEdit ? "Editar objetivo específico" : "Agregar objetivo específico"}</p>
@@ -80,11 +80,11 @@ const  AddObjectivesSpe = ({setDesglose, desgloseToEdit = null, onEditComplete =
                                         </>
                                     )}  
                                 </p>
-                                <input name="objectiveName" 
+                                <textarea name="objectiveName" 
                                        className="form-pieza-input" 
                                        placeholder="Escribe el objetivo específico..."
                                        value={objectiveSpe.objectiveName}
-                                       onChange={handleInputChange}></input>
+                                       onChange={handleInputChange}></textarea>
                             </div>
                             <div className="dialog-actions">
                                 <button 

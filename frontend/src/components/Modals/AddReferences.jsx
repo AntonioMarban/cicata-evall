@@ -67,7 +67,7 @@ const  AddReferences = ({setDesglose, referencesToEdit = null, onEditComplete = 
                 Agregar referencia
             </button>
 
-            <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
+            <Dialog open={isOpen} onClose={() => {setIsOpen(false); setReferences(initialValues) }} className="dialog-overlay">
                 <div className="dialog-container">
                     <DialogPanel className="dialog-panel">
                         <p className="dialog-title">{referencesToEdit ? "Editar referencia" : "Agregar referencia"}</p>

@@ -55,9 +55,9 @@ const  Activities = ({option,setOption}) => {
                     <div className="flex justify-between !p-2">
                     <p className="flex-1">Meta</p>
                     <p className="flex-1">Institución</p>
-                    <p className="flex-1 text-center">Participante</p>
-                    <p className="flex-1 text-center">Fecha inicio</p>
-                    <p className="flex-1 text-center">Fecha fin</p>
+                    <p className="flex-1">Participante</p>
+                    <p className="flex-1">Fecha inicio</p>
+                    <p className="flex-1">Fecha fin</p>
                     <p className="flex-1"></p>
                     </div>
                 </div>

@@ -156,7 +156,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
 
             <button className="participant-modalAgregarPieza" onClick={() => setIsOpen(true)}>Agregar participante</button>
 
-            <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="participant-dialog-overlay">
+            <Dialog open={isOpen} onClose={() => {setIsOpen(false); setParticipant(initialParticipant);}} className="participant-dialog-overlay">
                 <div className="participant-dialog-container">
                     <DialogPanel className="participant-dialog-panel">
                         <p className="dialog-title">{participantToEdit ? "Editar participante" : "Agregar participante"}</p>
@@ -391,9 +391,6 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             </div>
                             
                             <div className="participant-dialog-actions">
-                                <button  className="participant-button-confirm">
-                                    {participantToEdit ? "Guardar cambios" : "Guardar participante"}
-                                </button>
                                 <button
                                 type="button"
                                 onClick={(e)=>{
@@ -404,6 +401,9 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                     }}
                                 className="button-cancel">
                                 Cancelar
+                                </button>
+                                <button  className="participant-button-confirm">
+                                    {participantToEdit ? "Guardar cambios" : "Guardar participante"}
                                 </button>
                             </div>
                         </form>

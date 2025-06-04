@@ -315,11 +315,14 @@ td {
     }
     .BackgroundTable {
         page-break-inside: avoid;
-        break-inside: avoid;        
+        break-inside: avoid;       
     }
     .backgroundParticipants{
         margin-top: 3rem;
         page-break-inside: avoid;
         break-inside: avoid;     
+    }
+    .fullTable-body h1{
+        margin-top: 5rem !important;
     }
 }

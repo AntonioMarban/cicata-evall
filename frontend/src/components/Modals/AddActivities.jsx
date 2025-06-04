@@ -92,7 +92,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
     };
     return (
         <>
-            <button className='modalAddProject' onClick={() => setIsOpen(true)}>Agregar actividad</button>
+            <button className='modalAddProject' onClick={() => {setIsOpen(true); setActivity(initialFormValues)}}>Agregar actividad</button>
 
             <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="dialog-overlay">
                 <div className="dialog-container">
