@@ -67,7 +67,7 @@ const EditRubric = () => {
 
     return (
         <>
-            <div id="rubricContainer" className='flex flex-col overflow-y-auto h-screen max-h-screen' style={{ padding: '5%' }}>
+            <div id="rubricContainer" className='flex flex-col overflow-y-auto h-screen max-h-screen bg-gray-100' style={{ padding: '5%' }}>
                 <h1 className="text-4xl font-semibold">Rúbrica</h1>
                 <p className="text-xl text-gray-600" style={{ padding: "20px 0" }}>Esta es la rúbrica visible para todos los integrantes de tu comité</p>
 
