@@ -242,7 +242,7 @@ export default function ProjectStatus({ projectId }) {
 
         {/* Etapa 1 */}
         <div className="stage">
-          <h3>Etapa 1</h3>
+          <h3>Etapa 1: Evaluación por el Comité Interno de Proyectos</h3>
           {stage1Evaluations.length === 0 ? (
             <>
               <p>Este proyecto aún no ha sido enviado al CIP.</p>
@@ -289,7 +289,7 @@ export default function ProjectStatus({ projectId }) {
 
         {/* Etapa 2 */}
         <div className="stage">
-          <h3>Etapa 2</h3>
+          <h3>Etapa 2: Evaluación por Comités Especializados</h3>
           {stage2Evaluations.length === 0 ? (
             <>
               <p>Este proyecto aún no ha sido enviado al CEI, CB y CI.</p>
@@ -365,7 +365,12 @@ export default function ProjectStatus({ projectId }) {
 
         {/* Etapa 3 */}
         <div className="stage">
-          <h3>Etapa 3</h3>
+          <h3>
+            Etapa 3:
+            {sendingPendingResearcher === 1 && createDictum === 1
+              ? " Generación y envío de dictamen global al investigador titular"
+              : " Envío de resultados al investigador titular"}
+          </h3>
           <p>
             {sendingPendingResearcher === 1 && createDictum === 1
               ? `El resultado final es: ${finalResult}. El resultado aún no ha sido enviado al investigador.`
