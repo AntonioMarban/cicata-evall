@@ -20,7 +20,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
         agreementNumber: "*",
         partOfIPN: 1
     };
-    const collaborationTypes = ["General","Específico","No se cuenta con él"]
+    const collaborationTypes = ["General","Específico","No se cuenta con convenio"]
     const [newErrors,setNewErrors] =  useState(initialCollaborationErrors);
     const [collaboration, setCollaboration] = useState(initialCollaboration);
 
@@ -37,7 +37,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
         }
     }, [collaborationToEdit]);
     useEffect(()=>{
-        if(collaboration.collaborationAgreement === "No se cuenta con él"){
+        if(collaboration.collaborationAgreement === "No se cuenta con convenio"){
             setCollaboration(prev=>({
                 ...prev,
                 agreementNumber: "",
@@ -156,7 +156,7 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                                         ))}
                                 </select>
                             </div>
-                            {collaboration.collaborationAgreement != "No se cuenta con él" &&(
+                            {collaboration.collaborationAgreement != "No se cuenta con convenio" &&(
                                 <div className="form-rows">
                                     <div>
                                         <p>¿El convenio es nacional o internacional?</p>

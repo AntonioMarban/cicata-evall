@@ -12,7 +12,7 @@ const Annexes = ({Annexes}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>{Annexes}</td>
+                    <td>{Annexes || "No hay comentarios adicionales"}</td>
                 </tr>
             </tbody>
         </table>

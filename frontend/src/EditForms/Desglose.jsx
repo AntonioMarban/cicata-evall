@@ -57,7 +57,7 @@ const  Desglose = ({option,setOption}) => {
         if(!Object.keys(newErrorsDF).length>0){
             handleOnSubmitFormNext(event); 
         }
-    }
+    };
 
     const handleDeleteArray = (index) => {
         setDesglose({

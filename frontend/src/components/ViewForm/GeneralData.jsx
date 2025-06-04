@@ -133,40 +133,45 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
             </tr>
         </tbody>
     </table>
-    <table className='BackgroundTable'>
-        <caption className="table-form-caption">Relación de Proyectos Asociados al proyecto principal</caption>
-        <thead className='table-form-header'>
-            <tr>
-                <th>No. 1</th>
-                <th>Nombre del proyecto</th>
-                <th>Tipo de proyecto
-                </th>
-                <th>Número de registro externo
+
+    {associatedProjects.associatedProjects.length > 1 && (
+        <>
+        <table className='BackgroundTable'>
+            <caption className="table-form-caption">Relación de Proyectos Asociados al proyecto principal</caption>
+            <thead className='table-form-header'>
+                <tr>
+                    <th>No. 1</th>
+                    <th>Nombre del proyecto</th>
+                    <th>Tipo de proyecto
+                    </th>
+                    <th>Número de registro externo
+                        <br/><span className='subtitle-text'>(Si aplica)</span>
+                    </th>
+                    <th>Número de registro SIP*
                     <br/><span className='subtitle-text'>(Si aplica)</span>
-                </th>
-                <th>Número de registro SIP*
-                <br/><span className='subtitle-text'>(Si aplica)</span>
-                </th>
-                <th>Fecha de asociación</th>
-            </tr>
-        </thead>
-        <tbody className='table-form-body'>
-            {Array.isArray(associatedProjects.associatedProjects) && associatedProjects.associatedProjects.map((associatedProject, index) => (
-                <tr key={index}>
-                    <td>{index+1}</td>
-                    <td>{associatedProject.name}</td>
-                    <td>{associatedProject.project_type}</td>
-                    <td>{associatedProject.externalRegister}</td>
-                    <td>{associatedProject.SIPRegister}</td>
-                    <td>{associatedProject.associationDate}</td>
+                    </th>
+                    <th>Fecha de asociación</th>
                 </tr>
-            ))}
-        </tbody>
-    </table>
-    <p className='message-after-data'>Agregar el número de filas necesarias para todos los proyectos asociados al proyecto principal
-        <br/>
-        *SIP. Secretaría de Investigación y Posgrado
-    </p>
+            </thead>
+            <tbody className='table-form-body'>
+                {Array.isArray(associatedProjects.associatedProjects) && associatedProjects.associatedProjects.map((associatedProject, index) => (
+                    <tr key={index}>
+                        <td>{index+1}</td>
+                        <td>{associatedProject.name}</td>
+                        <td>{associatedProject.project_type}</td>
+                        <td>{associatedProject.externalRegister}</td>
+                        <td>{associatedProject.SIPRegister}</td>
+                        <td>{associatedProject.associationDate}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+        <p className='message-after-data'>Agregar el número de filas necesarias para todos los proyectos asociados al proyecto principal
+            <br/>
+            *SIP. Secretaría de Investigación y Posgrado
+        </p>
+        </>
+    )}
     </>
   );
 };

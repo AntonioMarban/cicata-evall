@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete = null,Number,NumberDate,NumberGoal }) => {
     const [isOpen, setIsOpen] = useState(false)
-
+    const [investigator, setInvestigator] = useState(localStorage.getItem("userFullName"));
     const initialFormValues = {
         goal: "",
         institution: "",
@@ -68,11 +68,15 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(datesManage.endDate && (datesManage.startDate>=activity.startDate || datesManage.endDate <= activity.endDate)){
-            return toast.error("Las fechas deben de estar dentro del rango del proyecto")
+        const start = new Date(datesManage.startDate);
+        const end = new Date(datesManage.endDate);
+        const activityStart = new Date(activity.startDate);
+        const activityEnd = new Date(activity.endDate);
+        if(end && (!(start <= activityStart) || !(end >= activityEnd))){
+            return toast.error(`Las fechas deben de estar dentro del rango del proyecto del ${datesManage.startDate} al ${datesManage.endDate}`);
         }
         const newErrorsF = {}
-        if (activity.startDate > activity.endDate) {
+        if (activityStart > activityEnd) {
             return toast.error("No puede ser la fecha de inicio después de la fecha de fin");
         }
         Object.entries(activity).forEach(([key, value]) => {
@@ -152,6 +156,7 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
                                         onChange={handleInputChange}
                                     >   
                                     <option>Selecciona un participante responsable</option>
+                                    <option value={investigator}>{investigator}</option>
                                         {Array.isArray(responsable.members) && responsable.members.map((person, index) => (
                                                 <option key={index} value={`${person.fName} ${person.lastName1} ${person.lastName2}`}>{`${person.fName} ${person.lastName1} ${person.lastName2}`}</option>
                                         ))}

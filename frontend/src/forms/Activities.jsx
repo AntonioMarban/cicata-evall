@@ -7,10 +7,12 @@ import useSubmitFormBack from "../hooks/useSubmitFormBack";
 import useSubmitFormNext from "../hooks/useSubmitFormNext";
 
 const  Activities = ({option,setOption}) => {
-    
     const [activities, setActivities] = useState({ idF: 9, scheduleActivities: [] });
     const [activitiesToEdit, setActivitiesToEdit] = useState(null);
-
+    const [newErrorsD,setNewErrorsD] = useState({
+                activities: "*",
+            }
+    );
     const handleOnSubmitFormBack = useSubmitFormBack(activities, setOption);
     const handleOnSubmitFormNext = useSubmitFormNext(activities, setOption);
 
@@ -31,11 +33,25 @@ const  Activities = ({option,setOption}) => {
 
     useLoadFormData(activities.idF,setActivities);
 
+    const handleSubmitWithValidation = (event) => {
+        event.preventDefault();
+        const newErrorsDF = {}
+        if(activities.scheduleActivities.length<1){
+            newErrorsDF['activities'] = `* Debe haber al menos una actividad`;
+        }
+        if(activities.scheduleActivities.length>=1){
+            delete newErrorsDF['activities']
+        }
+        setNewErrorsD(newErrorsDF)
+        if(!Object.keys(newErrorsDF).length>0){
+            handleOnSubmitFormNext(event); 
+        }
+    };
     return (
         <div>
             <div className="flex flex-col justify-between">
                 <div>
-                    <p className="text-[22px]">Actividades</p>
+                    <p className="text-[22px]">Actividades {newErrorsD.activities && <span className="text-red-600">{newErrorsD.activities}</span>}</p>
                 </div>
                 <div className="rounded-lg p-0 w-full">
                     <div className="flex justify-between !p-2">
@@ -71,7 +87,7 @@ const  Activities = ({option,setOption}) => {
                  hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
                 <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
                 bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
-                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleOnSubmitFormNext}>Siguiente</button>
+                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
         </div>
     )
