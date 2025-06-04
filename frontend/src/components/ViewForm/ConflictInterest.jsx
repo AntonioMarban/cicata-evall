@@ -13,7 +13,7 @@ const ConflictInterest = ({conflictOfInterest}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td>{conflictOfInterest}</td>
+                    <td>{conflictOfInterest || "No hay conflicto de interés"}</td>
                 </tr>
             </tbody>
         </table>

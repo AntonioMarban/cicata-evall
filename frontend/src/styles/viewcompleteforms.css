@@ -149,6 +149,11 @@
     justify-content: center;
     align-items: center;
 }
+.centerAfirmative-tag{
+    display: flex;
+    justify-content: center;
+    font-weight: 600;
+}
 .participant-row{
     display: flex;
     flex-direction: column;
@@ -303,5 +308,18 @@ td {
     }
     .files-no-print{
         display: none !important;
+    }
+    .avoid-break {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+    .BackgroundTable {
+        page-break-inside: avoid;
+        break-inside: avoid;        
+    }
+    .backgroundParticipants{
+        margin-top: 3rem;
+        page-break-inside: avoid;
+        break-inside: avoid;     
     }
 }

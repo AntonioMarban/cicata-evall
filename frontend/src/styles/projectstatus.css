@@ -38,54 +38,64 @@
 .stage h3 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
-  font-weight: 600; /* Slightly bold label */
+  font-weight: 600; 
 }
 
-/* Table styles */
 .stage-table {
   width: 100%;
   margin-top: 1rem;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
-/* Remove table borders */
 .stage-table th,
 .stage-table td {
   padding: 0.75rem;
   text-align: left;
   vertical-align: top;
-  border: none; /* Removed border to make text float */
+  border: none; 
+  word-wrap: break-word;
 }
 
-/* Header styles */
+.stage-table th:nth-child(1),
+.stage-table td:nth-child(1) {
+  width: 30%; /* Comité */
+}
+
+.stage-table th:nth-child(2),
+.stage-table td:nth-child(2) {
+  width: 30%; /* Aprobado/No aprobado */
+}
+
+.stage-table th:nth-child(3),
+.stage-table td:nth-child(3) {
+  width: 40%; /* Comentario */
+}
+
 .stage-table th {
   color: #888;
-  font-weight: 500; /* Slightly bold headers */
+  font-weight: 500;
 }
 
-/* Specific header styles */
 .stage-table th:nth-child(1), /* Comité */
 .stage-table th:nth-child(2), /* Resultado */
 .stage-table th:nth-child(3) {
   /* Comentario */
-  color: #888; /* Lighter gray for headers */
+  color: #888; 
 }
 
-/* Content styles for comments */
 .stage-table td:nth-child(3) {
-  color: #aaa; /* Lighter gray for comment content */
+  color: #aaa; 
 }
 
-/* Align the first column to the left by removing the left padding */
 .stage-table th:first-child {
-  padding-left: 0; /* Remove padding for the first column */
+  padding-left: 0; 
 }
 
 .stage-table td:first-child {
-  padding-left: 0; /* Remove padding for the first column */
+  padding-left: 0; 
 }
 
-/* Approved result color */
 .approved {
   font-weight: bold;
   color: #008000;

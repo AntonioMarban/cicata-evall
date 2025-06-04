@@ -51,8 +51,8 @@ const Members = ({members ,investigator}) => {
                     </div>
                 </div>
                 <div className='participant-institution-inner'>
-                    <div>
-                        <p className='participant-tag'>En caso afirmativo ¿Cuál?</p>
+                    <div className="centerAfirmative-tag">
+                        <p>En caso afirmativo ¿Cuál?</p>
                     </div>
                     <div className='participant-tag-data'>
                         <p>{investigator.researchNetworkName}</p>  
@@ -97,7 +97,7 @@ const Members = ({members ,investigator}) => {
                 </div>
             </div>
         </div>
-
+        
         {Array.isArray(members.members) && members.members.map((member, index) => (
             <div key={index+1} className='backgroundParticipants'>
                 <div className='participant_title'>
@@ -149,11 +149,11 @@ const Members = ({members ,investigator}) => {
                     </div>
                     {member.researchNetwork === 1 && (
                     <div className='participant-institution-inner'>
-                        <div>
-                        <p className='participant-tag'>En caso afirmativo ¿Cuál?</p>
+                        <div className="centerAfirmative-tag">
+                            <p >En caso afirmativo ¿Cuál?</p>
                         </div>
                         <div className='participant-tag-data'>
-                        <p>{member.researchNetworkName}</p>    
+                            <p>{member.researchNetworkName}</p>    
                         </div>                    
                     </div>
                     )}
@@ -205,7 +205,7 @@ const Members = ({members ,investigator}) => {
                         <p className='participant-label'>Email</p>
                     </div>
                     <div>
-                        <p>{member.phone}</p>
+                        <p>{member.phone || "No se registro número"}</p>
                         <p className='participant-label'>Teléfono</p>
                     </div>
                 </div>

@@ -109,7 +109,6 @@ const ViewCompleteForms = () => {
         <div className='fullTable-body'>
 
             <Header generalData={completeForm.idf34}/>
-
             <h1>1. DATOS GENERALES DEL PROYECTO</h1>
             <ViewGeneralData generalData={completeForm.idf20} associatedProjects={completeForm.idf21} />
             <div className="page-break" />
