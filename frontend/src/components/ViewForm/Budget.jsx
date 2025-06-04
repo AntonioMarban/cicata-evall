@@ -1,6 +1,7 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
 const ConflictInterest = ({Budget}) => {  
+    
     const sumInversion = Array.isArray(Budget.gastoInversion)
     ? Budget.gastoInversion.reduce((sum, Inversion) => sum + Inversion.expenditure, 0)
     : 0;
@@ -16,6 +17,21 @@ const ConflictInterest = ({Budget}) => {
     const sumCorriente = Array.isArray(Budget.gastoInversion)
     ? Budget.gastoCorriente.reduce((sum, Inversion) => sum + Inversion.expenditure, 0)
     : 0;
+
+    function formatValue(value) {
+    if (value == null || value === '') return '-';
+
+    const date = new Date(value);
+
+    if (!isNaN(date.getTime())) {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    }
+    
+    return value || '-';
+    }
     return (
     <>
         <table className='BackgroundTable'>
@@ -101,7 +117,7 @@ const ConflictInterest = ({Budget}) => {
                         minimumFractionDigits: 2, 
                         maximumFractionDigits: 10 
                     })}</td>
-                    <td>{Inversion.budgetDate}</td>
+                    <td>{formatValue(Inversion.budgetDate)}</td>
                 </tr>
                 ))}
                 <tr className='table-form-title-bold'>
@@ -116,7 +132,7 @@ const ConflictInterest = ({Budget}) => {
                         minimumFractionDigits: 2, 
                         maximumFractionDigits: 10 
                     })}</td>
-                    <td>{Inversion.budgetDate}</td>
+                    <td>{formatValue(Inversion.budgetDate)}</td>
                 </tr>
                 ))}
             </tbody>
