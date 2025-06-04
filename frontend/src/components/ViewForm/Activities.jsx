@@ -1,6 +1,19 @@
-import React from 'react';
 import "../../styles/viewcompleteforms.css"
 const Activities = ({scheduleActivities}) => {  
+    function formatValue(value) {
+    if (value == null || value === '') return '-';
+
+    const date = new Date(value);
+
+    if (!isNaN(date.getTime())) {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    }
+    
+    return value || '-';
+    }
     return (
     <>
         <table className='BackgroundTable'>
@@ -22,8 +35,8 @@ const Activities = ({scheduleActivities}) => {
                         <td>{scheduleActivity.goal}</td>
                         <td>{scheduleActivity.institution}</td>
                         <td>{scheduleActivity.responsibleMember}</td>
-                        <td>{scheduleActivity.startDate}</td>
-                        <td>{scheduleActivity.endDate}</td>
+                        <td>{formatValue(scheduleActivity.startDate)}</td>
+                        <td>{formatValue(scheduleActivity.endDate)}</td>
                     </tr>
                 ))}
                 </tbody>

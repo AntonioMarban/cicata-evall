@@ -83,13 +83,13 @@ function NDAForm() {
 
   const agreementText = agreementData
     ? `
-Dr. Paul Mondragón Terán
-Encargado de la Dirección
-Centro de Investigación en Ciencia Aplicada y Tecnología Avanzada (CICATA) Unidad Morelos
+**Dr. Paul Mondragón Terán**
+**Encargado de la Dirección**
+**Centro de Investigación en Ciencia Aplicada y Tecnología Avanzada (CICATA) Unidad Morelos**
 
-PRESENTE
+**PRESENTE**
 
-En mi calidad de Evaluador del proyecto titulado ${agreementData.title}, dirigido por ${agreementData.researcher} y que se lleva a cabo total o parcialmente dentro de las instalaciones del CICATA Unidad Morelos del Instituto Politécnico Nacional, me comprometo a cumplir con los siguientes compromisos:
+En mi calidad de **Evaluador** del proyecto titulado **${agreementData.title}**, dirigido por **${agreementData.researcher}** y que se lleva a cabo total o parcialmente dentro de las instalaciones del **CICATA Unidad Morelos del Instituto Politécnico Nacional**, me comprometo a cumplir con los siguientes compromisos:
 
 1. **Confidencialidad:** Trataré toda la información proporcionada como estrictamente confidencial. Esta obligación incluye, pero no se limita a, datos, documentos, resultados preliminares y cualquier otra información relacionada con el proyecto que no esté destinada a ser divulgada públicamente.
 
@@ -107,8 +107,8 @@ En mi calidad de Evaluador del proyecto titulado ${agreementData.title}, dirigid
 
 En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consentimiento para que se apliquen las medidas legales y disciplinarias pertinentes conforme a la normativa aplicable.
 
-ATENTAMENTE,
-${userFullName}
+**ATENTAMENTE,**
+**${userFullName}**
 `
     : "Cargando acuerdo...";
 
@@ -123,7 +123,7 @@ ${userFullName}
     printWindow.document.write(`
     <html>
       <head>
-        <title>Acuerdo de confidencialidad</title>
+        <title>Carta de confidencialidad</title>
         <style>
           body {
             font-family: Arial, sans-serif;
@@ -188,7 +188,7 @@ ${userFullName}
       );
 
       if (!res.ok) {
-        throw new Error("Error al firmar el acuerdo.");
+        throw new Error("Error al firmar la carta.");
       }
 
       if (userType === 3 || userType === 4) {
@@ -206,7 +206,7 @@ ${userFullName}
   return (
     <main className="nda-main">
       <div className="nda-header">
-        <h1 className="nda-title">Acuerdo de confidencialidad</h1>
+        <h1 className="nda-title">Carta de confidencialidad</h1>
         <button onClick={handleDownload} className="nda-button-download">
           Descargar acuerdo
         </button>
@@ -250,7 +250,7 @@ ${userFullName}
           disabled={loading}
           className={`nda-button-submit ${loading ? "disabled" : ""}`}
         >
-          {loading ? "Firmando..." : "Firmar acuerdo"}
+          {loading ? "Firmando..." : "Firmar carta"}
         </button>
       </div>
     </main>

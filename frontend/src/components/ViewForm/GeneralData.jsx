@@ -1,5 +1,19 @@
 import "../../styles/viewcompleteforms.css"
 const ViewGeneralData = ({generalData,associatedProjects}) => {
+    function formatValue(value) {
+    if (value == null || value === '') return '-';
+
+    const date = new Date(value);
+
+    if (!isNaN(date.getTime())) {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    }
+    
+    return value || '-';
+    }
     return (
     <>
     <table className='BackgroundTable'>
@@ -38,8 +52,8 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
                 <th>Periodo total en meses</th>
             </tr>
             <tr className='second-table-form-body'>
-                <td>{generalData.startDate}</td>
-                <td>{generalData.endDate}</td>
+                <td>{formatValue(generalData.startDate)}</td>
+                <td>{formatValue(generalData.endDate)}</td>
                 <td>  
                     {(() => {
                         const start = new Date(generalData.startDate);

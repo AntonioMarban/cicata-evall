@@ -1,7 +1,6 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
 const Desglose = ({desglose, goals, methodologies, references}) => {  
-    console.log(references)
     return (
     <>
         <table className='BackgroundTable'>

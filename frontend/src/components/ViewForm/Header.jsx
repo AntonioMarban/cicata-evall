@@ -2,6 +2,20 @@ import "../../styles/viewcompleteforms.css"
 import logoCICATA from "../../assets/logoCICATA.png"
 import LOGOIPN from "../../assets/logoIPN.png"
 const Header = ({generalData}) => {  
+    function formatValue(value) {
+    if (value == null || value === '') return '-';
+
+    const date = new Date(value);
+
+    if (!isNaN(date.getTime())) {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    }
+    
+    return value || '-';
+    }
     return (
     <>
     <main className="background-header">
@@ -37,13 +51,13 @@ const Header = ({generalData}) => {
             
             <div className="row-header">
                 <div>
-                    <p>Fecha de elaboración: {generalData.preparedDate}</p>
+                    <p>Fecha de elaboración: {formatValue(generalData.preparedDate)}</p>
                 </div>
                 <div>
-                    <p>Fecha de revisión: {generalData.reviewedDate}</p>
+                    <p>Fecha de revisión: {formatValue(generalData.reviewedDate)}</p>
                 </div>
                 <div>
-                    <p>Fecha de aprobación: {generalData.approvedDate}</p>
+                    <p>Fecha de aprobación: {formatValue(generalData.approvedDate)}</p>
                 </div>           
             </div>
         </div>

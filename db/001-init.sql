@@ -1953,7 +1953,7 @@ BEGIN
         SELECT
             u.userId,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
-            u.academicDegree,
+            u.prefix,
             u.email,
             c.name AS committeeName
         FROM
@@ -1967,7 +1967,7 @@ BEGIN
         SELECT
             u.userId,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
-            u.academicDegree,
+            u.prefix,
             u.email,
             u.userType_id
         FROM

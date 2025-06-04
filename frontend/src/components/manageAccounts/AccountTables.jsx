@@ -67,7 +67,6 @@ const AccountTables = ({ users, showCommittee, role }) => {
                         <thead>
                             <tr className="text-gray-400">
                                 <th className="py-2! px-4! text-left">Nombre</th>
-                                <th className="py-2! px-4! text-left">Grado académico</th>
                                 <th className="py-2! px-4! text-left">Email</th>
                                 {showCommittee && <th className="py-2! px-4! text-left">Comité</th>}
                             </tr>
@@ -75,10 +74,9 @@ const AccountTables = ({ users, showCommittee, role }) => {
                         <tbody>
                             {users.map((user) => (
                                 <tr key={user.userId} className="hover:bg-gray-50">
-                                    <td className="py-2! px-4! text-left!">{user.fullName}</td>
-                                    <td className="py-2! px-4! text-left!">{user.academicDegree}</td>
+                                    <td className="py-2! px-4! text-left!">{user.prefix + " " + user.fullName}</td>
                                     <td className="py-2! px-4! text-left!">{user.email}</td>
-                                    {showCommittee && <td className="py-2! px-4! text-left!">{user.committeeName}</td>}
+                                    {showCommittee && <td className="py-2! px-4! text-left! max-w-[250px]">{user.committeeName}</td>}
                                     <td className="py-2! px-4! text-left!">
                                             <button
                                                 className="text-white rounded-lg cursor-pointer px-3! py-1! mr-3! mb-1! bg-[#5CB7E6] hover:bg-[#1591D1]"
