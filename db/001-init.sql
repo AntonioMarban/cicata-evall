@@ -22,7 +22,7 @@ BEGIN
         SELECT
             userId,
             email,
-            CONCAT(fName, ' ', lastName1, ' ', lastName2) AS fullName,
+            CONCAT(prefix, ' ', fName, ' ', lastName1, ' ', lastName2) AS fullName,
             userType_id
         FROM users
         WHERE userId = _userId;
@@ -30,7 +30,7 @@ BEGIN
         SELECT
             u.userId,
             u.email,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
             u.userType_id,
             cu.committeeId
         FROM users u
@@ -1094,8 +1094,7 @@ BEGIN
     SELECT
         DATE_FORMAT(a.date, '%Y-%m-%d') AS date,
         a.agreed,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS evaluator,
-        u.prefix,
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS evaluator,
         u.positionWork,
         u.institution,
         u.email,
@@ -1110,7 +1109,7 @@ BEGIN
     
     SELECT
         p.title AS projectTitle,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher        
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher        
     FROM
         projects p
     JOIN usersProjects up ON p.projectId = up.project_id
@@ -1330,7 +1329,7 @@ BEGIN
         SELECT
             cu.userId,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
-            u.academicDegree,
+            u.prefix,
             u.email
         FROM committeeUsers cu
         JOIN users u ON cu.userId = u.userId
