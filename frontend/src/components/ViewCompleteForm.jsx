@@ -15,7 +15,7 @@ import Budget from './ViewForm/Budget'
 import { useLocation  } from 'react-router-dom'
 import Files from './ViewForm/Files';
 import Annexes from './ViewForm/Annexes';
-
+import { toast } from 'sonner'
 
 const ViewCompleteForms = () => {  
     const { state } = useLocation();
@@ -81,6 +81,9 @@ const ViewCompleteForms = () => {
     };
     const handlePrint2 = () => {
     if (Array.isArray(files.documents)) {
+        if (files.documents.length < 1){
+            return  toast.error("No hay anexos para descargar");
+        }
         files.documents.forEach((file) => {
         const link = document.createElement('a');
         link.href = `data:application/octet-stream;base64,${file.document}`;
@@ -90,6 +93,7 @@ const ViewCompleteForms = () => {
         document.body.removeChild(link);
         });
     }
+    console.log(files.documents.length)
     };
 
     if (loading) {

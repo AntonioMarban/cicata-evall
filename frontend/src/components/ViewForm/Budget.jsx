@@ -28,14 +28,21 @@ const ConflictInterest = ({Budget}) => {
                 {Array.isArray(Budget.gastoInversion) && Budget.gastoInversion.map((Inversion, index) => (
                 <tr key={index}>
                     <td>{Inversion.nameType + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
-                    <td>${Inversion.expenditure}</td>
+                    <td>${Number(Inversion.expenditure).toLocaleString('es-MX', { 
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 10 
+                    })}
+                    </td>
                 </tr>
                 ))}
             </tbody>
             <thead className='table-form-body'>
                 <tr>
                     <td>Subtotal</td>
-                    <td>$ {sumInversion}</td>
+                    <td>${Number(sumInversion).toLocaleString('es-MX', { 
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 10 
+                    })}</td>
                 </tr>
             </thead>
             <thead className='table-form-header'>
@@ -47,20 +54,30 @@ const ConflictInterest = ({Budget}) => {
                 {Array.isArray(Budget.gastoCorriente) && Budget.gastoCorriente.map((Inversion, index) => (
                 <tr key={index}>
                     <td>{Inversion.nameType + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
-                    <td>${Inversion.expenditure}</td>
+                    <td>${Number(Inversion.expenditure).toLocaleString('es-MX', { 
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 10 
+                    })}
+                    </td>
                 </tr>
                 ))}
             </tbody>
             <thead className='table-form-body'>
                 <tr>
                     <td>Subtotal</td>
-                    <td>$ {sumCorriente}</td>
+                    <td>${Number(sumCorriente).toLocaleString('es-MX', { 
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 10 
+                    })}</td>
                 </tr>
             </thead>
             <thead className='table-form-header'>
                 <tr>
                     <th>Total</th>
-                    <th>${sumCorriente+sumInversion}</th>
+                    <th>${Number(sumCorriente+sumInversion).toLocaleString('es-MX', { 
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 10 
+                    })}</th>
                 </tr>
             </thead>
         </table>
@@ -80,7 +97,10 @@ const ConflictInterest = ({Budget}) => {
                 {Array.isArray(Budget.internas) && Budget.internas.map((Inversion, index) => (
                 <tr key={index}>
                     <td>{Inversion.nameType + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
-                    <td>${Inversion.expenditure}</td>
+                    <td>${Number(Inversion.expenditure).toLocaleString('es-MX', { 
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 10 
+                    })}</td>
                     <td>{Inversion.budgetDate}</td>
                 </tr>
                 ))}
@@ -92,7 +112,10 @@ const ConflictInterest = ({Budget}) => {
                  {Array.isArray(Budget.externas) && Budget.externas.map((Inversion, index) => (
                 <tr key={index}>
                     <td>{Inversion.nameType + (Inversion.otherName ? ` - ${Inversion.otherName}` : '')}</td>
-                    <td>${Inversion.expenditure}</td>
+                    <td>${Number(Inversion.expenditure).toLocaleString('es-MX', { 
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 10 
+                    })}</td>
                     <td>{Inversion.budgetDate}</td>
                 </tr>
                 ))}
@@ -100,7 +123,10 @@ const ConflictInterest = ({Budget}) => {
             <thead className='table-form-header'>
                 <tr>
                     <th>Total</th>
-                    <th>${sumExternas+sumInternas}</th>
+                    <th>${Number(sumExternas+sumInternas).toLocaleString('es-MX', { 
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 10 
+                    })}</th>
                 </tr>
             </thead>
         </table>
