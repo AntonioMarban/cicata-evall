@@ -22,7 +22,7 @@ BEGIN
         SELECT
             userId,
             email,
-            CONCAT(fName, ' ', lastName1, ' ', lastName2) AS fullName,
+            CONCAT(prefix, ' ', fName, ' ', lastName1, ' ', lastName2) AS fullName,
             userType_id
         FROM users
         WHERE userId = _userId;
@@ -30,7 +30,7 @@ BEGIN
         SELECT
             u.userId,
             u.email,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
             u.userType_id,
             cu.committeeId
         FROM users u
@@ -50,7 +50,7 @@ CREATE PROCEDURE getProjectSummary(
 BEGIN
     SELECT
         p.projectId,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
         p.title,
         p.startDate,
         p.endDate,
@@ -85,7 +85,7 @@ BEGIN
         d.folio as dictumFolio,
         d.decision,
         d.date as authorizationDate,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS authorizerName,
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS authorizerName,
         u.positionWork as authorizerPositionWork,
         u.institution as authorizerInstitution,
         u.academicDegree as authorizerAcademicDegree
@@ -96,7 +96,7 @@ BEGIN
 
     SELECT
         p.title AS projectTitle,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS projectOwner,
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS projectOwner,
         u.academicDegree AS projectOwnerAcademicDegree,
         p.folio AS projectFolio
     FROM projects p
@@ -113,7 +113,7 @@ BEGIN
     SELECT
         p.projectId,
         p.title,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
         p.startDate,
         p.endDate,
         p.folio,
@@ -134,7 +134,7 @@ BEGIN
     SELECT
         p.projectId,
         p.title,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
         p.startDate,
         p.endDate,
         p.folio,
@@ -1039,7 +1039,7 @@ DELIMITER //
             SELECT
                 p.projectId,
                 p.title,
-                CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+                CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
                 p.startDate,
                 p.endDate,
                 p.folio,
@@ -1095,7 +1095,7 @@ BEGIN
         DATE_FORMAT(a.date, '%Y-%m-%d') AS date,
         a.agreed,
         p.title,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher
     FROM
         agreements a
     JOIN users u ON a.user_id = u.userId
@@ -1241,7 +1241,7 @@ BEGIN
     SELECT
         p.projectId,
         p.title,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
         p.startDate,
         p.endDate,
         p.folio,
@@ -1315,7 +1315,7 @@ BEGIN
     ELSE
         SELECT
             cu.userId,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
             u.academicDegree,
             u.email
         FROM committeeUsers cu
@@ -1865,7 +1865,7 @@ BEGIN
     SELECT
         p.projectId,
         p.title,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
         p.startDate,
         p.endDate,
         p.folio,
@@ -1883,7 +1883,7 @@ BEGIN
     SELECT
         p.projectId,
         p.title,
-        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
         p.startDate,
         p.endDate,
         p.folio,
@@ -1938,7 +1938,7 @@ BEGIN
     IF p_userType_id = 3 || p_userType_id = 4 THEN
         SELECT
             u.userId,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
             u.academicDegree,
             u.email,
             c.name AS committeeName
@@ -1952,7 +1952,7 @@ BEGIN
         -- Para los demás tipos de usuario
         SELECT
             u.userId,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
             u.academicDegree,
             u.email,
             u.userType_id
@@ -1998,7 +1998,7 @@ BEGIN
     ELSE
         SELECT
             u.userId,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS secretary,
+            CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS secretary,
             u.email
         FROM
             committeeUsers cu
@@ -2008,7 +2008,7 @@ BEGIN
 
         SELECT
             u.userId,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS president,
+            CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS president,
             u.email
         FROM
             committeeUsers cu
@@ -2043,7 +2043,7 @@ BEGIN
     ELSE
         SELECT
             u.userId,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName
+            CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName
         FROM
             committeeUsers cu
         JOIN users u ON cu.userId = u.userId
@@ -2150,7 +2150,7 @@ BEGIN
     ELSE
         SELECT
             u.userId,
-            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
             e.score,
             e.result,
             e.comments
