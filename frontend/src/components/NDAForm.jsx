@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/ndaform.css";
@@ -60,13 +61,14 @@ function NDAForm() {
           setAgreementData(agreement);
 
           if (agreement.agreed === 1) {
-
             if (userType === 3 || userType === 4) {
               navigate(`/Proyecto?projectId=${projectId}`);
             } else if (userType === 5) {
-              navigate('/EvaluarProyecto', { state: { projectId: projectId } });
+              navigate("/EvaluarProyecto", { state: { projectId: projectId } });
             } else {
-              console.error("Tipo de usuario no autorizado. Redirigiendo a /Inicio.");
+              console.error(
+                "Tipo de usuario no autorizado. Redirigiendo a /Inicio."
+              );
               navigate("/Inicio");
             }
           }
@@ -111,33 +113,46 @@ ${userFullName}
     : "Cargando acuerdo...";
 
   const handleDownload = () => {
-    const doc = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-    });
+    const content = document.getElementById("agreement-content");
+    if (!content) return;
 
-    const pageHeight = doc.internal.pageSize.height;
-    const margin = 10;
-    const lineHeight = 7;
-    let y = margin + 10;
+    const printWindow = window.open("", "_blank", "width=800,height=600");
+    if (!printWindow) return;
 
-    doc.setFontSize(14);
-    doc.text("Acuerdo de confidencialidad", margin, y);
-    y += 10;
-
-    doc.setFontSize(11);
-    const lines = doc.splitTextToSize(agreementText, 190);
-    lines.forEach((line) => {
-      if (y + lineHeight > pageHeight - margin) {
-        doc.addPage();
-        y = margin;
-      }
-      doc.text(line, margin, y);
-      y += lineHeight;
-    });
-
-    doc.save("acuerdo_de_confidencialidad.pdf");
+    printWindow.document.open();
+    printWindow.document.write(`
+    <html>
+      <head>
+        <title>Acuerdo de confidencialidad</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            padding: 20px;
+            line-height: 1.5;
+          }
+          h1 {
+            text-align: center;
+          }
+          .nda-text {
+            white-space: pre-wrap;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Acuerdo de confidencialidad</h1>
+        <div class="nda-text">
+          ${content.innerHTML}
+        </div>
+        <script>
+          window.onload = function() {
+            window.print();
+          };
+        </script>
+      </body>
+    </html>
+  `);
+    printWindow.document.close();
   };
 
   const handleSubmit = async () => {
@@ -179,7 +194,7 @@ ${userFullName}
       if (userType === 3 || userType === 4) {
         navigate(`/Proyecto?projectId=${projectId}`);
       } else if (userType === 5) {
-        navigate('/EvaluarProyecto', { state: { projectId: projectId } });
+        navigate("/EvaluarProyecto", { state: { projectId: projectId } });
       }
     } catch (err) {
       setError(err.message);
@@ -200,6 +215,7 @@ ${userFullName}
       <div className="nda-grid">
         <h2 className="nda-subtitle">Contenido</h2>
         <div
+          id="agreement-content"
           className="nda-text"
           dangerouslySetInnerHTML={{
             __html: convertMarkdownToHTML(agreementText),
