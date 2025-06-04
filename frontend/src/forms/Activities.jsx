@@ -81,7 +81,7 @@ const  Activities = ({option,setOption}) => {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-end items-center mt-5 mb-5">
+            <div className="flex justify-end items-center !mt-15 mb-5">
                 <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
                 bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
                  hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>

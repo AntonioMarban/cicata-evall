@@ -1,15 +1,10 @@
 import { useState, useEffect } from "react";
-import { updateForm,deleteFormsInRange,getFormsInRange } from "../db/index";
 import useLoadFormData from "../hooks/useLoadFormData";
 import DragDrop from "../components/DragDrop";
-import { useNavigate  } from 'react-router-dom'
 import useSubmitFormBack from "../hooks/useSubmitFormBack";
-import { toast } from "sonner";
+import useSubmitFormNext from "../hooks/useSubmitFormNext";
 
 const  Anexos = ({option,setOption}) => {
-    
-    const apiUrl = import.meta.env.VITE_API_URL;
-    const navigate = useNavigate();
     
     const [filesSend,setFilesSend] = useState([]);
     const [anexos, setAnexos] = useState({   
@@ -21,172 +16,28 @@ const  Anexos = ({option,setOption}) => {
         aditionalComments:"*"
     });
 
-    function base64ToFile(base64, fileName, mimeType) {
-    const arr = base64.split(',');
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], fileName, { type: mimeType });
-    }
-
     const handleOnSubmitFormBack = useSubmitFormBack(anexos, setOption);
-
-    const handleOnSubmit = async (event) => {
-        event.preventDefault();
-        
-        try {
-            await updateForm(anexos);
-        } catch (error) {
-            //console.error("Error saving form to IndexedDB:", error);
-            toast.error("Error al guardar el formulario. Por favor, inténtalo de nuevo.");
-            return; 
-        }
-        const respuesta = window.confirm("ya no se podrá modificar hasta que se revisado, ¿Estás seguro de que quieres continuar?");
-        if (respuesta) {
-        } else {
-        return 
-        }
-        try {
-            const formData = await getFormsInRange(1, 14);
-            if (!formData) {
-                throw new Error("No se encontraron datos del formulario.");
-            }
-    
-            const { afilesSend, efilesSend, idF, ...cleanFormData } = formData;
-            const userId = localStorage.getItem('userId');
-            cleanFormData.userId = userId;
-            //console.log("Submitting project data:", cleanFormData);
-            //console.log("Files to upload (afilesSend):", afilesSend);
-    
-            const response = await fetch(`${apiUrl}/researchers/projects`, {
-                method: 'POST',
-                body: JSON.stringify(cleanFormData),
-                headers: { 'Content-Type': 'application/json' },
-            });
-    
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-    
-            const data = await response.json();
-    
-            if (data.projectId) {
-                //console.log("Project created successfully, ID:", data.projectId);
-                
-                if ((afilesSend && afilesSend.length > 0) || (efilesSend && efilesSend.length > 0)) {
-                    try {
-                        //console.log("Uploading document:", afilesSend[0].name);
-                        //console.log("Uploading document:", efilesSend[0].name);
-                        const formDataFiles = new FormData();
-                        
-                        const appendFiles = (filesArray) => {
-                            filesArray.forEach(file => {
-                                const realFile = base64ToFile(file.content, file.name, file.type);
-                                formDataFiles.append('documents', realFile);
-                            });
-                        };
-                        
-                        if (afilesSend && afilesSend.length > 0) {
-                            appendFiles(afilesSend);
-                            formDataFiles.append('projectId', data.projectId);
-                            formDataFiles.append('tag', 'anexos');
-                            
-                            // Subir archivos 'eticos'
-                            const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
-                                method: 'POST',                    
-                                body: formDataFiles,
-                            });
-
-                            if (!uploadResponse.ok) {
-                                throw new Error(`File upload failed: ${uploadResponse.status}`);
-                            }
-
-                            const uploadData = await uploadResponse.json();
-                            if (uploadData.message !== 'Documents uploaded successfully') {
-                                console.warn("Upload succeeded but no confirmation message:", uploadData);
-                            }
-                        }
-
-                        //console.log("aqui va")
-                        const formDataEFiles = new FormData();
-                        const appendFiles2 = (filesArray) => {
-                        filesArray.forEach(file => {
-                            const realFile = base64ToFile(file.content, file.name, file.type);
-                            formDataEFiles.append('documents', realFile);
-                        });
-                        };
-                        if (efilesSend  && efilesSend .length > 0) {
-                            appendFiles2(efilesSend);
-                            formDataEFiles.append('projectId', data.projectId);
-                            formDataEFiles.append('tag', 'eticos');
-                            
-                            // Subir archivos 'anexos'
-                            const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
-                                method: 'POST',                    
-                                body: formDataEFiles,
-                            });
-
-                            if (!uploadResponse.ok) {
-                                throw new Error(`File upload failed: ${uploadResponse.status}`);
-                            }
-
-                            const uploadData = await uploadResponse.json();
-                            if (uploadData.message !== 'Documents uploaded successfully') {
-                                console.warn("Upload succeeded but no confirmation message:", uploadData);
-                            }
-                        }
-                        toast.promise(
-                        new Promise((resolve) => {
-                            setTimeout(() => {
-                            resolve();
-                            navigate('/VerFormulario', { state: { projectId: data.projectId } });
-                            deleteFormsInRange(1, 14)
-                            }, 1000);
-                        }),
-                        {
-                            loading: 'Creando formulario...',
-                            success: <b>¡Formulario creado! Redirigiendo...</b>,
-                            error: <b>Error al crear el formulario</b>
-                        }
-                        );
-                    } catch (uploadError) {
-                        console.error("Error uploading file:", uploadError);
-                        toast.error("El proyecto se creó, pero hubo un error al subir el archivo.");
-                    }
-                } else {
-                    toast.promise(
-                        new Promise((resolve) => {
-                            setTimeout(() => {
-                            resolve();
-                            navigate('/VerFormulario', { state: { projectId: data.projectId } });
-                            deleteFormsInRange(1, 14)
-                            }, 1000);
-                        }),
-                        {
-                            loading: 'Creando formulario...',
-                            success: <b>¡Formulario creado! Redirigiendo...</b>,
-                            error: <b>Error al crear el formulario</b>
-                        }
-                    );
-                }
-            } else {
-                throw new Error("Missing projectId in server response.");
-            }
-        } catch (error) {
-            console.error("Error submitting form:", error);
-            toast.error("Error al enviar el formulario. Por favor, inténtalo de nuevo.");
-        }
-    };
+    const handleOnSubmit = useSubmitFormNext(anexos, setOption);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setAnexos({ ...anexos, [name]: value });
     };
     useLoadFormData(anexos.idF,setAnexos);
 
-    useEffect(()=>{
+    const handleSubmitWithValidation = (event) => {
+        event.preventDefault();
+        const newErrorsDF = {}
+        if (!anexos.aditionalComments || (typeof anexos.aditionalComments === 'string' 
+            && anexos.aditionalComments.trim() === '')) {
+                newErrorsDF.aditionalComments = "* El campo es requerido";
+        }
+        setNewErrors(newErrorsDF)
+        if(!Object.keys(newErrorsDF).length>0){
+            handleOnSubmit(event)
+        }
+    };
+
+        useEffect(()=>{
         if (anexos.afilesSend && 
             Array.isArray(anexos.afilesSend) && 
             anexos.afilesSend.length > 0 && 
@@ -203,22 +54,9 @@ const  Anexos = ({option,setOption}) => {
         })
         )
     },[filesSend])
-
-    const handleSubmitWithValidation = (event) => {
-        event.preventDefault();
-        const newErrorsDF = {}
-        if (!anexos.aditionalComments || (typeof anexos.aditionalComments === 'string' 
-            && anexos.aditionalComments.trim() === '')) {
-                newErrorsDF.aditionalComments = "* El campo es requerido";
-        }
-        setNewErrors(newErrorsDF)
-        if(!Object.keys(newErrorsDF).length>0){
-            handleOnSubmit(event)
-        }
-    };
-
+    console.log(anexos)
     return (
-        <form onSubmit={handleOnSubmit}>
+        <div>
             <div className="flex flex-col justify-between">
                 <div>
                     <p className="text-[22px]">Agrega comentarios adicionales a tener en cuenta en el proyecto
@@ -259,9 +97,9 @@ const  Anexos = ({option,setOption}) => {
                  hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  onClick={handleOnSubmitFormBack}>Regresar</button>
                 <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
                 bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
-                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleSubmitWithValidation}>Enviar formulario</button>
+                 hover:bg-[#4CA6D5] transition-colors duration-300" onClick={handleSubmitWithValidation}>Siguiente</button>
             </div>
-        </form>
+        </div>
     )
 }
 

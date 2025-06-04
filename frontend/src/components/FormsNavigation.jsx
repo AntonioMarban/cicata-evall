@@ -15,20 +15,21 @@ import React, { useState } from 'react';
 import Anexos from '../forms/Anexos';
 import Deliverables from '../forms/DeliverablesView';
 import "../styles/formsnavigation.css"
+import ModalSent from '../forms/Sent';
 const FormsNavigation = () => {
   const [option, setOption] = useState(0);
   const mystyle = {
     backgroundColor: "#5CB7E6",
     padding: "10px",
     borderRadius:"20px",
-    width:`${(option*100)/13}%`,
+    width:`${(option*100)/14}%`,
     marginBottom: "20px",
     minWidth: "60px"
   };
   return (
     <>
       <div style={mystyle}>
-        <p className='text-right text-white font-semibold'>{`${Math.round((option * 100) / 13)} %`}</p>
+        <p className='text-right text-white font-semibold'>{`${Math.round((option * 100) / 14)} %`}</p>
       </div>
       <div style={{ marginBottom:"50px" }}>
         {option === 0  &&  <GeneralData  option={option} setOption={setOption}/>}
@@ -45,6 +46,7 @@ const FormsNavigation = () => {
         {option === 11  &&  <Budget  option={option} setOption={setOption}/>}
         {option === 12  &&  <ConflictInt  option={option} setOption={setOption}/>}
         {option === 13  &&  <Anexos  option={option} setOption={setOption}/>}
+        {option === 14  &&  <ModalSent  option={option} setOption={setOption}/>}
       </div>
     </>
   );

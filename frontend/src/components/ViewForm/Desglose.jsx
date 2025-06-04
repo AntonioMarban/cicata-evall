@@ -1,6 +1,7 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
 const Desglose = ({desglose, goals, methodologies, references}) => {  
+    console.log(references)
     return (
     <>
         <table className='BackgroundTable'>
@@ -145,7 +146,7 @@ const Desglose = ({desglose, goals, methodologies, references}) => {
             </thead>
             <tbody className='table-form-body'>
                 <tr>
-                    <td className='italic'>{references.reference || ""}</td>
+                    <td className='italic'>{references || ""}</td>
                 </tr>
             </tbody>
         </table>
