@@ -22,7 +22,7 @@ BEGIN
         SELECT
             userId,
             email,
-            CONCAT(prefix, ' ', fName, ' ', lastName1, ' ', lastName2) AS fullName,
+            CONCAT(fName, ' ', lastName1, ' ', lastName2) AS fullName,
             userType_id
         FROM users
         WHERE userId = _userId;
@@ -30,7 +30,7 @@ BEGIN
         SELECT
             u.userId,
             u.email,
-            CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+            CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
             u.userType_id,
             cu.committeeId
         FROM users u
@@ -227,7 +227,7 @@ BEGIN
         p_title, p_startDate, p_endDate, p_typeResearch, p_topic, p_subtopic, p_alignmentPNIorODS, p_summary,
         p_introduction, p_background, p_statementOfProblem, p_justification, p_hypothesis, p_generalObjective,
         p_ethicalAspects, p_workWithHumans, p_workWithAnimals, p_biosecurityConsiderations, p_contributionsToIPNandCICATA,
-        p_conflictOfInterest, p_aditionalComments, p_folio, 'En revision',
+        p_conflictOfInterest, p_aditionalComments, p_folio, 'En revisión',
         p_otherTypeResearch, p_alignsWithPNIorODS, p_hasCollaboration, p_collaborationJustification,
         '03', 'septiembre 2025', 'Leslie Olmedo Nieva', 'Leslie Olmedo Nieva', 'Paul Mondragón Terán',
         '2024-06-01', '2024-07-08', '2024-11-04', p_otherEducationalDeliverable, p_otherDiffusionDeliverable,
@@ -1094,11 +1094,8 @@ BEGIN
     SELECT
         DATE_FORMAT(a.date, '%Y-%m-%d') AS date,
         a.agreed,
-        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS evaluator,
-        u.positionWork,
-        u.institution,
-        u.email,
-        u.phone
+        p.title,
+        CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher
     FROM
         agreements a
     JOIN users u ON a.user_id = u.userId
@@ -1106,16 +1103,6 @@ BEGIN
     WHERE
         a.user_id = p_userId
         AND a.project_id = p_projectId;
-    
-    SELECT
-        p.title AS projectTitle,
-        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS researcher        
-    FROM
-        projects p
-    JOIN usersProjects up ON p.projectId = up.project_id
-    JOIN users u ON up.user_id = u.userId
-    WHERE
-        p.projectId = p_projectId;
 END //
 DELIMITER ;
 
@@ -1329,7 +1316,7 @@ BEGIN
         SELECT
             cu.userId,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
-            u.prefix,
+            u.academicDegree,
             u.email
         FROM committeeUsers cu
         JOIN users u ON cu.userId = u.userId
@@ -1952,7 +1939,7 @@ BEGIN
         SELECT
             u.userId,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
-            u.prefix,
+            u.academicDegree,
             u.email,
             c.name AS committeeName
         FROM
@@ -1966,7 +1953,7 @@ BEGIN
         SELECT
             u.userId,
             CONCAT(u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
-            u.prefix,
+            u.academicDegree,
             u.email,
             u.userType_id
         FROM

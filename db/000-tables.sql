@@ -137,7 +137,7 @@ CREATE TABLE `associatedProjects` (
 
 CREATE TABLE `collaborativeInstitutions` (
   `collaborativeInstitutionId` integer PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(50),
+  `name` TEXT,
   `partOfIPN` bool,
   `collaborationAgreement` varchar(30),
   `agreementType` varchar(30),
