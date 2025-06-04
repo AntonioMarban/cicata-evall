@@ -60,7 +60,9 @@ const createProject = async (req, res) => {
         return deliverablesArray.map(deliv => {
             const { id: deliverableId, values } = deliv;
             if (values && typeof values === 'object') {
-                return Object.entries(values).map(([deliverableTypeId, quantity]) => ({
+                return Object.entries(values)
+                .filter(([_, quantity]) => Number(quantity) > 0) //Si manda 0 en algun entregable no se guarda :D
+                .map(([deliverableTypeId, quantity]) => ({
                     deliverableId,
                     deliverableTypeId: Number(deliverableTypeId),
                     quantity
@@ -77,7 +79,26 @@ const createProject = async (req, res) => {
         ...transformDeliverables(deliverables3 || [])
     ];
 
+    const transformExtras = (extrasArray) => {
+        return extrasArray.map(extra => {
+            const cleanedValues = Object.entries(extra.values || {})
+                .filter(([_, quantity]) => Number(quantity) > 0)
+                .reduce((acc, [key, value]) => {
+                    acc[key] = value;
+                    return acc;
+                }, {});
 
+            if (Object.keys(cleanedValues).length > 0) { //Otra vez la validacion de los 0s, pero ahora para extras
+                return {
+                    name: extra.name,
+                    values: cleanedValues
+                };
+            }
+
+            return null;
+        }).filter(Boolean); //Elimina los null
+    };
+    
     // Convertir arreglos a JSON string
     const associatedProjectsJSON = JSON.stringify(associatedProjects);
     const membersJSON = JSON.stringify(members);
@@ -89,9 +110,10 @@ const createProject = async (req, res) => {
     const goalsJSON = JSON.stringify(goals);
     const methodologiesJSON = JSON.stringify(methodologies);
     const referencesText = references; // Ya no es arreglo
-    const extras1JSON = JSON.stringify(extras1);
-    const extras2JSON = JSON.stringify(extras2);
-    const extras3JSON = JSON.stringify(extras3);
+    const extras1JSON = JSON.stringify(transformExtras(extras1 || []));
+    const extras2JSON = JSON.stringify(transformExtras(extras2 || []));
+    const extras3JSON = JSON.stringify(transformExtras(extras3 || []));
+
 
 
     const projectStartDate = new Date(startDate);

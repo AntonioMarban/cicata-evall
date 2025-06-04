@@ -2641,8 +2641,20 @@ CREATE PROCEDURE setProjectToRevision(
     IN p_projectId INT
 )
 BEGIN
-    UPDATE projects
-    SET status = 'En revision'
+    DECLARE v_reevaluation INT;
+
+    SELECT reevaluation INTO v_reevaluation
+    FROM projects
     WHERE projectId = p_projectId;
+
+    IF v_reevaluation = 3 THEN
+        UPDATE projects
+        SET status = 'No aprobado'
+        WHERE projectId = p_projectId;
+    ELSE
+        UPDATE projects
+        SET status = 'En revisión'
+        WHERE projectId = p_projectId;
+    END IF;
 END //
 DELIMITER ;
