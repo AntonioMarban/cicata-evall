@@ -62,8 +62,6 @@ const EvaluateProjectForm = ({ projectId }) => {
             comments: evaluationComments,
         };
 
-        console.log(payload)
-
         try {
             const response = await fetch(
                 `${apiUrl}/committees/${committeeId}/members/${memberId}/projects/${projectId}/evaluations`,

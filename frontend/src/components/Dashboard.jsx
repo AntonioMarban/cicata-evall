@@ -23,7 +23,6 @@ function Dashboard({ projectCards }) {
   useEffect(() => {
     const nameFromStorage = localStorage.getItem("userFullName") || "Usuario";
     const typeFromStorage = parseInt(localStorage.getItem("userType"), 10) || 1;
-    console.log(typeFromStorage);
     setUserFullName(nameFromStorage);
     setUserType(typeFromStorage);
   }, []);
@@ -61,7 +60,7 @@ function Dashboard({ projectCards }) {
         return "No hay proyectos disponibles.";
     }
   };
-  console.log(window.location.pathname);
+  
   return (
     <main className="dashboard-main">
       <div

@@ -93,7 +93,6 @@ const ViewCompleteForms = () => {
         document.body.removeChild(link);
         });
     }
-    console.log(files.documents.length)
     };
 
     if (loading) {

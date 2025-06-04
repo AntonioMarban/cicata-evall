@@ -35,8 +35,6 @@ const  ModalSent = ({option,setOption}) => {
             const { afilesSend, efilesSend, projectId, idF, ...cleanFormData } = formData;
             const userId = localStorage.getItem('userId');
             cleanFormData.userId = userId;
-            //console.log("Submitting project data:", cleanFormData);
-            //console.log("Files to upload (afilesSend):", afilesSend);
     
             const response = await fetch(`${apiUrl}/researchers/projects/${projectId}/update`, {
                 method: 'PATCH',
@@ -51,12 +49,9 @@ const  ModalSent = ({option,setOption}) => {
             const data = await response.json();
     
             if (data.projectId) {
-                //console.log("Project created successfully, ID:", data.projectId);
                 
                 if ((afilesSend && afilesSend.length > 0) || (efilesSend && efilesSend.length > 0)) {
                     try {
-                        //console.log("Uploading document:", afilesSend[0].name);
-                        //console.log("Uploading document:", efilesSend[0].name);
                         const formDataFiles = new FormData();
                         
                         const appendFiles = (filesArray) => {
@@ -89,7 +84,6 @@ const  ModalSent = ({option,setOption}) => {
                                 method: 'POST',                    
                                 body: formDataFiles,
                             });
-                            console.log(uploadResponse)
                             if (uploadResponse.status === 200) {
                                 console.warn("Upload succeeded but no confirmation message:");
                             }
@@ -100,7 +94,6 @@ const  ModalSent = ({option,setOption}) => {
                             const uploadData = await uploadResponse.json();
                         }
 
-                        //console.log("aqui va")
                         const formDataEFiles = new FormData();
                         const appendFiles2 = (filesArray) => {
                             filesArray.forEach(file => {
@@ -131,7 +124,6 @@ const  ModalSent = ({option,setOption}) => {
                                 method: 'POST',                    
                                 body: formDataEFiles,
                             });
-                            console.log(uploadResponse)
                             if (uploadResponse.status === 200) {
                                 console.warn("Upload succeeded but no confirmation message:");
                             }
@@ -178,9 +170,9 @@ const  ModalSent = ({option,setOption}) => {
     };
 
     return (
-        <div className="h-[70vh] flex items-center justify-center">
-            <div className="text-center">
-                <p className="mb-4">¿Seguro que desea enviar el proyecto?</p>
+        <div className="h-[70vh] flex items-center justify-center gap-4">
+            <div className="text-center gap-4">
+                <p className="pb-4!">¿Seguro que desea enviar el proyecto?</p>
                 <div className="flex justify-center gap-4">
                     <button 
                         type="button" 

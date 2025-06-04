@@ -29,7 +29,7 @@ export default function HomePage() {
       }
 
       let endpoint = "";
-      console.log(userType);
+
       switch (parseInt(userType)) {
         case 1:
           endpoint = `/researchers/${userId}/projects/active`;
@@ -71,7 +71,6 @@ export default function HomePage() {
 
         const data = await response.json();
         // Transform data to the format expected by Dashboard component
-        console.log(data);
         const formattedCards = data.map((project) => ({
           projectId: project.projectId,
           title: project.title,

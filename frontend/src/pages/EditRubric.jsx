@@ -40,9 +40,7 @@ const EditRubric = () => {
                     },
                     body: JSON.stringify({ rubric: base64String }),
                 })
-
-                console.log("response", response.ok)
-
+                
                 const data = await response.json()
 
 

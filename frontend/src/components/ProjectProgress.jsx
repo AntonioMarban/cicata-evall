@@ -178,7 +178,6 @@ export default function ProjectProgress({ projectId,status }) {
     
     const checkForms = async () => {
         const forms = await hasFormsInRange(20, 33);
-        console.log("Formularios encontrados:", forms);
         if(forms){
             if(generalData.projectId != projectId){
                  return toast.error("Primero debes terminar de editar el primer proyecto")

@@ -54,7 +54,7 @@ const  Anexos = ({option,setOption}) => {
         })
         )
     },[filesSend])
-    console.log(anexos)
+
     return (
         <div>
             <div className="flex flex-col justify-between">

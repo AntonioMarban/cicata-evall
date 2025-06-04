@@ -47,7 +47,6 @@ export default function FinishedProjects() {
 
         const data = await response.json();
         // Transform data to the format expected by Dashboard component
-        console.log(data)
         const formattedCards = data.map((project) => ({
           projectId: project.projectId,
           title: project.title,

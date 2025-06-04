@@ -30,8 +30,6 @@ const  ModalSent = ({option,setOption}) => {
             const { afilesSend, efilesSend, idF, ...cleanFormData } = formData;
             const userId = localStorage.getItem('userId');
             cleanFormData.userId = userId;
-            //console.log("Submitting project data:", cleanFormData);
-            //console.log("Files to upload (afilesSend):", afilesSend);
     
             const response = await fetch(`${apiUrl}/researchers/projects`, {
                 method: 'POST',
@@ -46,12 +44,9 @@ const  ModalSent = ({option,setOption}) => {
             const data = await response.json();
     
             if (data.projectId) {
-                //console.log("Project created successfully, ID:", data.projectId);
                 
                 if ((afilesSend && afilesSend.length > 0) || (efilesSend && efilesSend.length > 0)) {
                     try {
-                        //console.log("Uploading document:", afilesSend[0].name);
-                        //console.log("Uploading document:", efilesSend[0].name);
                         const formDataFiles = new FormData();
                         
                         const appendFiles = (filesArray) => {
@@ -82,7 +77,6 @@ const  ModalSent = ({option,setOption}) => {
                             }
                         }
 
-                        //console.log("aqui va")
                         const formDataEFiles = new FormData();
                         const appendFiles2 = (filesArray) => {
                         filesArray.forEach(file => {
@@ -119,9 +113,9 @@ const  ModalSent = ({option,setOption}) => {
                             }, 1000);
                         }),
                         {
-                            loading: 'Creando formulario...',
-                            success: <b>¡Formulario creado! Redirigiendo...</b>,
-                            error: <b>Error al crear el formulario</b>
+                            loading: 'Guardando datos de proyecto...',
+                            success: <b>¡Proyecto guardado correctamente!</b>,
+                            error: <b>Error al guardar los datos ingresados.</b>
                         }
                         );
                     } catch (uploadError) {
@@ -139,8 +133,8 @@ const  ModalSent = ({option,setOption}) => {
                         }),
                         {
                             loading: 'Creando formulario...',
-                            success: <b>¡Formulario creado! Redirigiendo...</b>,
-                            error: <b>Error al crear el formulario</b>
+                            success: <b>¡Proyecto guardado correctamente!</b>,
+                            error: <b>Error al guardar los datos ingresados.</b>
                         }
                     );
                 }

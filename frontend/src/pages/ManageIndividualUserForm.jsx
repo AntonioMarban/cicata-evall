@@ -170,8 +170,6 @@ const ManageIndividualUserForm = () => {
             levelNumEDI
         };
 
-        console.log(commonBody);
-
         try {
             let response;
 
@@ -236,8 +234,6 @@ const ManageIndividualUserForm = () => {
             levelNumCOFFA,
             levelNumEDI
         }
-
-        console.log(body)
 
         try {
             const response = await fetch(`${apiUrl}/subdirectorade/users/${userId}`, {
