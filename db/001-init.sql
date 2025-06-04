@@ -2096,6 +2096,37 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Función para eliminar un evaluador de un proyecto en específico	
+-- @param committeeId: Id del comité
+-- @param userId: Id del miembro del comité, en este caso el secretario
+-- @param projectId: Id del proyecto
+-- @param evaluatorId: Id del evaluador a eliminar del proyecto
+-- @returns: Mensaje de éxito o error
+DELIMITER //
+CREATE PROCEDURE removeEvaluatorFromProject(
+    IN p_committeeId INT,
+    IN p_userId INT,
+    IN p_projectId INT,
+    IN p_evaluatorId INT
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    END IF;
+    IF NOT EXISTS (
+        SELECT 1 FROM evaluations
+        WHERE user_id = p_evaluatorId AND project_id = p_projectId AND evaluation_type_id = 1
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The evaluator is not assigned to this project';
+    END IF;
+    DELETE FROM evaluations
+    WHERE user_id = p_evaluatorId AND project_id = p_projectId AND evaluation_type_id = 1;
+END //
 
 -- Función para obtener las evaluaciones de un proyecto en específico
 -- Se hace uso de un procedimiento almacena getProjectEvaluations

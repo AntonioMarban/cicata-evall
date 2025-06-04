@@ -7,6 +7,7 @@ const {
     updateCommitteeRubric,
     getProjectNonEvaluators,
     createProjectEvaluator,
+    removeEvaluatorFromProject,
     getProjectEvaluations,
     sendCommitteeEvaluationResult,
     getAllCommitteeMembers,
@@ -20,6 +21,7 @@ router.get('/committees/:committeeId/secretaries/:userId/evaluations', getPendin
 router.put('/committees/:committeeId/secretaries/:userId/rubric', updateCommitteeRubric);
 router.get('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/non-evaluators', getProjectNonEvaluators);
 router.post('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/evaluators', createProjectEvaluator);
+router.delete('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/evaluators/:evaluatorId', removeEvaluatorFromProject);
 router.get('/committees/:committeeId/secretaries/:userId/evaluations/:projectId', getProjectEvaluations);
 router.patch('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/verdict', sendCommitteeEvaluationResult);
 router.get('/committees/:committeeId/secretaries/:userId/members', getAllCommitteeMembers);

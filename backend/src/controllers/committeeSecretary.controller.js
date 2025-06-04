@@ -120,6 +120,34 @@ const createProjectEvaluator = (req, res) => {
   });
 };
 
+/*
+  Función para eliminar un evaluador de un proyecto en específico
+  Se hace uso de un procedimiento almacena removeEvaluatorFromProject
+  @param committeeId: Id del comité
+  @param userId: Id del miembro del comité, en este caso el secretario
+  @param projectId: Id del proyecto
+  @param evaluatorId: Id del evaluador que se va a eliminar del proyecto
+  @returns: Mensaje de éxito o error
+*/
+const removeEvaluatorFromProject = (req, res) => {
+  const { committeeId, userId, projectId, evaluatorId } = req.params;
+
+  const sql = `CALL removeEvaluatorFromProject(?, ?, ?, ?)`;
+  const values = [committeeId, userId, projectId, evaluatorId];
+
+  pool.query(sql, values, (err, results) => {
+    if (err) {
+      console.error("Error removing project evaluator:", err);
+      return res.status(400).json({ error: "Invalid query parameters" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ message: "Resource does not exist" });
+    }
+    return res
+      .status(200)
+      .json({ message: "Project evaluator removed successfully" });
+  });
+}
 
 /*
     Función para obtener las evaluaciones de un proyecto en específico
@@ -414,6 +442,7 @@ module.exports = {
   updateCommitteeRubric,
   getProjectNonEvaluators,
   createProjectEvaluator,
+  removeEvaluatorFromProject,
   getProjectEvaluations,
   sendCommitteeEvaluationResult,
   getAllCommitteeMembers,
