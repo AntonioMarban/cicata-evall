@@ -136,7 +136,7 @@ const ManageAccountsData = ({ accountTypeToManage }) => {
             )}
 
             {accountTypeToManage === null && (
-                <div className="flex flex-col overflow-y-auto h-screen max-h-screen">
+                <div className="flex flex-col max-h-screen">
                     <h2 className="text-xl font-semibold mb-2">Selecciona un tipo de cuenta para gestionar</h2>
                 </div>
             )}
