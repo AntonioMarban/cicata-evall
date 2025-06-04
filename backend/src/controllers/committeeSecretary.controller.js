@@ -237,6 +237,7 @@ const getCommitteeMember = (req, res) => {
   @param fName: Nombre del usuario
   @param lastName1: Primer apellido del usuario
   @param lastName2: Segundo apellido del usuario
+  @param prefix: Prefijo del titulo del usuario
   @param email: Correo electrónico del usuario
   @param phone: Teléfono del usuario
   @param password: Contraseña del usuario
@@ -256,6 +257,7 @@ const createCommitteeMember = (req, res) => {
     fName,
     lastName1,
     lastName2,
+    prefix,
     email,
     phone,
     password,
@@ -269,13 +271,14 @@ const createCommitteeMember = (req, res) => {
     levelNumEDI
   } = req.body;
 
-  const sql = `CALL createCommitteeMember(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `CALL createCommitteeMember(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   const values = [
     userId,
     committeeId,
     fName,
     lastName1,
     lastName2,
+    prefix,
     email,
     phone,
     password,
@@ -328,6 +331,7 @@ const updateCommitteeMember = (req, res) => {
     fName,
     lastName1,
     lastName2,
+    prefix,
     email,
     phone,
     password,
@@ -341,7 +345,7 @@ const updateCommitteeMember = (req, res) => {
     levelNumEDI
   } = req.body;
 
-  const sql = `CALL updateCommitteeMember(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `CALL updateCommitteeMember(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   const values = [
     userId,
     committeeId,
@@ -349,6 +353,7 @@ const updateCommitteeMember = (req, res) => {
     fName,
     lastName1,
     lastName2,
+    prefix,
     email,
     phone,
     password,

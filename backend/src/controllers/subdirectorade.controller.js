@@ -49,6 +49,7 @@ const createUser = async (req, res) => {
     fName,
     lastName1,
     lastName2,
+    prefix,
     email,
     phone,
     password,
@@ -63,11 +64,12 @@ const createUser = async (req, res) => {
     userType_id,
   } = req.body;
 
-  const query = "CALL createUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const query = "CALL createUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     fName,
     lastName1,
     lastName2,
+    prefix,
     email,
     phone,	
     password,
@@ -137,6 +139,7 @@ const updateUser = async (req, res) => {
     fName,
     lastName1,
     lastName2,
+    prefix,
     email,
     phone,
     password,
@@ -150,12 +153,13 @@ const updateUser = async (req, res) => {
     levelNumEDI
   } = req.body;
   const query =
-    "CALL updateUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "CALL updateUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     userId,
     fName,
     lastName1,
     lastName2,
+    prefix,
     email,
     phone,
     password,

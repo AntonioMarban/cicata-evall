@@ -1349,6 +1349,7 @@ BEGIN
         u.fName,
         u.lastName1,
         u.lastName2,
+        u.prefix,
         u.email,
         u.phone,
         u.institution,
@@ -1379,6 +1380,7 @@ CREATE PROCEDURE createCommitteeMember(
     IN p_fName varchar(50),
     IN p_lastName1 varchar(50),
     IN p_lastName2 varchar(50),
+    IN p_prefix varchar(10),
     IN p_email varchar(255),
     IN p_phone varchar(255),
     IN p_password varchar(255),
@@ -1405,6 +1407,7 @@ BEGIN
             fName,
             lastName1,
             lastName2,
+            prefix,
             email,
             phone,
             password,
@@ -1421,6 +1424,7 @@ BEGIN
             p_fName,
             p_lastName1,
             p_lastName2,
+            p_prefix,
             p_email,
             p_phone,
             SHA2(p_password, 256),
@@ -1453,6 +1457,7 @@ CREATE PROCEDURE updateCommitteeMember(
     IN p_fName VARCHAR(50),
     IN p_lastName1 VARCHAR(50),
     IN p_lastName2 VARCHAR(50),
+    IN p_prefix VARCHAR(10),
     IN p_email VARCHAR(255),
     IN p_phone VARCHAR(255),
     IN p_password VARCHAR(255),
@@ -1494,6 +1499,10 @@ BEGIN
 
     IF p_lastName2 IS NOT NULL THEN
         UPDATE users SET lastName2 = p_lastName2 WHERE userId = p_memberId;
+    END IF;
+
+    IF p_prefix IS NOT NULL THEN
+        UPDATE users SET prefix = p_prefix WHERE userId = p_memberId;
     END IF;
 
     IF p_email IS NOT NULL THEN
@@ -1623,27 +1632,29 @@ DELIMITER ;
 -- @returns: Lista de proyectos activos
 DELIMITER //
 CREATE PROCEDURE createUser (
-  IN p_fName VARCHAR(50),
-  IN p_lastName1 VARCHAR(50),
-  IN p_lastName2 VARCHAR(50),
-  IN p_email VARCHAR(255),
-  IN p_phone VARCHAR(255),
-  IN p_password VARCHAR(255),
-  IN p_institution VARCHAR(50),
-  IN p_positionWork VARCHAR(50),
-  IN p_researchNetwork BOOLEAN,
-  IN p_researchNetworkName VARCHAR(50),
-  IN p_academicDegree VARCHAR(50),
+    IN p_fName VARCHAR(50),
+    IN p_lastName1 VARCHAR(50),
+    IN p_lastName2 VARCHAR(50),
+    IN p_prefix VARCHAR(10),
+    IN p_email VARCHAR(255),
+    IN p_phone VARCHAR(255),
+    IN p_password VARCHAR(255),
+    IN p_institution VARCHAR(50),
+    IN p_positionWork VARCHAR(50),
+    IN p_researchNetwork BOOLEAN,
+    IN p_researchNetworkName VARCHAR(50),
+    IN p_academicDegree VARCHAR(50),
     IN p_levelNumSNII VARCHAR(50),
     IN p_levelNumCOFFA VARCHAR(50),
     IN p_levelNumEDI VARCHAR(50),
-  IN p_userType_id INT
+    IN p_userType_id INT
 )
 BEGIN
   INSERT INTO users (
     fName,
     lastName1,
     lastName2, 
+    prefix,
     email,
     phone,
     password,
@@ -1660,6 +1671,7 @@ BEGIN
     p_fName,
     p_lastName1,
     p_lastName2,
+    p_prefix,
     p_email,
     p_phone,
     SHA2(p_password, 256),
@@ -1702,6 +1714,7 @@ BEGIN
         u.fName,
         u.lastName1,
         u.lastName2,
+        u.prefix,
         u.email,
         u.phone,
         u.institution,
@@ -1735,20 +1748,21 @@ DELIMITER ;
 -- @returns: Mensaje de éxito o error
 DELIMITER //
 CREATE PROCEDURE updateUser (
-  IN p_userId INT,
-  IN p_fName VARCHAR(50),
-  IN p_lastName1 VARCHAR(50),
-  IN p_lastName2 VARCHAR(50),
-  IN p_email VARCHAR(255),
-  IN p_phone VARCHAR(255),
-  IN p_password VARCHAR(255),
-  IN p_institution VARCHAR(50),
-  IN p_positionWork VARCHAR(50),
-  IN p_researchNetwork BOOLEAN,
-  IN p_researchNetworkName VARCHAR(50),
-  IN p_academicDegree VARCHAR(50),
-  IN p_levelNumSNII VARCHAR(50),
-  IN p_levelNumCOFFA VARCHAR(50),
+    IN p_userId INT,
+    IN p_fName VARCHAR(50),
+    IN p_lastName1 VARCHAR(50),
+    IN p_lastName2 VARCHAR(50),
+    IN p_prefix VARCHAR(10),
+    IN p_email VARCHAR(255),
+    IN p_phone VARCHAR(255),
+    IN p_password VARCHAR(255),
+    IN p_institution VARCHAR(50),
+    IN p_positionWork VARCHAR(50),
+    IN p_researchNetwork BOOLEAN,
+    IN p_researchNetworkName VARCHAR(50),
+    IN p_academicDegree VARCHAR(50),
+    IN p_levelNumSNII VARCHAR(50),
+    IN p_levelNumCOFFA VARCHAR(50),
     IN p_levelNumEDI VARCHAR(50)
 )
 BEGIN
@@ -1770,6 +1784,10 @@ BEGIN
 
     IF p_lastName2 IS NOT NULL THEN
         UPDATE users SET lastName2 = p_lastName2 WHERE userId = p_userId;
+    END IF;
+
+    IF p_prefix IS NOT NULL THEN
+        UPDATE users SET prefix = p_prefix WHERE userId = p_userId;
     END IF;
 
     IF p_email IS NOT NULL THEN

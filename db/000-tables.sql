@@ -16,6 +16,7 @@ CREATE TABLE `users` (
   `fName` varchar(50),
   `lastName1` varchar(50),
   `lastName2` varchar(50),
+  `prefix` varchar(10),
   `email` varchar(255),
   `phone` varchar(255),
   `password` varchar(255),
