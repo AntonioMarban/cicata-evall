@@ -259,7 +259,7 @@ export default function ProjectStatus({ projectId }) {
               <thead>
                 <tr>
                   <th>Comité</th>
-                  <th>Aprobado/No aprobado</th>
+                  <th>Resultados de evaluación</th>
                   <th>Comentario</th>
                 </tr>
               </thead>
@@ -318,7 +318,7 @@ export default function ProjectStatus({ projectId }) {
                 <thead>
                   <tr>
                     <th>Comité</th>
-                    <th>Aprobado/No aprobado</th>
+                    <th>Resultados de evaluación</th>
                     <th>Comentario</th>
                   </tr>
                 </thead>

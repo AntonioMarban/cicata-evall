@@ -64,7 +64,7 @@
 
 .stage-table th:nth-child(2),
 .stage-table td:nth-child(2) {
-  width: 30%; /* Aprobado/No aprobado */
+  width: 30%; /* Resultados de evaluación */
 }
 
 .stage-table th:nth-child(3),
