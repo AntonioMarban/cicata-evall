@@ -46,7 +46,6 @@ const  Anexos = ({option,setOption}) => {
         }
         const respuesta = window.confirm("ya no se podrá modificar hasta que se revisado, ¿Estás seguro de que quieres continuar?");
         if (respuesta) {
-        console.log("El usuario eligió: Sí");
         } else {
         return 
         }
