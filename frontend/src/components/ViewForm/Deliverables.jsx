@@ -41,20 +41,20 @@ const Deliverables = ({Deliverables}) => {
             </thead>
             <tbody className='table-form-show-body'>
                 {Deliverables.deliverables1.map((deliverable) => (
-                  <tr key={deliverable.deliveryId}>
+                  <tr key={`${deliverable.id}`}>
                       <td data-label="Entregable" >{deliverable.name}</td>
                       {columns.map((col) => (
-                        <td key={`${deliverable.deliveryId}-${col}`}>
+                        <td key={`deliverable-${deliverable.id}-${col}`}>
                           {deliverable.values[col] ?? ''}
                         </td>
                       ))}
                   </tr>
                 ))}
                 {Deliverables.extras1.map((deliverable) => (
-                  <tr key={deliverable.deliveryId}>
+                  <tr key={`${deliverable.id}`}>
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns.map((col) => (
-                        <td key={`${deliverable.deliveryId}-${col}`}>
+                        <td key={`extra-${deliverable.id}-${col}`}>
                           {deliverable.values[col] ?? ''}
                         </td>
                       ))}
@@ -76,20 +76,20 @@ const Deliverables = ({Deliverables}) => {
               </thead>
               <tbody className='table-form-show-body'>
                   {Deliverables.deliverables2.map((deliverable) => (
-                    <tr key={deliverable.deliveryId}>
+                    <tr key={`${deliverable.id}`}>
                         <td data-label="Entregable">{deliverable.name}</td>
                         {columns2.map((col) => (
-                          <td key={`${deliverable.deliveryId}-${col}`}>
+                          <td key={`d2-${deliverable.id+col}-${col}`}>
                             {deliverable.values[col] ?? ''}
                           </td>
                         ))}
                     </tr>
                   ))}
                   {Deliverables.extras2.map((deliverable) => (
-                  <tr key={deliverable.deliveryId}>
+                  <tr key={`${deliverable.id}`}>
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns2.map((col) => (
-                        <td key={`${deliverable.deliveryId}-${col}`}>
+                        <td key={`e2-${deliverable.id+col}-${col}`}>
                           {deliverable.values[col] ?? ''}
                         </td>
                       ))}
@@ -111,20 +111,20 @@ const Deliverables = ({Deliverables}) => {
               </thead>
               <tbody className='table-form-show-body'>
                   {Deliverables.deliverables3.map((deliverable) => (
-                    <tr key={deliverable.deliveryId}>
+                    <tr key={`${deliverable.id}`}>
                         <td data-label="Entregable">{deliverable.name}</td>
                         {columns3.map((col) => (
-                          <td key={`${deliverable.deliveryId}-${col}`}>
+                          <td key={`d3-${deliverable.id+col}-${col}`}>
                             {deliverable.values[col] ?? ''}
                           </td>
                         ))}
                     </tr>
                   ))}
                   {Deliverables.extras3.map((deliverable) => (
-                  <tr key={deliverable.deliveryId}>
+                  <tr key={`${deliverable.id}`}>
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns3.map((col) => (
-                        <td key={`${deliverable.deliveryId}-${col}`}>
+                        <td key={`e3-${deliverable.id}-${col}`}>
                           {deliverable.values[col] ?? ''}
                         </td>
                       ))}
