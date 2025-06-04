@@ -212,7 +212,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             </div>
                             <div className="participant-form-rows">
                                 <div>
-                                    <p>institución perteneciente 
+                                    <p>Institución perteneciente 
                                         {newErrors.institution && (
                                             <>
                                                 {newErrors.institution !== '*' && <br />}
@@ -287,7 +287,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                             <>
                             <div className="participant-form-rows">
                                 <div className="participant-button-degree">
-                                    <p>Investigador SNII
+                                    <p>Nivel SNII
                                     </p>
                                     <select name="levelNumSNII" 
                                         value={participant.levelNumSNII}
@@ -299,7 +299,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                     </select>
                                 </div>
                                 <div className="participant-button-degree">
-                                    <p>Investigador COFFA
+                                    <p>Nivel COFFA
                                     </p>
                                     <select name="levelNumCOFFA" 
                                         value={participant.levelNumCOFFA}
@@ -311,7 +311,7 @@ const  AddParticipant = ({setParticipants, participantToEdit = null, onEditCompl
                                     </select>
                                 </div>
                                 <div className="participant-button-degree">
-                                    <p>Investigador EDI
+                                    <p>Nivel EDI
                                     </p>
                                     <select name="levelNumEDI" 
                                         value={participant.levelNumEDI}

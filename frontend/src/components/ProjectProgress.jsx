@@ -236,7 +236,7 @@ export default function ProjectProgress({ projectId,status }) {
                     <button onClick={checkForms} className="bg-[#5cb7e6] text-white border-none py-2.5 px-5 rounded-[10px] cursor-pointer text-base mr-5 hover:bg-[#47a2d3]">Continuar con correcciones</button>
                     )}
                     {!isAvailableToModify &&(
-                    <button onClick={(e)=>{navigateToForms(files,e)}} className="bg-[#5cb7e6] text-white border-none py-2.5 px-5 rounded-[10px] cursor-pointer text-base mr-5 hover:bg-[#47a2d3]">Realizar correcciones</button>
+                    <button onClick={(e)=>{navigateToForms(files,e)}} className="bg-[#5cb7e6] text-white border-none py-2.5! px-5! rounded-[10px] cursor-pointer text-base mr-5 hover:bg-[#47a2d3]">Realizar correcciones</button>
                     )}
                 </div>
             )}

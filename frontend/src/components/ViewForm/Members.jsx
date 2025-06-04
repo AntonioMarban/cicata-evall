@@ -52,7 +52,7 @@ const Members = ({members ,investigator}) => {
                 </div>
                 <div className='participant-institution-inner'>
                     <div className="centerAfirmative-tag">
-                        <p>En caso afirmativo ¿Cuál?</p>
+                        <p>Red de investigación a la que pertenece</p>
                     </div>
                     <div className='participant-tag-data'>
                         <p>{investigator.researchNetworkName}</p>  
@@ -150,7 +150,7 @@ const Members = ({members ,investigator}) => {
                     {member.researchNetwork === 1 && (
                     <div className='participant-institution-inner'>
                         <div className="centerAfirmative-tag">
-                            <p >En caso afirmativo ¿Cuál?</p>
+                            <p>Red de investigación a la que pertenece</p>
                         </div>
                         <div className='participant-tag-data'>
                             <p>{member.researchNetworkName}</p>    

@@ -123,7 +123,7 @@ const  EthicalAsp = ({option,setOption}) => {
                             onClick={() => handleChangeButton('workWithHumans', 0)}
                             type="button">No</button>
                         </div>
-                        <p className="!mt-5">¿Necesitas consentimiento de trabajar con animales o muestras de animales?</p>
+                        <p className="!mt-5">¿Harás uso de animales de laboratorio en tu proyecto de investigación?</p>
                         <div className="flex flex-wrap justify-between w-3/5">
                             <button
                             className={ethicalAsp.workWithAnimals === 1  ? 

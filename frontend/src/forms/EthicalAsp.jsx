@@ -133,7 +133,7 @@ const  EthicalAsp = ({option,setOption}) => {
                             onClick={() => handleChangeButton('workWithHumans', 0)}
                             type="button">No</button>
                         </div>
-                        <p className="!mt-5">¿Necesitas consentimiento de trabajar con animales o muestras de animales?</p>
+                        <p className="!mt-5">¿Harás uso de animales de laboratorio en tu proyecto de investigación?</p>
                         <div className="flex flex-wrap justify-between w-3/5">
                             <button
                             className={ethicalAsp.workWithAnimals === 1  ? 
@@ -155,8 +155,8 @@ const  EthicalAsp = ({option,setOption}) => {
                 <div className="!mt-15 flex flex-col w-[100%] h-full flex-1">
                     {(ethicalAsp.workWithAnimals || ethicalAsp.workWithHumans) ?
                     <>
-                        <p className="text-2xl">Subir archivos</p>
-                        <p className="!mb-4">Si van a trabajar con muestras humanas deben adjuntar el consentimiento y el aviso de privacidad</p>
+                        <p className="text-2xl mb-2!">Subir archivos</p>
+                        <p className="!mb-4">Adjuntar el consentimiento, aviso de privacidad y/o carta de uso de animales según el proyecto.</p>
                         <DragDrop 
                             setFilesSend={setFilesSend} 
                             filesSend={filesSend} 
@@ -168,7 +168,7 @@ const  EthicalAsp = ({option,setOption}) => {
                     }
                 </div>
             </div>
-            <div className="flex justify-end items-center !mt-5 mb-5">
+            <div className="flex justify-end items-center !mt-5 mb-5!">
                 <button className="!p-2 !ml-8 w text-[20px] rounded-lg border-none 
                 bg-[#5CB7E6] text-white font-medium cursor-pointer shadow-md
                  hover:bg-[#4CA6D5] transition-colors duration-300" type="button"  
