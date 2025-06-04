@@ -307,7 +307,7 @@ const getProjectDetails = (req, res) => {
                 folio: projectInfo[0]?.folio || '',
                 typeResearch: parseInt(projectInfo[0]?.typeResearch) || '',
                 alignmentPNIorODS: projectInfo[0]?.alignmentPNIorODS || '',
-                alignsWithPNIorODS: projectInfo[0]?.alignsWithPNIorODS || '',
+                alignsWithPNIorODS: projectInfo[0]?.alignsWithPNIorODS ?? '',
                 otherTypeResearch: projectInfo[0]?.otherTypeResearch || '',
                 subtopic: projectInfo[0]?.subtopic || '',
                 summary: projectInfo[0]?.summary || '',
