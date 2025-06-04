@@ -550,17 +550,6 @@ VALUES
 ('José', 'Jiménez', 'Torres', 'carlos.jt@example.com', 'IPN', 'Estudiante', TRUE, 'RedBio', 'Licenciatura', '0', '0', '0', 'Ana Pérez', 7);
 
 
--- annexes
-INSERT INTO annexes (document, projectId) VALUES 
-(NULL, 1),
-(NULL, 2),
-(NULL, 3),
-(NULL, 4),
-(NULL, 5),
-(NULL, 6),
-(NULL, 7),
-(NULL, 8);
-
 
 -- =============== INSERTS DE DICTUMS ===============
 INSERT INTO dictums (folio, decision, date, authorizerId, project_id)
