@@ -10,7 +10,10 @@ const  Activities = ({option,setOption}) => {
     
     const [activities, setActivities] = useState({ idF: 28, scheduleActivities: [] });
     const [activitiesToEdit, setActivitiesToEdit] = useState(null);
-
+    const [newErrorsD,setNewErrorsD] = useState({
+                activities: "*",
+            }
+    );
     const handleOnSubmitFormBack = useSubmitFormBack(activities, setOption);
     const handleOnSubmitFormNext = useSubmitFormNext(activities, setOption);
 

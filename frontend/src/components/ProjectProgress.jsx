@@ -240,6 +240,7 @@ export default function ProjectProgress({ projectId,status }) {
                     )}
                 </div>
             )}
+            <button onClick={(e)=>{navigateToForms(files,e)}} className="bg-[#5cb7e6] text-white border-none py-2.5! px-5! rounded-[10px] cursor-pointer text-base mr-5 hover:bg-[#47a2d3]">Realizar correcciones</button>
         </div>
     </main>
     );

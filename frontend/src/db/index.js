@@ -154,3 +154,39 @@ export async function hasFormsInRange(minId, maxId) {
         };
     }).finally(() => db.close());
 }
+
+export async function deleteFormsInRange(minId, maxId) {
+    const db = await openDB();
+    const transaction = db.transaction("Forms", "readwrite");
+    const store = transaction.objectStore("Forms");
+
+    return new Promise((resolve, reject) => {
+        const checkRequest = store.getAll(IDBKeyRange.bound(minId, maxId));
+        
+        checkRequest.onsuccess = () => {
+            const formsInRange = checkRequest.result;
+            
+            if (formsInRange.length === 0) {
+                db.close();
+                resolve(false); 
+                return;
+            }
+            const deleteRequest = store.delete(IDBKeyRange.bound(minId, maxId));
+            
+            deleteRequest.onsuccess = () => {
+                db.close();
+                resolve(true); 
+            };
+            
+            deleteRequest.onerror = (event) => {
+                db.close();
+                reject("Error: " + event.target.error);
+            };
+        };
+
+        checkRequest.onerror = (event) => {
+            db.close();
+            reject("Error: " + event.target.error);
+        };
+    });
+}
