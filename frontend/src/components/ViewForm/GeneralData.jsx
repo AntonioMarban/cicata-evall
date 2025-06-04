@@ -6,15 +6,22 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
         <thead className='table-form-header'>
             <tr>
                 <th>Evaluación por primera vez</th>
-                <th>Reevaluación <br/><span className='subtitle-text'>(Número de reevaluación)</span></th>
-                <th>Comité o comités que solicitaron modificaciones<br/><span className='subtitle-text'>(Si aplica)</span></th>
-                <th>Número de registro en CICATA Unidad Morelos <br/><span className='subtitle-text'>(En las solicitudes de primera vez, este campo será llenado por la SICIT*)</span></th>
+                <th>Reevaluación
+                    <br/>
+                    <span className='subtitle-text'>
+                        {generalData.firstEvaluation === 1 ? '' : '(Número de reevaluación)'}
+                    </span>
+                </th>
+                <th>Comité o comités que solicitaron modificaciones</th>
+                <th>Número de registro en CICATA Unidad Morelos</th>
             </tr>
         </thead>
         <tbody className='table-form-body'>
             <tr>
-                <td>{generalData.firstEvaluation}</td>
-                <td>{generalData.reevaluation}</td>
+                <td>
+                    {generalData.firstEvaluation === 1 ? 'X' : '-'}
+                </td>
+                <td>{generalData.reevaluation === "" ? '-' : generalData.reevaluation}</td>
                 <td>{generalData.committiesModify}</td>
                 <td>{generalData.folio}</td>
             </tr>
@@ -110,7 +117,9 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
     <table className='BackgroundTable'>
         <thead className='table-form-header'>
             <tr>
-                <th>En caso afirmativo, ¿con cuál? / No se considera ¿Por qué?</th>
+                <th>
+                    {generalData.alignsWithPNIorODS === 1 ? '¿Con cuál o cuáles?' : 'No se considera. ¿Por qué?'}
+                </th>
             </tr>
         </thead>
         <tbody className='table-form-body'>
@@ -124,7 +133,7 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
     <table className='BackgroundTable'>
         <thead className='table-form-header'>
             <tr>
-                <th>Resumen del proyecto <br/>(Máximo 1500 caracteres con espacios)</th>
+                <th>Resumen del proyecto</th>
             </tr>
         </thead>
         <tbody className='table-form-body'>
@@ -133,20 +142,15 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
             </tr>
         </tbody>
     </table>
-    <table className='BackgroundTable'>
+    <table className='BackgroundTable TableWithFootnote'>
         <caption className="table-form-caption">Relación de Proyectos Asociados al proyecto principal</caption>
         <thead className='table-form-header'>
             <tr>
                 <th>No. 1</th>
                 <th>Nombre del proyecto</th>
-                <th>Tipo de proyecto
-                </th>
-                <th>Número de registro externo
-                    <br/><span className='subtitle-text'>(Si aplica)</span>
-                </th>
-                <th>Número de registro SIP*
-                <br/><span className='subtitle-text'>(Si aplica)</span>
-                </th>
+                <th>Tipo de proyecto</th>
+                <th>Número de registro externo</th>
+                <th>Número de registro SIP*</th>
                 <th>Fecha de asociación</th>
             </tr>
         </thead>
@@ -156,15 +160,14 @@ const ViewGeneralData = ({generalData,associatedProjects}) => {
                     <td>{index+1}</td>
                     <td>{associatedProject.name}</td>
                     <td>{associatedProject.project_type}</td>
-                    <td>{associatedProject.externalRegister}</td>
-                    <td>{associatedProject.SIPRegister}</td>
+                    <td>{associatedProject.externalRegister === "" ? "No aplica" : associatedProject.externalRegister}</td>
+                    <td>{associatedProject.SIPRegister === "" ? "No aplica" : associatedProject.SIPRegister}</td>
                     <td>{associatedProject.associationDate}</td>
                 </tr>
             ))}
         </tbody>
     </table>
-    <p className='message-after-data'>Agregar el número de filas necesarias para todos los proyectos asociados al proyecto principal
-        <br/>
+    <p className='message-after-data'>
         *SIP. Secretaría de Investigación y Posgrado
     </p>
     </>

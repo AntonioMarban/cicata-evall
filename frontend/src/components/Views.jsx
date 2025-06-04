@@ -27,7 +27,7 @@ const Views = () => {
     <Route path = "/VerFormulario" element={<ViewCompleteForm/>}></Route>
     <Route path = "/Proyecto" element={<Project/>}></Route>
     <Route path = "/ProyectosFinalizados" element={<FinishedProjects/>}></Route>
-    <Route path = "/Dictamen" element= {<ProjectDictum/>}></Route>
+    <Route path = "/Dictamen" element={<ProjectDictum/>}></Route>
     <Route
         path = "*"
         element={<Navigate to="/Inicio" replace/>} ></Route>

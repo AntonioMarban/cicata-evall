@@ -4,7 +4,7 @@ const Members = ({members ,investigator}) => {
     <>
         <div className='backgroundParticipants'>
             <div className='participant_title'>
-                <p>Datos del Investigador principal</p>
+                <p>Datos del Investigador Principal</p>
             </div>
             <div className='participant-data'>
                 <div className='participant-data-subname'>

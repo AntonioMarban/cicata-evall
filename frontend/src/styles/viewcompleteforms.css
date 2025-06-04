@@ -5,6 +5,10 @@
     width: 100%;
     margin-bottom: 20px;
 }
+.TableWithFootnote{
+    margin-bottom: 5px;
+}
+
 .div-button{
     display: flex;
     justify-content: flex-end;

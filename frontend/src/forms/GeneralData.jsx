@@ -209,7 +209,7 @@ const GeneralData = ({option,setOption}) => {
                 </div>
                 
                 <div className="!mt-5 flex-1">
-                    <p className="text-lg mt-3">{generalData.alignsWithPNIorODS === 1 ? '¿Con cuál o cuáles?' :  'No se considera ¿Por qué?'} {newErrors.alignmentPNIorODS && <span className="text-red-600">{newErrors.alignmentPNIorODS}</span>}</p>
+                    <p className="text-lg mt-3">{generalData.alignsWithPNIorODS === 1 ? '¿Con cuál o cuáles?' :  'No se considera. ¿Por qué?'} {newErrors.alignmentPNIorODS && <span className="text-red-600">{newErrors.alignmentPNIorODS}</span>}</p>
                     <input  
                             className="!p-2 w-[47%] max-[800px]:w-full !p-2 rounded-lg border-2 border-[#E1E1E1] text-lg text-[#6D7580] !mt-3 hover:border-[#5CB7E6] transition-colors duration-300" 
                             name="alignmentPNIorODS"  
