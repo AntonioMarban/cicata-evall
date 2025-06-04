@@ -41,12 +41,12 @@ const  Login = () => {
                     <img alt='imagen-cicata' className="w-4/5" src={CICATA}></img>
                     <input 
                     className="!p-2 bg-white/50 border-none mb-5 w-4/5 h-[12%] pl-5 text-2xl rounded-sm"
-                    autoFocus type='text' name='email' placeholder='email'></input>
+                    autoFocus type='text' name='email' placeholder='Correo electrónico'></input>
                     <input 
                     className="!p-2 !mt-5 bg-white/50 border-none mb-5 w-4/5 h-[12%] pl-5 text-2xl rounded-sm"
-                    type='password' name='password' placeholder='password'></input>
+                    type='password' name='password' placeholder='Contraseña'></input>
                     <button type='submit'
-                    className="!m-5 !p-2 bg-[#1591D1] w-2/5 h-[12%] border-none text-white cursor-pointer text-2xl rounded">Login</button>
+                    className="!m-5 !p-2 bg-[#1591D1] w-2/5 h-[12%] border-none text-white cursor-pointer text-2xl rounded">Iniciar sesión</button>
                 </div>
                 <img alt='imagen-eval' className="!m-5 w-[10%] absolute bottom-0 right-0 md:w-[10%]" src={LOGOEVAL}></img>
             </form>
