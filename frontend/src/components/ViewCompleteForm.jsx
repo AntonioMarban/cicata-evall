@@ -105,7 +105,9 @@ const ViewCompleteForms = () => {
     return (
     <div className='fullTable-background'>
         <div className='div-button'>
+            {(files.length>1) && (
             <button onClick={handlePrint2}>Descargar anexos</button>
+            )}
             <button onClick={handlePrint}>Descargar proyecto</button>
         </div>
         {(completeForm && files) ? (
