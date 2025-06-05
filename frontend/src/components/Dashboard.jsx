@@ -92,10 +92,12 @@ function Dashboard({ projectCards }) {
                   const isCommitteeUser = [3, 4, 5].includes(
                     parseInt(userType)
                   );
-                  const url = isCommitteeUser
-                    ? `/Acuerdo?projectId=${card.projectId}`
-                    : `/Proyecto?projectId=${card.projectId}`;
-                  navigate(url);
+
+                  if (isCommitteeUser) {
+                    navigate('/Acuerdo', { state: { projectId: card.projectId } });
+                  } else {
+                    navigate('/Proyecto', { state: { projectId: card.projectId } });
+                  }
                 }}
               >
                 <CardContent>

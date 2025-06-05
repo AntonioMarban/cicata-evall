@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import ProjectStatus from "../components/ProjectStatus";
@@ -10,12 +10,14 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function Project() {
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const projectId = searchParams.get("projectId");
+  const projectId = location.state?.projectId;
+
+  const navigate = useNavigate();
 
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userType, setUserType] = useState(localStorage.getItem("userType"));
+
 
   useEffect(() => {
     // Actualizar userType si cambia en localStorage
@@ -48,6 +50,11 @@ export default function Project() {
 
     fetchProjectData();
   }, [projectId]);
+
+  if (!projectId) {
+    navigate("/Inicio", { replace: true });
+    return null;
+  }
 
   if (loading) {
     return <main className="projectstatus-main">Cargando...</main>;

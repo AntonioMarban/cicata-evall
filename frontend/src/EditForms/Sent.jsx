@@ -143,7 +143,7 @@ const  ModalSent = ({option,setOption}) => {
                             success: <b>¡Formulario actualizado!</b>,
                         }
                         );
-                        navigate(`/Proyecto?projectId=${data.projectId}`);
+                        navigate('/Proyecto', { state: { projectId: data.projectId } });
                         deleteFormsInRange(20, 33)
                     } catch (uploadError) {
                         console.error("Error uploading file:", uploadError);
@@ -157,7 +157,7 @@ const  ModalSent = ({option,setOption}) => {
                         success: <b>¡Formulario actualizado!</b>,
                     }
                     );
-                    navigate(`/Proyecto?projectId=${data.projectId}`);
+                    navigate('/Proyecto', { state: { projectId: data.projectId } });
                     deleteFormsInRange(20, 33)
                 }
             } else {

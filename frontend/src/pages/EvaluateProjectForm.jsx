@@ -71,7 +71,7 @@ const EvaluateProjectForm = ({ projectId }) => {
                 if (userType === "5") {
                     navigate("/Inicio");
                 } else {
-                    navigate("/Proyecto?projectId=" + projectId);
+                    navigate('/Proyecto', { state: { projectId: projectId } });
                 }
             }
         } catch (error) {

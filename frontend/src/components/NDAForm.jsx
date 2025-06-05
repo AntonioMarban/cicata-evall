@@ -20,8 +20,7 @@ function NDAForm() {
     setUserFullName(nameFromStorage);
   }, []);
 
-  const searchParams = new URLSearchParams(location.search);
-  const projectId = searchParams.get("projectId");
+  const projectId = location.state?.projectId;
 
   function convertMarkdownToHTML(text) {
     return text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
@@ -44,7 +43,7 @@ function NDAForm() {
     }
 
     if (userType === 1 || userType === 2) {
-      navigate(`/Proyecto?projectId=${projectId}`);
+      navigate('/Proyecto', { state: { projectId: projectId } });
     }
 
     const fetchAgreement = async () => {
@@ -62,7 +61,7 @@ function NDAForm() {
 
           if (agreement.agreed === 1) {
             if (userType === 3 || userType === 4) {
-              navigate(`/Proyecto?projectId=${projectId}`);
+              navigate('/Proyecto', { state: { projectId: projectId } });
             } else if (userType === 5) {
               navigate("/EvaluarProyecto", { state: { projectId: projectId } });
             } else {
@@ -192,7 +191,7 @@ En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consenti
       }
 
       if (userType === 3 || userType === 4) {
-        navigate(`/Proyecto?projectId=${projectId}`);
+        navigate('/Proyecto', { state: { projectId: projectId } });
       } else if (userType === 5) {
         navigate("/EvaluarProyecto", { state: { projectId: projectId } });
       }
