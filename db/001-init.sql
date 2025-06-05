@@ -1039,7 +1039,7 @@ DELIMITER //
             SELECT
                 p.projectId,
                 p.title,
-                CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+                CONCAT(u2.prefix, ' ', u2.fName, ' ', u2.lastName1, ' ', u2.lastName2) AS fullName,
                 p.startDate,
                 p.endDate,
                 p.folio,
@@ -1047,11 +1047,13 @@ DELIMITER //
             FROM
                 projects p
             JOIN evaluations e ON p.projectId = e.project_id
-            JOIN users u ON e.user_id = u.userId
+            JOIN usersProjects up ON p.projectId = up.project_id
+            JOIN users u2 ON up.user_id = u2.userId
             WHERE
                 e.user_id = p_userId
                 AND e.evaluation_type_id = 1
                 AND e.result IS NULL;
+
         END IF;
     END //
 
@@ -1228,46 +1230,7 @@ END //
 DELIMITER ;
 
 
--- Función para obtener los proyectos pendientes a enviar evaluación del comité
--- @param userId: Id del presidente o secretario deñ comité
--- @returns: Lista de proyectos pendientes
-DELIMITER //
-CREATE PROCEDURE getPendingCommitteeEvaluations(
-    IN p_userId INT,
-    IN p_committeeId INT
-)
-BEGIN
-    DECLARE presidentId INT;
 
-    IF NOT EXISTS (
-        SELECT 1 FROM committeeUsers
-        WHERE userId = p_userId AND committeeId = p_committeeId
-    ) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'The user does not belong to this committee';
-    END IF;
-    SELECT u.userId INTO presidentId
-    FROM committeeUsers cu
-    JOIN users u ON cu.userId = u.userId
-    WHERE cu.committeeId = p_committeeId AND u.userType_id = 3
-    LIMIT 1;
-
-    SELECT
-        p.projectId,
-        p.title,
-        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
-        p.startDate,
-        p.endDate,
-        p.folio,
-        p.status
-    FROM
-        projects p
-    JOIN evaluations e ON p.projectId = e.project_id
-    JOIN users u ON e.user_id = u.userId
-    WHERE
-        e.user_id = presidentId AND e.evaluation_type_id = 2 AND e.result IS NULL;
-END //
-DELIMITER ;
 
 -- Función para simular enviar el resultado de la evaluación del comité
 -- @param commitee_id: id del comité
@@ -2670,5 +2633,46 @@ BEGIN
         SET status = 'En revisión'
         WHERE projectId = p_projectId;
     END IF;
+END //
+DELIMITER ;
+
+-- Función para obtener los proyectos pendientes a enviar evaluación del comité
+-- @param userId: Id del presidente o secretario deñ comité
+-- @returns: Lista de proyectos pendientes
+DELIMITER //
+CREATE PROCEDURE getPendingCommitteeEvaluations(
+    IN p_userId INT,
+    IN p_committeeId INT
+)
+BEGIN
+    DECLARE presidentId INT;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM committeeUsers
+        WHERE userId = p_userId AND committeeId = p_committeeId
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user does not belong to this committee';
+    END IF;
+    SET presidentId = getCommitteePresidentId(p_committeeId);
+
+    SELECT
+        p.projectId,
+        p.title,
+        CONCAT(u2.prefix, ' ', u2.fName, ' ', u2.lastName1, ' ', u2.lastName2) AS fullName,
+        p.startDate,
+        p.endDate,
+        p.folio,
+        p.status
+    FROM
+        projects p
+    JOIN evaluations e ON p.projectId = e.project_id
+    JOIN usersProjects up ON p.projectId = up.project_id
+    JOIN users u2 ON up.user_id = u2.userId
+    WHERE
+        e.user_id = presidentId
+        AND e.evaluation_type_id = 2
+        AND e.result IS NULL;
+
 END //
 DELIMITER ;
