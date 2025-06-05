@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Rubric from "../components/Rubric"
 import { useEffect, useState } from "react";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
 const EvaluateProjectForm = ({ projectId }) => {
 
@@ -11,6 +12,8 @@ const EvaluateProjectForm = ({ projectId }) => {
     const [evaluationResult, setEvaluationResult] = useState("")
     const [evaluationComments, setEvaluationComments] = useState("")
     const [scoreError, setScoreError] = useState("")
+
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
@@ -43,18 +46,7 @@ const EvaluateProjectForm = ({ projectId }) => {
 
     
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        if (!totalScore || !evaluationResult || !evaluationComments) {
-            alert("Por favor, completa todos los campos obligatorios.");
-            return;
-        }
-
-        if (scoreError) {
-            alert("Por favor, corrige el error en el puntaje total.");
-            return;
-        }
+    const handleSubmit = async () => {
 
         const payload = {
             score: totalScore === "N/A" ? null : totalScore,
@@ -76,7 +68,6 @@ const EvaluateProjectForm = ({ projectId }) => {
             if (!response.ok) {
                 throw new Error("Error al enviar la evaluación");
             } else {
-                alert("Evaluación enviada exitosamente.");
                 if (userType === "5") {
                     navigate("/Inicio");
                 } else {
@@ -104,7 +95,22 @@ const EvaluateProjectForm = ({ projectId }) => {
 
                     <div id="evaluationQuestions" className="flex flex-col gap-4 !mb-6">
 
-                        <form action="projectEvaluation" onSubmit={handleSubmit}>
+                        <form
+                            action="projectEvaluation" 
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                if (!totalScore || !evaluationResult || !evaluationComments) {
+                                    alert("Por favor, completa todos los campos obligatorios.");
+                                    return;
+                                }
+                                if (scoreError) {
+                                    alert("Por favor, corrige el error en el puntaje total.");
+                                    return;
+                                }
+                                setShowConfirmModal(true);
+                            }}
+                        
+                        >
                             <div id="topContainer" className="flex flex-row items-center !mb-6 flex-wrap justify-between">
                                 <div
                                     id="topTwoQuestions"
@@ -183,6 +189,42 @@ const EvaluateProjectForm = ({ projectId }) => {
 
                     </div>
                 </div>
+
+                {showConfirmModal && (
+                    <Dialog open={showConfirmModal} onClose={() => setShowConfirmModal(false)} className="relative z-50">
+                        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+                        <div className="fixed inset-0 flex items-center justify-center">
+                            <DialogPanel className="max-w-md w-full rounded-xl bg-white p-6! shadow-xl">
+                                <DialogTitle className="text-xl font-bold mb-4!">Confirmar evaluación</DialogTitle>
+
+                                <div className="mb-4!">
+                                ¿Estás seguro de que quieres enviar esta evaluación? <br />
+                                Una vez enviada, no podrás modificarla.
+                                </div>
+
+                                <div className="flex justify-end gap-3">
+                                <button
+                                    onClick={() => setShowConfirmModal(false)}
+                                    className="bg-[#BBBBBA] text-white font-semibold rounded hover:bg-[#AAAAAC] cursor-pointer"
+                                    style={{ padding: '10px 20px', width: '100%', maxWidth: '110px', textAlign: 'center' }}
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    onClick={() => {
+                                    setShowConfirmModal(false);
+                                    handleSubmit();
+                                    }}
+                                    className="bg-[#5CB7E6] text-white font-semibold rounded hover:bg-[#1591D1] cursor-pointer"
+                                    style={{ padding: '10px 20px', width: '100%', maxWidth: '180px', textAlign: 'center' }}
+                                >
+                                    Confirmar envío
+                                </button>
+                                </div>
+                            </DialogPanel>
+                            </div>
+                        </Dialog>
+                    )}
             </div>
         </>
     )
