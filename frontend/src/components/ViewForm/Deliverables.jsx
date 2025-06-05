@@ -13,9 +13,9 @@ const Deliverables = ({Deliverables}) => {
     const categories2 = ["Medio", "Superior", "Posgrado"];
     return (
     <>
-      {(Deliverables.deliverables1.length === 0 || Deliverables.extras1.length === 0) && 
-      (Deliverables.deliverables2.length === 0 || Deliverables.extras2.length === 0) &&
-      (Deliverables.deliverables3.length === 0 || Deliverables.extras3.length === 0) && (
+      {(Deliverables.deliverables1.length === 0 && Deliverables.extras1.length === 0) && 
+      (Deliverables.deliverables2.length === 0 && Deliverables.extras2.length === 0) &&
+      (Deliverables.deliverables3.length === 0 && Deliverables.extras3.length === 0) && (
        <table className='BackgroundTable'>
             <thead className='table-form-header'>
                 <tr>

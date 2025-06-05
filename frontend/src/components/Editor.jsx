@@ -1,12 +1,28 @@
-import { useEditor, EditorContent } from '@tiptap/react'
+import { Editor,useEditor, EditorContent } from '@tiptap/react'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 import Italic from '@tiptap/extension-italic'
 import { useEffect } from "react";
-const Editor = ({ content, onUpdate }) => {
+import Placeholder from '@tiptap/extension-placeholder'
+import "../styles/tiptap.css"
+const EditorS = ({ content, onUpdate,placeholderI="Escribe algo" }) => {
   const editor = useEditor({
-    extensions: [Document, Paragraph, Text, Italic],
+     extensions: [
+    Document,
+    Paragraph,
+    Text,
+    Italic,
+    Placeholder.configure({
+      placeholder: placeholderI,
+      // Opcional: muestra el placeholder solo cuando el documento está vacío
+      emptyEditorClass: 'is-editor-empty',
+      emptyNodeClass: 'is-empty',
+      // Opcional: muestra el placeholder en nodos vacíos
+      showOnlyWhenEditable: true,
+      showOnlyCurrent: true,
+    }),
+  ],
     content: content,
     onUpdate: ({ editor }) => {
       const html = editor.getHTML()
@@ -45,4 +61,4 @@ const Editor = ({ content, onUpdate }) => {
   )
 }
 
-export default Editor;
+export default EditorS;

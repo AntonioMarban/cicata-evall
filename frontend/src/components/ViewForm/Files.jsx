@@ -15,7 +15,7 @@ const Files = ({ files }) => {
       {Array.isArray(files.documents) && files.documents.length > 0 ? (
         files.documents.map((file, index) => (
           <div className="flex justify-between !mb-5" key={index}>
-              <p className="flex items-center">📄 {file.name} - {file.tag === 'eticos' ? 'Éticos' : 'Anexos'}</p>
+              <p className="flex items-center">📄 {file.name} - {file.tag === 'eticos' ? 'Aspectos éticos' : 'Anexo de proyecto'}</p>
               <button
               className="!p-2 rounded-lg border-none bg-[#5CB7E6] text-white font-normal cursor-pointer shadow-md hover:bg-[#4CA6D5] transition-colors duration-300"
               key={index}

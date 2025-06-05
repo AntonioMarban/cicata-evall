@@ -150,8 +150,8 @@ const  ModalSent = ({option,setOption}) => {
     return (
         <div className="h-[70vh] flex items-center justify-center">
             <div className="text-center">
-                <p className="mb-4">¿Seguro que desea enviar el proyecto?</p>
-                <div className="flex justify-center gap-4">
+                <p className="!mt-6 mb-4">¿Seguro que desea enviar el proyecto?</p>
+                <div className="!mt-6 flex justify-center gap-4">
                     <button 
                         type="button" 
                         className="button-cancel hover:bg-gray-300 transition-colors duration-200"
@@ -166,7 +166,7 @@ const  ModalSent = ({option,setOption}) => {
                         Sí
                     </button>
                 </div>
-                <p className="mt-5 text-gray-500">Una vez enviado, solo podrá modificarse si se requieren una correcciones</p>
+                <p className="!mt-6 text-gray-500">Una vez enviado, solo podrá modificarse si se requieren una correcciones</p>
             </div>
         </div>
         );

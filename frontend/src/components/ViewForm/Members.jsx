@@ -185,13 +185,13 @@ const Members = ({members ,investigator}) => {
                             <p className='participant-tag'>Nivel</p>
                         </div>
                         <div className='participant-tag-data'>
-                            <p>SNII - {member.levelSNII}</p>  
+                            <p>SNII - {member.levelNumSNII}</p>  
                         </div>              
                         <div className='participant-tag-data'>
-                            <p>COFFA - {member.levelCOFFA}</p>  
+                            <p>COFFA - {member.levelNumCOFFA}</p>  
                         </div>    
                         <div className='participant-tag-data'>
-                            <p>EDI -{member.levelEDI}</p>  
+                            <p>EDI -{member.levelNumEDI}</p>  
                         </div>                          
                     </div>
                     )}

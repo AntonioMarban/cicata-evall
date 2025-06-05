@@ -1,5 +1,6 @@
 import React from 'react';
 import "../../styles/viewcompleteforms.css"
+import formatValue from '../../hooks/formatValue';
 const ConflictInterest = ({Budget}) => {  
     
     const sumInversion = Array.isArray(Budget.gastoInversion)
@@ -18,20 +19,6 @@ const ConflictInterest = ({Budget}) => {
     ? Budget.gastoCorriente.reduce((sum, Inversion) => sum + Inversion.expenditure, 0)
     : 0;
 
-    function formatValue(value) {
-    if (value == null || value === '') return '-';
-
-    const date = new Date(value);
-
-    if (!isNaN(date.getTime())) {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-    }
-    
-    return value || '-';
-    }
     return (
     <>
         <table className='BackgroundTable'>

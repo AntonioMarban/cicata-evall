@@ -161,10 +161,15 @@ const  AddCollaboration = ({setCollaborations, collaborationToEdit = null, onEdi
                                     <div>
                                         <p>¿El convenio es nacional o internacional?</p>
                                         <p className="form-subtext">(Si aplica)</p>
-                                        <input 
-                                        value={collaboration.agreementType}
-                                        onChange={handleInputChange}
-                                        name="agreementType" className="form-colab-input" placeholder="Escribe el tipo de convenio..."></input>
+                                        <select
+                                            value={collaboration.agreementType}
+                                            name="agreementType"
+                                            onChange={handleInputChange}
+                                            className="form-colab-input">
+                                            <option value="" disabled>Selecciona una opción</option>
+                                            <option value="Nacional">Nacional</option>
+                                            <option value="Internacional">Internacional</option>
+                                        </select>
                                     </div>
                                     <div>
                                         <p>¿Número de convenio?<br/><br/><span className="form-subtext">(Si aplica)</span></p>

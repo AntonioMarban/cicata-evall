@@ -1,7 +1,7 @@
 import "../../styles/addprojects.css"
 import { useFormAddHandler } from "../../hooks/useFormAddHandler";
 import useLoadFormData from "../../hooks/useLoadFormData";
-
+import formatValue from '../../hooks/formatValue'
 import { useState,useEffect } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react'
 import { toast } from "sonner";
@@ -65,25 +65,13 @@ const  AddActivities = ({setActivities, activitesToEdit = null, onEditComplete =
             [name]: value
         }));
     };
-    function formatValue(value) {
-    if (value == null || value === '') return '-';
-
-    const date = new Date(value);
-
-    if (!isNaN(date.getTime())) {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-    }
-    }
     const handleSubmit = (e) => {
         e.preventDefault();
         const start = new Date(datesManage.startDate);
         const end = new Date(datesManage.endDate);
         const activityStart = new Date(activity.startDate);
         const activityEnd = new Date(activity.endDate);
-        if(end && (!(start <= activityStart) || !(end >= activityEnd))){
+        if(end && (start > activityStart || end < activityEnd)){
             return toast.error(`Las fechas deben de estar dentro del rango del proyecto del ${formatValue(datesManage.startDate)} al ${formatValue(datesManage.endDate)}`);
         }
         const newErrorsF = {}
