@@ -1915,7 +1915,7 @@ CREATE PROCEDURE saveEvaluationResults(
     IN p_committeeId INT,
     IN p_projectId INT,
     IN p_userId INT,
-    IN p_score INT,
+    IN p_score FLOAT,
     IN p_result VARCHAR(50),
     IN p_comments TEXT
 )
