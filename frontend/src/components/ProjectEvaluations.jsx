@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { X } from 'lucide-react';
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
 import { useNavigate } from "react-router-dom";
 import "../styles/projectevaluations.css";
@@ -71,10 +72,33 @@ export default function ProjectEvaluations({ projectId }) {
         }
     }, [projectId, committeeId, userId, apiUrl]);
 
+    const deleteEvaluator = async (evaluatorId) => {
+        try {
+            const response = await fetch(
+                `${apiUrl}/committees/${committeeId}/secretaries/${userId}/evaluations/${projectId}/evaluators/${evaluatorId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+            if (!response.ok) {
+                throw new Error("No se pudo eliminar el evaluador.");
+            }
+            getNotEvaluators();
+            fetchEvaluations();
+        } catch (error) {
+            console.error("Error al eliminar evaluador:", error);
+            alert("Ocurrió un error al intentar eliminar el evaluador.");
+        }
+    };
+                
+
     useEffect(() => {
         fetchEvaluations();
         getNotEvaluators();
-    }, [fetchEvaluations]);
+    }, [fetchEvaluations, getNotEvaluators]);
 
     if (loading) {
         return <main className="project-evaluations-main">Cargando evaluaciones...</main>;
@@ -110,10 +134,10 @@ export default function ProjectEvaluations({ projectId }) {
           if (!response.ok) {
             throw new Error("No se pudo agregar el evaluador.");
           }
-      
-          alert("Evaluador agregado exitosamente.");
+
           setIsAddEvaluatorOpen(false);
-          window.location.reload();
+          fetchEvaluations();
+
         } catch (error) {
           console.error("Error al agregar evaluador:", error);
           alert("Ocurrió un error al intentar agregar el evaluador.");
@@ -136,6 +160,7 @@ export default function ProjectEvaluations({ projectId }) {
                         <th className="w-[100px] text-center">Puntaje</th>
                         <th className="w-[150px] text-center">Resultado</th>
                         <th className="w-full">Comentarios</th>
+                        <th className="w-[50px]"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -155,6 +180,18 @@ export default function ProjectEvaluations({ projectId }) {
                             {/* Add classname with taiwind to make the comments span multiple lines if too long to fit space */}
                             <td className="break-words">
                                 {evaluation.comments || "—"}
+                            </td>
+                            <td className="relative group">
+                                <button
+                                    className="delete-button text-white rounded-lg p-1! bg-gray-400 hover:bg-gray-700 cursor-pointer"
+                                    tooltip="Eliminar evaluación"
+                                    onClick={() => deleteEvaluator(evaluation.userId)}
+                                >
+                                    < X />
+                                </button>
+                                <div className="absolute left-1/2 -translate-x-1/2 -top-3 w-max px-2! py-1! text-xs bg-gray-500 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                                    Quitar evaluador
+                                </div>
                             </td>
                         </tr>
                         ))}
