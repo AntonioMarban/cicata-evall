@@ -1,9 +1,8 @@
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useState, useEffect } from "react";
 
 const CommitteeDictumForm = ({ projectId, onSubmit }) => {
-  const [committeeId, setCommitteeId] = useState(
-    localStorage.getItem("committeeId")
-  );
+  const [committeeId, setCommitteeId] = useState(localStorage.getItem("committeeId"));
   const [userId, setUserId] = useState(localStorage.getItem("userId"));
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -12,6 +11,8 @@ const CommitteeDictumForm = ({ projectId, onSubmit }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -23,17 +24,25 @@ const CommitteeDictumForm = ({ projectId, onSubmit }) => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Validación simple
+  const validateFields = () => {
     if (!result || !comments.trim()) {
       setError("Por favor completa todos los campos requeridos.");
-      return;
+      return false;
     }
-
     setError("");
+    return true;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateFields()) {
+      setIsModalOpen(true);
+    }
+  };
+
+  const confirmSubmission = async () => {
     setIsSubmitting(true);
+    setIsModalOpen(false);
 
     try {
       const response = await fetch(
@@ -43,10 +52,7 @@ const CommitteeDictumForm = ({ projectId, onSubmit }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            result,
-            comments,
-          }),
+          body: JSON.stringify({ result, comments }),
         }
       );
 
@@ -55,7 +61,7 @@ const CommitteeDictumForm = ({ projectId, onSubmit }) => {
       }
 
       setSuccessMessage("Dictamen enviado correctamente.");
-      if (onSubmit) onSubmit(); // Notifica al padre si se necesita recargar o cerrar
+      if (onSubmit) onSubmit();
     } catch (err) {
       setError(err.message || "Hubo un error inesperado.");
     } finally {
@@ -134,6 +140,41 @@ const CommitteeDictumForm = ({ projectId, onSubmit }) => {
           </button>
         </div>
       </form>
+
+      <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="relative z-50">
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center">
+          <DialogPanel className="max-w-[30vw] w-full rounded-xl bg-white p-6! shadow-xl">
+            <DialogTitle className="text-xl font-bold mb-4!">Confirmar envío</DialogTitle>
+            <div className="mb-4! text-gray-700 text-justify">
+              ¿Estás seguro de que deseas enviar el dictamen con los datos ingresados?
+            </div>
+
+            <div className="mb-4! text-gray-700 text-justify">
+              <span className="font-bold">Importante: </span>
+              Una vez enviado esta evaluación de comité, deberás entregar un dictamen de evaluación físico a la subdirección del
+              Centro de Investigación en Ciencia Aplicada y Tecnología Avanzada - Unidad Morelos.
+            </div>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="bg-[#BBBBBA] text-white font-semibold rounded hover:bg-[#AAAAAC] cursor-pointer"
+                style={{ padding: '10px 20px', width: '100%', maxWidth: '110px', textAlign: 'center' }}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmSubmission}
+                className="bg-[#5CB7E6] text-white font-semibold rounded hover:bg-[#1591D1] cursor-pointer"
+                style={{ padding: '10px 20px', width: '100%', maxWidth: '150px', textAlign: 'center' }}
+              >
+                Confirmar
+              </button>
+            </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
     </div>
   );
 };
