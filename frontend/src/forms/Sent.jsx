@@ -166,6 +166,7 @@ const  ModalSent = ({option,setOption}) => {
                         Sí
                     </button>
                 </div>
+                <p className="mt-5 text-gray-500">Una vez enviado, solo podrá modificarse si se requieren una correcciones</p>
             </div>
         </div>
         );

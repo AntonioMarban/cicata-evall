@@ -141,9 +141,46 @@ const DeliverablesView = ({ option, setOption }) => {
         }
         handleOnSubmitFormNext(event);
     };
-    
+    const handleKeyDown = (e, deliverableKey) => {
+        if (e.key === 'Backspace') {
+            e.preventDefault()
+            const { value, dataset } = e.target;
+            const id = Number(dataset.id);
+            const index = Number(dataset.index);
+
+            setDeliverables(prev => ({
+                    ...prev,
+                    [deliverableKey]: prev[deliverableKey].map(item => {
+                        if (item.id === id) {
+                            const currentValue = item.values[index];
+                            if (currentValue === undefined || currentValue === null) {
+                                return item;
+                            }
+                            const valueStr = currentValue.toString();  
+                            if (valueStr.length === 1) {
+                                const { [index]: _, ...restValues } = item.values;
+                                return {
+                                    ...item,
+                                    values: restValues
+                                };
+                            }
+                            else {
+                                const newValue = valueStr.slice(0, -1);
+                                return {
+                                    ...item,
+                                    values: {
+                                        ...item.values,
+                                        [index]: Number(newValue) 
+                                    }
+                                };
+                            }
+                        }
+                        return item;
+                    })
+                }));
+            }
+    };
     useLoadFormData(deliverables.idF, setDeliverables);
-    
     return (
     <div>
         <table className="table">
@@ -175,6 +212,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         data-id={deliverable.id}
                         data-index={index+1}
                         value={deliverable.values?.[index+1] ?? ""}
+                        onKeyDown={(e)=> handleKeyDown(e,'deliverables1',index)}
                         onChange={(e) => handleInputNumberChange(e, 'deliverables1', index)}
                     />
                     </td>
@@ -199,6 +237,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         min={0}
                         data-id={deliverable.id}
                         data-index={index+1}
+                        onKeyDown={(e)=> handleKeyDown(e,'extras1',index)}
                         value={deliverable.values?.[index+1] ?? ""}
                         onChange={(e) => handleInputNumberChange(e, 'extras1', index)}
                     />
@@ -240,6 +279,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         data-id={deliverable.id}
                         data-index={index+4}
                         value={deliverable.values?.[index+4] ?? ""}
+                        onKeyDown={(e)=> handleKeyDown(e,'deliverables2',index)}
                         onChange={(e) => handleInputNumberChange(e, 'deliverables2', index)}
                     />
                     </td>
@@ -266,6 +306,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         data-id={deliverable.id}
                         data-index={index+4}
                         value={deliverable.values?.[index+4] ?? ""}
+                        onKeyDown={(e)=> handleKeyDown(e,'extras2',index)}
                         onChange={(e) => handleInputNumberChange(e, 'extras2', index)}
                     />
                     </td>
@@ -305,6 +346,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         data-id={deliverable.id}
                         data-index={index+6}
                         value={deliverable.values?.[index+6] ?? ""}
+                        onKeyDown={(e)=> handleKeyDown(e,'deliverables3',index)}
                         onChange={(e) => handleInputNumberChange(e, 'deliverables3', index)}
                     />
                     </td>
@@ -331,6 +373,7 @@ const DeliverablesView = ({ option, setOption }) => {
                         data-id={deliverable.id}
                         data-index={index+6}
                         value={deliverable.values?.[index+6] ?? ""}
+                        onKeyDown={(e)=> handleKeyDown(e,'extras3',index)}
                         onChange={(e) => handleInputNumberChange(e, 'extras3', index)}
                     />
                     </td>
