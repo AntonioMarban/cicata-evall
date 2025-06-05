@@ -60,7 +60,7 @@ const ManageAccounts = () => {
   };
 
   useEffect(() => {
-    if (userType === 3 && committeeId && committees[committeeId]) {
+    if ((userType === 3 || userType === 4) && committeeId && committees[committeeId]) {
       setSelectedPanel(committees[committeeId]);
     }
   }, [userType, committeeId]);

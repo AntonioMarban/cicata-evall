@@ -163,16 +163,16 @@ export default function ProjectProgress({ projectId,status }) {
         fetchData(`${apiUrl}/researchers/projects/${projectId}/comments`, setComments);
         fetchData(`${apiUrl}/users/projects/${projectId}`, setProjectData);
         fetchData(`${apiUrl}/researchers/projects/${projectId}/documents`,setFiles);
-    }, [projectId]);
+    }, [projectId, apiUrl]);
     
     useEffect(()=>{
-        status === "Pendiente de correcciones" ? setIsEnabledButton(true) : setIsEnabledButton(false)
+        status === "Pendiente de aprobación" ? setIsEnabledButton(true) : setIsEnabledButton(false)
         const result = async () =>{
             const resultArray = await hasFormsInRange(20, 33);
             setIsAvailableToModify(resultArray)
         }
         result()
-    },[])
+    },[ status, projectId ]);
     
     useLoadFormData(generalData.idF,setGeneralData);
     

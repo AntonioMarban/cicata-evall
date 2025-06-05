@@ -331,7 +331,7 @@ export default function ProjectStatus({ projectId }) {
                           evaluation.result === "Aprobado"
                             ? "approved"
                             : evaluation.result ===
-                                "Pendiente de correcciones" ||
+                                "Pendiente de aprobación" ||
                               evaluation.result === "No aprobado"
                             ? "not-approved"
                             : "pending"
