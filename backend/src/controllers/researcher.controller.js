@@ -189,7 +189,7 @@ const uploadDocuments = (req, res) => {
     const query = 'CALL uploadDocument(?, ?, ?, ?)';
 
     documents.forEach((doc) => {
-        const filename = doc.originalname;
+        const filename = Buffer.from(doc.originalname, 'binary').toString('utf8');
         pool.query(query, [doc.buffer, projectId, tag, filename], (err, result) => {
             if (err) {
                 console.error(err);
