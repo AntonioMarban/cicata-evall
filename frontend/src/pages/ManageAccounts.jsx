@@ -63,7 +63,7 @@ const ManageAccounts = () => {
     if (userType === 3 && committeeId && committees[committeeId]) {
       setSelectedPanel(committees[committeeId]);
     }
-  }, []);
+  }, [userType, committeeId]);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100" style={{ padding: "5%" }}>

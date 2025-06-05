@@ -6,6 +6,7 @@ import DictumSecondPage from "../components/ProjectDictum/DictumSecondPage";
 import DictumFooter from "../components/ProjectDictum/DictumFooter";
 import DictumAddress from "../components/ProjectDictum/DictumAddress";
 import { useLocation, useNavigate } from "react-router-dom";
+import DictumNotApprovedBody from "../components/ProjectDictum/DictumNotApprovedBody";
 
 export default function ProjectDictum() {
   const navigate = useNavigate();
@@ -66,6 +67,12 @@ export default function ProjectDictum() {
                 />
                 {dictumData.decision === "Aprobado" &&
                 <DictumApprovedBody
+                    projectTitle={dictumData.projectTitle}
+                    projectFolio={dictumData.projectFolio}
+                />
+                }
+                {dictumData.decision === "No aprobado" &&
+                <DictumNotApprovedBody
                     projectTitle={dictumData.projectTitle}
                     projectFolio={dictumData.projectFolio}
                 />
