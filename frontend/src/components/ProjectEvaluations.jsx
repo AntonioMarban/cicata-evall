@@ -18,26 +18,34 @@ export default function ProjectEvaluations({ projectId }) {
     const [isDictumFormLoaded, setIsDictumFormLoaded] = useState(false);
     const [isAddEvaluatorOpen, setIsAddEvaluatorOpen] = useState(false);
     const [potentialEvaluators, setPotentialEvaluators] = useState([]);
+    const [hasAvailableEvaluators, setHasAvailableEvaluators] = useState(false);
+
+    const getNotEvaluators = useCallback(() => {
+        return fetch(`${apiUrl}/committees/${committeeId}/secretaries/${userId}/evaluations/${projectId}/non-evaluators`)
+            .then(response => response.json())
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    setPotentialEvaluators(data);
+                    setHasAvailableEvaluators(true);
+                } else {
+                    console.warn("No hay miembros del comité disponibles para asignar como evaluadores.");
+                    setPotentialEvaluators([]);
+                    setHasAvailableEvaluators(false);
+                }
+            })
+            .catch(error => {
+                console.error("Error al cargar posibles evaluadores:", error);
+                alert("Ocurrió un error al intentar cargar los evaluadores.");
+                setHasAvailableEvaluators(false);
+            });
+    }, [apiUrl, committeeId, userId, projectId]);
 
     const openDialogAddEvaluator = async () => {
-        try {
-          const response = await fetch(
-            `${apiUrl}/committees/${committeeId}/secretaries/${userId}/evaluations/${projectId}/non-evaluators`
-          );
-      
-          const data = await response.json();
-      
-          if (Array.isArray(data) && data.length > 0) {
-            setPotentialEvaluators(data);
-            setIsAddEvaluatorOpen(true);
-          } else {
-            alert("Ya no hay más miembros del comité disponibles para asignar como evaluadores.");
-          }
-        } catch (error) {
-          console.error("Error al cargar posibles evaluadores:", error);
-          alert("Ocurrió un error al intentar cargar los evaluadores.");
-        }
+        setPotentialEvaluators([]);
+        await getNotEvaluators();
+        setIsAddEvaluatorOpen(true);
     };
+
     const closeDialogAddEvaluator = () => setIsAddEvaluatorOpen(false);
 
     const navigate = useNavigate();
@@ -65,6 +73,7 @@ export default function ProjectEvaluations({ projectId }) {
 
     useEffect(() => {
         fetchEvaluations();
+        getNotEvaluators();
     }, [fetchEvaluations]);
 
     if (loading) {
@@ -170,8 +179,15 @@ export default function ProjectEvaluations({ projectId }) {
             {!isDictumFormLoaded && (
                 <div className="flex gap-4 justify-center text-white w-full">
                     <button
-                        className="mt-5! px-5! py-3! rounded-lg bg-[#5CB7E6] hover:bg-[#1591D1] transition-colors duration-200 cursor-pointer"
+                        className={
+                            `mt-5! px-5! py-3! rounded-lg transition-colors duration-200 
+                            ${hasAvailableEvaluators
+                                ? "bg-[#5CB7E6] hover:bg-[#1591D1] cursor-pointer"
+                                : "bg-gray-400 cursor-not-allowed"
+                            }`
+                        }
                         onClick={openDialogAddEvaluator}
+                        disabled={!hasAvailableEvaluators}
                     >
                         Agregar evaluador
                     </button>
