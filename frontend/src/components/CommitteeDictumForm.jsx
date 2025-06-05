@@ -89,8 +89,8 @@ const CommitteeDictumForm = ({ projectId, onSubmit }) => {
             <option value="">Selecciona una opción</option>
             <option value="Aprobado">Aprobado</option>
             <option value="No aprobado">No aprobado</option>
-            <option value="Pendiente de correcciones">
-              Pendiente de correcciones
+            <option value="Pendiente de aprobación">
+              Pendiente de aprobación
             </option>
           </select>
         </div>

@@ -32,7 +32,7 @@ const EvaluateProjectForm = ({ projectId }) => {
 
     const handleScoreBlur = () => {
         const value = totalScore.trim().toUpperCase();
-        const isValid = value === "N/A" || /^[0-9]+$/.test(value);
+        const isValid = value === "N/A" || /^\d+\.?\d{1,2}$/.test(value);
     
         if (!isValid) {
             setScoreError("El puntaje total debe ser un número o 'N/A'");

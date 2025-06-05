@@ -137,8 +137,7 @@ export default function ProjectEvaluations({ projectId }) {
                             <td className={
                                 evaluation.result === "Aprobado"
                                 ? "result-approved"
-                                : evaluation.result === "Pendiente de aprobación" ||
-                                    evaluation.result === "No aprobado"
+                                : evaluation.result === "No aprobado"
                                 ? "result-not-approved"
                                 : "pending"
                             }>

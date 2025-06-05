@@ -126,7 +126,7 @@ function Dashboard({ projectCards }) {
                   {userType === 1 ? (
                     <div
                       className={
-                        card.status === "Pendiente de correcciones"
+                        card.status === "Pendiente de aprobación"
                           ? "show-notification"
                           : "hide-notification"
                       }
