@@ -6,6 +6,7 @@ import useLoadFormData from "../hooks/useLoadFormData";
 import { toast } from 'sonner'
 
 export default function ProjectProgress({ projectId,status }) {
+    const [edit,setEdit] = useState(false)
     const [isEnabledButton, setIsEnabledButton] = useState();
     const [isAvailableToModify, setIsAvailableToModify] = useState();
     const [generalData, setGeneralData] = useState(
@@ -48,17 +49,42 @@ export default function ProjectProgress({ projectId,status }) {
     const [comments, setComments] = useState([]);
     const [projectData, setProjectData] = useState();
     const [files,setFiles] = useState()
-    const fetchData = (url, setData) => {
-    fetch(url, {
-        method: "GET",
-        headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token") || ""}`,
-        },
-    })
-        .then(res => res.json())
-        .then(data => {
-            setData(data); 
+    
+    const fetchData = async (url, setData) => {
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token") || ""}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+            }
+            const data = await response.json();
+            setData(data);
+
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setData(null);
+        }
+    };
+    const fetchDataForm = async (url, setData) => {
+        try {
+        const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token") || ""}`,
+                },
+            });
+        if (!response.ok) {
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setData(data); 
         const flattened = Object.values(data.idf31.budgets).flat();
 
         setData(prev => ({
@@ -82,12 +108,16 @@ export default function ProjectProgress({ projectId,status }) {
                 afilesSend: []
             }
             }));
-        })
-        
-        .catch(error => console.error("Error fetching data:", error));
+        }
+        catch (error) {
+            console.error("Error fetching data:", error);
+            setData(null);
+        }
     };    
 
     const navigateToForms = async (files, e) => {
+        e.preventDefault()
+        setEdit(true)
         if(generalData.projectId != projectId){
             return toast.error("Primero debes terminar de editar el primer proyecto")
         }
@@ -161,7 +191,7 @@ export default function ProjectProgress({ projectId,status }) {
     };
     useEffect(() => {
         fetchData(`${apiUrl}/researchers/projects/${projectId}/comments`, setComments);
-        fetchData(`${apiUrl}/users/projects/${projectId}`, setProjectData);
+        fetchDataForm(`${apiUrl}/users/projects/${projectId}`, setProjectData);
         fetchData(`${apiUrl}/researchers/projects/${projectId}/documents`,setFiles);
     }, [projectId, apiUrl]);
     
@@ -232,10 +262,10 @@ export default function ProjectProgress({ projectId,status }) {
             {isEnabledButton && (
                 <div className="flex w-full justify-end">
                     {isAvailableToModify &&(
-                    <button onClick={checkForms} className="bg-[#5cb7e6] text-white border-none py-2.5 px-5 rounded-[10px] cursor-pointer text-base mr-5 hover:bg-[#47a2d3]">Continuar con correcciones</button>
+                    <button onClick={checkForms} className="bg-[#5cb7e6] text-white border-none py-2.5! px-5! rounded-[10px] cursor-pointer text-base mr-5 hover:bg-[#47a2d3]">Continuar con correcciones</button>
                     )}
                     {!isAvailableToModify &&(
-                    <button onClick={(e)=>{navigateToForms(files,e)}} className="bg-[#5cb7e6] text-white border-none py-2.5! px-5! rounded-[10px] cursor-pointer text-base mr-5 hover:bg-[#47a2d3]">Realizar correcciones</button>
+                    <button onClick={(e)=>{navigateToForms(files,e)}} disabled={edit} className="bg-[#5cb7e6] text-white border-none py-2.5! px-5! rounded-[10px] cursor-pointer text-base mr-5 hover:bg-[#47a2d3]">Realizar correcciones</button>
                     )}
                 </div>
             )}
