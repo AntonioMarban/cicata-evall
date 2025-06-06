@@ -8,7 +8,7 @@ import AddMethodology from "../components/Modals/AddMethodology.jsx";
 import Editor from "../components/Editor.jsx"
 import { useState } from "react";
 const  Goals = ({option,setOption}) => {
-    
+    const [isEmpty,setIsEmpty] = useState();
     const [desglose, setDesglose] = useState({   idF: 6,
             goals: [],
             references: "",
@@ -29,7 +29,7 @@ const  Goals = ({option,setOption}) => {
         event.preventDefault();
         const newErrorsDF = {}
 
-        if(desglose.references === ''){
+        if(isEmpty){
             newErrorsDF['references'] = "* El campo es requerido"
         }
         else{
@@ -53,11 +53,6 @@ const  Goals = ({option,setOption}) => {
         }
 
     }
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setDesglose({ ...desglose, [name]: value });
-    };
 
     const handleDeleteArray = (index,arrayToEdit) => {
         setDesglose({
@@ -141,6 +136,7 @@ const  Goals = ({option,setOption}) => {
                             <Editor 
                                     content={desglose.references} 
                                     onUpdate={handleEditorUpdate}
+                                    setIsEmpty={setIsEmpty}
                                 />
                         </div>
                     </div>

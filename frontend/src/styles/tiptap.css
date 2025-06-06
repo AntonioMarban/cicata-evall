@@ -13,3 +13,6 @@
   pointer-events: none;
   height: 0;
 }
+.ProseMirror:focus {
+    outline: none;
+}
