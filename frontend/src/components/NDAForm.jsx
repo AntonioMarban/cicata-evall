@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useNavigate, useLocation } from "react-router-dom";
+import NDAHeader from "./NDAHeader";
 import "../styles/ndaform.css";
 
 function NDAForm() {
@@ -43,7 +44,7 @@ function NDAForm() {
     }
 
     if (userType === 1 || userType === 2) {
-      navigate('/Proyecto', { state: { projectId: projectId } });
+      navigate("/Proyecto", { state: { projectId: projectId } });
     }
 
     const fetchAgreement = async () => {
@@ -61,7 +62,7 @@ function NDAForm() {
 
           if (agreement.agreed === 1) {
             if (userType === 3 || userType === 4) {
-              navigate('/Proyecto', { state: { projectId: projectId } });
+              navigate("/Proyecto", { state: { projectId: projectId } });
             } else if (userType === 5) {
               navigate("/EvaluarProyecto", { state: { projectId: projectId } });
             } else {
@@ -88,7 +89,11 @@ function NDAForm() {
 
 **PRESENTE**
 
-En mi calidad de **Evaluador** del proyecto titulado **${agreementData.title}**, dirigido por **${agreementData.researcher}** y que se lleva a cabo total o parcialmente dentro de las instalaciones del **CICATA Unidad Morelos del Instituto Politécnico Nacional**, me comprometo a cumplir con los siguientes compromisos:
+En mi calidad de **Evaluador** del proyecto titulado **${
+        agreementData.projectTitle
+      }**, dirigido por **${
+        agreementData.researcher
+      }** y que se lleva a cabo total o parcialmente dentro de las instalaciones del **CICATA Unidad Morelos del Instituto Politécnico Nacional**, me comprometo a cumplir con los siguientes compromisos:
 
 1. **Confidencialidad:** Trataré toda la información proporcionada como estrictamente confidencial. Esta obligación incluye, pero no se limita a, datos, documentos, resultados preliminares y cualquier otra información relacionada con el proyecto que no esté destinada a ser divulgada públicamente.
 
@@ -107,51 +112,16 @@ En mi calidad de **Evaluador** del proyecto titulado **${agreementData.title}**,
 En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consentimiento para que se apliquen las medidas legales y disciplinarias pertinentes conforme a la normativa aplicable.
 
 **ATENTAMENTE,**
-**${userFullName}**
+**${agreementData.prefix + " " + agreementData.evaluator}**
+**${agreementData.positionWork}**
+**${agreementData.institution}**
+**${agreementData.email ?? ""}**
+**${agreementData.phone ?? ""}**
 `
     : "Cargando acuerdo...";
 
   const handleDownload = () => {
-    const content = document.getElementById("agreement-content");
-    if (!content) return;
-
-    const printWindow = window.open("", "_blank", "width=800,height=600");
-    if (!printWindow) return;
-
-    printWindow.document.open();
-    printWindow.document.write(`
-    <html>
-      <head>
-        <title>Carta de confidencialidad</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            padding: 20px;
-            line-height: 1.5;
-          }
-          h1 {
-            text-align: center;
-          }
-          .nda-text {
-            white-space: pre-wrap;
-          }
-        </style>
-      </head>
-      <body>
-        <h1>Acuerdo de confidencialidad</h1>
-        <div class="nda-text">
-          ${content.innerHTML}
-        </div>
-        <script>
-          window.onload = function() {
-            window.print();
-          };
-        </script>
-      </body>
-    </html>
-  `);
-    printWindow.document.close();
+    window.print();
   };
 
   const handleSubmit = async () => {
@@ -191,7 +161,7 @@ En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consenti
       }
 
       if (userType === 3 || userType === 4) {
-        navigate('/Proyecto', { state: { projectId: projectId } });
+        navigate("/Proyecto", { state: { projectId: projectId } });
       } else if (userType === 5) {
         navigate("/EvaluarProyecto", { state: { projectId: projectId } });
       }
@@ -207,12 +177,14 @@ En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consenti
       <div className="nda-header">
         <h1 className="nda-title">Carta de confidencialidad</h1>
         <button onClick={handleDownload} className="nda-button-download">
-          Descargar acuerdo
+          Descargar carta
         </button>
       </div>
 
       <div className="nda-grid">
-        <h2 className="nda-subtitle">Contenido</h2>
+        <div>
+          <NDAHeader />
+        </div>
         <div
           id="agreement-content"
           className="nda-text"

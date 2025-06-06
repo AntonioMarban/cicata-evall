@@ -1,16 +1,12 @@
-/* Layout general */
 .nda-main {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow-y: auto;
-  height: 100vh;
-  max-height: 100vh;
+  padding: 3.5rem;
 }
 
-/* Encabezado */
 .nda-header {
   display: flex;
   width: 100%;
@@ -26,9 +22,8 @@
   margin-bottom: 1rem;
 }
 
-/* Botón de descarga */
 .nda-button-download {
-  background-color: #5CB7E6;
+  background-color: #5cb7e6;
   color: white;
   padding: 0.75rem 1.5rem;
   font-size: 1.125rem;
@@ -41,7 +36,6 @@
   background-color: #4aa3d0;
 }
 
-/* Contenido del acuerdo */
 .nda-grid {
   display: grid;
   gap: 1rem;
@@ -51,40 +45,34 @@
 
 .nda-subtitle {
   font-size: 1.25rem;
-  color: #5CB7E6;
+  color: #5cb7e6;
 }
 
 .nda-text {
   color: #4b5563;
   white-space: pre-wrap;
-  max-height: 400px;
-  overflow-y: auto;
   padding-right: 0.5rem;
 }
 
-
-/* Inputs */
 .nda-input-group {
   display: flex;
   gap: 1rem;
 }
 
 .nda-input {
-  border: 1px solid #E1E1E1;
+  border: 1px solid #e1e1e1;
   padding: 0.5rem 1rem;
   font-size: 1.125rem;
   border-radius: 0.5rem;
   width: 100%;
 }
 
-/* Error */
 .nda-error {
   color: #ef4444;
 }
 
-/* Botón principal */
 .nda-button-submit {
-  background-color: #5CB7E6;
+  background-color: #5cb7e6;
   color: white;
   padding: 0.75rem 1.5rem;
   font-size: 1.125rem;
@@ -100,4 +88,44 @@
 .nda-button-submit.disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+@media print {
+  .nda-input-group,
+  .nda-button-download,
+  .nda-title,
+  .nda-button-submit {
+    display: none !important;
+  }
+
+  .nda-main {
+    padding: 2rem; /* Opcional: ajusta para ahorrar espacio en impresión */
+  }
+
+  .nda-header {
+    margin-bottom: 0.5rem;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}
+
+@media print {
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .nda-main {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
 }

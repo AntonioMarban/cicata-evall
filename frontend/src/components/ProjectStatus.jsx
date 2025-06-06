@@ -191,6 +191,8 @@ export default function ProjectStatus({ projectId }) {
         await fetchStage3();
         if (createDictum === 1) {
           await handleCreateDictum();
+        } else {
+          window.location.reload();
         }
       } else {
         console.error("Error en el envío de evaluación etapa 3.");
@@ -375,7 +377,7 @@ export default function ProjectStatus({ projectId }) {
             {sendingPendingResearcher === 1 && createDictum === 1
               ? `El resultado final es: ${finalResult}. El resultado aún no ha sido enviado al investigador.`
               : createDictum === 0 && sendingPendingResearcher === 1
-              ? "El resultado de las evaluaciones aún no ha sido enviado al investigador"
+              ? `El resultado es: ${finalResult} El resultado aún no ha sido enviado al investigador.`
               : createDictum === 1 && sendingPendingResearcher === 0
               ? "El resultado final de este proyecto ya fue enviado al investigador."
               : "El último estado de este proyecto ya fue enviado al investigador"}

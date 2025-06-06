@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardCards from "./DashboardCards";
 import NOTIFICATION from "../assets/Notification.svg";
+
 const { Card, CardContent } = DashboardCards;
 
 function formatFecha(fechaISO) {
   const fecha = new Date(fechaISO);
   return new Intl.DateTimeFormat("es-MX", {
     dateStyle: "short",
-    timeStyle: "short",
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     hour12: false,
   }).format(fecha);
@@ -18,7 +18,17 @@ function formatFecha(fechaISO) {
 function Dashboard({ projectCards }) {
   const [userFullName, setUserFullName] = useState("");
   const [userType, setUserType] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const navigate = useNavigate();
+  const isFinalizados = window.location.pathname === "/ProyectosFinalizados";
+  const cardsPerPage = 10;
+
+  const totalPages = Math.ceil(projectCards.length / cardsPerPage);
+  const paginatedCards = projectCards.slice(
+    (currentPage - 1) * cardsPerPage,
+    currentPage * cardsPerPage
+  );
 
   useEffect(() => {
     const nameFromStorage = localStorage.getItem("userFullName") || "Usuario";
@@ -27,12 +37,8 @@ function Dashboard({ projectCards }) {
     setUserType(typeFromStorage);
   }, []);
 
-  const isFinalizados = window.location.pathname === "/ProyectosFinalizados";
-
   const getTitleMessage = () => {
-    if (isFinalizados) {
-      return "Estos son los proyectos finalizados";
-    }
+    if (isFinalizados) return "Estos son los proyectos finalizados";
     switch (userType) {
       case 1:
         return "Estos son los proyectos activos que tienes";
@@ -46,9 +52,7 @@ function Dashboard({ projectCards }) {
   };
 
   const getEmptyMessage = () => {
-    if (isFinalizados) {
-      return "No hay proyectos finalizados disponibles.";
-    }
+    if (isFinalizados) return "No hay proyectos finalizados disponibles.";
     switch (userType) {
       case 1:
         return "No tienes proyectos activos disponibles.";
@@ -60,7 +64,29 @@ function Dashboard({ projectCards }) {
         return "No hay proyectos disponibles.";
     }
   };
-  
+
+  const renderPaginationControls = () => (
+    <div className="pagination-controls">
+      <button
+        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        disabled={currentPage === 1}
+        className="pagination-button"
+      >
+        Anterior
+      </button>
+      <span className="pagination-info">
+        Página {currentPage} de {totalPages}
+      </span>
+      <button
+        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+        disabled={currentPage === totalPages}
+        className="pagination-button"
+      >
+        Siguiente
+      </button>
+    </div>
+  );
+
   return (
     <main className="dashboard-main">
       <div
@@ -68,15 +94,14 @@ function Dashboard({ projectCards }) {
         className="dashboard-header flex justify-between items-center"
       >
         <h1 className="dashboard-title">¡Hola, {userFullName}!</h1>
-        {userType === 1 &&
-          window.location.pathname != "/ProyectosFinalizados" && (
-            <button
-              className="dashboard-button text-white rounded-lg cursor-pointer p-3! bg-[#5CB7E6] hover:bg-[#1591D1]"
-              onClick={() => navigate("/CrearProyecto")}
-            >
-              + Crear proyecto
-            </button>
-          )}
+        {userType === 1 && !isFinalizados && (
+          <button
+            className="dashboard-button text-white rounded-lg cursor-pointer p-3! bg-[#5CB7E6] hover:bg-[#1591D1]"
+            onClick={() => navigate("/CrearProyecto")}
+          >
+            + Crear proyecto
+          </button>
+        )}
       </div>
 
       {projectCards.length === 0 ? (
@@ -85,19 +110,15 @@ function Dashboard({ projectCards }) {
         <div>
           <h2 className="dashboard-subtitle">{getTitleMessage()}</h2>
           <div className="card-grid">
-            {projectCards.map((card, index) => (
+            {paginatedCards.map((card, index) => (
               <Card
                 key={index}
                 onClick={() => {
                   const isCommitteeUser = [3, 4, 5].includes(
                     parseInt(userType)
                   );
-
-                  if (isCommitteeUser) {
-                    navigate('/Acuerdo', { state: { projectId: card.projectId } });
-                  } else {
-                    navigate('/Proyecto', { state: { projectId: card.projectId } });
-                  }
+                  const route = isCommitteeUser ? "/Acuerdo" : "/Proyecto";
+                  navigate(route, { state: { projectId: card.projectId } });
                 }}
               >
                 <CardContent>
@@ -123,26 +144,10 @@ function Dashboard({ projectCards }) {
                     <div className="card-title">Status</div>
                     <div className="card-text">{card.status}</div>
                   </div>
-
-                  {/* Campana de notificación al final */}
-                  {userType === 1 ? (
-                    <div
-                      className={
-                        card.status === "Pendiente de aprobación"
-                          ? "show-notification"
-                          : "hide-notification"
-                      }
-                    >
-                      <img src={NOTIFICATION} alt="Notification" />
-                    </div>
-                  ) : userType > 2 ? (
-                    <div
-                      className={
-                        card.status === "En revisión"
-                          ? "show-notification"
-                          : "hide-notification"
-                      }
-                    >
+                  {(userType === 1 &&
+                    card.status === "Pendiente de aprobación") ||
+                  (userType > 2 && card.status === "En revisión") ? (
+                    <div className="show-notification">
                       <img src={NOTIFICATION} alt="Notification" />
                     </div>
                   ) : (
@@ -154,6 +159,7 @@ function Dashboard({ projectCards }) {
               </Card>
             ))}
           </div>
+          {projectCards.length > cardsPerPage && renderPaginationControls()}
         </div>
       )}
     </main>
