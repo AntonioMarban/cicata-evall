@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { deleteFormsInRange,getFormsInRange } from "../db/index";
 import { useNavigate  } from 'react-router-dom'
 import { toast } from "sonner";
@@ -6,7 +7,7 @@ const  ModalSent = ({option,setOption}) => {
     
     const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
-    
+    const [edit,setEdit] = useState(false);
     function base64ToFile(base64, fileName, mimeType) {
     const arr = base64.split(',');
     const bstr = atob(arr[1]);
@@ -20,7 +21,7 @@ const  ModalSent = ({option,setOption}) => {
 
     const handleOnSubmit = async (event) => {
         event.preventDefault();
-        
+        setEdit(true);
         try {
             const formData = await getFormsInRange(1, 14);
             if (!formData) {
@@ -162,6 +163,7 @@ const  ModalSent = ({option,setOption}) => {
                     <button 
                         className="button-confirm hover:bg-gray-700 transition-colors duration-200"
                         onClick={(e) => {handleOnSubmit(e); }}
+                        disabled={edit}
                     >
                         Sí
                     </button>

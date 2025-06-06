@@ -155,7 +155,7 @@ const  EthicalAsp = ({option,setOption}) => {
                 <div className="!mt-15 flex flex-col w-[100%] h-full flex-1">
                     {(ethicalAsp.workWithAnimals || ethicalAsp.workWithHumans) ?
                     <>
-                        <p className="text-2xl mb-2!">Subir archivos</p>
+                        <p className="text-2xl">Subir archivos  <span className="text-red-600">{ethicalAsp.workWithHumans ? '*': ''}</span></p>
                         <p className="!mb-4">Adjuntar el consentimiento, aviso de privacidad y/o carta de uso de animales según el proyecto.</p>
                         <DragDrop 
                             setFilesSend={setFilesSend} 
