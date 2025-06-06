@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardCards from "./DashboardCards";
 import NOTIFICATION from "../assets/Notification.svg";
-
+import formatvalue from "../hooks/formatValue"
 const { Card, CardContent } = DashboardCards;
 
 function formatFecha(fechaISO) {
@@ -129,12 +129,12 @@ function Dashboard({ projectCards }) {
                   <div>
                     <div className="card-title">Fecha Inicio</div>
                     <div className="card-text">
-                      {formatFecha(card.startDate)}
+                      {formatvalue(card.startDate)}
                     </div>
                   </div>
                   <div>
                     <div className="card-title">Fecha Fin</div>
-                    <div className="card-text">{formatFecha(card.endDate)}</div>
+                    <div className="card-text">{formatvalue(card.endDate)}</div>
                   </div>
                   <div>
                     <div className="card-title">Folio</div>

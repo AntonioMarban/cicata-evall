@@ -1,7 +1,7 @@
 import "../styles/projectheader.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import formatvalue from "../hooks/formatValue"
 export default function ProjectHeader({
   title,
   startDate,
@@ -94,11 +94,11 @@ export default function ProjectHeader({
         <div className="info-grid">
           <div className="info-item">
             <p className="label">Fecha inicio</p>
-            <p>{formatDate(startDate)}</p>
+            <p>{formatvalue(startDate)}</p>
           </div>
           <div className="info-item">
             <p className="label">Fecha fin</p>
-            <p>{formatDate(endDate)}</p>
+            <p>{formatvalue(endDate)}</p>
           </div>
           <div className="info-item">
             <p className="label">Folio</p>
