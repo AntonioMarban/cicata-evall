@@ -44,10 +44,13 @@
     cursor: pointer;
     font-size: 16px;
     margin-right: 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .info-button:hover {
     background-color: #47a2d3;
+    transform: translateY(-2px);
+    transform: scale(1.05);
 }
 
 .footer-comments{

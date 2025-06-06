@@ -128,7 +128,7 @@
 
 .stage-button.active:hover {
   background-color: #47a2d3;
-  transform: translateY(-2px);
+  transform: scale(1.05);
 }
 
 .stage-button.disabled {

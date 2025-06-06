@@ -79,11 +79,14 @@
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .nda-button-submit:hover {
-  background-color: #4aa3d0;
+  background-color: #4aa9d6;
+  transform: scale(1.05);
 }
+
 
 .nda-button-submit.disabled {
   opacity: 0.5;

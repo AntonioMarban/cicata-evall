@@ -6,7 +6,7 @@ import { useState } from "react";
 function Button({ children, className, ...props }) {
   return (
     <button
-      className={`w-full px-4 py-2 text-lg text-[#1591D1] hover:text-[#2C4A90] text-left break-words ${className}`}
+      className={`w-full px-4 py-2 text-lg text-[#1591D1] hover:text-[#2C4A90] text-left break-words transition-all duration-200 transform hover:scale-105 ${className}`}
       {...props}
     >
       {children}
