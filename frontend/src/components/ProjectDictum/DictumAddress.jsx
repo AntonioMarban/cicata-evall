@@ -1,3 +1,4 @@
+import formatvalue from "../../hooks/formatValue"
 export default function DictumAddress({ projectOwner, projectOwnerAcademicDegree, authorizationDate }) {
 
     const formatDate = (dateString) => {
@@ -18,7 +19,7 @@ export default function DictumAddress({ projectOwner, projectOwnerAcademicDegree
                     <p>PRESENTE</p>
                 </div>
                 <div className="flex flex-col items-end justify-end w-[45%] text-right">
-                    <p>Xochitepec, Morelos a, {formatDate(authorizationDate)}</p>
+                    <p>Xochitepec, Morelos a, {formatvalue(authorizationDate)}</p>
                 </div>
             </div>
         </div>

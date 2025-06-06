@@ -1,7 +1,6 @@
 import "../../styles/viewcompleteforms.css"
 import formatValue from '../../hooks/formatValue'
 const ViewGeneralData = ({generalData,associatedProjects}) => {
-    console.log(generalData)
     return (
     <>
     <table className='BackgroundTable'>
