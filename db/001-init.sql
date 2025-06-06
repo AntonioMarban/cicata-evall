@@ -142,7 +142,10 @@ BEGIN
     FROM projects p
     LEFT JOIN usersProjects up ON p.projectId = up.project_id
     LEFT JOIN users u ON up.user_id = u.userId
-    WHERE (p.status = 'Aprobado' OR p.status = 'No aprobado') AND up.user_id = userId;
+    LEFT JOIN dictums d ON d.project_id = p.projectId
+    WHERE (p.status = 'Aprobado' OR p.status = 'No aprobado')
+    AND up.user_id = userId
+    ORDER BY d.dictumId DESC;
 END //
 DELIMITER ;
 
@@ -1862,13 +1865,15 @@ BEGIN
         p.title,
         CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
         p.startDate,
-        p.endDate,
+        p.endDate,  
         p.folio,
         p.status
     FROM projects p
     LEFT JOIN usersProjects up ON p.projectId = up.project_id
     LEFT JOIN users u ON up.user_id = u.userId
-    WHERE (p.status = 'Aprobado' OR p.status = 'No aprobado');
+    LEFT JOIN dictums d ON d.project_id = p.projectId
+    WHERE (p.status = 'Aprobado' OR p.status = 'No aprobado')
+    ORDER BY d.dictumId DESC;
 END //
 DELIMITER ;
 

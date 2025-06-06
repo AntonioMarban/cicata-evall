@@ -555,11 +555,11 @@ VALUES
 INSERT INTO dictums (folio, decision, date, authorizerId, project_id)
 VALUES
 -- Proyecto 3: Aprobado
-('SIP-DI-DDCyT-CICATAMOR-D-SICIT-MEMO-0030-2025', 'Aprobado', '2025-01-01', 3, 3),
+('SIP-DI-DDCyT-CICATAMOR-D-SICIT-MEMO-0030-2025', 'Aprobado', '2025-04-01', 3, 7),
 -- Proyecto 4: No aprobado
-('SIP-DI-DDCyT-CICATAMOR-D-SICIT-MEMO-0031-2025', 'No aprobado', '2025-01-01', 3, 4),
+('SIP-DI-DDCyT-CICATAMOR-D-SICIT-MEMO-0031-2025', 'No aprobado', '2025-03-01', 3, 4),
 -- Proyecto 7: Aprobado
-('SIP-DI-DDCyT-CICATAMOR-D-SICIT-MEMO-0032-2025', 'Aprobado', '2025-01-01',3, 7),
+('SIP-DI-DDCyT-CICATAMOR-D-SICIT-MEMO-0032-2025', 'Aprobado', '2025-02-01',3, 3),
 -- Proyecto 8: No aprobado
 ('SIP-DI-DDCyT-CICATAMOR-D-SICIT-MEMO-0033-2025', 'No aprobado', '2025-01-01', 3, 8);
 
