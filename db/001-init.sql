@@ -122,7 +122,8 @@ BEGIN
     FROM projects p
     JOIN usersProjects up ON p.projectId = up.project_id
     JOIN users u ON up.user_id = u.userId
-    WHERE (p.status = 'En revision' OR p.status = 'Pendiente de aprobación') AND up.user_id = userId;
+    WHERE (p.status = 'En revision' OR p.status = 'Pendiente de aprobación') AND up.user_id = userId
+    ORDER BY p.projectId ASC;
 END //
 DELIMITER ;
 
@@ -1853,7 +1854,8 @@ BEGIN
     FROM projects p
     JOIN usersProjects up ON p.projectId = up.project_id
     JOIN users u ON up.user_id = u.userId
-    WHERE (p.status = 'En revision' OR p.status = 'Pendiente de aprobación');
+    WHERE (p.status = 'En revision' OR p.status = 'Pendiente de aprobación')
+    ORDER BY p.projectId ASC;
 END //
 DELIMITER ;
 
