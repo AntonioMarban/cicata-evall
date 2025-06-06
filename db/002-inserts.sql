@@ -67,16 +67,16 @@ INSERT INTO projects (title, startDate, endDate, typeResearch, topic, subtopic, 
 VALUES 
 -- Proyecto en status "En revisión" con id 1
 ('Proyecto prueba 1', '2025-01-01', '2025-12-31', 'Científica', 'Biotecnología', 'Genética', 'ODS 3, ODS 9', 'Resumen del proyecto Alfa...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-001', 'En revisión'),
--- Proyecto en status "Pendiente de correcciones" con id 2
-('Proyecto prueba 2', '2025-01-01', '2025-12-31', 'Tecnológica', 'Nanotecnología', 'Materiales', 'ODS 7, ODS 12', 'Resumen del proyecto Beta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, TRUE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-002', 'Pendiente de correcciones'),
+-- Proyecto en status "Pendiente de aprobación" con id 2
+('Proyecto prueba 2', '2025-01-01', '2025-12-31', 'Tecnológica', 'Nanotecnología', 'Materiales', 'ODS 7, ODS 12', 'Resumen del proyecto Beta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, TRUE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-002', 'Pendiente de aprobación'),
 -- Proyecto en status "Aprobado" con id 3
 ('Proyecto prueba 3', '2025-01-01', '2025-12-31', 'Científica', 'Biomedicina', 'Farmacología', 'ODS 3, ODS 9', 'Resumen del proyecto Gama...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-003', 'Aprobado'),
 -- Proyecto en status "No aprobado" con id 4
 ('Proyecto prueba 4', '2025-01-01', '2025-12-31', 'Tecnológica', 'Robótica', 'Inteligencia Artificial', 'ODS 4, ODS 8', 'Resumen del proyecto Delta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-004', 'No aprobado'),
 -- Proyecto en status "En revisión" con id 5
 ('Proyecto prueba 5', '2025-01-01', '2025-12-31', 'Científica', 'Biotecnología', 'Genética', 'ODS 3, ODS 9', 'Resumen del proyecto Alfa...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, TRUE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-001', 'En revisión'),
--- Proyecto en status "Pendiente de correcciones" con id 6
-('Proyecto prueba 6', '2025-01-01', '2025-12-31', 'Tecnológica', 'Nanotecnología', 'Materiales', 'ODS 7, ODS 12', 'Resumen del proyecto Beta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-002', 'Pendiente de correcciones'),
+-- Proyecto en status "Pendiente de aprobación" con id 6
+('Proyecto prueba 6', '2025-01-01', '2025-12-31', 'Tecnológica', 'Nanotecnología', 'Materiales', 'ODS 7, ODS 12', 'Resumen del proyecto Beta...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-002', 'Pendiente de aprobación'),
 -- Proyecto en status "Aprobado" con id 7
 ('Proyecto prueba 7', '2025-01-01', '2025-12-31', 'Científica', 'Biomedicina', 'Farmacología', 'ODS 3, ODS 9', 'Resumen del proyecto Gama...', 'Introducción...', 'Antecedentes...', 'Problema...', 'Justificación...', 'Hipótesis...', 'Objetivo general...', 'Aspectos éticos...', FALSE, FALSE, 'Consideraciones de bioseguridad...', 'Contribuciones...', 'Ninguno', 'Ninguno', 'FOL-003', 'Aprobado'),
 -- Proyecto en status "No aprobado" con id 8
@@ -160,13 +160,13 @@ VALUES
 ('Aprobado', 'Comentarios del comité 3', NULL, 2, 10, 1),
 ('Aprobado', 'Comentarios del comité 4', NULL, 2, 13, 1),
 ('Aprobado', 'Comentarios del comité 5', NULL, 2, 16, 1),
--- Proyecto 2 con estatus pendiente de correcciones
+-- Proyecto 2 con estatus Pendiente de aprobación
 -- Primera etapa y segunda etapa completas, pero en segunda etapa se pidieron correccciones
 ('Aprobado', 'Comentarios del comité 1', NULL, 2, 4, 2),
 ('Aprobado', 'Comentarios del comité 2', NULL, 2, 7, 2),
 ('Aprobado', 'Comentarios del comité 3', NULL, 2, 10, 2),
-('Pendiente de correcciones', 'Comentarios del comité 4', NULL, 2, 13, 2),
-('Pendiente de correcciones', 'Comentarios del comité 5', NULL, 2, 16, 2),
+('Pendiente de aprobación', 'Comentarios del comité 4', NULL, 2, 13, 2),
+('Pendiente de aprobación', 'Comentarios del comité 5', NULL, 2, 16, 2),
 -- Proyecto 3 con estatus aprobado
 -- Amabas etapas completas con todas las evaluaciones aprobadas
 ('Aprobado', 'Comentarios del comité 1', NULL, 2, 4, 3),
@@ -188,9 +188,9 @@ VALUES
 (NULL, NULL, NULL, 2, 10, 5),
 (NULL, NULL, NULL, 2, 13, 5), 
 (NULL, NULL, NULL, 2, 16, 5),
--- Proyecto 6 con estatus pendiente de correcciones
--- Con pendiente de correcciones desde la primera etapa, sin  llegar a segunda etapa
-('Pendiente de correcciones', 'Comentarios del comité 1', NULL, 2, 4, 6),
+-- Proyecto 6 con estatus Pendiente de aprobación
+-- Con Pendiente de aprobación desde la primera etapa, sin  llegar a segunda etapa
+('Pendiente de aprobación', 'Comentarios del comité 1', NULL, 2, 4, 6),
 -- Proyecto 7 con estatus aprobado
 -- Con todas las evaluaciones aprobadas
 ('Aprobado', 'Comentarios del comité 1', NULL, 2, 4, 7),
@@ -216,13 +216,13 @@ VALUES
 ("Aprobado", "Comentarios del integrante de comité 3", 100, 1, 12, 1),
 ("Aprobado", "Comentarios del integrante de comité 4", 100, 1, 15, 1),
 ("Aprobado", "Comentarios del integrante de comité 5", 100, 1, 18, 1),
--- Proyecto 2 con estatus pendiente de correcciones
+-- Proyecto 2 con estatus Pendiente de aprobación
 -- Con evaluaciones aprobadas, excepto del comité 4 y 5
 ("Aprobado", "Comentarios del integrante de comité 1", 100, 1, 6, 2),
 ("Aprobado", "Comentarios del integrante de comité 2", 100, 1, 9, 2),
 ("Aprobado", "Comentarios del integrante de comité 3", 100, 1, 12, 2),
-("Pendiente de correcciones", "Comentarios del integrante de comité 4", NULL, 1, 15, 2),
-("Pendiente de correcciones", "Comentarios del integrante de comité 5", NULL, 1, 18, 2),
+("Pendiente de aprobación", "Comentarios del integrante de comité 4", NULL, 1, 15, 2),
+("Pendiente de aprobación", "Comentarios del integrante de comité 5", NULL, 1, 18, 2),
 -- Proyecto 3 con estatus aprobado
 -- Con todas las evaluaciones aprobadas
 ("Aprobado", "Comentarios del integrante de comité 1", 100, 1, 6, 3),
@@ -244,10 +244,10 @@ VALUES
 -- Sin evaludaroes del comité 3
 (NULL, NULL, NULL, 1, 15, 5), -- Evaluación pendiente del integrante del comité 4
 -- Sin evaludaroes del comité 5
--- Proyecto 6 con estatus pendiente de correcciones
+-- Proyecto 6 con estatus Pendiente de aprobación
 -- Con evaluadores solo del primer comité y también evalúo el secretario
-("Pendiente de correcciones", "Comentarios del secretario del comité 1", NULL, 1, 5, 6),
-("Pendiente de correcciones", "Comentarios del integrante de comité 1", NULL, 1, 6, 6),
+("Pendiente de aprobación", "Comentarios del secretario del comité 1", NULL, 1, 5, 6),
+("Pendiente de aprobación", "Comentarios del integrante de comité 1", NULL, 1, 6, 6),
 -- Proyecto 7 con estatus aprobado
 -- Con todas las evaluaciones aprobadas
 ("Aprobado", "Comentarios del integrante de comité 1", 100, 1, 6, 7),

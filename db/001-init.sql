@@ -122,7 +122,7 @@ BEGIN
     FROM projects p
     JOIN usersProjects up ON p.projectId = up.project_id
     JOIN users u ON up.user_id = u.userId
-    WHERE (p.status = 'En revision' OR p.status = 'Pendiente de correcciones') AND up.user_id = userId;
+    WHERE (p.status = 'En revision' OR p.status = 'Pendiente de aprobación') AND up.user_id = userId;
 END //
 DELIMITER ;
 
@@ -502,7 +502,7 @@ BEGIN
         FROM evaluations e
         JOIN committeeUsers cu ON cu.userId = e.user_id
         JOIN committees c ON c.committeeId = cu.committeeId
-        WHERE e.project_id = p.projectId AND e.result = 'Pendiente de correcciones'
+        WHERE e.project_id = p.projectId AND e.result = 'Pendiente de aprobación'
         ), 'Ninguno') AS committiesModify
     FROM projects p
     WHERE p.projectId = p_projectId;
@@ -988,7 +988,7 @@ BEGIN
 
     DELETE FROM annexes WHERE projectId = p_projectId;
 
-    DELETE FROM evaluations WHERE evaluation_type_id = 2 AND result = "Pendiente de correcciones" AND project_id = p_projectId;
+    DELETE FROM evaluations WHERE evaluation_type_id = 2 AND result = "Pendiente de aprobación" AND project_id = p_projectId;
 
     SELECT 'Proyecto actualizado correctamente' AS message;
 END //
@@ -1832,7 +1832,7 @@ END //
 DELIMITER ;
 
 -- Función para obtener todos los proyectos activos existentes, es decir,
--- en status "En revisión" o "Pendiente de correcciones"
+-- en status "En revisión" o "Pendiente de aprobación"
 -- Se hace uso de un procedimiento almacena getCommitteeRubric
 -- @param status: Estado activo del proyecto
 -- @returns: Lista de proyectos activos
@@ -1850,7 +1850,7 @@ BEGIN
     FROM projects p
     JOIN usersProjects up ON p.projectId = up.project_id
     JOIN users u ON up.user_id = u.userId
-    WHERE (p.status = 'En revision' OR p.status = 'Pendiente de correcciones');
+    WHERE (p.status = 'En revision' OR p.status = 'Pendiente de aprobación');
 END //
 DELIMITER ;
 
@@ -2179,7 +2179,7 @@ BEGIN
     ELSE
         IF v_result = 'Aprobado' THEN
             SET stageCompleted = TRUE;
-        ELSEIF v_result = 'No aprobado' OR v_result = 'Pendiente de correcciones' THEN
+        ELSEIF v_result = 'No aprobado' OR v_result = 'Pendiente de aprobación' THEN
             SET jumpThirdStage = TRUE;
         END IF;
     END IF;
@@ -2526,8 +2526,8 @@ BEGIN
         END IF;
         IF v_result = 'No aprobado' THEN
             SET @finalResult = 'No aprobado';
-        ELSEIF v_result = 'Pendiente de correcciones' THEN
-            SET @finalResult = 'Pendiente de correcciones';
+        ELSEIF v_result = 'Pendiente de aprobación' THEN
+            SET @finalResult = 'Pendiente de aprobación';
         ELSEIF v_result IS NULL THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'The project has pending evaluations';
