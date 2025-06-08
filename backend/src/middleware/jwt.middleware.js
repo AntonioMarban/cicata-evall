@@ -12,7 +12,6 @@ const verifyJWT = (req, res, next) => {
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if(err){
                 //No es correcto, res.json(error)
-                console.log("Token decodificado:", decoded);
                 return res.status(403).json({mensaje: 'Token Invalido'})
             }
             else
