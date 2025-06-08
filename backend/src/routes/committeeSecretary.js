@@ -16,19 +16,20 @@ const {
     updateCommitteeMember,
     setCommitteeMemberInactive
 } = committeeSecretaryController;
+const middleware = require('../middleware/jwt.middleware')
 
-router.get('/committees/:committeeId/secretaries/:userId/evaluations', getPendingCommitteeEvaluations);
-router.put('/committees/:committeeId/secretaries/:userId/rubric', updateCommitteeRubric);
-router.get('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/non-evaluators', getProjectNonEvaluators);
-router.post('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/evaluators', createProjectEvaluator);
-router.delete('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/evaluators/:evaluatorId', removeEvaluatorFromProject);
-router.get('/committees/:committeeId/secretaries/:userId/evaluations/:projectId', getProjectEvaluations);
-router.patch('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/verdict', sendCommitteeEvaluationResult);
-router.get('/committees/:committeeId/secretaries/:userId/members', getAllCommitteeMembers);
-router.get('/committees/:committeeId/secretaries/:userId/members/:memberId', getCommitteeMember);
-router.post('/committees/:committeeId/secretaries/:userId/members', createCommitteeMember);
-router.patch('/committees/:committeeId/secretaries/:userId/members/:memberId', updateCommitteeMember);
-router.patch('/committees/:committeeId/secretaries/:userId/members/:memberId/inactive', setCommitteeMemberInactive);
+router.get('/committees/:committeeId/secretaries/:userId/evaluations', middleware, getPendingCommitteeEvaluations);
+router.put('/committees/:committeeId/secretaries/:userId/rubric', middleware, updateCommitteeRubric);
+router.get('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/non-evaluators', middleware, getProjectNonEvaluators);
+router.post('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/evaluators', middleware, createProjectEvaluator);
+router.delete('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/evaluators/:evaluatorId', middleware, removeEvaluatorFromProject);
+router.get('/committees/:committeeId/secretaries/:userId/evaluations/:projectId', middleware, getProjectEvaluations);
+router.patch('/committees/:committeeId/secretaries/:userId/evaluations/:projectId/verdict', middleware, sendCommitteeEvaluationResult);
+router.get('/committees/:committeeId/secretaries/:userId/members', middleware, getAllCommitteeMembers);
+router.get('/committees/:committeeId/secretaries/:userId/members/:memberId', middleware, getCommitteeMember);
+router.post('/committees/:committeeId/secretaries/:userId/members', middleware, createCommitteeMember);
+router.patch('/committees/:committeeId/secretaries/:userId/members/:memberId', middleware, updateCommitteeMember);
+router.patch('/committees/:committeeId/secretaries/:userId/members/:memberId/inactive', middleware, setCommitteeMemberInactive);
 
 
 module.exports = router;

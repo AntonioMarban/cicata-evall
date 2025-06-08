@@ -8,11 +8,12 @@ const {
     getDictum,
     getProjectDetails
 } = usersController;
+const middleware = require('../middleware/jwt.middleware')
 
-router.get('/:userId/projects/:projectId/agreement', getAgreementSignature);
-router.patch('/:userId/projects/:projectId/agreement', updateAgreementSignature);
-router.get('/projects/:projectId/summary', getProjectSummary);
-router.get('/projects/:projectId', getProjectDetails)
-router.get('/projects/:projectId/dictum', getDictum);
+router.get('/:userId/projects/:projectId/agreement', middleware, getAgreementSignature);
+router.patch('/:userId/projects/:projectId/agreement', middleware, updateAgreementSignature);
+router.get('/projects/:projectId/summary', middleware, getProjectSummary);
+router.get('/projects/:projectId', middleware, getProjectDetails)
+router.get('/projects/:projectId/dictum', middleware, getDictum);
 
 module.exports = router;

@@ -9,9 +9,10 @@ const verifyJWT = (req, res, next) => {
     //Verificar el token
     if(token){
         token = token.split(' ')[1]
-        jwt.verify(token, process.env.KEYPHRASE, (err, decoded) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if(err){
                 //No es correcto, res.json(error)
+                console.log("Token decodificado:", decoded);
                 return res.status(403).json({mensaje: 'Token Invalido'})
             }
             else

@@ -5,12 +5,12 @@ const { getActiveProjects, getInactiveProjects, createProject, uploadDocuments,
 const middleware = require('../middleware/jwt.middleware')
 const upload  = require('../middleware/multer.middleware') //Solucion Chapucera, por alguna razon funciona para multiples documentos, bienvenida sea esa opcion, yo no me quejo
 
-router.get('/:userId/projects/active', getActiveProjects)
-router.get('/:userId/projects/inactive', getInactiveProjects)
-router.post('/projects', createProject)
-router.post('/projects/upload', upload, uploadDocuments)
-router.get('/projects/:projectId/documents', getProjectDocuments)
-router.get('/projects/:projectId/comments', getCommitteeComments);
-router.patch('/projects/:projectId/update', updateProject);
+router.get('/:userId/projects/active', middleware, getActiveProjects)
+router.get('/:userId/projects/inactive', middleware, getInactiveProjects)
+router.post('/projects', middleware, createProject)
+router.post('/projects/upload', middleware, upload, uploadDocuments)
+router.get('/projects/:projectId/documents', middleware, getProjectDocuments)
+router.get('/projects/:projectId/comments', middleware, getCommitteeComments);
+router.patch('/projects/:projectId/update', middleware, updateProject);
 
 module.exports = router
