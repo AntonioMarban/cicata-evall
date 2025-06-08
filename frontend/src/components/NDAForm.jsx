@@ -12,13 +12,17 @@ function NDAForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [agreementData, setAgreementData] = useState(null);
-  const [userFullName, setUserFullName] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-
+  
+  const [token, setToken] = useState(localStorage.getItem("token"));
   useEffect(() => {
-    const nameFromStorage = localStorage.getItem("userFullName") || "Usuario";
-    setUserFullName(nameFromStorage);
+    const handleStorageChange = () => {
+      setToken(localStorage.getItem("token"));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const projectId = location.state?.projectId;
@@ -50,8 +54,22 @@ function NDAForm() {
     const fetchAgreement = async () => {
       try {
         const response = await fetch(
-          `${apiUrl}/users/${userId}/projects/${projectId}/agreement`
+          `${apiUrl}/users/${userId}/projects/${projectId}/agreement`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
         );
+        if (response.status === 401 || response.status === 403) {
+          console.warn(
+            "Unauthorized or Forbidden: Clearing session and redirecting."
+          );
+          localStorage.clear();
+          window.location.href = "/";
+          return;
+        }
         if (!response.ok) {
           throw new Error("Error al obtener el acuerdo");
         }

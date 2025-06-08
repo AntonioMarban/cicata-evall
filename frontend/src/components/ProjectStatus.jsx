@@ -5,6 +5,16 @@ export default function ProjectStatus({ projectId }) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setToken(localStorage.getItem("token"));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   // Stage 1
   const [stage1Evaluations, setStage1Evaluations] = useState([]);
@@ -31,8 +41,22 @@ export default function ProjectStatus({ projectId }) {
     try {
       if (!projectId) return;
       const response = await fetch(
-        `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage1`
+        `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage1`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
+      if (response.status === 401 || response.status === 403) {
+        console.warn(
+          "Unauthorized or Forbidden: Clearing session and redirecting."
+        );
+        localStorage.clear();
+        window.location.href = "/";
+        return;
+      }
       const data = await response.json();
       if (data && Array.isArray(data.evaluations)) {
         setStage1Evaluations(data.evaluations);
@@ -50,8 +74,22 @@ export default function ProjectStatus({ projectId }) {
     try {
       if (!projectId) return;
       const response = await fetch(
-        `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage2`
+        `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage2`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
+      if (response.status === 401 || response.status === 403) {
+        console.warn(
+          "Unauthorized or Forbidden: Clearing session and redirecting."
+        );
+        localStorage.clear();
+        window.location.href = "/";
+        return;
+      }
       const data = await response.json();
       if (data && Array.isArray(data.evaluations)) {
         setStage2Evaluations(data.evaluations);
@@ -69,8 +107,22 @@ export default function ProjectStatus({ projectId }) {
     try {
       if (!projectId) return;
       const response = await fetch(
-        `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage3`
+        `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage3`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
+      if (response.status === 401 || response.status === 403) {
+        console.warn(
+          "Unauthorized or Forbidden: Clearing session and redirecting."
+        );
+        localStorage.clear();
+        window.location.href = "/";
+        return;
+      }
       const data = await response.json();
       if (data) {
         setFinalResult(data["@finalResult"]);
@@ -87,8 +139,22 @@ export default function ProjectStatus({ projectId }) {
       try {
         if (!projectId) return;
         const response = await fetch(
-          `${apiUrl}/users/projects/${projectId}/summary`
+          `${apiUrl}/users/projects/${projectId}/summary`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
         );
+        if (response.status === 401 || response.status === 403) {
+          console.warn(
+            "Unauthorized or Forbidden: Clearing session and redirecting."
+          );
+          localStorage.clear();
+          window.location.href = "/";
+          return;
+        }
         const data = await response.json();
         if (data && data.length > 0) {
           setProjectData(data[0]);
@@ -136,9 +202,18 @@ export default function ProjectStatus({ projectId }) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
+      if (response.status === 401 || response.status === 403) {
+        console.warn(
+          "Unauthorized or Forbidden: Clearing session and redirecting."
+        );
+        localStorage.clear();
+        window.location.href = "/";
+        return;
+      }
       if (response.ok) {
         await fetchStage1Evaluations();
       } else {
@@ -160,9 +235,18 @@ export default function ProjectStatus({ projectId }) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
+      if (response.status === 401 || response.status === 403) {
+        console.warn(
+          "Unauthorized or Forbidden: Clearing session and redirecting."
+        );
+        localStorage.clear();
+        window.location.href = "/";
+        return;
+      }
       if (response.ok) {
         await fetchStage2Evaluations();
       } else {
@@ -184,9 +268,18 @@ export default function ProjectStatus({ projectId }) {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
+      if (response.status === 401 || response.status === 403) {
+        console.warn(
+          "Unauthorized or Forbidden: Clearing session and redirecting."
+        );
+        localStorage.clear();
+        window.location.href = "/";
+        return;
+      }
       if (response.ok) {
         await fetchStage3();
         if (createDictum === 1) {
@@ -221,10 +314,19 @@ export default function ProjectStatus({ projectId }) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(body),
         }
       );
+      if (response.status === 401 || response.status === 403) {
+        console.warn(
+          "Unauthorized or Forbidden: Clearing session and redirecting."
+        );
+        localStorage.clear();
+        window.location.href = "/";
+        return;
+      }
       if (response.ok) {
         window.location.reload();
       } else {
@@ -332,8 +434,7 @@ export default function ProjectStatus({ projectId }) {
                         className={
                           evaluation.result === "Aprobado"
                             ? "approved"
-                            : evaluation.result ===
-                                "Pendiente de aprobación" ||
+                            : evaluation.result === "Pendiente de aprobación" ||
                               evaluation.result === "No aprobado"
                             ? "not-approved"
                             : "pending"

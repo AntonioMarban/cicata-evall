@@ -5,6 +5,7 @@ export default function HomePage() {
   const [projectCards, setProjectCards] = useState([]);
   const [userId, setUserId] = useState(localStorage.getItem("userId"));
   const [userType, setUserType] = useState(localStorage.getItem("userType"));
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [committeeId, setCommitteeId] = useState(
     localStorage.getItem("committeeId")
   );
@@ -15,6 +16,7 @@ export default function HomePage() {
       setUserId(localStorage.getItem("userId"));
       setUserType(localStorage.getItem("userType"));
       setCommitteeId(localStorage.getItem("committeeId"));
+      setToken(localStorage.getItem("token"));
     };
 
     window.addEventListener("storage", handleStorageChange);
@@ -47,7 +49,7 @@ export default function HomePage() {
         case 4:
           if (!committeeId) {
             console.error("Missing committeeId for committee user");
-            return;   
+            return;
           }
           endpoint = `/committees/${committeeId}/secretaries/${userId}/evaluations`;
           break;
@@ -64,13 +66,27 @@ export default function HomePage() {
       }
 
       try {
-        const response = await fetch(`${apiUrl}${endpoint}`);
+        const response = await fetch(`${apiUrl}${endpoint}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.status === 401 || response.status === 403) {
+          console.warn(
+            "Unauthorized or Forbidden: Clearing session and redirecting."
+          );
+          localStorage.clear();
+          window.location.href = "/";
+          return;
+        }
+
         if (!response.ok) {
           throw new Error("Failed to fetch projects");
         }
 
         const data = await response.json();
-        // Transform data to the format expected by Dashboard component
         const formattedCards = data.map((project) => ({
           projectId: project.projectId,
           title: project.title,
@@ -89,7 +105,7 @@ export default function HomePage() {
     };
 
     fetchProjects();
-  }, [userId, userType, committeeId, apiUrl]);
+  }, [userId, userType, committeeId, token, apiUrl]);
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-100">

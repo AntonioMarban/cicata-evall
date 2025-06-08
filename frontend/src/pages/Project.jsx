@@ -17,12 +17,13 @@ export default function Project() {
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userType, setUserType] = useState(localStorage.getItem("userType"));
-
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   useEffect(() => {
     // Actualizar userType si cambia en localStorage
     const handleStorageChange = () => {
       setUserType(localStorage.getItem("userType"));
+      setToken(localStorage.getItem("token"));
     };
 
     window.addEventListener("storage", handleStorageChange);
@@ -34,8 +35,22 @@ export default function Project() {
       try {
         if (!projectId) return;
         const response = await fetch(
-          `${apiUrl}/users/projects/${projectId}/summary`
+          `${apiUrl}/users/projects/${projectId}/summary`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
         );
+        if (response.status === 401 || response.status === 403) {
+          console.warn(
+            "Unauthorized or Forbidden: Clearing session and redirecting."
+          );
+          localStorage.clear();
+          window.location.href = "/";
+          return;
+        }
         const data = await response.json();
 
         if (data && data.length > 0) {
@@ -78,7 +93,9 @@ export default function Project() {
 
         {/* Vistas condicionales por tipo de usuario */}
         {userType === "2" && <ProjectStatus projectId={projectId} />}
-        {userType === "1" && <ProjectProgress  status={projectData.status} projectId={projectId} />}
+        {userType === "1" && (
+          <ProjectProgress status={projectData.status} projectId={projectId} />
+        )}
         {(userType === "3" || userType === "4") && (
           <ProjectEvaluations projectId={projectId} />
         )}

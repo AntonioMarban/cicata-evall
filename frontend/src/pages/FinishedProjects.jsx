@@ -3,6 +3,16 @@ import Dashboard from "../components/Dashboard";
 
 export default function FinishedProjects() {
   const [projectCards, setProjectCards] = useState([]);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setToken(localStorage.getItem("token"));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -40,9 +50,20 @@ export default function FinishedProjects() {
       }
 
       try {
-        const response = await fetch(`${apiUrl}${endpoint}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch projects");
+        const response = await fetch(`${apiUrl}${endpoint}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.status === 401 || response.status === 403) {
+          console.warn(
+            "Unauthorized or Forbidden: Clearing session and redirecting."
+          );
+          localStorage.clear();
+          window.location.href = "/";
+          return;
         }
 
         const data = await response.json();
@@ -55,9 +76,8 @@ export default function FinishedProjects() {
           endDate: project.endDate,
           folio: project.folio,
           status: project.status,
-          notification: project.notification
+          notification: project.notification,
         }));
-        
 
         setProjectCards(formattedCards);
       } catch (error) {
