@@ -94,24 +94,6 @@ const  ModalSent = ({option,setOption}) => {
                             const uploadAResponse  = await fetch(`${apiUrl}/researchers/projects/upload`, {
                                 method: 'POST',                    
                                 body: formDataFiles,
-<<<<<<< HEAD
-                                headers: {
-                                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                                }
-                            });
-                            if (uploadResponse.status === 401 || uploadResponse.status === 403) {
-                                console.warn("Acceso no autorizado o prohibido, limpiando sesión y redireccionando.");
-                                localStorage.clear();
-                                window.location.href = '/';
-                                return;
-                            }
-                            
-                            if (uploadResponse.status === 200) {
-                                console.warn("Upload succeeded but no confirmation message:");
-                            }
-                            else if (uploadResponse.status != 200) {
-                                throw new Error(`File upload failed: ${uploadResponse.status}`);
-=======
                                 headers: { 
                                     Authorization: `Bearer ${token}`,
                                 }
@@ -123,7 +105,6 @@ const  ModalSent = ({option,setOption}) => {
                                 localStorage.clear();
                                 window.location.href = "/";
                                 return;
->>>>>>> ab89e4b0a6d5ccd7f6d2f4d8cebd5c783f624aa3
                             }
 
                             if (uploadAResponse.status === 200) {
@@ -168,24 +149,6 @@ const  ModalSent = ({option,setOption}) => {
                             const uploadEResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
                                 method: 'POST',                    
                                 body: formDataEFiles,
-<<<<<<< HEAD
-                                headers: {
-                                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                                }
-                            });
-
-                            if (uploadResponse.status === 401 || uploadResponse.status === 403) {
-                                console.warn("Acceso no autorizado o prohibido, limpiando sesión y redireccionando.");
-                                localStorage.clear();
-                                window.location.href = '/';
-                                return;
-                            }
-                            if (uploadResponse.status === 200) {
-                                console.warn("Upload succeeded but no confirmation message:");
-                            }
-                            else if (uploadResponse.status != 200) {
-                                throw new Error(`File upload failed: ${uploadResponse.status}`);
-=======
                                 headers: { 
                                     Authorization: `Bearer ${token}`,
                                 }
@@ -198,7 +161,6 @@ const  ModalSent = ({option,setOption}) => {
                                 localStorage.clear();
                                 window.location.href = "/";
                                 return;
->>>>>>> ab89e4b0a6d5ccd7f6d2f4d8cebd5c783f624aa3
                             }
 
                             if (uploadEResponse.status === 200) {
