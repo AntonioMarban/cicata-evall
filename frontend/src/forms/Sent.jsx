@@ -6,6 +6,7 @@ import { toast } from "sonner";
 const  ModalSent = ({option,setOption}) => {
     
     const apiUrl = import.meta.env.VITE_API_URL;
+    const [token, setToken] = useState(localStorage.getItem("token"));
     const navigate = useNavigate();
     const [edit,setEdit] = useState(false);
     function base64ToFile(base64, fileName, mimeType) {
@@ -36,6 +37,7 @@ const  ModalSent = ({option,setOption}) => {
                 method: 'POST',
                 body: JSON.stringify(cleanFormData),
                 headers: { 
+<<<<<<< HEAD
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                  },
@@ -48,6 +50,21 @@ const  ModalSent = ({option,setOption}) => {
                 return;
             }
     
+=======
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json' },
+            });
+
+            if (response.status === 401 || response.status === 403) {
+                console.warn(
+                "Unauthorized or Forbidden: Clearing session and redirecting."
+                );
+                localStorage.clear();
+                window.location.href = "/";
+                return;
+            }
+            
+>>>>>>> ab89e4b0a6d5ccd7f6d2f4d8cebd5c783f624aa3
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -73,26 +90,30 @@ const  ModalSent = ({option,setOption}) => {
                             formDataFiles.append('tag', 'anexos');
                             
                             // Subir archivos 'eticos'
-                            const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
+                            const uploadAResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
                                 method: 'POST',                    
                                 body: formDataFiles,
-                                headers: {
-                                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                                headers: { 
+                                    Authorization: `Bearer ${token}`,
                                 }
                             });
-
-                            if (uploadResponse.status === 401 || uploadResponse.status === 403) {
-                                console.warn("Acceso no autorizado o prohibido, limpiando sesión y redireccionando.");
+                            if (uploadAResponse.status === 401 || uploadAResponse.status === 403) {
+                                console.warn(
+                                "Unauthorized or Forbidden: Clearing session and redirecting."
+                                );
                                 localStorage.clear();
-                                window.location.href = '/';
+                                window.location.href = "/";
                                 return;
                             }
 
-                            if (!uploadResponse.ok) {
-                                throw new Error(`File upload failed: ${uploadResponse.status}`);
+                            if (uploadAResponse.status === 200) {
+                                console.warn("Upload succeeded but no confirmation message:");
+                            }
+                            else if (uploadAResponse.status != 200) {
+                                throw new Error(`File upload failed: ${uploadAResponse.status}`);
                             }
 
-                            const uploadData = await uploadResponse.json();
+                            const uploadData = await uploadAResponse.json();
                             if (uploadData.message !== 'Documents uploaded successfully') {
                                 console.warn("Upload succeeded but no confirmation message:", uploadData);
                             }
@@ -111,9 +132,10 @@ const  ModalSent = ({option,setOption}) => {
                             formDataEFiles.append('tag', 'eticos');
                             
                             // Subir archivos 'anexos'
-                            const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
+                            const uploadEResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
                                 method: 'POST',                    
                                 body: formDataEFiles,
+<<<<<<< HEAD
                                 headers: {
                                     Authorization: `Bearer ${localStorage.getItem('token')}`
                                 }
@@ -128,9 +150,29 @@ const  ModalSent = ({option,setOption}) => {
 
                             if (!uploadResponse.ok) {
                                 throw new Error(`File upload failed: ${uploadResponse.status}`);
+=======
+                                headers: { 
+                                    Authorization: `Bearer ${token}`,
+                                }
+                            });
+                            if (uploadEResponse.status === 401 || uploadEResponse.status === 403) {
+                                console.warn(
+                                "Unauthorized or Forbidden: Clearing session and redirecting."
+                                );
+                                localStorage.clear();
+                                window.location.href = "/";
+                                return;
+>>>>>>> ab89e4b0a6d5ccd7f6d2f4d8cebd5c783f624aa3
                             }
 
-                            const uploadData = await uploadResponse.json();
+                            if (uploadEResponse.status === 200) {
+                                console.warn("Upload succeeded but no confirmation message:");
+                            }
+                            else if (uploadEResponse.status != 200) {
+                                throw new Error(`File upload failed: ${uploadEResponse.status}`);
+                            }
+
+                            const uploadData = await uploadEResponse.json();
                             if (uploadData.message !== 'Documents uploaded successfully') {
                                 console.warn("Upload succeeded but no confirmation message:", uploadData);
                             }
@@ -181,7 +223,7 @@ const  ModalSent = ({option,setOption}) => {
     return (
         <div className="h-[70vh] flex items-center justify-center">
             <div className="text-center">
-                <p className="!mt-6 mb-4">¿Seguro que desea enviar el proyecto?</p>
+                <p className="!mt-6 !mb-4">¿Seguro que desea enviar el proyecto?</p>
                 <div className="!mt-6 flex justify-center gap-4">
                     <button 
                         type="button" 

@@ -28,7 +28,6 @@ const  Goals = ({option,setOption}) => {
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
         const newErrorsDF = {}
-
         if(isEmpty){
             newErrorsDF['references'] = "* El campo es requerido"
         }

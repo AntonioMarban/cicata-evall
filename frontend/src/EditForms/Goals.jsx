@@ -8,7 +8,7 @@ import AddMethodology from "../components/Modals/AddMethodology.jsx";
 import Editor from "../components/Editor.jsx"
 import { useState } from "react";
 const  Goals = ({option,setOption}) => {
-    
+    const [isEmpty,setIsEmpty] = useState();
     const [desglose, setDesglose] = useState({   idF: 25,
             goals: [],
             references: "",
@@ -28,8 +28,7 @@ const  Goals = ({option,setOption}) => {
     const handleSubmitWithValidation = (event) => {
         event.preventDefault();
         const newErrorsDF = {}
-
-        if(desglose.references === ''){
+        if(isEmpty){
             newErrorsDF['references'] = "* El campo es requerido"
         }
         else{
@@ -143,6 +142,7 @@ const  Goals = ({option,setOption}) => {
                             <Editor 
                                     content={desglose.references} 
                                     onUpdate={handleEditorUpdate}
+                                    setIsEmpty={setIsEmpty}
                                 />
                         </div>
                     </div>

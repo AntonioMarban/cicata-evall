@@ -60,6 +60,13 @@ export default function ProjectProgress({ projectId,status }) {
                 },
             });
 
+            if (response.status === 401 || response.status === 403) {
+                console.warn("Unauthorized or Forbidden: Clearing session and redirecting.");
+                localStorage.clear();
+                window.location.href = "/";
+                return;
+            }
+
             if (!response.ok) {
                 throw new Error(`Error ${response.status}: ${response.statusText}`);
             }
@@ -79,7 +86,15 @@ export default function ProjectProgress({ projectId,status }) {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem("token") || ""}`,
                 },
-            });
+        });
+
+        if (response.status === 401 || response.status === 403) {
+            console.warn("Unauthorized or Forbidden: Clearing session and redirecting.");
+            localStorage.clear();
+            window.location.href = "/";
+            return;
+        }
+
         if (!response.ok) {
                 throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
