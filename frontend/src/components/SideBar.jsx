@@ -21,7 +21,7 @@ function Sidebar() {
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
-    window.location.reload(); // force reload to reflect changes
+    window.location.reload();
   };
 
   return (

@@ -49,7 +49,12 @@ const EvaluateProjectForm = ({ projectId }) => {
     const handleSubmit = async () => {
 
         const payload = {
-            score: totalScore === "N/A" ? null : totalScore,
+            score: (
+                totalScore === "N/A" ||
+                totalScore === "n/a" ||
+                totalScore === "n/A" ||
+                totalScore === "N/a"
+            ) ? null : totalScore,
             results: evaluationResult,
             comments: evaluationComments,
         };
@@ -60,11 +65,20 @@ const EvaluateProjectForm = ({ projectId }) => {
                 {
                     method: "PATCH",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                     body: JSON.stringify(payload)
                 }
             );
+
+            if (response.status === 401 || response.status === 403) {
+                console.warn("Unauthorized or Forbidden: Clearing session and redirecting.");
+                localStorage.clear();
+                window.location.href = '/';
+                return;
+            }
+
             if (!response.ok) {
                 throw new Error("Error al enviar la evaluación");
             } else {

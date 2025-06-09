@@ -109,7 +109,22 @@ const ManageIndividualUserForm = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch(`${apiUrl}/subdirectorade/users/${userId}`);
+                const response = await fetch(`${apiUrl}/subdirectorade/users/${userId}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${localStorage.getItem('token')}`
+                        }
+                    }
+                );
+
+                if (response.status === 401 || response.status === 403) {
+                    console.warn('Unauthorized or Forbidden: Clearing session and redirecting.');
+                    localStorage.clear();
+                    window.location.href = '/';
+                    return;
+                }
+
                 if (!response.ok) throw new Error('Error al obtener los datos del usuario');
                 
                 const data = await response.json();
@@ -178,7 +193,8 @@ const ManageIndividualUserForm = () => {
                 response = await fetch(url, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
                     },
                     body: JSON.stringify(commonBody)
                 });
@@ -191,10 +207,17 @@ const ManageIndividualUserForm = () => {
                 response = await fetch(url, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
                     },
                     body: JSON.stringify(body)
                 });
+            }
+            if (response.status === 401 || response.status === 403) {
+                console.warn('Unauthorized or Forbidden: Clearing session and redirecting.');
+                localStorage.clear();
+                window.location.href = '/';
+                return;
             }
 
             if (!response.ok) {
@@ -239,10 +262,18 @@ const ManageIndividualUserForm = () => {
             const response = await fetch(`${apiUrl}/subdirectorade/users/${userId}`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(body)
             });
+
+            if (response.status === 401 || response.status === 403) {
+                console.warn('Unauthorized or Forbidden: Clearing session and redirecting.');
+                localStorage.clear();
+                window.location.href = '/';
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error('Error al editar el usuario');
@@ -470,6 +501,7 @@ const ManageIndividualUserForm = () => {
 
                         <div id="userLevel" className="flex flex-row items-center mb-6 flex-wrap justify-start items-start">
                             {userSelectInput("Nivel SNII", "levelNumSNII", [
+                                { value: '', label: "NA" },
                                 { value: "Candidato", label: "Candidato" },
                                 { value: "I", label: "I" },
                                 { value: "II", label: "II" },
@@ -480,6 +512,7 @@ const ManageIndividualUserForm = () => {
                             errors.levelNumSNII)}
 
                             {userSelectInput("Nivel COFFA", "levelNumCOFFA", [
+                                { value: '', label: "NA" },
                                 { value: "I", label: "I" },
                                 { value: "II", label: "II" },
                                 { value: "III", label: "III" },
@@ -489,6 +522,7 @@ const ManageIndividualUserForm = () => {
                             (val) => handleFieldChange("levelNumCOFFA", val, setLevelNumCOFFA),
                             errors.levelNumCOFFA)}
                             {userSelectInput("Nivel EDI", "levelNumEDI", [
+                                { value: '', label: "NA" },
                                 { value: "I", label: "I" },
                                 { value: "II", label: "II" },
                                 { value: "III", label: "III" },

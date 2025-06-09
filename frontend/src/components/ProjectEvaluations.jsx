@@ -21,8 +21,27 @@ export default function ProjectEvaluations({ projectId }) {
     const [potentialEvaluators, setPotentialEvaluators] = useState([]);
     const [hasAvailableEvaluators, setHasAvailableEvaluators] = useState(false);
 
+    const [token, setToken] = useState(localStorage.getItem("token"));
+
+    useEffect(() => {
+        const handleStorageChange = () => {
+        setToken(localStorage.getItem("token"));
+        };
+
+        window.addEventListener("storage", handleStorageChange);
+        return () => window.removeEventListener("storage", handleStorageChange);
+    }, []);
+
     const getNotEvaluators = useCallback(() => {
-        return fetch(`${apiUrl}/committees/${committeeId}/secretaries/${userId}/evaluations/${projectId}/non-evaluators`)
+        return fetch(`${apiUrl}/committees/${committeeId}/secretaries/${userId}/evaluations/${projectId}/non-evaluators`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        )
             .then(response => response.json())
             .then(data => {
                 if (Array.isArray(data) && data.length > 0) {
@@ -39,7 +58,7 @@ export default function ProjectEvaluations({ projectId }) {
                 alert("Ocurrió un error al intentar cargar los evaluadores.");
                 setHasAvailableEvaluators(false);
             });
-    }, [apiUrl, committeeId, userId, projectId]);
+    }, [apiUrl, committeeId, userId, projectId, token]);
 
     const openDialogAddEvaluator = async () => {
         setPotentialEvaluators([]);
@@ -56,10 +75,31 @@ export default function ProjectEvaluations({ projectId }) {
             if (!projectId) return;
 
             const response = await fetch(
-                `${apiUrl}/committees/${committeeId}/secretaries/${userId}/evaluations/${projectId}`
+                `${apiUrl}/committees/${committeeId}/secretaries/${userId}/evaluations/${projectId}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    }
+                }
             );
 
+            if (response.status === 401 || response.status === 403) {
+                console.warn("Unauthorized or Forbidden: Clearing session and redirecting.");
+                localStorage.clear();
+                window.location.href = "/";
+                return;
+            }
+
+            if (!response.ok) {
+                
+                throw new Error("Error al obtener las evaluaciones.");
+            }
+            setLoading(true);
+
             const data = await response.json();
+
         if (Array.isArray(data)) {
             setEvaluations(data);
         } else {
@@ -70,7 +110,7 @@ export default function ProjectEvaluations({ projectId }) {
         } finally {
         setLoading(false);
         }
-    }, [projectId, committeeId, userId, apiUrl]);
+    }, [projectId, committeeId, userId, apiUrl, token]);
 
     const deleteEvaluator = async (evaluatorId) => {
         try {
@@ -79,15 +119,23 @@ export default function ProjectEvaluations({ projectId }) {
                 {
                     method: "DELETE",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
                     }
                 }
             );
+
+            if (response.status === 401 || response.status === 403) {
+                console.warn("Unauthorized or Forbidden: Clearing session and redirecting.");
+                localStorage.clear();
+                window.location.href = "/";
+                return;
+            }
             if (!response.ok) {
                 throw new Error("No se pudo eliminar el evaluador.");
             }
-            getNotEvaluators();
-            fetchEvaluations();
+
+            window.location.reload();
         } catch (error) {
             console.error("Error al eliminar evaluador:", error);
             alert("Ocurrió un error al intentar eliminar el evaluador.");
@@ -125,19 +173,30 @@ export default function ProjectEvaluations({ projectId }) {
             {
               method: "POST",
               headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
               },
               body: JSON.stringify({ evaluatorId })
             }
           );
+
+          if (response.status === 401 || response.status === 403) {
+            console.warn("Unauthorized or Forbidden: Clearing session and redirecting.");
+            localStorage.clear();
+            window.location.href = "/";
+            return;
+          }
       
           if (!response.ok) {
             throw new Error("No se pudo agregar el evaluador.");
           }
 
           setIsAddEvaluatorOpen(false);
-          fetchEvaluations();
+          window.location.reload();
 
+          if (response.body.userId === localStorage.getItem("userId")) {
+            window.location.reload();
+          }
         } catch (error) {
           console.error("Error al agregar evaluador:", error);
           alert("Ocurrió un error al intentar agregar el evaluador.");

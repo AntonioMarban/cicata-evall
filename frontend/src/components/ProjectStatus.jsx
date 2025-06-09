@@ -478,7 +478,7 @@ export default function ProjectStatus({ projectId }) {
             {sendingPendingResearcher === 1 && createDictum === 1
               ? `El resultado final es: ${finalResult}. El resultado aún no ha sido enviado al investigador.`
               : createDictum === 0 && sendingPendingResearcher === 1
-              ? `El resultado es: ${finalResult} El resultado aún no ha sido enviado al investigador.`
+              ? `El resultado es: ${finalResult.toLowerCase()}. El resultado aún no ha sido enviado al investigador.`
               : createDictum === 1 && sendingPendingResearcher === 0
               ? "El resultado final de este proyecto ya fue enviado al investigador."
               : "El último estado de este proyecto ya fue enviado al investigador"}

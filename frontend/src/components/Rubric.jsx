@@ -10,10 +10,25 @@ const Rubric = ({ committeeId, memberId }) => {
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const response = await fetch(`${apiUrl}/committees/${committeeId}/members/${memberId}/rubric`)
+                const response = await fetch(`${apiUrl}/committees/${committeeId}/members/${memberId}/rubric`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        },
+                    }
+                )
+
+                if (response.status === 401 || response.status === 403) {
+                    console.warn('Unauthorized or Forbidden: Clearing session and redirecting.');
+                    localStorage.clear();
+                    window.location.href = "/";
+                    return;
+                }
+                
                 if (!response.ok) {
                     throw new Error("Error fetching image data")
                 }
+                
                 const data = await response.json()
                 setImageData(data[0]?.rubric)
             } catch (error) {
@@ -24,7 +39,7 @@ const Rubric = ({ committeeId, memberId }) => {
         }
 
         fetchImage()
-    }, [committeeId, memberId])
+    }, [committeeId, memberId, apiUrl]);
     if (loading) {
         return <div>Loading...</div>
     }

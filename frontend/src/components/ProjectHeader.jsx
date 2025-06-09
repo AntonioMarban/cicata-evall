@@ -37,8 +37,25 @@ export default function ProjectHeader({
       if ((userType === "3" || userType === "4") && committeeId && userId && projectId) {
         try {
           const response = await fetch(
-            `${apiUrl}/committees/${committeeId}/secretaries/${userId}/evaluations/${projectId}`
+            `${apiUrl}/committees/${committeeId}/secretaries/${userId}/evaluations/${projectId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
           );
+
+          if(response.status === 404) {
+            setIsEvaluator(false);
+            return;
+          }
+
+          if (response.status === 401 || response.status === 403) {
+            console.warn("Unauthorized or Forbidden: Clearing session and redirecting.");
+            localStorage.clear();
+            window.location.href = "/";
+            return;
+          }
 
           if (response.ok) {
             const data = await response.json();
