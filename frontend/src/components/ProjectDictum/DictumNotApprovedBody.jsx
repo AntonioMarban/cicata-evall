@@ -19,8 +19,7 @@ export default function DictumNotApprovedBody({ projectTitle, projectFolio }) {
 
         <p className="text-justify mt-5!">
           <span className="font-bold">
-            Lo anterior con base en los requerimientos y estándares de evaluación establecidos por todos los Comités citados previamente. 
-          </span>
+            Lo anterior con base en los requerimientos y estándares de evaluación establecidos por todos los Comités citados previamente. </span>
           No omito mencionar que, a partir de este momento,
           <span className="font-bold"> será responsabilidad del investigador principal </span>
           atender las observaciones, comentarios y sugerencias emanadas por cada uno de los Comités previamente citados a fin de someter nuevamente,

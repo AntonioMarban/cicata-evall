@@ -68,7 +68,7 @@ export default function ProjectStatus({ projectId }) {
     } catch (error) {
       console.error("Error fetching stage 1 evaluations:", error);
     }
-  }, [projectId, apiUrl]);
+  }, [projectId, apiUrl, token]);
 
   const fetchStage2Evaluations = useCallback(async () => {
     try {
@@ -101,7 +101,7 @@ export default function ProjectStatus({ projectId }) {
     } catch (error) {
       console.error("Error fetching stage 2 evaluations:", error);
     }
-  }, [projectId, apiUrl]);
+  }, [projectId, apiUrl, token]);
 
   const fetchStage3 = useCallback(async () => {
     try {
@@ -132,7 +132,7 @@ export default function ProjectStatus({ projectId }) {
     } catch (error) {
       console.error("Error fetching stage 3:", error);
     }
-  }, [projectId, apiUrl]);
+  }, [projectId, apiUrl, token]);
 
   useEffect(() => {
     async function fetchProject() {
@@ -167,7 +167,7 @@ export default function ProjectStatus({ projectId }) {
     }
 
     fetchProject();
-  }, [projectId, apiUrl]);
+  }, [projectId, apiUrl, token]);
 
   useEffect(() => {
     fetchStage1Evaluations();
@@ -476,7 +476,7 @@ export default function ProjectStatus({ projectId }) {
           </h3>
           <p>
             {sendingPendingResearcher === 1 && createDictum === 1
-              ? `El resultado final es: ${finalResult}. El resultado aún no ha sido enviado al investigador.`
+              ? `El resultado final es: ${finalResult.toLowerCase()}. El resultado aún no ha sido enviado al investigador.`
               : createDictum === 0 && sendingPendingResearcher === 1
               ? `El resultado es: ${finalResult.toLowerCase()}. El resultado aún no ha sido enviado al investigador.`
               : createDictum === 1 && sendingPendingResearcher === 0
