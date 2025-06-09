@@ -45,7 +45,7 @@ const Deliverables = ({Deliverables}) => {
                       <td data-label="Entregable" >{deliverable.name}</td>
                       {columns.map((col) => (
                         <td key={`deliverable-${deliverable.id}-${col}`}>
-                          {deliverable.values[col] ?? ''}
+                          {deliverable.values[col] ?? '-'}
                         </td>
                       ))}
                   </tr>

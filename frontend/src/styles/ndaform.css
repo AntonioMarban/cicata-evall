@@ -5,6 +5,7 @@
   justify-content: center;
   align-items: center;
   padding: 3.5rem;
+  background-color: #F3F4F6;
 }
 
 .nda-header {
@@ -103,10 +104,7 @@
 
   .nda-main {
     padding: 2rem; /* Opcional: ajusta para ahorrar espacio en impresión */
-  }
-
-  .nda-header {
-    margin-bottom: 0.5rem;
+    background-color: white;
   }
 
   body {

@@ -35,8 +35,18 @@ const  ModalSent = ({option,setOption}) => {
             const response = await fetch(`${apiUrl}/researchers/projects`, {
                 method: 'POST',
                 body: JSON.stringify(cleanFormData),
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                 },
             });
+
+            if (response.status === 401 || response.status === 403) {
+                console.warn("Acceso no autorizado o prohibido, limpiando sesión y redireccionando.");
+                localStorage.clear();
+                window.location.href = '/';
+                return;
+            }
     
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -66,7 +76,17 @@ const  ModalSent = ({option,setOption}) => {
                             const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
                                 method: 'POST',                    
                                 body: formDataFiles,
+                                headers: {
+                                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                                }
                             });
+
+                            if (uploadResponse.status === 401 || uploadResponse.status === 403) {
+                                console.warn("Acceso no autorizado o prohibido, limpiando sesión y redireccionando.");
+                                localStorage.clear();
+                                window.location.href = '/';
+                                return;
+                            }
 
                             if (!uploadResponse.ok) {
                                 throw new Error(`File upload failed: ${uploadResponse.status}`);
@@ -94,7 +114,17 @@ const  ModalSent = ({option,setOption}) => {
                             const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
                                 method: 'POST',                    
                                 body: formDataEFiles,
+                                headers: {
+                                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                                }
                             });
+
+                            if (uploadResponse.status === 401 || uploadResponse.status === 403) {
+                                console.warn("Acceso no autorizado o prohibido, limpiando sesión y redireccionando.");
+                                localStorage.clear();
+                                window.location.href = '/';
+                                return;
+                            }
 
                             if (!uploadResponse.ok) {
                                 throw new Error(`File upload failed: ${uploadResponse.status}`);
@@ -168,7 +198,7 @@ const  ModalSent = ({option,setOption}) => {
                         Sí
                     </button>
                 </div>
-                <p className="!mt-6 text-gray-500">Una vez enviado, solo podrá modificarse si se requieren una correcciones</p>
+                <p className="!mt-6 text-gray-500">Una vez enviado, solo podrá modificarse si se requiere una corrección.</p>
             </div>
         </div>
         );
