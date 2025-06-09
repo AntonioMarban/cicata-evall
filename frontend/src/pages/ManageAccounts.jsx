@@ -58,7 +58,7 @@ const ManageAccounts = () => {
 
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
+  }, [ location.state ]);
 
   const handlePanelClick = (name) => {
     setSelectedPanel((prev) => (prev === name ? null : name));
