@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ManageAccountsData from "../components/manageAccounts/ManageAccountsData.jsx";
+import { useLocation } from "react-router-dom";
 
 const committees = {
   1: "Comité Interno de Proyectos (CIP)",
@@ -38,6 +39,8 @@ const AccountTypeButton = ({ name, selectedName, onClick }) => {
 const ManageAccounts = () => {
   const [selectedPanel, setSelectedPanel] = useState(null);
 
+  const location = useLocation();
+
   const [userType, setUserType] = useState(
     parseInt(localStorage.getItem("userType"))
   );
@@ -46,6 +49,8 @@ const ManageAccounts = () => {
   );
 
   useEffect(() => {
+    setSelectedPanel(location.state?.selectedPanel || null);
+
     const handleStorageChange = () => {
       setUserType(parseInt(localStorage.getItem("userType")));
       setCommitteeId(parseInt(localStorage.getItem("committeeId")));

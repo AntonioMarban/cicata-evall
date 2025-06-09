@@ -77,6 +77,13 @@ const userSelectInput = (label, id, options, value, onChange, error) => {
 
 const Divider = () => <div className="border-t border-gray-300 w-full my-4" />;
 
+const rolesPanel = {
+    "investigador": "Investigadores",
+    "administrador": "Administradores",
+    "presidente": "Presidentes de comité",
+    "secretario": "Secretarios de comité"
+}
+
 const ManageIndividualUserForm = () => {
 
     const { state } = useLocation();
@@ -149,14 +156,14 @@ const ManageIndividualUserForm = () => {
             } catch (error) {
                 console.error('Error al obtener los datos del usuario:', error);
                 alert("Error al cargar los datos del usuario. Por favor, inténtalo de nuevo.");
-                navigate('/Cuentas');
+                navigate('/Cuentas', { state: { selectedPanel: rolesPanel[role.toLowerCase()] || "Usuarios" } });
             }
         }
 
         if (formType === "edit" && userId) {
             fetchUserData();
         }
-    }, [formType, userId, apiUrl, navigate])
+    }, [formType, userId, apiUrl, navigate, role]);
 
     const handleCreateUser = async () => {
 
@@ -225,7 +232,7 @@ const ManageIndividualUserForm = () => {
             }
 
             alert("Usuario creado exitosamente.");
-            navigate('/Cuentas');
+            navigate('/Cuentas', { state: { selectedPanel: rolesPanel[role.toLowerCase()] || "Usuarios" } });
         } catch (error) {
             console.error('Error al crear el usuario:', error);
             alert("Error al crear el usuario. Por favor, inténtalo de nuevo.");
@@ -280,7 +287,7 @@ const ManageIndividualUserForm = () => {
             }
 
             alert("Usuario editado exitosamente.");
-            navigate('/Cuentas');
+            navigate('/Cuentas', { state: { selectedPanel: rolesPanel[role.toLowerCase()] || "Usuarios" } });
         } catch (error) {
             console.error('Error al editar el usuario:', error);
             alert("Error al editar el usuario. Por favor, inténtalo de nuevo.");
@@ -544,7 +551,7 @@ const ManageIndividualUserForm = () => {
                     <button
                         className="bg-[#FF4D4D] text-white font-semibold rounded hover:bg-[#FF0000] cursor-pointer"
                         style={{ padding: '10px 20px', width: '100%', maxWidth: '200px', textAlign: 'center' }}
-                        onClick={() => navigate('/Cuentas')}
+                        onClick={() => navigate('/Cuentas', { state: { selectedPanel: rolesPanel[role.toLowerCase()] || "Usuarios" } })}
                     >
                         Cancelar
                     </button>
