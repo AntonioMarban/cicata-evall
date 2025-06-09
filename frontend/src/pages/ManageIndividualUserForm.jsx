@@ -334,12 +334,12 @@ const ManageIndividualUserForm = () => {
     };
 
     const isValidName = (text) => {
-        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,30}$/;
+        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,100}$/;
         return regex.test(text.trim()) && text === text.trim();
     };
 
     const isValidPrefix = (text) => {
-        const regex = /^[A-Za-z. ]{1,10}$/;
+        const regex = /^[A-Za-z. ]{1,30}$/;
         return regex.test(text.trim()) && text === text.trim();
     };
 
@@ -362,11 +362,11 @@ const ManageIndividualUserForm = () => {
     const validateForm = () => {
         const newErrors = {};
 
-        if (!isValidName(fName)) newErrors.fName = "El nombre debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
-        if (!isValidName(lastName1)) newErrors.lastName1 = "El apellido paterno debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
-        if (!isValidName(lastName2)) newErrors.lastName2 = "El apellido materno debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
+        if (!isValidName(fName)) newErrors.fName = "El nombre debe tener entre 1 y 100 caracteres, sin números ni caracteres especiales.";
+        if (!isValidName(lastName1)) newErrors.lastName1 = "El apellido paterno debe tener entre 1 y 100 caracteres, sin números ni caracteres especiales.";
+        if (!isValidName(lastName2)) newErrors.lastName2 = "El apellido materno debe tener entre 1 y 100 caracteres, sin números ni caracteres especiales.";
         
-        if (!isValidPrefix(prefix)) newErrors.prefix = "El prefijo debe tener entre 1 y 10 letras o puntos, sin números ni caracteres especiales.";
+        if (!isValidPrefix(prefix)) newErrors.prefix = "El prefijo debe tener entre 1 y 30 letras o puntos, sin números ni caracteres especiales.";
         if (!isValidEmail(email)) newErrors.email = "El correo no tiene un formato válido.";
         if (!isValidPhone(phone)) newErrors.phone = "El teléfono debe tener exactamente 10 dígitos sin guiones ni espacios.";
         
@@ -374,13 +374,13 @@ const ManageIndividualUserForm = () => {
         if (confirmPassword !== password) newErrors.confirmPassword = "Las contraseñas no coinciden.";
 
         
-        if (!isValidName(institution)) newErrors.institution = "La institución debe tener entre 3 y 30 letras, sin caracteres especiales.";
-        if (!isValidName(positionWork)) newErrors.positionWork = "El puesto debe tener entre 3 y 30 letras, sin caracteres especiales.";
+        if (!isValidName(institution)) newErrors.institution = "La institución debe tener entre 1 y 100 caracteres, sin caracteres especiales.";
+        if (!isValidName(positionWork)) newErrors.positionWork = "El puesto debe tener entre 1 y 100 caracteres, sin caracteres especiales.";
 
         if (isInResearchNetwork === null) newErrors.isInResearchNetwork = "Selecciona una opción.";
-        if (isInResearchNetwork && !isValidName(researchNetworkName)) newErrors.researchNetworkName = "El nombre de la red de investigación debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
+        if (isInResearchNetwork && !isValidName(researchNetworkName)) newErrors.researchNetworkName = "El nombre de la red de investigación debe tener entre 1 y 100 caracteres, sin números ni caracteres especiales.";
         
-        if (!isValidName(academicDegree)) newErrors.academicDegree = "El grado académico debe tener entre 3 y 30 letras, sin caracteres especiales.";
+        if (!isValidName(academicDegree)) newErrors.academicDegree = "El grado académico debe tener entre 1 y 100 caracteres, sin caracteres especiales.";
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -395,7 +395,7 @@ const ManageIndividualUserForm = () => {
             case "positionWork":
             case "researchNetworkName":
             case "academicDegree":
-                if (!isValidName(value)) return "Debe tener entre 3 y 30 letras, sin caracteres especiales.";
+                if (!isValidName(value)) return "Debe tener entre 1 y 100 caracteres, sin caracteres especiales.";
                 break;
             case "prefix":
                 if (!isValidPrefix(value)) return "Debe tener entre 1 y 10 letras o puntos, sin números ni caracteres especiales.";
