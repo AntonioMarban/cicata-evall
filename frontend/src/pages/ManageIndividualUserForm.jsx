@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, onBlur, error, autoComplete) => {
+const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, onBlur, error, autoComplete, formType) => {
     let subtitle = sublabel || null;
+    const isRequired =
+        (type === "password" && formType === "new") || (type !== "password");
 
     return (
         <div className="flex flex-col gap-2! my-4! px-4! basis-1/3 min-w-[250px] items-start">
             <label htmlFor={id} className="text-xl font-semibold">
-                {label}:<span className="text-[#FF4D4D] text-lg"> *</span>
+                {label}:{isRequired && <span className="text-[#FF4D4D] text-lg"> *</span>}
             </label>
             {subtitle && <span className="text-gray-500 text-sm">{subtitle}</span>}
             <input
@@ -254,7 +256,7 @@ const ManageIndividualUserForm = () => {
             prefix,
             email: email.toLowerCase(),
             phone,
-            password,
+            password : password || undefined,
             institution,
             positionWork,
             researchNetwork: isInResearchNetwork ? 1 : 0,
@@ -369,10 +371,11 @@ const ManageIndividualUserForm = () => {
         if (!isValidPrefix(prefix)) newErrors.prefix = "El prefijo debe tener entre 1 y 30 letras o puntos, sin números ni caracteres especiales.";
         if (!isValidEmail(email)) newErrors.email = "El correo no tiene un formato válido.";
         if (!isValidPhone(phone)) newErrors.phone = "El teléfono debe tener exactamente 10 dígitos sin guiones ni espacios.";
-        
-        if (!isValidPassword(password)) newErrors.password = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
-        if (confirmPassword !== password) newErrors.confirmPassword = "Las contraseñas no coinciden.";
 
+        if (formType === "new" || (formType === "edit" && password !== '')) {
+            if (!isValidPassword(password)) newErrors.password = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
+            if (confirmPassword !== password) newErrors.confirmPassword = "Las contraseñas no coinciden.";
+        }
         
         if (!isValidName(institution)) newErrors.institution = "La institución debe tener entre 1 y 100 caracteres, sin caracteres especiales.";
         if (!isValidName(positionWork)) newErrors.positionWork = "El puesto debe tener entre 1 y 100 caracteres, sin caracteres especiales.";
@@ -407,9 +410,11 @@ const ManageIndividualUserForm = () => {
                 if (!isValidPhone(value)) return "El teléfono debe tener exactamente 10 dígitos sin guiones ni espacios.";
                 break;
             case "password":
+                if (formType === "edit" && value === '') break;
                 if (!isValidPassword(value)) return "Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
                 break;
             case "confirmPassword":
+                if (formType === "edit" && value === '') break;
                 if (value !== password) return "Las contraseñas no coinciden.";
                 break;
             default:
@@ -466,11 +471,11 @@ const ManageIndividualUserForm = () => {
                             {userTextInput("Contraseña", "password", "password", "Contraseña del usuario", null, password,
                                 (e) => handleFieldChange("password", e.target.value, setPassword),
                                 () => setErrors(prev => ({ ...prev, password: validateField("password", password) })),
-                                errors.password, "new-password")}
+                                errors.password, "new-password", formType)}
                             {userTextInput("Confirmar contraseña", "confirmPassword", "password", "Confirmar contraseña del usuario", null, confirmPassword,
                                 (e) => handleFieldChange("confirmPassword", e.target.value, setConfirmPassword),
                                 () => setErrors(prev => ({ ...prev, confirmPassword: validateField("confirmPassword", confirmPassword) })),
-                                errors.confirmPassword, "new-password")}
+                                errors.confirmPassword, "new-password", formType)}
                         </div>
                     </div>
 
