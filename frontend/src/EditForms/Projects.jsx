@@ -43,7 +43,7 @@ const  Projects = ({option,setOption}) => {
                     <p className="flex-1">Fecha de asociación</p>
                     <p className="flex-1">Tipo de proyecto</p>
                     <p className="flex-1">Número de registro externo</p>
-                    <p className="flex-1 text-center">Número de registro SIP</p>
+                    <p className="flex-1">Número de registro SIP</p>
                     <p className="flex-1"></p>
                     </div>
                 </div>
