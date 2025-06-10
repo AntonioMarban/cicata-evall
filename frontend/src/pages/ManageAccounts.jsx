@@ -4,9 +4,9 @@ import { useLocation } from "react-router-dom";
 
 const committees = {
   1: "Comité Interno de Proyectos (CIP)",
-  2: "Comité de Ética en Investigación (CEI)",
-  3: "Comité de Bioseguridad (CB)",
-  4: "Comité de Investigación (CI)",
+  2: "Comité de Investigación (CI)",
+  3: "Comité de Ética en Investigación (CEI)",
+  4: "Comité de Bioseguridad (CB)",
   5: "Comité Interno para el Cuidado y Uso de los Animales de Laboratorio (CICUAL)",
 };
 

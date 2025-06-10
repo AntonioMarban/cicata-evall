@@ -396,7 +396,7 @@ export default function ProjectStatus({ projectId }) {
           <h3>Etapa 2: Evaluación por Comités Especializados</h3>
           {stage2Evaluations.length === 0 ? (
             <>
-              <p>Este proyecto aún no ha sido enviado al CEI, CB y CI.</p>
+              <p>Este proyecto aún no ha sido enviado a los comités especializados.</p>
               <button
                 className={`stage-button ${
                   stage1Completed === 1 && !sendingStage2
