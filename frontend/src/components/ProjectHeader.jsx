@@ -136,9 +136,9 @@ export default function ProjectHeader({
             Evaluar
           </button>
         )}
-        { (status === "Aprobado" || status === "No aprobado") && (
+        { ((status === "Aprobado" || status === "No aprobado") && userType === "2") && (
           <button className="info-button" onClick={handleDictumClick}>
-            Dictámen del proyecto
+            Dictamen del proyecto
           </button>
         )}
       </div>
