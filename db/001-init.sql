@@ -2736,3 +2736,32 @@ BEGIN
 
 END //
 DELIMITER ;
+
+
+-- Función para obtener los acuerdos de confidencialidad de un proyecto
+-- organizados por comité
+-- @param projectId: Id del proyecto
+-- @returns: Lista de acuerdos de confidencialidad por comité
+DELIMITER //
+CREATE PROCEDURE getProjectAgreements(
+    IN p_projectId INT
+)
+BEGIN
+    SELECT
+        c.committeeId,
+        c.name AS committeeName,
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        u.email,
+        a.agreed,
+        a.date as agreedDate
+    FROM
+        agreements a
+    JOIN users u ON a.user_id = u.userId
+    JOIN committeeUsers cu ON u.userId = cu.userId
+    JOIN committees c ON cu.committeeId = c.committeeId
+    WHERE
+        a.project_id = p_projectId
+    ORDER BY
+        c.committeeId, u.userId;
+END //
+DELIMITER ;
