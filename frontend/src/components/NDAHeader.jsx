@@ -1,6 +1,6 @@
 import "../styles/viewcompleteforms.css"
 import logoCICATA from "../assets/logoCICATA.png"
-import LOGOIPN from "../assets/logoIPN.png"
+import LOGOIPN from "../assets/LogoIPN.png"
 import formatValue from '../hooks/formatValue'
 const NDAHeader = ({generalData}) => {  
     return (

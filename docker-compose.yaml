@@ -19,7 +19,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - "${BACKEND_PORT}:3000"
+      - "3000:3000"
     environment:
       DB_HOST: ${DB_HOST}
       DB_USER: ${DB_USER}
@@ -30,13 +30,13 @@ services:
       - /myapp/node_modules
     depends_on:
       - db
-  # frontend:
-  #   build: ./frontend
-  #   ports:
-  #     - "5001:5001"
-  #   environment:
-  #     REACT_APP_API_URL: ${REACT_API_URL} #liga al backend para las peticiones
-  #   depends_on:
-  #     - backend
+  frontend:
+    build: ./frontend
+    ports:
+      - "5001:5001"
+    environment:
+      VITE_API_URL: "http://host.docker.internal:3000" #liga al backend para las peticiones
+    depends_on:
+      - backend
 volumes:
   mysql_data: 

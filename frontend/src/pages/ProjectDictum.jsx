@@ -1,4 +1,4 @@
-import "../styles/projectdictum.css";
+import "../styles/projectDictum.css";
 import DictumHeader from "../components/ProjectDictum/DictumHeader";
 import { useEffect, useState } from "react";
 import DictumApprovedBody from "../components/ProjectDictum/DictumApprovedBody";
