@@ -1,4 +1,9 @@
+-- Nombre del archivo: 000-tables.sql
+-- Descripción: Este archivo contiene la estructura de la base de datos de EVALL
+
 -- mysql -u root -p
+
+-- UTF8MB4 nos permite almacenar caracteres especiales
 SET NAMES utf8mb4;
 
 DROP DATABASE IF EXISTS mydb;

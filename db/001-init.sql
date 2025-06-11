@@ -1,6 +1,8 @@
--- Aqui se crean procedimientos almacenados y mas
-SET NAMES utf8mb4;
+-- Nombre del archivo: 001-init.sql
+-- Descripción: Este archivo contiene todos los procedimientos almacenados y funciones necesarias para EVALL
 
+-- -- UTF8MB4 nos permite almacenar caracteres especiales
+SET NAMES utf8mb4;
 
 -- login
 DELIMITER //
