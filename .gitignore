@@ -139,3 +139,5 @@ dist
 .pnp.*
 
 cosas_ignorar
+
+evall_mysql_data/

@@ -165,7 +165,10 @@ En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consenti
         `${apiUrl}/users/${userId}/projects/${projectId}/agreement`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+           },
           body: JSON.stringify({
             token: token,
             email: email,
@@ -173,6 +176,13 @@ En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consenti
           }),
         }
       );
+
+      if (res.status === 401 || res.status === 403) {
+        console.warn('Unauthorized or Forbidden: Clearing session and redirecting.');
+        localStorage.clear();
+        window.location.href = "/";
+        return;
+      }
 
       if (!res.ok) {
         throw new Error("Error al firmar la carta.");

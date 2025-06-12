@@ -37,9 +37,21 @@ const EditRubric = () => {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                     body: JSON.stringify({ rubric: base64String }),
                 })
+
+                if (response.status === 401 || response.status === 403) {
+                    console.warn('Unauthorized or Forbidden: Clearing session and redirecting.');
+                    localStorage.clear();
+                    window.location.href = "/";
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error(`Error al subir la rúbrica: ${response.statusText}`)
+                }
                 
                 const data = await response.json()
 

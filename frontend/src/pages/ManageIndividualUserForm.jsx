@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, onBlur, error, autoComplete) => {
+const userTextInput = (label, id, type, placeholder, sublabel, value, onChange, onBlur, error, autoComplete, formType) => {
     let subtitle = sublabel || null;
+    const isRequired =
+        (type === "password" && formType === "new") || (type !== "password");
 
     return (
         <div className="flex flex-col gap-2! my-4! px-4! basis-1/3 min-w-[250px] items-start">
             <label htmlFor={id} className="text-xl font-semibold">
-                {label}:<span className="text-[#FF4D4D] text-lg"> *</span>
+                {label}:{isRequired && <span className="text-[#FF4D4D] text-lg"> *</span>}
             </label>
             {subtitle && <span className="text-gray-500 text-sm">{subtitle}</span>}
             <input
@@ -77,6 +79,13 @@ const userSelectInput = (label, id, options, value, onChange, error) => {
 
 const Divider = () => <div className="border-t border-gray-300 w-full my-4" />;
 
+const rolesPanel = {
+    "investigador": "Investigadores",
+    "administrador": "Administradores",
+    "presidente": "Presidentes de comité",
+    "secretario": "Secretarios de comité"
+}
+
 const ManageIndividualUserForm = () => {
 
     const { state } = useLocation();
@@ -109,7 +118,22 @@ const ManageIndividualUserForm = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch(`${apiUrl}/subdirectorade/users/${userId}`);
+                const response = await fetch(`${apiUrl}/subdirectorade/users/${userId}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${localStorage.getItem('token')}`
+                        }
+                    }
+                );
+
+                if (response.status === 401 || response.status === 403) {
+                    console.warn('Unauthorized or Forbidden: Clearing session and redirecting.');
+                    localStorage.clear();
+                    window.location.href = '/';
+                    return;
+                }
+
                 if (!response.ok) throw new Error('Error al obtener los datos del usuario');
                 
                 const data = await response.json();
@@ -134,14 +158,14 @@ const ManageIndividualUserForm = () => {
             } catch (error) {
                 console.error('Error al obtener los datos del usuario:', error);
                 alert("Error al cargar los datos del usuario. Por favor, inténtalo de nuevo.");
-                navigate('/Cuentas');
+                navigate('/Cuentas', { state: { selectedPanel: rolesPanel[role.toLowerCase()] || "Usuarios" } });
             }
         }
 
         if (formType === "edit" && userId) {
             fetchUserData();
         }
-    }, [formType, userId, apiUrl, navigate])
+    }, [formType, userId, apiUrl, navigate, role]);
 
     const handleCreateUser = async () => {
 
@@ -178,7 +202,8 @@ const ManageIndividualUserForm = () => {
                 response = await fetch(url, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
                     },
                     body: JSON.stringify(commonBody)
                 });
@@ -191,10 +216,17 @@ const ManageIndividualUserForm = () => {
                 response = await fetch(url, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
                     },
                     body: JSON.stringify(body)
                 });
+            }
+            if (response.status === 401 || response.status === 403) {
+                console.warn('Unauthorized or Forbidden: Clearing session and redirecting.');
+                localStorage.clear();
+                window.location.href = '/';
+                return;
             }
 
             if (!response.ok) {
@@ -202,7 +234,7 @@ const ManageIndividualUserForm = () => {
             }
 
             alert("Usuario creado exitosamente.");
-            navigate('/Cuentas');
+            navigate('/Cuentas', { state: { selectedPanel: rolesPanel[role.toLowerCase()] || "Usuarios" } });
         } catch (error) {
             console.error('Error al crear el usuario:', error);
             alert("Error al crear el usuario. Por favor, inténtalo de nuevo.");
@@ -224,7 +256,7 @@ const ManageIndividualUserForm = () => {
             prefix,
             email: email.toLowerCase(),
             phone,
-            password,
+            password : password || undefined,
             institution,
             positionWork,
             researchNetwork: isInResearchNetwork ? 1 : 0,
@@ -239,17 +271,25 @@ const ManageIndividualUserForm = () => {
             const response = await fetch(`${apiUrl}/subdirectorade/users/${userId}`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(body)
             });
+
+            if (response.status === 401 || response.status === 403) {
+                console.warn('Unauthorized or Forbidden: Clearing session and redirecting.');
+                localStorage.clear();
+                window.location.href = '/';
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error('Error al editar el usuario');
             }
 
             alert("Usuario editado exitosamente.");
-            navigate('/Cuentas');
+            navigate('/Cuentas', { state: { selectedPanel: rolesPanel[role.toLowerCase()] || "Usuarios" } });
         } catch (error) {
             console.error('Error al editar el usuario:', error);
             alert("Error al editar el usuario. Por favor, inténtalo de nuevo.");
@@ -296,12 +336,12 @@ const ManageIndividualUserForm = () => {
     };
 
     const isValidName = (text) => {
-        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,30}$/;
+        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,100}$/;
         return regex.test(text.trim()) && text === text.trim();
     };
 
     const isValidPrefix = (text) => {
-        const regex = /^[A-Za-z. ]{1,10}$/;
+        const regex = /^[A-Za-z. ]{1,30}$/;
         return regex.test(text.trim()) && text === text.trim();
     };
 
@@ -324,25 +364,26 @@ const ManageIndividualUserForm = () => {
     const validateForm = () => {
         const newErrors = {};
 
-        if (!isValidName(fName)) newErrors.fName = "El nombre debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
-        if (!isValidName(lastName1)) newErrors.lastName1 = "El apellido paterno debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
-        if (!isValidName(lastName2)) newErrors.lastName2 = "El apellido materno debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
+        if (!isValidName(fName)) newErrors.fName = "El nombre debe tener entre 1 y 100 caracteres, sin números ni caracteres especiales.";
+        if (!isValidName(lastName1)) newErrors.lastName1 = "El apellido paterno debe tener entre 1 y 100 caracteres, sin números ni caracteres especiales.";
+        if (!isValidName(lastName2)) newErrors.lastName2 = "El apellido materno debe tener entre 1 y 100 caracteres, sin números ni caracteres especiales.";
         
-        if (!isValidPrefix(prefix)) newErrors.prefix = "El prefijo debe tener entre 1 y 10 letras o puntos, sin números ni caracteres especiales.";
+        if (!isValidPrefix(prefix)) newErrors.prefix = "El prefijo debe tener entre 1 y 30 letras o puntos, sin números ni caracteres especiales.";
         if (!isValidEmail(email)) newErrors.email = "El correo no tiene un formato válido.";
         if (!isValidPhone(phone)) newErrors.phone = "El teléfono debe tener exactamente 10 dígitos sin guiones ni espacios.";
-        
-        if (!isValidPassword(password)) newErrors.password = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
-        if (confirmPassword !== password) newErrors.confirmPassword = "Las contraseñas no coinciden.";
 
+        if (formType === "new" || (formType === "edit" && password !== '')) {
+            if (!isValidPassword(password)) newErrors.password = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
+            if (confirmPassword !== password) newErrors.confirmPassword = "Las contraseñas no coinciden.";
+        }
         
-        if (!isValidName(institution)) newErrors.institution = "La institución debe tener entre 3 y 30 letras, sin caracteres especiales.";
-        if (!isValidName(positionWork)) newErrors.positionWork = "El puesto debe tener entre 3 y 30 letras, sin caracteres especiales.";
+        if (!isValidName(institution)) newErrors.institution = "La institución debe tener entre 1 y 100 caracteres, sin caracteres especiales.";
+        if (!isValidName(positionWork)) newErrors.positionWork = "El puesto debe tener entre 1 y 100 caracteres, sin caracteres especiales.";
 
         if (isInResearchNetwork === null) newErrors.isInResearchNetwork = "Selecciona una opción.";
-        if (isInResearchNetwork && !isValidName(researchNetworkName)) newErrors.researchNetworkName = "El nombre de la red de investigación debe tener entre 3 y 30 letras, sin números ni caracteres especiales.";
+        if (isInResearchNetwork && !isValidName(researchNetworkName)) newErrors.researchNetworkName = "El nombre de la red de investigación debe tener entre 1 y 100 caracteres, sin números ni caracteres especiales.";
         
-        if (!isValidName(academicDegree)) newErrors.academicDegree = "El grado académico debe tener entre 3 y 30 letras, sin caracteres especiales.";
+        if (!isValidName(academicDegree)) newErrors.academicDegree = "El grado académico debe tener entre 1 y 100 caracteres, sin caracteres especiales.";
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -357,7 +398,7 @@ const ManageIndividualUserForm = () => {
             case "positionWork":
             case "researchNetworkName":
             case "academicDegree":
-                if (!isValidName(value)) return "Debe tener entre 3 y 30 letras, sin caracteres especiales.";
+                if (!isValidName(value)) return "Debe tener entre 1 y 100 caracteres, sin caracteres especiales.";
                 break;
             case "prefix":
                 if (!isValidPrefix(value)) return "Debe tener entre 1 y 10 letras o puntos, sin números ni caracteres especiales.";
@@ -369,9 +410,11 @@ const ManageIndividualUserForm = () => {
                 if (!isValidPhone(value)) return "El teléfono debe tener exactamente 10 dígitos sin guiones ni espacios.";
                 break;
             case "password":
+                if (formType === "edit" && value === '') break;
                 if (!isValidPassword(value)) return "Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
                 break;
             case "confirmPassword":
+                if (formType === "edit" && value === '') break;
                 if (value !== password) return "Las contraseñas no coinciden.";
                 break;
             default:
@@ -428,11 +471,11 @@ const ManageIndividualUserForm = () => {
                             {userTextInput("Contraseña", "password", "password", "Contraseña del usuario", null, password,
                                 (e) => handleFieldChange("password", e.target.value, setPassword),
                                 () => setErrors(prev => ({ ...prev, password: validateField("password", password) })),
-                                errors.password, "new-password")}
+                                errors.password, "new-password", formType)}
                             {userTextInput("Confirmar contraseña", "confirmPassword", "password", "Confirmar contraseña del usuario", null, confirmPassword,
                                 (e) => handleFieldChange("confirmPassword", e.target.value, setConfirmPassword),
                                 () => setErrors(prev => ({ ...prev, confirmPassword: validateField("confirmPassword", confirmPassword) })),
-                                errors.confirmPassword, "new-password")}
+                                errors.confirmPassword, "new-password", formType)}
                         </div>
                     </div>
 
@@ -470,6 +513,7 @@ const ManageIndividualUserForm = () => {
 
                         <div id="userLevel" className="flex flex-row items-center mb-6 flex-wrap justify-start items-start">
                             {userSelectInput("Nivel SNII", "levelNumSNII", [
+                                { value: '', label: "NA" },
                                 { value: "Candidato", label: "Candidato" },
                                 { value: "I", label: "I" },
                                 { value: "II", label: "II" },
@@ -480,6 +524,7 @@ const ManageIndividualUserForm = () => {
                             errors.levelNumSNII)}
 
                             {userSelectInput("Nivel COFFA", "levelNumCOFFA", [
+                                { value: '', label: "NA" },
                                 { value: "I", label: "I" },
                                 { value: "II", label: "II" },
                                 { value: "III", label: "III" },
@@ -489,6 +534,7 @@ const ManageIndividualUserForm = () => {
                             (val) => handleFieldChange("levelNumCOFFA", val, setLevelNumCOFFA),
                             errors.levelNumCOFFA)}
                             {userSelectInput("Nivel EDI", "levelNumEDI", [
+                                { value: '', label: "NA" },
                                 { value: "I", label: "I" },
                                 { value: "II", label: "II" },
                                 { value: "III", label: "III" },
@@ -510,7 +556,7 @@ const ManageIndividualUserForm = () => {
                     <button
                         className="bg-[#FF4D4D] text-white font-semibold rounded hover:bg-[#FF0000] cursor-pointer"
                         style={{ padding: '10px 20px', width: '100%', maxWidth: '200px', textAlign: 'center' }}
-                        onClick={() => navigate('/Cuentas')}
+                        onClick={() => navigate('/Cuentas', { state: { selectedPanel: rolesPanel[role.toLowerCase()] || "Usuarios" } })}
                     >
                         Cancelar
                     </button>

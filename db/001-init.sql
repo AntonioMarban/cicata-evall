@@ -1,6 +1,8 @@
--- Aqui se crean procedimientos almacenados y mas
-SET NAMES utf8mb4;
+-- Nombre del archivo: 001-init.sql
+-- Descripción: Este archivo contiene todos los procedimientos almacenados y funciones necesarias para EVALL
 
+-- -- UTF8MB4 nos permite almacenar caracteres especiales
+SET NAMES utf8mb4;
 
 -- login
 DELIMITER //
@@ -2150,6 +2152,54 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Procedimiento para eliminar todas las evaluaciones individuales de un comité de un proyecto
+-- @param committeeId: Id del comité
+-- @param projectId: Id del proyecto
+DELIMITER //
+CREATE PROCEDURE deleteIndividualEvaluations(
+    IN p_committeeId INT,
+    IN p_projectId INT
+)
+BEGIN
+    DELETE e
+    FROM evaluations e
+    JOIN users u ON e.user_id = u.userId
+    JOIN committeeUsers cu ON u.userId = cu.userId
+    WHERE e.project_id = p_projectId 
+      AND e.evaluation_type_id = 1 
+      AND cu.committeeId = p_committeeId;
+END //
+DELIMITER ;
+
+
+-- Procedimiento para verificar la existencia de acuerdos de confidencialidad,
+-- y si no existen, crearlos para el presidente y secretario del comité
+-- @param committeeId: Id del comité
+-- @param projectId: Id del proyecto
+DELIMITER //
+CREATE PROCEDURE verifyAndCreateAgreements(
+    IN p_committeeId INT,
+    IN p_projectId INT
+)
+BEGIN
+    DECLARE v_presidentId INT;
+    DECLARE v_secretaryId INT;
+
+    SET v_presidentId = getCommitteePresidentId(p_committeeId);
+    SET v_secretaryId = getCommitteeSecretaryId(p_committeeId);
+
+    -- Verificar si ya existen acuerdos de confidencialidad para el presidente y secretario
+    IF NOT EXISTS (
+        SELECT 1 FROM agreements
+        WHERE user_id IN (v_presidentId, v_secretaryId) AND project_id = p_projectId
+    ) THEN
+        -- Crear acuerdos de confidencialidad para el presidente y secretario del comité
+        INSERT INTO agreements (agreed, user_id, project_id)
+        VALUES (false, v_presidentId, p_projectId),
+               (false, v_secretaryId, p_projectId);
+    END IF;
+END //
+
 -- Función para obtener las evaluaciones de la primera etapa, en este caso del
 -- CIP, relacionadas a un proyecto
 -- Se hace uso de un procedimiento almacena getFirstStageEvaluations
@@ -2231,6 +2281,9 @@ BEGIN
         SET MESSAGE_TEXT = 'The project already has evaluations of the first stage';
     END IF;
 
+    -- Eliminamos las evaluaciones individuales de la primera etapa
+    CALL deleteIndividualEvaluations(v_committeeCIP, p_projectId);
+
     -- Insertar la evaluación de la primera etapa, de tipo comité para el comité 1 (CIP),
     -- relacionada con secretario del comité
     INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
@@ -2245,7 +2298,7 @@ DELIMITER ;
 
 
 -- Función para crear las evaluaciones de la segunda etapa, en este caso de los comités CEI, CB y CI.
--- En caso de que el proyecto tenga marcado el uso de animales se crea la evaluación del comité CIQUAL
+-- En caso de que el proyecto tenga marcado el uso de animales se crea la evaluación del comité CICUAL
 -- Se hace uso de un procedimiento almacenado createSecondStageEvaluations
 -- @param projectId: Id del proyecto
 -- @returns: Mensaje de éxito o error
@@ -2258,17 +2311,17 @@ BEGIN
     DECLARE v_committeeCI INT;
     DECLARE v_committeeCB INT;
     DECLARE v_committeeCEI INT;
-    DECLARE v_committeeCIQUAL INT;
+    DECLARE v_committeeCICUAL INT;
 
     DECLARE v_presidentIdCI INT;
     DECLARE v_presidentIdCB INT;
     DECLARE v_presidentIdCEI INT;
-    DECLARE v_presidentIdCIQUAL INT;
+    DECLARE v_presidentIdCICUAL INT;
 
     DECLARE v_secretaryIdCI INT;
     DECLARE v_secretaryIdCB INT;
     DECLARE v_secretaryIdCEI INT;
-    DECLARE v_secretaryIdCIQUAL INT;
+    DECLARE v_secretaryIdCICUAL INT;
 
     DECLARE v_workWithAnimals BOOLEAN;
 
@@ -2278,7 +2331,7 @@ BEGIN
     SET v_committeeCI = 2;
     SET v_committeeCB = 3;
     SET v_committeeCEI = 4;
-    SET v_committeeCIQUAL = 5;
+    SET v_committeeCICUAL = 5;
 
     -- Obtener el ID del comité CIP y el ID del usuario (presidente)
     SET v_presidentIdCIP = getCommitteePresidentId(v_committeeCIP);
@@ -2304,13 +2357,13 @@ BEGIN
             SELECT 1 FROM evaluations
             WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_presidentIdCI
         ) THEN
+            -- Eliminamos las evaluaciones individuales de la primera etapa
+            CALL deleteIndividualEvaluations(v_committeeCI, p_projectId);
             -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 2 (CI),
             INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
             VALUES (v_presidentIdCI, p_projectId, 2);
             -- Insertar acuerdo de confidencialidad del secretario y presidente de ese comité
-            INSERT INTO agreements (agreed, user_id, project_id)
-            VALUES(false, v_presidentIdCI, p_projectId),
-                  (false, v_secretaryIdCI, p_projectId);
+            CALL verifyAndCreateAgreements(v_committeeCI, p_projectId);
         END IF;
 
         -- Verificar si el proyecto ya tiene evaluaciones del comité CB
@@ -2318,12 +2371,13 @@ BEGIN
             SELECT 1 FROM evaluations
             WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_presidentIdCB
         ) THEN
+            -- Eliminamos las evaluaciones individuales de la primera etapa
+            CALL deleteIndividualEvaluations(v_committeeCB, p_projectId);
             -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 3 (CB),
             INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
             VALUES (v_presidentIdCB, p_projectId, 2);
-            INSERT INTO agreements (agreed, user_id, project_id)
-            VALUES(false, v_presidentIdCB, p_projectId),
-                  (false, v_secretaryIdCB, p_projectId);
+            -- Insertar acuerdo de confidencialidad del secretario y presidente de ese comité
+            CALL verifyAndCreateAgreements(v_committeeCB, p_projectId);
         END IF;
 
         -- Verificar si el proyecto ya tiene evaluaciones del comité CEI
@@ -2331,13 +2385,13 @@ BEGIN
             SELECT 1 FROM evaluations
             WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_presidentIdCEI
         ) THEN
+            -- Eliminamos las evaluaciones individuales de la primera etapa
+            CALL deleteIndividualEvaluations(v_committeeCEI, p_projectId);
             -- Insertar la evaluación de la segunda etapa, de tipo comité para el comité 4 (CEI),
             INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
             VALUES (v_presidentIdCEI, p_projectId, 2);
-
-            INSERT INTO agreements (agreed, user_id, project_id)
-            VALUES(false, v_presidentIdCEI, p_projectId),
-                  (false, v_secretaryIdCEI, p_projectId);
+            -- Insertar acuerdo de confidencialidad del secretario y presidente de ese comité
+            CALL verifyAndCreateAgreements(v_committeeCEI, p_projectId);
         END IF;
 
         -- Verificar si el proyecto tiene marcado el uso de animales
@@ -2345,20 +2399,21 @@ BEGIN
         FROM projects
         WHERE projectId = p_projectId;
 
-        -- Si el proyecto tiene marcado el uso de animales, insertar la evaluación del comité CIQUAL
+        -- Si el proyecto tiene marcado el uso de animales, insertar la evaluación del comité CICUAL
         IF v_workWithAnimals THEN
-            SET v_presidentIdCIQUAL = getCommitteePresidentId(v_committeeCIQUAL);
-            SET v_secretaryIdCIQUAL = getCommitteeSecretaryId(v_committeeCIQUAL);
+            SET v_presidentIdCICUAL = getCommitteePresidentId(v_committeeCICUAL);
+            SET v_secretaryIdCICUAL = getCommitteeSecretaryId(v_committeeCICUAL);
 
             IF NOT EXISTS (
                 SELECT 1 FROM evaluations
-                WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_presidentIdCIQUAL
+                WHERE project_id = p_projectId AND evaluation_type_id = 2 AND user_id = v_presidentIdCICUAL
             ) THEN
+                -- Eliminamos las evaluaciones individuales de la primera etapa
+                CALL deleteIndividualEvaluations(v_committeeCICUAL, p_projectId);
                 INSERT INTO evaluations (user_id, project_id, evaluation_type_id)
-                VALUES (v_presidentIdCIQUAL, p_projectId, 2);
-                INSERT INTO agreements (agreed, user_id, project_id)
-                VALUES(false, v_presidentIdCIQUAL, p_projectId),
-                      (false, v_secretaryIdCIQUAL, p_projectId);
+                VALUES (v_presidentIdCICUAL, p_projectId, 2);
+                -- Insertar acuerdo de confidencialidad del secretario y presidente de ese comité
+                CALL verifyAndCreateAgreements(v_committeeCICUAL, p_projectId);
             END IF;
         END IF;
     ELSE
@@ -2369,7 +2424,7 @@ END //
 DELIMITER ;
 
 -- Función para obtener las evaluaciones de la segunda etapa, en este caso de los comités CEI, CB y CI.
--- En caso de que el proyecto tenga marcado el uso de animales se obtiene la evaluación del comité CIQUAL
+-- En caso de que el proyecto tenga marcado el uso de animales se obtiene la evaluación del comité CICUAL
 -- Se hace uso de un procedimiento almacenado getSecondStageEvaluations
 -- @param projectId: Id del proyecto
 -- @returns: Lista de evaluaciones de la segunda etapa: nombre del comité, resultado y comentarios
@@ -2396,16 +2451,16 @@ BEGIN
     DECLARE v_resultCEI VARCHAR(50);
     DECLARE v_presidentIdCEI INT;
 
-    DECLARE v_committeeCIQUAL INT;
-    DECLARE v_resultCIQUAL VARCHAR(50);
-    DECLARE v_presidentIdCIQUAL INT;
+    DECLARE v_committeeCICUAL INT;
+    DECLARE v_resultCICUAL VARCHAR(50);
+    DECLARE v_presidentIdCICUAL INT;
 
     DECLARE v_workWithAnimals BOOLEAN;
 
     SET v_committeeCI = 2;
     SET v_committeeCB = 3;
     SET v_committeeCEI = 4;
-    SET v_committeeCIQUAL = 5;
+    SET v_committeeCICUAL = 5;
 
     -- Obtener el ID del comité CI y el ID del usuario (presidente)
     SET v_presidentIdCI = getCommitteePresidentId(v_committeeCI);
@@ -2469,23 +2524,23 @@ BEGIN
 
     -- Si el proyecto tiene marcado el uso de animales, guardamos el resultado y devolvemos la información de la evaluación
     IF v_workWithAnimals THEN
-        SET v_presidentIdCIQUAL = getCommitteePresidentId(v_committeeCIQUAL);
-        SELECT e.result INTO v_resultCIQUAL  FROM evaluations e
+        SET v_presidentIdCICUAL = getCommitteePresidentId(v_committeeCICUAL);
+        SELECT e.result INTO v_resultCICUAL  FROM evaluations e
         JOIN committeeUsers cu ON e.user_id = cu.userId
         JOIN committees c ON cu.committeeId = c.committeeId
-        WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentIdCIQUAL
+        WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentIdCICUAL
         LIMIT 1;
         SELECT c.name, e.result, e.comments  FROM evaluations e
         JOIN committeeUsers cu ON e.user_id = cu.userId
         JOIN committees c ON cu.committeeId = c.committeeId
-        WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentIdCIQUAL
+        WHERE e.project_id = p_projectId AND e.evaluation_type_id = 2 AND e.user_id = v_presidentIdCICUAL
         LIMIT 1;
         IF FOUND_ROWS() = 0
         THEN
             SET sendingPending = TRUE;
         END IF;
         -- Si el resultado es nulo es que la evaluación sigue pendiente
-        IF v_resultCIQUAL IS NULL
+        IF v_resultCICUAL IS NULL
         THEN
             SET pendingEvaluations = TRUE;
         END IF;
@@ -2681,5 +2736,34 @@ BEGIN
         AND e.evaluation_type_id = 2
         AND e.result IS NULL;
 
+END //
+DELIMITER ;
+
+
+-- Función para obtener los acuerdos de confidencialidad de un proyecto
+-- organizados por comité
+-- @param projectId: Id del proyecto
+-- @returns: Lista de acuerdos de confidencialidad por comité
+DELIMITER //
+CREATE PROCEDURE getProjectAgreements(
+    IN p_projectId INT
+)
+BEGIN
+    SELECT
+        c.committeeId,
+        c.name AS committeeName,
+        CONCAT(u.prefix, ' ', u.fName, ' ', u.lastName1, ' ', u.lastName2) AS fullName,
+        u.email,
+        a.agreed,
+        a.date as agreedDate
+    FROM
+        agreements a
+    JOIN users u ON a.user_id = u.userId
+    JOIN committeeUsers cu ON u.userId = cu.userId
+    JOIN committees c ON cu.committeeId = c.committeeId
+    WHERE
+        a.project_id = p_projectId
+    ORDER BY
+        c.committeeId, u.userId;
 END //
 DELIMITER ;

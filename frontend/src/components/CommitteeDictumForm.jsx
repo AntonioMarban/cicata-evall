@@ -51,10 +51,18 @@ const CommitteeDictumForm = ({ projectId, onSubmit }) => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({ result, comments }),
         }
       );
+
+      if (response.status === 401 || response.status === 403) {
+        console.warn("Unauthorized or Forbidden: Clearing session and redirecting.");
+        localStorage.clear();
+        window.location.href = "/";
+        return;
+      }
 
       if (!response.ok) {
         throw new Error("Error al enviar el dictamen.");

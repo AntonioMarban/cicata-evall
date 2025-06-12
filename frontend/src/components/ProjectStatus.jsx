@@ -1,11 +1,15 @@
 import { useEffect, useState, useCallback } from "react";
 import "../styles/projectstatus.css";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
 export default function ProjectStatus({ projectId }) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem("token"));
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [agreements, setAgreements] = useState({});
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -68,7 +72,7 @@ export default function ProjectStatus({ projectId }) {
     } catch (error) {
       console.error("Error fetching stage 1 evaluations:", error);
     }
-  }, [projectId, apiUrl]);
+  }, [projectId, apiUrl, token]);
 
   const fetchStage2Evaluations = useCallback(async () => {
     try {
@@ -101,7 +105,7 @@ export default function ProjectStatus({ projectId }) {
     } catch (error) {
       console.error("Error fetching stage 2 evaluations:", error);
     }
-  }, [projectId, apiUrl]);
+  }, [projectId, apiUrl, token]);
 
   const fetchStage3 = useCallback(async () => {
     try {
@@ -132,7 +136,7 @@ export default function ProjectStatus({ projectId }) {
     } catch (error) {
       console.error("Error fetching stage 3:", error);
     }
-  }, [projectId, apiUrl]);
+  }, [projectId, apiUrl, token]);
 
   useEffect(() => {
     async function fetchProject() {
@@ -167,7 +171,7 @@ export default function ProjectStatus({ projectId }) {
     }
 
     fetchProject();
-  }, [projectId, apiUrl]);
+  }, [projectId, apiUrl, token]);
 
   useEffect(() => {
     fetchStage1Evaluations();
@@ -339,10 +343,53 @@ export default function ProjectStatus({ projectId }) {
 
   if (loading || !projectData) return null;
 
+  const handleAgreementModal = () => {
+    setIsModalOpen(true);
+    
+    const fetchAgreementData = async () => {
+      try {
+        const response = await fetch(
+          `${apiUrl}/subdirectorade/projects/${projectId}/agreements`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.status === 401 || response.status === 403) {
+          console.warn(
+            "Unauthorized or Forbidden: Clearing session and redirecting."
+          );
+          localStorage.clear();
+          window.location.href = "/";
+          return;
+        }
+        const data = await response.json();
+        console.log("Agreement data:", data);
+        setAgreements(data);
+
+      } catch (error) {
+        console.error("Error fetching agreement data:", error);
+      }
+    }
+
+    fetchAgreementData();
+  }
+
   return (
     <main className="projectstatus-main">
       <div className="evaluation-section">
-        <h2 className="subtitle">Progreso de evaluación</h2>
+        <div className="flex justify-between items-start w-full mb-4">
+          <h2 className="subtitle">Progreso de evaluación</h2>
+          <button
+            className="info-button p-2!"
+            onClick={handleAgreementModal}
+          >
+            Firmas de cartas de confidencialidad
+          </button>
+        </div>
+        
 
         {/* Etapa 1 */}
         <div className="stage">
@@ -362,9 +409,9 @@ export default function ProjectStatus({ projectId }) {
             <table className="stage-table">
               <thead>
                 <tr>
-                  <th>Comité</th>
+                  <th>Comité evaluador</th>
                   <th>Resultados de evaluación</th>
-                  <th>Comentario</th>
+                  <th>Comentario de evaluación</th>
                 </tr>
               </thead>
               <tbody>
@@ -396,7 +443,7 @@ export default function ProjectStatus({ projectId }) {
           <h3>Etapa 2: Evaluación por Comités Especializados</h3>
           {stage2Evaluations.length === 0 ? (
             <>
-              <p>Este proyecto aún no ha sido enviado al CEI, CB y CI.</p>
+              <p>Este proyecto aún no ha sido enviado a los comités especializados.</p>
               <button
                 className={`stage-button ${
                   stage1Completed === 1 && !sendingStage2
@@ -421,9 +468,9 @@ export default function ProjectStatus({ projectId }) {
               <table className="stage-table">
                 <thead>
                   <tr>
-                    <th>Comité</th>
+                    <th>Comité evaluador</th>
                     <th>Resultados de evaluación</th>
-                    <th>Comentario</th>
+                    <th>Comentario de evaluación</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -476,9 +523,9 @@ export default function ProjectStatus({ projectId }) {
           </h3>
           <p>
             {sendingPendingResearcher === 1 && createDictum === 1
-              ? `El resultado final es: ${finalResult}. El resultado aún no ha sido enviado al investigador.`
+              ? `El resultado final es: ${finalResult.toLowerCase()}. El resultado aún no ha sido enviado al investigador.`
               : createDictum === 0 && sendingPendingResearcher === 1
-              ? `El resultado es: ${finalResult} El resultado aún no ha sido enviado al investigador.`
+              ? `El resultado es: ${finalResult.toLowerCase()}. El resultado aún no ha sido enviado al investigador.`
               : createDictum === 1 && sendingPendingResearcher === 0
               ? "El resultado final de este proyecto ya fue enviado al investigador."
               : "El último estado de este proyecto ya fue enviado al investigador"}
@@ -512,10 +559,75 @@ export default function ProjectStatus({ projectId }) {
               (jumpThirdStage !== 1 && stage2Completed !== 1)
             }
           >
-            {sendingStage3 ? "Enviando..." : "Enviar al investigador"}
+            {sendingStage3 ? "Enviando..." :
+              sendingPendingResearcher === 1 && createDictum === 1
+              ? "Generar dictamen final del proyecto"
+              : sendingPendingResearcher === 1 && createDictum === 0
+              ? "Enviar resultados al investigador"
+              : createDictum === 1 && sendingPendingResearcher === 0
+              ? "Dictamen final enviado al investigador"
+              : createDictum === 0 && sendingPendingResearcher === 0
+              ? "Estado actualizado del proyecto visible por investigador"
+              : "Enviar al investigador"}
           </button>
         </div>
       </div>
+
+      <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="relative z-50">
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center">
+          <DialogPanel className="max-w-[50vw] w-full rounded-xl bg-white p-6! shadow-xl">
+            <DialogTitle className="text-xl font-bold mb-4!">Firmas de cartas de confidencialidad</DialogTitle>
+            <p className="text-gray-800 mb-4!">
+              Aquí puedes ver las firmas de las cartas de confidencialidad de los evaluadores del proyecto.
+            </p>
+
+            <div className="overflow-x-auto space-y-6 max-h-[60vh] overflow-y-auto mb-6!">
+              {Object.entries(agreements).map(([committeeName, members]) => (
+                <div key={committeeName} className="mb-6!">
+                  <p className="font-semibold text-lg mb-2!">Comité: {committeeName}</p>
+                  <table className="w-full text-left border-collapse shadow-md rounded-lg">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-4! py-1! border-b border-gray-300 text-left rounded-tl-lg!">Evaluador</th>
+                        <th className="px-4! py-1! border-b border-gray-300 text-left">Correo</th>
+                        <th className="px-4! py-1! border-b border-gray-300 text-left rounded-tr-lg!">Fecha de firma</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-left">
+                      {members.map((member, idx) => (
+                        <tr key={idx} className="hover:bg-gray-100 transition-colors duration-200">
+                          <td className="px-4! py-2! text-left!">{member.fullName}</td>
+                          <td className="px-4! py-2! text-left!">{member.email}</td>
+                          <td className="px-4! py-2! text-left!">
+                            {member.agreed === 1
+                              ? new Date(member.agreedDate).toLocaleDateString("es-MX", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })
+                              : "Sin firma"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="bg-[#BBBBBA] text-white font-semibold rounded hover:bg-[#AAAAAC] cursor-pointer"
+                style={{ padding: '10px 20px', width: '100%', maxWidth: '110px', textAlign: 'center' }}
+              >
+                Cerrar
+              </button>
+            </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
     </main>
   );
 }

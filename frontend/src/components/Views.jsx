@@ -12,22 +12,23 @@ import ViewCompleteForm from "./ViewCompleteForm";
 import Project from "../pages/Project";
 import FinishedProjects from "../pages/FinishedProjects";
 import ProjectDictum from "../pages/ProjectDictum";
+import ProtectedRoute from "./ProtectedRoute";
 const Views = () => {
   return (
   <Routes>
     <Route path = "/" element={<Login/>}></Route>
-    <Route path = "/Inicio" element={<HomePage/>}></Route>
-    <Route path = "/CrearProyecto" element={<CreateProject/>}></Route>
-    <Route path = "/Acuerdo" element={<NDA/>}></Route>
-    <Route path = "/Cuentas" element={<ManageAccounts/>}></Route>
+    <Route path = "/Inicio" element={<ProtectedRoute><HomePage/></ProtectedRoute>}></Route>
+    <Route path = "/CrearProyecto" element={<ProtectedRoute><CreateProject/></ProtectedRoute>}></Route>
+    <Route path = "/Acuerdo" element={<ProtectedRoute><NDA/></ProtectedRoute>}></Route>
+    <Route path = "/Cuentas" element={<ProtectedRoute><ManageAccounts/></ProtectedRoute>}></Route>
     <Route path = "/FormularioDeUsuario" element={<ManageIndividualUserForm/>}></Route>
-    <Route path = "/EditarRubrica" element={<EditRubric/>}></Route>
-    <Route path = "/editar-proyecto" element={<EditProject/>}></Route>
-    <Route path = "/EvaluarProyecto" element={<EvaluateProject/>}></Route>
-    <Route path = "/VerFormulario" element={<ViewCompleteForm/>}></Route>
-    <Route path = "/Proyecto" element={<Project/>}></Route>
-    <Route path = "/ProyectosFinalizados" element={<FinishedProjects/>}></Route>
-    <Route path = "/Dictamen" element={<ProjectDictum/>}></Route>
+    <Route path = "/EditarRubrica" element={<ProtectedRoute><EditRubric/></ProtectedRoute>}></Route>
+    <Route path = "/EditarProyecto" element={<ProtectedRoute><EditProject/></ProtectedRoute>}></Route>
+    <Route path = "/EvaluarProyecto" element={<ProtectedRoute><EvaluateProject/></ProtectedRoute>}></Route>
+    <Route path = "/VerFormulario" element={<ProtectedRoute><ViewCompleteForm/></ProtectedRoute>}></Route>
+    <Route path = "/Proyecto" element={<ProtectedRoute><Project/></ProtectedRoute>}></Route>
+    <Route path = "/ProyectosFinalizados" element={<ProtectedRoute><FinishedProjects/></ProtectedRoute>}></Route>
+    <Route path = "/Dictamen" element={<ProtectedRoute><ProjectDictum/></ProtectedRoute>}></Route>
     <Route
         path = "*"
         element={<Navigate to="/Inicio" replace/>} ></Route>

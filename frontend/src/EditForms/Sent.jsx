@@ -1,10 +1,11 @@
 import { deleteFormsInRange,getFormsInRange } from "../db/index";
 import { useNavigate  } from 'react-router-dom'
 import { toast } from "sonner";
-
+import { useState } from "react";
 const  ModalSent = ({option,setOption}) => {
     
     const apiUrl = import.meta.env.VITE_API_URL;
+    const [token, setToken] = useState(localStorage.getItem("token"));
     const navigate = useNavigate();
     const [edit,setEdit] = useState(false);
     function base64ToFile(base64, fileName, mimeType = 'application/pdf') {
@@ -39,9 +40,20 @@ const  ModalSent = ({option,setOption}) => {
             const response = await fetch(`${apiUrl}/researchers/projects/${projectId}/update`, {
                 method: 'PATCH',
                 body: JSON.stringify(cleanFormData),
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json' },
             });
-    
+        
+            if (response.status === 401 || response.status === 403) {
+                console.warn(
+                "Unauthorized or Forbidden: Clearing session and redirecting."
+                );
+                localStorage.clear();
+                window.location.href = "/";
+                return;
+            }
+
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -57,15 +69,15 @@ const  ModalSent = ({option,setOption}) => {
                         const appendFiles = (filesArray) => {
                             filesArray.forEach(file => {
                                 if (file.content && file.name) {
-                                    // Caso: file tiene content y name
+                                    // file  content  name
                                     const realFile = base64ToFile(file.content, file.name, 'application/pdf');
                                     formDataFiles.append('documents', realFile);
                                 } else if (file.document && file.filename) {
-                                    // Caso alternativo: file tiene document y filename
+                                    // file  document  filename
                                     const realFile = base64ToFile(file.document, file.filename, 'application/pdf');
                                     formDataFiles.append('documents', realFile);
                                 } else if (file.document && file.name) {
-                                    // Nuevo caso: file tiene document y name
+                                    // file document y name
                                     const realFile = base64ToFile(file.document, file.name, 'application/pdf');
                                     formDataFiles.append('documents', realFile);
                                 } else {
@@ -79,34 +91,48 @@ const  ModalSent = ({option,setOption}) => {
                             formDataFiles.append('projectId', data.projectId);
                             formDataFiles.append('tag', 'anexos');
                             
-                            // Subir archivos 'eticos'
-                            const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
+                            const uploadAResponse  = await fetch(`${apiUrl}/researchers/projects/upload`, {
                                 method: 'POST',                    
                                 body: formDataFiles,
+                                headers: { 
+                                    Authorization: `Bearer ${token}`,
+                                }
                             });
-                            if (uploadResponse.status === 200) {
-                                console.warn("Upload succeeded but no confirmation message:");
-                            }
-                            else if (uploadResponse.status != 200) {
-                                throw new Error(`File upload failed: ${uploadResponse.status}`);
+                            if (uploadAResponse.status === 401 || uploadAResponse.status === 403) {
+                                console.warn(
+                                "Unauthorized or Forbidden: Clearing session and redirecting."
+                                );
+                                localStorage.clear();
+                                window.location.href = "/";
+                                return;
                             }
 
-                            const uploadData = await uploadResponse.json();
+                            if (uploadAResponse.status === 200) {
+                                console.warn("Upload succeeded but no confirmation message:");
+                            }
+                            else if (uploadAResponse.status != 200) {
+                                throw new Error(`File upload failed: ${uploadAResponse.status}`);
+                            }
+
+                            const uploadData = await uploadAResponse    .json();
+                            if (uploadData.message !== 'Documents uploaded successfully') {
+                                console.warn("Upload succeeded but no confirmation message:", uploadData);
+                            }
                         }
 
                         const formDataEFiles = new FormData();
                         const appendFiles2 = (filesArray) => {
                             filesArray.forEach(file => {
                                 if (file.content && file.name) {
-                                    // Caso: file tiene content y name
+                                    // file content name
                                     const realFile = base64ToFile(file.content, file.name, 'application/pdf');
                                     formDataEFiles.append('documents', realFile);
                                 } else if (file.document && file.filename) {
-                                    // Caso alternativo: file tiene document y filename
+                                    //  file tiene document  filename
                                     const realFile = base64ToFile(file.document, file.filename, 'application/pdf');
                                     formDataEFiles.append('documents', realFile);
                                 } else if (file.document && file.name) {
-                                    // Nuevo caso: file tiene document y name
+                                    //  file tiene document  name
                                     const realFile = base64ToFile(file.document, file.name, 'application/pdf');
                                     formDataEFiles.append('documents', realFile);
                                 } else {
@@ -120,18 +146,31 @@ const  ModalSent = ({option,setOption}) => {
                             formDataEFiles.append('tag', 'eticos');
                             
                             // Subir archivos 'anexos'
-                            const uploadResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
+                            const uploadEResponse = await fetch(`${apiUrl}/researchers/projects/upload`, {
                                 method: 'POST',                    
                                 body: formDataEFiles,
+                                headers: { 
+                                    Authorization: `Bearer ${token}`,
+                                }
                             });
-                            if (uploadResponse.status === 200) {
-                                console.warn("Upload succeeded but no confirmation message:");
-                            }
-                            else if (uploadResponse.status != 200) {
-                                throw new Error(`File upload failed: ${uploadResponse.status}`);
+                            
+                            if (uploadEResponse.status === 401 || uploadEResponse.status === 403) {
+                                console.warn(
+                                "Unauthorized or Forbidden: Clearing session and redirecting."
+                                );
+                                localStorage.clear();
+                                window.location.href = "/";
+                                return;
                             }
 
-                            const uploadData = await uploadResponse.json();
+                            if (uploadEResponse.status === 200) {
+                                console.warn("Upload succeeded but no confirmation message:");
+                            }
+                            else if (uploadEResponse.status != 200) {
+                                throw new Error(`File upload failed: ${uploadEResponse.status}`);
+                            }
+
+                            const uploadData = await uploadEResponse.json();
                             if (uploadData.message !== 'Documents uploaded successfully') {
                                 console.warn("Upload succeeded but no confirmation message:", uploadData);
                             }
@@ -170,13 +209,13 @@ const  ModalSent = ({option,setOption}) => {
     };
 
     return (
-        <div className="h-[70vh] flex items-center justify-center gap-4">
-            <div className="text-center gap-4">
-                <p className="!mt-5 pb-4!">¿Seguro que desea enviar el proyecto?</p>
+        <div className="h-[70vh] flex items-center justify-center">
+            <div className="text-center">
+                <p className="!mt-5 !mb-4">¿Seguro que desea enviar el proyecto?</p>
                 <div className="!mt-6 flex justify-center gap-4">
                     <button 
                         type="button" 
-                        className="!mt-6 button-cancel hover:bg-gray-300 transition-colors duration-200"
+                        className="button-cancel hover:bg-gray-300 transition-colors duration-200"
                         onClick={() => setOption(prev => prev - 1)}
                     >
                         Regresar
@@ -189,7 +228,7 @@ const  ModalSent = ({option,setOption}) => {
                         Sí
                     </button>
                 </div>
-                <p className="!mt-6 text-gray-500">Una vez enviado, solo podrá modificarse si se requieren una correcciones</p>
+                <p className="!mt-6 text-gray-500">Una vez enviado, solo podrá modificarse si se requiere un corrección.</p>
             </div>
         </div>
         );

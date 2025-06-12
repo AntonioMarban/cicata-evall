@@ -489,6 +489,42 @@ const setProjectStatusToRevision = (req, res) => {
     });
 };
 
+/*
+  Función para obtener los acuerdos de confidencialidad de un proyecto
+  organizados por comité
+  Se hace uso de un procedimiento almacenado getProjectAgreements
+  @param projectId: Id del proyecto
+  @returns: lista de acuerdos de confidencialidad por comité
+*/
+const getProjectAgreements = async (req, res) => {
+  const { projectId } = req.params;
+  const query = "CALL getProjectAgreements(?)";
+  const values = [projectId];
+  pool.query(query, values, (error, results) => {
+    if (error) {
+      console.error(error);
+      return res.status(400).json({ error: "Invalid query parameters" });
+    }
+    if (results[0].length === 0) {
+      return res.status(404).json({ error: "Resource does not exist" });
+    }
+    const response = {};
+    for (let i = 0; i < results[0].length; i++) {
+        const row = {
+            fullName: results[0][i].fullName,
+            email: results[0][i].email,
+            agreed: results[0][i].agreed,
+            agreedDate: results[0][i].agreedDate,
+        }
+        const committeeName = results[0][i].committeeName;
+        if (!response[committeeName]) {
+            response[committeeName] = [];
+        }
+        response[committeeName].push(row);
+    }
+    res.status(200).json(response);
+  });
+};
 
 module.exports = {
   getUsersByRole,
@@ -507,5 +543,6 @@ module.exports = {
   getResultThirdStage,
   sendEvaluationResult,
   createDictum,
-  setProjectStatusToRevision
+  setProjectStatusToRevision,
+  getProjectAgreements
 };

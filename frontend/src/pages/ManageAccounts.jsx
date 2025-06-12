@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import ManageAccountsData from "../components/manageAccounts/ManageAccountsData.jsx";
+import { useLocation } from "react-router-dom";
 
 const committees = {
   1: "Comité Interno de Proyectos (CIP)",
-  2: "Comité de Ética en Investigación (CEI)",
-  3: "Comité de Bioseguridad (CB)",
-  4: "Comité de Investigación (CI)",
+  2: "Comité de Investigación (CI)",
+  3: "Comité de Ética en Investigación (CEI)",
+  4: "Comité de Bioseguridad (CB)",
   5: "Comité Interno para el Cuidado y Uso de los Animales de Laboratorio (CICUAL)",
 };
 
@@ -38,6 +39,8 @@ const AccountTypeButton = ({ name, selectedName, onClick }) => {
 const ManageAccounts = () => {
   const [selectedPanel, setSelectedPanel] = useState(null);
 
+  const location = useLocation();
+
   const [userType, setUserType] = useState(
     parseInt(localStorage.getItem("userType"))
   );
@@ -46,6 +49,8 @@ const ManageAccounts = () => {
   );
 
   useEffect(() => {
+    setSelectedPanel(location.state?.selectedPanel || null);
+
     const handleStorageChange = () => {
       setUserType(parseInt(localStorage.getItem("userType")));
       setCommitteeId(parseInt(localStorage.getItem("committeeId")));
@@ -53,7 +58,7 @@ const ManageAccounts = () => {
 
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
+  }, [ location.state ]);
 
   const handlePanelClick = (name) => {
     setSelectedPanel((prev) => (prev === name ? null : name));

@@ -48,7 +48,13 @@ const ViewCompleteForms = () => {
                         }, 
                     }),
                 ]);
-
+                if (formRes.status === 401 || formRes.status === 403 || 
+                    filesRes.status === 401 || filesRes.status === 403) {
+                    console.warn("Unauthorized or Forbidden: Clearing session and redirecting.");
+                    localStorage.clear();
+                    window.location.href = "/";
+                    return;
+                }
                 if (!formRes.ok || !filesRes.ok) {
                     throw new Error('Error al cargar los datos');
                 }
@@ -87,7 +93,7 @@ const ViewCompleteForms = () => {
         files.documents.forEach((file) => {
         const link = document.createElement('a');
         link.href = `data:application/octet-stream;base64,${file.document}`;
-        link.download = file.name || `archivo-${file.annexeId}.pdf`; // ajusta el nombre o extensión si sabes el tipo
+        link.download = file.name || `archivo-${file.annexeId}.pdf`; 
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

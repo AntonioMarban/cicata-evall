@@ -17,7 +17,8 @@ const {
     getResultThirdStage,
     sendEvaluationResult,
     createDictum,
-    setProjectStatusToRevision
+    setProjectStatusToRevision,
+    getProjectAgreements
 } = require('../controllers/subdirectorade.controller')
 const middleware = require('../middleware/jwt.middleware')
 
@@ -38,5 +39,6 @@ router.get('/projects/:projectId/evaluations/stage3', middleware, getResultThird
 router.patch('/projects/:projectId/evaluations/stage3', middleware, sendEvaluationResult)
 router.post('/projects/:projectId/dictum', middleware, createDictum),
 router.patch('/projects/:projectId/status/revision', middleware, setProjectStatusToRevision);
+router.get('/projects/:projectId/agreements', middleware, getProjectAgreements)
 
 module.exports = router

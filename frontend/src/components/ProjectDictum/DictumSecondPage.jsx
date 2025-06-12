@@ -1,4 +1,4 @@
-export default function DictumSecondPage({ authorizerName, authorizerAcademicDegree, authorizerPositionWork, authorizerInstitution }) {
+export default function DictumSecondPage({ authorizerName, authorizerPositionWork, authorizerInstitution }) {
 
   return (
     <>
@@ -15,7 +15,7 @@ export default function DictumSecondPage({ authorizerName, authorizerAcademicDeg
             Atentamente
           </p>
 
-          <p>{authorizerName}, {authorizerAcademicDegree}</p>
+          <p>{authorizerName}</p>
           <p>{authorizerPositionWork}</p>
           <p>{authorizerInstitution}</p>
         </div>
