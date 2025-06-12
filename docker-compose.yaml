@@ -14,13 +14,13 @@ services:
     ports:
       - "${DB_PORT}:3307"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./evall_mysql_data:/var/lib/mysql #esto no lo he subido
       - ./db:/docker-entrypoint-initdb.d
     restart: always
   backend:
     build: ./backend
     ports:
-      - "3000:3000"
+      - "3001:3000"
     environment:
       DB_HOST: ${DB_HOST}
       DB_USER: ${DB_USER}
@@ -37,7 +37,7 @@ services:
     ports:
       - "5001:5001"
     environment:
-      VITE_API_URL: "http://${HOST_IP}:3000" #liga al backend para las peticiones
+      VITE_API_URL: "http://${HOST_IP}:3001" #liga al backend para las peticiones
     depends_on:
       - backend
     restart: always
