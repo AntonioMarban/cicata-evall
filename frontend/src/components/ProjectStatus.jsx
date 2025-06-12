@@ -610,6 +610,7 @@ export default function ProjectStatus({ projectId }) {
                                   year: "numeric",
                                   month: "long",
                                   day: "numeric",
+                                  timeZone: "UTC",
                                 })
                               : "Sin firma"}
                           </td>
