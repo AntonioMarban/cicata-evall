@@ -637,14 +637,12 @@ export default function ProjectStatus({ projectId }) {
                           </td>
                           <td className="px-4! py-2! text-left!">
                             {member.agreed === 1
-                              ? new Date(member.agreedDate).toLocaleDateString(
-                                  "es-MX",
-                                  {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                  }
-                                )
+                              ? new Date(member.agreedDate).toLocaleDateString("es-MX", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                  timeZone: "UTC",
+                                })
                               : "Sin firma"}
                           </td>
                         </tr>
