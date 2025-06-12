@@ -14,30 +14,30 @@ VALUES
     ('Integrante de comité');
 
 -- =============== INSERTS USERS PRINCIPALES  ===============
-INSERT INTO users (fname, lastName1, lastName2, prefix, email, password, userType_id)
+INSERT INTO users (fname, lastName1, lastName2, prefix, email, password, userType_id, positionWork, institution, phone)
 VALUES 
 -- Usuario de tipo administrador
-('Administrador', 'de','Evall', '', 'administrador@gmail.com', SHA2('adminCICATA#2025', 256), 2),
+('Administrador', 'de','Evall', '', 'administrador@gmail.com', SHA2('adminCICATA#2025', 256), 2, '', '', ''),
 -- Presidente de comité CIP
-('Presidente', 'del','CIP', '', 'presidente_cip@gmail.com', SHA2('preCIP%678', 256), 3),
+('Presidente', 'del','CIP', '', 'presidente_cip@gmail.com', SHA2('preCIP%678', 256), 3, '', '', ''),
 -- Secretario de comité CIP
-('Secretario', 'del','CIP', '', 'secretario_cip@gmail.com', SHA2('secCIP%483', 256), 4),
+('Secretario', 'del','CIP', '', 'secretario_cip@gmail.com', SHA2('secCIP%483', 256), 4, '', '', ''),
 -- Presidente de comité CI
-('Presidente', 'del','CI', '', 'presidente_ci@gmail.com', SHA2('preCI%489', 256), 3),
+('Presidente', 'del','CI', '', 'presidente_ci@gmail.com', SHA2('preCI%489', 256), 3, '', '', ''),
 -- Secretario de comité CI
-('Secretario', 'del','CI', '', 'secretario_ci@gmail.com', SHA2('secCI%756', 256), 4),
+('Secretario', 'del','CI', '', 'secretario_ci@gmail.com', SHA2('secCI%756', 256), 4, '', '', ''),
 -- Presidente de comité CEI
-('Presidente', 'del','CEI', '', 'presidente_cei@gmail.com', SHA2('preCEI%306', 256), 3),
+('Presidente', 'del','CEI', '', 'presidente_cei@gmail.com', SHA2('preCEI%306', 256), 3, '', '', ''),
 -- Secretario de comité CEI
-('Secretario', 'del','CEI', '', 'secretario_cei@gmail.com', SHA2('secCEI%945', 256), 4),
+('Secretario', 'del','CEI', '', 'secretario_cei@gmail.com', SHA2('secCEI%945', 256), 4, '', '', ''),
 -- Presidente de comité CB
-('Presidente', 'del','CB', '', 'presidente_cb@gmail.com', SHA2('preCB%870', 256), 3),
+('Presidente', 'del','CB', '', 'presidente_cb@gmail.com', SHA2('preCB%870', 256), 3, '', '', ''),
 -- Secretario de comité CB
-('Secretario', 'del','CB', '', 'secretario_cb@gmail.com', SHA2('secCB%953', 256), 4),
+('Secretario', 'del','CB', '', 'secretario_cb@gmail.com', SHA2('secCB%953', 256), 4, '', '', ''),
 -- Presidente de comité CICUAL
-('Presidente', 'del','CICUAL', '', 'presidente_cicual@gmail.com', SHA2('preCICUAL%973', 256), 3),
+('Presidente', 'del','CICUAL', '', 'presidente_cicual@gmail.com', SHA2('preCICUAL%973', 256), 3, '', '', ''),
 -- Secretario de comité CICUAL
-('Secretario', 'del','CICUAL', '', 'secretario_cicual@gmail.com', SHA2('secCICUAL%547', 256), 4);
+('Secretario', 'del','CICUAL', '', 'secretario_cicual@gmail.com', SHA2('secCICUAL%547', 256), 4, '', '', '');
 
 
 -- =============== INSERTS DE COMMITTEES ===============
