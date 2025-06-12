@@ -14,7 +14,7 @@ function NDAForm() {
   const [agreementData, setAgreementData] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const [token, setToken] = useState(localStorage.getItem("token"));
   useEffect(() => {
     const handleStorageChange = () => {
@@ -165,10 +165,10 @@ En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consenti
         `${apiUrl}/users/${userId}/projects/${projectId}/agreement`,
         {
           method: "PATCH",
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-           },
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({
             token: token,
             email: email,
@@ -178,7 +178,9 @@ En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consenti
       );
 
       if (res.status === 401 || res.status === 403) {
-        console.warn('Unauthorized or Forbidden: Clearing session and redirecting.');
+        console.warn(
+          "Unauthorized or Forbidden: Clearing session and redirecting."
+        );
         localStorage.clear();
         window.location.href = "/";
         return;
@@ -245,7 +247,12 @@ En caso de incumplimiento de los compromisos aquí descritos, otorgo mi consenti
         {error && <p className="nda-error">{error}</p>}
 
         <button
-          onClick={handleSubmit}
+          onClick={async () => {
+            handleDownload();
+            setTimeout(() => {
+              handleSubmit();
+            }, 1000); // 1 segundo de espera para asegurar que el print se dispare
+          }}
           disabled={loading}
           className={`nda-button-submit ${loading ? "disabled" : ""}`}
         >
