@@ -3,11 +3,13 @@ import Sidebar from './components/SideBar'
 import Views from './components/Views'
 
 import { useLocation } from 'react-router-dom';
+import useSessionTimeout from './hooks/useSessionTimeout';
 
 function App() {
   const location = useLocation();
 
   const isLoginPage = location.pathname === '/';
+  useSessionTimeout();
   return (
     <div className='flex'>
       {!isLoginPage ? (
