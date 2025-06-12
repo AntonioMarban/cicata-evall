@@ -265,6 +265,14 @@ export default function ProjectStatus({ projectId }) {
 
   const handleSendStage3 = async () => {
     try {
+      const folioInput = document.getElementById("folio-dictamen");
+      const isFolioVisible =
+        folioInput && !folioInput.disabled && folioInput.offsetParent !== null;
+
+      if (isFolioVisible && folioDictamen.trim() === "") {
+        alert("Por favor ingresa el Folio de Dictamen antes de enviar.");
+        return;
+      }
       setSendingStage3(true);
       const response = await fetch(
         `${apiUrl}/subdirectorade/projects/${projectId}/evaluations/stage3`,
@@ -365,7 +373,9 @@ export default function ProjectStatus({ projectId }) {
         }
 
         if (response.status === 404) {
-          alert("No hay cartas de confidencialidad firmadas para este proyecto todavía.");
+          alert(
+            "No hay cartas de confidencialidad firmadas para este proyecto todavía."
+          );
           return;
         }
 
@@ -373,28 +383,23 @@ export default function ProjectStatus({ projectId }) {
         console.log("Agreement data:", data);
         setAgreements(data);
         setIsModalOpen(true);
-
       } catch (error) {
         console.error("Error fetching agreement data:", error);
       }
-    }
+    };
 
     fetchAgreementData();
-  }
+  };
 
   return (
     <main className="projectstatus-main">
       <div className="evaluation-section">
         <div className="flex justify-between items-start w-full mb-4">
           <h2 className="subtitle">Progreso de evaluación</h2>
-          <button
-            className="info-button p-2!"
-            onClick={handleAgreementModal}
-          >
+          <button className="info-button p-2!" onClick={handleAgreementModal}>
             Firmas de cartas de confidencialidad
           </button>
         </div>
-        
 
         {/* Etapa 1 */}
         <div className="stage">
@@ -448,7 +453,10 @@ export default function ProjectStatus({ projectId }) {
           <h3>Etapa 2: Evaluación por Comités Especializados</h3>
           {stage2Evaluations.length === 0 ? (
             <>
-              <p>Este proyecto aún no ha sido enviado a los comités especializados.</p>
+              <p>
+                Este proyecto aún no ha sido enviado a los comités
+                especializados.
+              </p>
               <button
                 className={`stage-button ${
                   stage1Completed === 1 && !sendingStage2
@@ -564,8 +572,9 @@ export default function ProjectStatus({ projectId }) {
               (jumpThirdStage !== 1 && stage2Completed !== 1)
             }
           >
-            {sendingStage3 ? "Enviando..." :
-              sendingPendingResearcher === 1 && createDictum === 1
+            {sendingStage3
+              ? "Enviando..."
+              : sendingPendingResearcher === 1 && createDictum === 1
               ? "Generar dictamen final del proyecto"
               : sendingPendingResearcher === 1 && createDictum === 0
               ? "Enviar resultados al investigador"
@@ -578,39 +587,64 @@ export default function ProjectStatus({ projectId }) {
         </div>
       </div>
 
-      <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="relative z-50">
+      <Dialog
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        className="relative z-50"
+      >
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center">
           <DialogPanel className="max-w-[50vw] w-full rounded-xl bg-white p-6! shadow-xl">
-            <DialogTitle className="text-xl font-bold mb-4!">Firmas de cartas de confidencialidad</DialogTitle>
+            <DialogTitle className="text-xl font-bold mb-4!">
+              Firmas de cartas de confidencialidad
+            </DialogTitle>
             <p className="text-gray-800 mb-4!">
-              Aquí puedes ver las firmas de las cartas de confidencialidad de los evaluadores del proyecto.
+              Aquí puedes ver las firmas de las cartas de confidencialidad de
+              los evaluadores del proyecto.
             </p>
 
             <div className="overflow-x-auto space-y-6 max-h-[60vh] overflow-y-auto mb-6!">
               {Object.entries(agreements).map(([committeeName, members]) => (
                 <div key={committeeName} className="mb-6!">
-                  <p className="font-semibold text-lg mb-2!">Comité: {committeeName}</p>
+                  <p className="font-semibold text-lg mb-2!">
+                    Comité: {committeeName}
+                  </p>
                   <table className="w-full text-left border-collapse shadow-md rounded-lg">
                     <thead className="bg-gray-100">
                       <tr>
-                        <th className="px-4! py-1! border-b border-gray-300 text-left rounded-tl-lg!">Evaluador</th>
-                        <th className="px-4! py-1! border-b border-gray-300 text-left">Correo</th>
-                        <th className="px-4! py-1! border-b border-gray-300 text-left rounded-tr-lg!">Fecha de firma</th>
+                        <th className="px-4! py-1! border-b border-gray-300 text-left rounded-tl-lg!">
+                          Evaluador
+                        </th>
+                        <th className="px-4! py-1! border-b border-gray-300 text-left">
+                          Correo
+                        </th>
+                        <th className="px-4! py-1! border-b border-gray-300 text-left rounded-tr-lg!">
+                          Fecha de firma
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="text-left">
                       {members.map((member, idx) => (
-                        <tr key={idx} className="hover:bg-gray-100 transition-colors duration-200">
-                          <td className="px-4! py-2! text-left!">{member.fullName}</td>
-                          <td className="px-4! py-2! text-left!">{member.email}</td>
+                        <tr
+                          key={idx}
+                          className="hover:bg-gray-100 transition-colors duration-200"
+                        >
+                          <td className="px-4! py-2! text-left!">
+                            {member.fullName}
+                          </td>
+                          <td className="px-4! py-2! text-left!">
+                            {member.email}
+                          </td>
                           <td className="px-4! py-2! text-left!">
                             {member.agreed === 1
-                              ? new Date(member.agreedDate).toLocaleDateString("es-MX", {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                })
+                              ? new Date(member.agreedDate).toLocaleDateString(
+                                  "es-MX",
+                                  {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  }
+                                )
                               : "Sin firma"}
                           </td>
                         </tr>
@@ -625,7 +659,12 @@ export default function ProjectStatus({ projectId }) {
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="bg-[#BBBBBA] text-white font-semibold rounded hover:bg-[#AAAAAC] cursor-pointer"
-                style={{ padding: '10px 20px', width: '100%', maxWidth: '110px', textAlign: 'center' }}
+                style={{
+                  padding: "10px 20px",
+                  width: "100%",
+                  maxWidth: "110px",
+                  textAlign: "center",
+                }}
               >
                 Cerrar
               </button>
