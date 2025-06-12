@@ -344,8 +344,6 @@ export default function ProjectStatus({ projectId }) {
   if (loading || !projectData) return null;
 
   const handleAgreementModal = () => {
-    setIsModalOpen(true);
-    
     const fetchAgreementData = async () => {
       try {
         const response = await fetch(
@@ -365,9 +363,16 @@ export default function ProjectStatus({ projectId }) {
           window.location.href = "/";
           return;
         }
+
+        if (response.status === 404) {
+          alert("No hay cartas de confidencialidad firmadas para este proyecto todavía.");
+          return;
+        }
+
         const data = await response.json();
         console.log("Agreement data:", data);
         setAgreements(data);
+        setIsModalOpen(true);
 
       } catch (error) {
         console.error("Error fetching agreement data:", error);
