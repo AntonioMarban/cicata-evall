@@ -10,12 +10,17 @@ const subdirectorate = require('./src/routes/subdirectorade')
 const committeeSecretary = require('./src/routes/committeeSecretary')
 const committeeMember = require('./src/routes/committeeMember');
 const users = require('./src/routes/users')
+const HOST_IP = process.env.HOST_IP
 // Aumentar el tamaño máximo de los datos que se pueden enviar en una solicitud
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 
-app.use(cors())
+app.use(cors({
+  origin: ['http://localhost:5001', `http://${HOST_IP}:5001`],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true // si estás usando cookies o autenticación
+}));
 
 app.use(express.json());
 
