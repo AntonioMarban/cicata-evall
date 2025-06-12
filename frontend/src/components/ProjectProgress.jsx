@@ -160,7 +160,7 @@ export default function ProjectProgress({ projectId,status }) {
 
             const result = await saveMultipleForms(updatedProjectData);
             if (result) {
-                navigate('/Editar-proyecto');
+                navigate('/EditarProyecto');
             } else {
                 console.error("Save error:", result.error);
             }
@@ -228,7 +228,7 @@ export default function ProjectProgress({ projectId,status }) {
                  return toast.error("Primero debes terminar de editar el primer proyecto")
             }
             else{
-                navigate("/Editar-proyecto")
+                navigate("/EditarProyecto")
             }
         }
         else{
