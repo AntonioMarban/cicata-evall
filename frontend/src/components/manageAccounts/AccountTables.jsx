@@ -97,7 +97,7 @@ const AccountTables = ({ users, showCommittee, role }) => {
                                             </button>
                                             {/* Reglas para mostrar el botón Eliminar */}
                                             {(user.userType_id === 1 // Investigadores
-                                            || (adminUsers.length > 1)) // Eliminarse a sí mismo como admin si hay más de uno
+                                            || (adminUsers.length > 2)) // Eliminarse a sí mismo como admin si hay más de uno
                                             || (currentUserType === 3 || currentUserType === 4) // Presidentes y secretarios de comité
                                             ? (
                                                 <button
