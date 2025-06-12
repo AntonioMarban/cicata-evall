@@ -55,7 +55,7 @@ const Deliverables = ({Deliverables}) => {
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns.map((col) => (
                         <td key={`extra-${deliverable.id}-${col}`}>
-                          {deliverable.values[col] ?? ''}
+                          {deliverable.values[col] ?? '-'}
                         </td>
                       ))}
                   </tr>
@@ -80,7 +80,7 @@ const Deliverables = ({Deliverables}) => {
                         <td data-label="Entregable">{deliverable.name}</td>
                         {columns2.map((col) => (
                           <td key={`d2-${deliverable.id+col}-${col}`}>
-                            {deliverable.values[col] ?? ''}
+                            {deliverable.values[col] ?? '-'}
                           </td>
                         ))}
                     </tr>
@@ -90,7 +90,7 @@ const Deliverables = ({Deliverables}) => {
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns2.map((col) => (
                         <td key={`e2-${deliverable.id+col}-${col}`}>
-                          {deliverable.values[col] ?? ''}
+                          {deliverable.values[col] ?? '-'}
                         </td>
                       ))}
                   </tr>
@@ -115,7 +115,7 @@ const Deliverables = ({Deliverables}) => {
                         <td data-label="Entregable">{deliverable.name}</td>
                         {columns3.map((col) => (
                           <td key={`d3-${deliverable.id+col}-${col}`}>
-                            {deliverable.values[col] ?? ''}
+                            {deliverable.values[col] ?? '-'}
                           </td>
                         ))}
                     </tr>
@@ -125,7 +125,7 @@ const Deliverables = ({Deliverables}) => {
                       <td data-label="Entregable">{deliverable.name}</td>
                       {columns3.map((col) => (
                         <td key={`e3-${deliverable.id}-${col}`}>
-                          {deliverable.values[col] ?? ''}
+                          {deliverable.values[col] ?? '-'}
                         </td>
                       ))}
                   </tr>
