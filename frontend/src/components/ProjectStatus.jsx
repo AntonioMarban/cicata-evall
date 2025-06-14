@@ -270,7 +270,7 @@ export default function ProjectStatus({ projectId }) {
         folioInput && !folioInput.disabled && folioInput.offsetParent !== null;
 
       if (isFolioVisible && folioDictamen.trim() === "") {
-        alert("Por favor ingresa el Folio de Dictamen antes de enviar.");
+        alert("Por favor ingresa el folio de dictamen final antes de enviar.");
         return;
       }
       setSendingStage3(true);
