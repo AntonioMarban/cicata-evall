@@ -37,7 +37,7 @@ services:
     ports:
       - "5001:80"
     environment:
-      VITE_API_URL: "http://${HOST_IP}:3001" #liga al backend para las peticiones
+      VITE_API_URL: "http://localhost:3001" #liga al backend para las peticiones
     depends_on:
       - backend
     restart: always
